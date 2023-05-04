@@ -2,7 +2,7 @@
 
 ## Description
 
-An ecommerce store built with MERN stack, and utilizes third party API's.
+An ecommerce store built with vue3, and utilizes third party API's.
 
 ## Install
 
