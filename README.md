@@ -1,37 +1,57 @@
-## Introduction
+# InSync Ecommerce CRM
 
-```bash
-git clone https://github.com/abendsoft/insync-crm.git
-```
+## Description
 
-- Install dependencies
+An ecommerce store built with MERN stack, and utilizes third party API's.
 
-```bash
-cd insync-crm
+## Install
 
-yarn install
+Some basic Git commands are:
 
 ```
-
-- run
-
-```bash
-yarn dev
+$ git clone https://github.com/abendsoft/insync-crm.git
+$ cd insync-crm
+$ yarn install
 ```
 
-- Pack
+## Start development
 
-```bash
-yarn build
+```
+$ yarn run dev
 ```
 
-## Resources
+## Simple build for production
 
-- [node](http://nodejs.org/) and [git](https://git-scm.com/) - project development environment
-- [Vite](https://vitejs.dev/) - Familiar with vite features
-- [Vue3](https://v3.vuejs.org/) - Familiar with Vue basic syntax
-- [TypeScript](https://www.typescriptlang.org/) - Familiar with the basic syntax of `TypeScript`
-- [Es6+](http://es6.ruanyifeng.com/) - Familiar with the basic syntax of es6
-- [Vue-Router-Next](https://next.router.vuejs.org/) - familiar with the basic use of vue-router
-- [Naive-ui](https://www.naiveui.com/) - basic use of ui
-- [Mock.js](https://github.com/nuysoft/Mock) - mockjs basic syntax
+```
+$ yarn run build
+```
+
+## Run build for production
+
+```
+$ yarn start
+```
+
+# Resources
+
+## Languages & tools
+
+- [Typescript](https://www.typescriptlang.org/)
+
+- [vue3](https://vuejs.org/)
+
+- [pinia](https://pinia.vuejs.org/)
+
+- [NaiveUI](https://www.naiveui.com/en-US/os-theme)
+
+- [axios](https://axios-http.com/docs/intro)
+
+- [vue-router](https://router.vuejs.org/)
+
+- [TailwindCSS](https://tailwindcss.com/)
+
+- [Node](http://nodejs.org/)
+
+- [git](https://git-scm.com/)
+
+- [Vite](https://vitejs.dev/)
