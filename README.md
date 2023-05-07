@@ -16,30 +16,28 @@ domain : `develop.insync-crm.com`
 
 ## Install
 
-Some basic Git commands are:
-
 ```
-$ git clone https://github.com/abendsoft/insync-crm.git
-$ cd insync-crm
-$ yarn install
+git clone https://github.com/abendsoft/insync-crm.git
+cd insync-crm
+yarn install
 ```
 
 ## Start development
 
 ```
-$ yarn run dev
+yarn dev
 ```
 
 ## Build for production
 
 ```
-$ yarn run build
+yarn build
 ```
 
 ## Run build for production
 
 ```
-$ yarn start
+yarn start
 ```
 
 ## Resources
