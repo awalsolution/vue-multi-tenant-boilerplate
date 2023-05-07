@@ -2,17 +2,19 @@
 
 ## Environments
 
-### Production
+```
+1. Production
 
-branch : `main`
+==> Branch Name: `main`
 
-domain : `main.insync-crm.com`
+==> Domain Name: `main.insync-crm-api.com`
 
-### Development
+2. Development
 
-branch : `develop`
+==> Branch Name: `develop`
 
-domain : `develop.insync-crm.com`
+==> Domain Name: `develop.insync-crm-api.com`
+```
 
 ## Install
 
