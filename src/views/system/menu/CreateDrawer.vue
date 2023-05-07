@@ -8,38 +8,41 @@
         label-placement="left"
         :label-width="100"
       >
-        <n-form-item label="类型" path="type">
-          <span>{{ formParams.type === 1 ? '侧边栏菜单' : '' }}</span>
+        <n-form-item label="type" path="type">
+          <span>{{ formParams.type === 1 ? 'Sidebar menu' : '' }}</span>
         </n-form-item>
-        <n-form-item label="标题" path="label">
-          <n-input placeholder="请输入标题" v-model:value="formParams.label" />
+        <n-form-item label="title" path="label">
+          <n-input placeholder="Please enter a title" v-model:value="formParams.label" />
         </n-form-item>
-        <n-form-item label="副标题" path="subtitle">
-          <n-input placeholder="请输入副标题" v-model:value="formParams.subtitle" />
+        <n-form-item label="subtitle" path="subtitle">
+          <n-input placeholder="Please enter subtitle" v-model:value="formParams.subtitle" />
         </n-form-item>
-        <n-form-item label="路径" path="path">
-          <n-input placeholder="请输入路径" v-model:value="formParams.path" />
+        <n-form-item label="path" path="path">
+          <n-input placeholder="Please enter the path" v-model:value="formParams.path" />
         </n-form-item>
-        <n-form-item label="打开方式" path="openType">
+        <n-form-item label="open method" path="openType">
           <n-radio-group v-model:value="formParams.openType" name="openType">
             <n-space>
-              <n-radio :value="1">当前窗口</n-radio>
-              <n-radio :value="2">新窗口</n-radio>
+              <n-radio :value="1">Current window</n-radio>
+              <n-radio :value="2">New window</n-radio>
             </n-space>
           </n-radio-group>
         </n-form-item>
-        <n-form-item label="菜单权限" path="auth">
-          <n-input placeholder="请输入权限，多个权限用，分割" v-model:value="formParams.auth" />
+        <n-form-item label="menu permissions" path="auth">
+          <n-input
+            placeholder="Please enter the permission, multiple permissions, split"
+            v-model:value="formParams.auth"
+          />
         </n-form-item>
-        <n-form-item label="隐藏侧边栏" path="hidden">
+        <n-form-item label="Hidden sidebar" path="hidden">
           <n-switch v-model:value="formParams.hidden" />
         </n-form-item>
       </n-form>
 
       <template #footer>
         <n-space>
-          <n-button type="primary" :loading="subLoading" @click="formSubmit">提交</n-button>
-          <n-button @click="handleReset">重置</n-button>
+          <n-button type="primary" :loading="subLoading" @click="formSubmit">Submit</n-button>
+          <n-button @click="handleReset">Reset</n-button>
         </n-space>
       </template>
     </n-drawer-content>
@@ -53,12 +56,12 @@
   const rules = {
     label: {
       required: true,
-      message: '请输入标题',
+      message: 'Please enter a title',
       trigger: 'blur',
     },
     path: {
       required: true,
-      message: '请输入路径',
+      message: 'Please enter the path',
       trigger: 'blur',
     },
   };
@@ -68,7 +71,7 @@
     props: {
       title: {
         type: String,
-        default: '添加顶级菜单',
+        default: 'Add top menu',
       },
       width: {
         type: Number,
@@ -94,7 +97,7 @@
         formParams: defaultValueRef(),
         placement: 'right' as const,
         alertText:
-          '该功能主要实时预览各种布局效果，更多完整配置在 projectSetting.ts 中设置，建议在生产环境关闭该布局预览功能。',
+          'This function is mainly to preview various layout effects in real time. More complete configurations can be set in projectSetting.ts. It is recommended to turn off the layout preview function in the production environment. ',
       });
 
       function openDrawer() {
@@ -108,11 +111,11 @@
       function formSubmit() {
         formRef.value.validate((errors) => {
           if (!errors) {
-            message.success('添加成功');
+            message.success('add successfully');
             handleReset();
             closeDrawer();
           } else {
-            message.error('请填写完整信息');
+            message.error('Please fill in the complete information');
           }
         });
       }
