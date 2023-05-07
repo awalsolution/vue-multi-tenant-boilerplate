@@ -93,7 +93,9 @@ export const useAsyncRouteStore = defineStore({
         const { meta } = route;
         const { permissions } = meta || {};
         if (!permissions) return true;
-        return permissionsList.some((item: any) => permissions.includes(item.value));
+        return permissionsList.some((item: any) => {
+          return permissions.includes(item);
+        });
       };
       const { permissionMode } = useProjectSetting();
       if (unref(permissionMode) === 'BACK') {

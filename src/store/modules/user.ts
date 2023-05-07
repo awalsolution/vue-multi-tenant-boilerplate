@@ -3,8 +3,9 @@ import { store } from '@/store';
 import { ACCESS_TOKEN, CURRENT_USER, IS_SCREENLOCKED } from '@/store/mutation-types';
 import { ResultEnum } from '@/enums/httpEnum';
 
-import { getUserInfo as getUserInfoApi, login } from '@/api/auth/user';
+import { getUserInfo as getUserInfoApi, login } from '@/api/auth/auth';
 import { storage } from '@/utils/Storage';
+import _ from 'lodash';
 
 export type UserInfoType = {
   // TODO: add your own data
@@ -64,7 +65,6 @@ export const useUserStore = defineStore({
     // Log in
     async login(params: any) {
       const response = await login(params);
-      console.log('response', response);
       const { result, code } = response;
       if (code === ResultEnum.SUCCESS) {
         const ex = 7 * 24 * 60 * 60;
@@ -80,9 +80,8 @@ export const useUserStore = defineStore({
     // Get user information
     async getInfo() {
       const result = await getUserInfoApi();
-      console.log('result', result);
       if (result.permissions && result.permissions.length) {
-        const permissionsList = result.permissions;
+        const permissionsList = this.allPermissions(result);
         this.setPermissions(permissionsList);
         this.setUserInfo(result);
       } else {
@@ -92,6 +91,18 @@ export const useUserStore = defineStore({
       return result;
     },
 
+    allPermissions(user: any) {
+      let rolePermissions: string[] = [];
+      console.log(user);
+      if (user?.roles) {
+        for (const role of user.roles) {
+          rolePermissions = [...role.permissions.map((permission) => permission.name)];
+        }
+      }
+      const userPermissions = user?.permissions.map((permission) => permission.name) || [];
+
+      return _.uniq([...userPermissions, ...rolePermissions]);
+    },
     // Sign out
     async logout() {
       this.setPermissions([]);
