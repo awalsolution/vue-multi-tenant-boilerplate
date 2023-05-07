@@ -5,15 +5,15 @@
 ```
 1. Production
 
-==> Branch Name: `main`
+==> Branch Name: main
 
-==> Domain Name: `main.insync-crm-api.com`
+==> Domain Name: main.insync-crm.com
 
 2. Development
 
-==> Branch Name: `develop`
+==> Branch Name: develop
 
-==> Domain Name: `develop.insync-crm-api.com`
+==> Domain Name: develop.insync-crm.com
 ```
 
 ## Install
