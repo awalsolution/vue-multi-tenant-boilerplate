@@ -1,22 +1,18 @@
 # InSync Ecommerce CRM
 
-## Description
+## Environments
 
-An ecommerce CRM built with vue3, and utilizes API's.
+### Production
 
-# Environments
+branch : `main`
 
-## Production
+domain : `main.insync-crm.com`
 
-branch : 'main'
+### Development
 
-domain : 'main.insync-crm.com'
+branch : `develop`
 
-## Development
-
-branch : 'develop'
-
-domain : 'develop.insync-crm.com'
+domain : `develop.insync-crm.com`
 
 ## Install
 
@@ -46,9 +42,9 @@ $ yarn run build
 $ yarn start
 ```
 
-# Resources
+## Resources
 
-## Languages & tools
+### Languages & tools
 
 - [Yarn](https://yarnpkg.com/)
 
