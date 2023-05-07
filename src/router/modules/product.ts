@@ -1,27 +1,27 @@
 import { RouteRecordRaw } from 'vue-router';
 import { Layout } from '@/router/constant';
-import { ShopOutlined } from '@vicons/antd';
+import { CartOutline } from '@vicons/ionicons5';
 import { renderIcon } from '@/utils/index';
 
-const routeName = 'shop';
+const routeName = 'product';
 
 const routes: Array<RouteRecordRaw> = [
   {
-    path: '/shop',
+    path: '/product',
     name: routeName,
-    redirect: '/shop/list',
+    redirect: '/product/list',
     component: Layout,
     meta: {
-      title: 'Shop',
-      icon: renderIcon(ShopOutlined),
-      sort: 2,
+      title: 'Product',
+      icon: renderIcon(CartOutline),
+      sort: 3,
     },
     children: [
       {
         path: 'list',
         name: `${routeName}_list`,
         meta: {
-          title: 'Shop',
+          title: 'Product',
         },
         component: () => import('@/views/list/basicList/index.vue'),
       },

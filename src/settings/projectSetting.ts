@@ -1,57 +1,57 @@
 const setting = {
-  //导航模式 vertical 左侧菜单模式 horizontal 顶部菜单模式
+  //navigation mode vertical left menu mode horizontal top menu mode
   navMode: 'vertical',
-  //导航风格 dark 暗色侧边栏 light 白色侧边栏 header-dark 暗色顶栏
+  //navigation style dark dark sidebar light white sidebar header-dark dark topbar
   navTheme: 'dark',
-  // 是否处于移动端模式
+  // Whether it is in mobile mode
   isMobile: false,
-  //顶部
+  //top
   headerSetting: {
-    //背景色
+    //background color
     bgColor: '#fff',
-    //固定顶部
+    // fixed top
     fixed: true,
-    //显示重载按钮
+    //show the reload button
     isReload: true,
   },
-  //页脚
+  //footer
   showFooter: true,
-  //多标签
+  //Multiple labels
   multiTabsSetting: {
-    //背景色
+    //background color
     bgColor: '#fff',
-    //是否显示
+    //Whether to display
     show: true,
-    //固定多标签
+    // fixed multi-label
     fixed: true,
   },
-  //菜单
+  //menu
   menuSetting: {
-    //最小宽度
+    //minimum width
     minMenuWidth: 64,
-    //菜单宽度
+    //menu width
     menuWidth: 200,
-    //固定菜单
+    // fixed menu
     fixed: true,
-    //分割菜单
+    //split menu
     mixMenu: false,
-    //触发移动端侧边栏的宽度
+    //Trigger the width of the sidebar on the mobile side
     mobileWidth: 800,
-    // 折叠菜单
+    // collapse menu
     collapsed: false,
   },
-  //面包屑
+  //Bread crumbs
   crumbsSetting: {
-    //是否显示
+    //Whether to display
     show: true,
-    //显示图标
+    //display icon
     showIcon: false,
   },
-  //菜单权限模式 FIXED 前端固定路由  BACK 动态获取
+  //Menu permission mode FIXED front-end fixed route BACK dynamic acquisition
   permissionMode: 'FIXED',
-  //是否开启路由动画
+  //Whether to enable routing animation
   isPageAnimate: true,
-  //路由动画类型
+  //route animation type
   pageAnimateType: 'zoom-fade',
 };
 export default setting;
