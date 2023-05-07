@@ -11,6 +11,7 @@ export type UserInfoType = {
   // TODO: add your own data
   name: string;
   email: string;
+  user_type: string;
 };
 
 export interface IUserState {
@@ -96,17 +97,17 @@ export const useUserStore = defineStore({
       console.log(user);
       if (user?.roles) {
         for (const role of user.roles) {
-          rolePermissions = [...role.permissions.map((permission) => permission.name)];
+          rolePermissions = [...role.permissions.map((permission: any) => permission.name)];
         }
       }
-      const userPermissions = user?.permissions.map((permission) => permission.name) || [];
+      const userPermissions = user?.permissions.map((permission: any) => permission.name) || [];
 
       return _.uniq([...userPermissions, ...rolePermissions]);
     },
     // Sign out
     async logout() {
       this.setPermissions([]);
-      this.setUserInfo({ name: '', email: '' });
+      this.setUserInfo({ name: '', email: '', user_type: '' });
       storage.remove(ACCESS_TOKEN);
       storage.remove(CURRENT_USER);
     },
