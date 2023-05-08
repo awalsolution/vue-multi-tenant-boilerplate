@@ -17,7 +17,7 @@ function handleError(e: Error) {
  * Page switching
  */
 export function useGo(_router?: Router) {
-  let router;
+  let router: any;
   if (!_router) {
     router = useRouter();
   }

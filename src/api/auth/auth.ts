@@ -17,7 +17,7 @@ export interface BasicPageParams {
  */
 export function getUserInfo() {
   return http.request({
-    url: '/admin_info',
+    url: '/users/authenticated',
     method: 'get',
   });
 }
@@ -28,7 +28,7 @@ export function getUserInfo() {
 export function login(params: any) {
   return http.request<BasicResponseModel>(
     {
-      url: '/login',
+      url: '/auth/login',
       method: 'POST',
       params,
     },
@@ -37,14 +37,13 @@ export function login(params: any) {
     }
   );
 }
-
 /**
- * @description: user change password
+ * @description: User register
  */
-export function changePassword(params: any, uid: any) {
-  return http.request(
+export function register(params: any) {
+  return http.request<BasicResponseModel>(
     {
-      url: `/user/u${uid}/changepw`,
+      url: '/auth/register',
       method: 'POST',
       params,
     },
@@ -63,4 +62,20 @@ export function logout(params: any) {
     method: 'POST',
     params,
   });
+}
+
+/**
+ * @description: user change password
+ */
+export function changePassword(params: any, uid: any) {
+  return http.request(
+    {
+      url: `/user/u${uid}/changepw`,
+      method: 'POST',
+      params,
+    },
+    {
+      isTransformResponse: false,
+    }
+  );
 }

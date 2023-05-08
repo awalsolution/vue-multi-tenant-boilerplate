@@ -20,7 +20,11 @@ export function usePermission() {
    * */
   function hasPermission(accesses: string[]): boolean {
     if (!accesses || !accesses.length) return true;
-    return _somePermissions(accesses);
+    if (userStore.info.user_type === 'super admin') {
+      return true;
+    } else {
+      return _somePermissions(accesses);
+    }
   }
 
   /**
