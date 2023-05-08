@@ -15,7 +15,7 @@ export interface BasicPageParams {
 /**
  * @description: Get role list
  */
-export function getRoles() {
+export function getRolesApi() {
   return http.request({
     url: '/roles',
     method: 'get',
@@ -24,7 +24,7 @@ export function getRoles() {
 /**
  * @description: Get single role
  */
-export function getRole(roleId: any) {
+export function getRoleApi(roleId: number) {
   return http.request({
     url: `/roles/${roleId}`,
     method: 'get',
@@ -34,7 +34,7 @@ export function getRole(roleId: any) {
 /**
  * @description: create new role
  */
-export function createRole(params: any) {
+export function createRoleApi(params: any) {
   return http.request<BasicResponseModel>(
     {
       url: '/roles',
@@ -49,7 +49,7 @@ export function createRole(params: any) {
 /**
  * @description: update role
  */
-export function updateRole(roleId: any, params: any) {
+export function updateRoleApi(roleId: number, params: any) {
   return http.request<BasicResponseModel>(
     {
       url: `/roles/${roleId}`,
@@ -64,7 +64,7 @@ export function updateRole(roleId: any, params: any) {
 /**
  * @description: delete role
  */
-export function deleteRole(roleId: any) {
+export function deleteRoleApi(roleId: number) {
   return http.request<BasicResponseModel>({
     url: `/roles/${roleId}`,
     method: 'DELETE',

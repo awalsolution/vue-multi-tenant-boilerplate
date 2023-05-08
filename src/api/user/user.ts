@@ -15,7 +15,7 @@ export interface BasicPageParams {
 /**
  * @description: Get user list
  */
-export function getUsers() {
+export function getUsersApi() {
   return http.request({
     url: '/users',
     method: 'get',
@@ -24,7 +24,7 @@ export function getUsers() {
 /**
  * @description: Get single user
  */
-export function getUser(userId: any) {
+export function getUserApi(userId: number) {
   return http.request({
     url: `/users/${userId}`,
     method: 'get',
@@ -34,7 +34,7 @@ export function getUser(userId: any) {
 /**
  * @description: create new user
  */
-export function createUser(params: any) {
+export function createUserApi(params: any) {
   return http.request<BasicResponseModel>(
     {
       url: '/users',
@@ -49,7 +49,7 @@ export function createUser(params: any) {
 /**
  * @description: update user
  */
-export function updateUser(userId: any, params: any) {
+export function updateUserApi(userId: number, params: any) {
   return http.request<BasicResponseModel>(
     {
       url: `/users/${userId}`,
@@ -64,7 +64,7 @@ export function updateUser(userId: any, params: any) {
 /**
  * @description: delete user
  */
-export function deleteUser(userId: any) {
+export function deleteUserApi(userId: number) {
   return http.request<BasicResponseModel>({
     url: `/users/${userId}`,
     method: 'DELETE',

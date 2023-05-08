@@ -15,7 +15,7 @@ export interface BasicPageParams {
 /**
  * @description: Get permission list
  */
-export function getPermissions() {
+export function getPermissionsApi() {
   return http.request({
     url: '/permissions',
     method: 'get',
@@ -24,7 +24,7 @@ export function getPermissions() {
 /**
  * @description: Get single permission
  */
-export function getPermission(permissionId: any) {
+export function getPermissionApi(permissionId: number) {
   return http.request({
     url: `/permissions/${permissionId}`,
     method: 'get',
@@ -34,7 +34,7 @@ export function getPermission(permissionId: any) {
 /**
  * @description: create new permission
  */
-export function createPermission(params: any) {
+export function createPermissionApi(params: any) {
   return http.request<BasicResponseModel>(
     {
       url: '/permissions',
@@ -49,7 +49,7 @@ export function createPermission(params: any) {
 /**
  * @description: update permission
  */
-export function updatePermission(permissionId: any, params: any) {
+export function updatePermissionApi(permissionId: number, params: any) {
   return http.request<BasicResponseModel>(
     {
       url: `/permissions/${permissionId}`,
@@ -64,7 +64,7 @@ export function updatePermission(permissionId: any, params: any) {
 /**
  * @description: delete permission
  */
-export function deletePermission(permissionId: any) {
+export function deletePermissionApi(permissionId: number) {
   return http.request<BasicResponseModel>({
     url: `/permissions/${permissionId}`,
     method: 'DELETE',

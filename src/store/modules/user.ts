@@ -2,7 +2,6 @@ import { defineStore } from 'pinia';
 import { store } from '@/store';
 import { ACCESS_TOKEN, CURRENT_USER, IS_SCREENLOCKED } from '@/store/mutation-types';
 import { ResultEnum } from '@/enums/httpEnum';
-
 import { getUserInfo as getUserInfoApi, login } from '@/api/auth/auth';
 import { storage } from '@/utils/Storage';
 import _ from 'lodash';
@@ -57,7 +56,7 @@ export const useUserStore = defineStore({
     setAvatar(avatar: string) {
       this.avatar = avatar;
     },
-    setPermissions(permissions) {
+    setPermissions(permissions: any) {
       this.permissions = permissions;
     },
     setUserInfo(info: UserInfoType) {

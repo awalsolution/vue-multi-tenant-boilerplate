@@ -15,7 +15,7 @@ export interface BasicPageParams {
 /**
  * @description: Get shop list
  */
-export function getShops() {
+export function getShopsApi() {
   return http.request({
     url: '/shops',
     method: 'get',
@@ -24,7 +24,7 @@ export function getShops() {
 /**
  * @description: Get single shop
  */
-export function getShop(shopId: any) {
+export function getShopApi(shopId: any) {
   return http.request({
     url: `/shops/${shopId}`,
     method: 'get',
@@ -34,7 +34,7 @@ export function getShop(shopId: any) {
 /**
  * @description: create new shop
  */
-export function createShop(params: any) {
+export function createShopApi(params: any) {
   return http.request<BasicResponseModel>(
     {
       url: '/shops',
@@ -49,7 +49,7 @@ export function createShop(params: any) {
 /**
  * @description: update shop
  */
-export function updateShop(shopId: any, params: any) {
+export function updateShopApi(shopId: any, params: any) {
   return http.request<BasicResponseModel>(
     {
       url: `/shops/${shopId}`,
@@ -64,7 +64,7 @@ export function updateShop(shopId: any, params: any) {
 /**
  * @description: delete shop
  */
-export function deleteShop(shopId: any) {
+export function deleteShopApi(shopId: any) {
   return http.request<BasicResponseModel>({
     url: `/shops/${shopId}`,
     method: 'DELETE',

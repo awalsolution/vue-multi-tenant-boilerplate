@@ -1,4 +1,12 @@
 import { defineStore } from 'pinia';
+import { ResultEnum } from '@/enums/httpEnum';
+import {
+  getUsersApi,
+  getUserApi,
+  createUserApi,
+  updateUserApi,
+  deleteUserApi,
+} from '@/api/user/user';
 
 export type IUsersState = {
   first_name: string;
@@ -7,6 +15,7 @@ export type IUsersState = {
   phone: string;
   password: string;
   confirmPassword: string;
+  users: [];
 };
 
 export const useUsersStore = defineStore({
@@ -18,12 +27,62 @@ export const useUsersStore = defineStore({
     phone: '',
     password: '',
     confirmPassword: '',
+    users: [],
   }),
   getters: {},
   actions: {
-    getUsers() {},
-    createUser() {},
-    updateUser() {},
-    deleteUser() {},
+    setFirstName(name: any) {
+      this.first_name = name;
+    },
+    setLastName(last_name: any) {
+      this.last_name = last_name;
+    },
+    setUsers(users: any) {
+      this.users = users;
+    },
+    async getUsers() {
+      const response = await getUsersApi();
+      const { result, code } = response;
+      if (code === ResultEnum.SUCCESS) {
+        this.setUsers(result);
+      }
+      return response;
+    },
+    async getUser(userId: number) {
+      const response = await getUserApi(userId);
+      const { result, code } = response;
+      if (code === ResultEnum.SUCCESS) {
+        this.setFirstName(result);
+        this.setLastName(result);
+      }
+      return response;
+    },
+    async createUser(params: any) {
+      const response = await createUserApi(params);
+      const { result, code } = response;
+      if (code === ResultEnum.SUCCESS) {
+        this.setFirstName(result);
+        this.setLastName(result);
+      }
+      return response;
+    },
+    async updateUser(userId: number, params: any) {
+      const response = await updateUserApi(userId, params);
+      const { result, code } = response;
+      if (code === ResultEnum.SUCCESS) {
+        this.setFirstName(result);
+        this.setLastName(result);
+      }
+      return response;
+    },
+    async deleteUser(userId: number) {
+      const response = await deleteUserApi(userId);
+      const { result, code } = response;
+      if (code === ResultEnum.SUCCESS) {
+        this.setFirstName(result);
+        this.setLastName(result);
+      }
+      return response;
+    },
   },
 });
