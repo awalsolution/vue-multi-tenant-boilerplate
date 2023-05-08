@@ -16,7 +16,7 @@ export type UserInfoType = {
 
 export interface IUserState {
   token: string;
-  username: string;
+  email: string;
   welcome: string;
   avatar: string;
   permissions: any[];
@@ -27,7 +27,7 @@ export const useUserStore = defineStore({
   id: 'app-user',
   state: (): IUserState => ({
     token: storage.get(ACCESS_TOKEN, ''),
-    username: '',
+    email: '',
     welcome: '',
     avatar: '',
     permissions: [],
@@ -41,7 +41,7 @@ export const useUserStore = defineStore({
       return this.avatar;
     },
     getNickname(): string {
-      return this.username;
+      return this.email;
     },
     getPermissions(): [any][] {
       return this.permissions;
