@@ -15,7 +15,7 @@ export interface BasicPageParams {
 /**
  * @description: Get product list
  */
-export function getProducts() {
+export function getProductsApi() {
   return http.request({
     url: '/products',
     method: 'get',
@@ -24,7 +24,7 @@ export function getProducts() {
 /**
  * @description: Get single product
  */
-export function getProduct(productId: any) {
+export function getProductApi(productId: number) {
   return http.request({
     url: `/products/${productId}`,
     method: 'get',
@@ -34,7 +34,7 @@ export function getProduct(productId: any) {
 /**
  * @description: create new product
  */
-export function createProduct(params: any) {
+export function createProductApi(params: any) {
   return http.request<BasicResponseModel>(
     {
       url: '/products',
@@ -49,7 +49,7 @@ export function createProduct(params: any) {
 /**
  * @description: update product
  */
-export function updateProduct(productId: any, params: any) {
+export function updateProductApi(productId: number, params: any) {
   return http.request<BasicResponseModel>(
     {
       url: `/products/${productId}`,
@@ -64,7 +64,7 @@ export function updateProduct(productId: any, params: any) {
 /**
  * @description: delete product
  */
-export function deleteProduct(productId: any) {
+export function deleteProductApi(productId: number) {
   return http.request<BasicResponseModel>({
     url: `/products/${productId}`,
     method: 'DELETE',

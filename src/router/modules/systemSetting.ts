@@ -11,6 +11,7 @@ const routes: Array<RouteRecordRaw> = [
     component: Layout,
     meta: {
       title: 'System Settings',
+      permissions: ['can view system setting'],
       icon: renderIcon(SettingsOutline),
       sort: 1,
     },
@@ -20,24 +21,27 @@ const routes: Array<RouteRecordRaw> = [
         name: 'system_user',
         meta: {
           title: 'Users',
+          permissions: ['can view users'],
         },
-        component: () => import('@/views/list/basicList/index.vue'),
+        component: () => import('@/views/users/index.vue'),
       },
       {
         path: 'role',
         name: 'system_role',
         meta: {
           title: 'Roles',
+          permissions: ['can view roles'],
         },
-        component: () => import('@/views/list/basicList/index.vue'),
+        component: () => import('@/views/roles/index.vue'),
       },
       {
         path: 'permission',
         name: 'system_permission',
         meta: {
           title: 'Permissions',
+          permissions: ['can view permissions'],
         },
-        component: () => import('@/views/list/basicList/index.vue'),
+        component: () => import('@/views/permissions/index.vue'),
       },
     ],
   },

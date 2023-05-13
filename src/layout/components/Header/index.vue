@@ -1,3 +1,5 @@
+<!-- eslint-disable vue/require-explicit-emits -->
+<!-- eslint-disable vue/no-mutating-props -->
 <template>
   <div class="layout-header">
     <!--Top menu-->
@@ -72,20 +74,6 @@
       </n-breadcrumb>
     </div>
     <div class="layout-header-right">
-      <div
-        class="layout-header-trigger layout-header-trigger-min"
-        v-for="item in iconList"
-        :key="item.icon"
-      >
-        <n-tooltip placement="bottom">
-          <template #trigger>
-            <n-icon size="18">
-              <component :is="item.icon" v-on="item.eventObject || {}" />
-            </n-icon>
-          </template>
-          <span>{{ item.tips }}</span>
-        </n-tooltip>
-      </div>
       <!--Toggle full screen-->
       <div class="layout-header-trigger layout-header-trigger-min">
         <n-tooltip placement="bottom">
@@ -110,7 +98,6 @@
           </div>
         </n-dropdown>
       </div>
-      <!--设置-->
       <div class="layout-header-trigger layout-header-trigger-min" @click="openSetting">
         <n-tooltip placement="bottom-end">
           <template #trigger>
@@ -134,7 +121,6 @@
   import { NDialogProvider, useDialog, useMessage } from 'naive-ui';
   import { TABS_ROUTES } from '@/store/mutation-types';
   import { useUserStore } from '@/store/modules/user';
-  import { useScreenLockStore } from '@/store/modules/screenLock';
   import ProjectSetting from './ProjectSetting.vue';
   import { AsideMenu } from '@/layout/components/Menu';
   import { useProjectSetting } from '@/hooks/setting/useProjectSetting';
@@ -153,7 +139,6 @@
     },
     setup(props) {
       const userStore = useUserStore();
-      const useLockscreen = useScreenLockStore();
       const message = useMessage();
       const dialog = useDialog();
       const { navMode, navTheme, headerSetting, menuSetting, crumbsSetting } = useProjectSetting();
@@ -273,41 +258,19 @@
           }
         }
       };
-
-      // icon list
-      const iconList = [
-        {
-          icon: 'SearchOutlined',
-          tips: 'Search',
-        },
-        {
-          icon: 'GithubOutlined',
-          tips: 'github',
-          eventObject: {
-            click: () => window.open('https://github.com/jekip/naive-ui-admin'),
-          },
-        },
-        {
-          icon: 'LockOutlined',
-          tips: 'lock screen',
-          eventObject: {
-            click: () => useLockscreen.setLock(true),
-          },
-        },
-      ];
       const avatarOptions = [
         {
-          label: 'personal settings',
+          label: 'Profile Setting',
           key: 1,
         },
         {
-          label: 'logout',
+          label: 'Logout',
           key: 2,
         },
       ];
 
       //Avatar drop-down menu
-      const avatarSelect = (key) => {
+      const avatarSelect = (key: any) => {
         switch (key) {
           case 1:
             router.push({ name: 'Setting' });
@@ -325,7 +288,6 @@
 
       return {
         ...toRefs(state),
-        iconList,
         toggleFullScreen,
         doLogout,
         route,

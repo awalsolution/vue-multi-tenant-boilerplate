@@ -14,7 +14,7 @@ const routes: Array<RouteRecordRaw> = [
     meta: {
       title: 'Dashboard',
       icon: renderIcon(DashboardOutlined),
-      permissions: ['dashboard_console'],
+      permissions: ['can view dashboard'],
       sort: 0,
     },
     children: [
@@ -23,8 +23,7 @@ const routes: Array<RouteRecordRaw> = [
         name: `${routeName}`,
         meta: {
           title: 'Dashboard',
-          permissions: ['dashboard_console'],
-          affix: true,
+          permissions: ['can view dashboard'],
         },
         component: () => import('@/views/dashboard/console.vue'),
       },

@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col justify-center page-container">
+  <div class="flex justify-center page-container">
     <div class="text-center">
       <img src="~@/assets/images/exception/404.svg" alt="" />
     </div>
@@ -23,7 +23,8 @@
     width: 100%;
     border-radius: 4px;
     padding: 50px 0;
-    height: 100vh;
+    flex-direction: column;
+    align-items: center;
 
     .text-center {
       h1 {

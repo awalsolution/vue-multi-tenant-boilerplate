@@ -1,6 +1,4 @@
-import { adminMenus } from '@/api/auth/menu';
 import { constantRouterIcon } from './icons';
-import { RouteRecordRaw } from 'vue-router';
 import { Layout, ParentLayout } from '@/router/constant';
 import type { AppRouteRecordRaw } from '@/router/types';
 
@@ -10,12 +8,6 @@ const LayoutMap = new Map<string, () => Promise<typeof import('*.vue')>>();
 LayoutMap.set('LAYOUT', Layout);
 LayoutMap.set('IFRAME', Iframe);
 
-/**
- * Format backend structure information and recursively generate hierarchical routing table
- * @param routerMap
- * @param parent
- * @returns {*}
- */
 export const generateRoutes = (routerMap: any, parent?: any): any[] => {
   return routerMap.map((item: any) => {
     const currentRoute: any = {
@@ -47,18 +39,6 @@ export const generateRoutes = (routerMap: any, parent?: any): any[] => {
     }
     return currentRoute;
   });
-};
-
-/**
- * Dynamically generate menu
- * @returns {Promise<Router>}
- */
-export const generateDynamicRoutes = async (): Promise<RouteRecordRaw[]> => {
-  const result = await adminMenus();
-  console.log('admin routes', result);
-  const router = generateRoutes(result);
-  asyncImportRoute(router);
-  return router;
 };
 
 /**

@@ -14,6 +14,7 @@ const routes: Array<RouteRecordRaw> = [
     meta: {
       title: 'Shop',
       icon: renderIcon(ShopOutlined),
+      permissions: ['can view shops'],
       sort: 2,
     },
     children: [
@@ -22,8 +23,9 @@ const routes: Array<RouteRecordRaw> = [
         name: `${routeName}_list`,
         meta: {
           title: 'Shop',
+          permissions: ['can view shops'],
         },
-        component: () => import('@/views/list/basicList/index.vue'),
+        component: () => import('@/views/shop/index.vue'),
       },
     ],
   },

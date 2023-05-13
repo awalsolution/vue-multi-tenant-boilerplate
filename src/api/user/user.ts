@@ -15,18 +15,19 @@ export interface BasicPageParams {
 /**
  * @description: Get user list
  */
-export function getUsers() {
+export function getUsersApi(params: any) {
   return http.request({
     url: '/users',
     method: 'get',
+    params,
   });
 }
 /**
  * @description: Get single user
  */
-export function getUser(userId: any) {
+export function getUserApi(id: number) {
   return http.request({
-    url: `/users/${userId}`,
+    url: `/users/${id}`,
     method: 'get',
   });
 }
@@ -34,7 +35,7 @@ export function getUser(userId: any) {
 /**
  * @description: create new user
  */
-export function createUser(params: any) {
+export function createUserApi(params: any) {
   return http.request<BasicResponseModel>(
     {
       url: '/users',
@@ -49,10 +50,10 @@ export function createUser(params: any) {
 /**
  * @description: update user
  */
-export function updateUser(userId: any, params: any) {
+export function updateUserApi(id: number, params: any) {
   return http.request<BasicResponseModel>(
     {
-      url: `/users/${userId}`,
+      url: `/users/${id}`,
       method: 'PUT',
       params,
     },
@@ -64,9 +65,9 @@ export function updateUser(userId: any, params: any) {
 /**
  * @description: delete user
  */
-export function deleteUser(userId: any) {
+export function deleteUserApi(id: number) {
   return http.request<BasicResponseModel>({
-    url: `/users/${userId}`,
+    url: `/users/${id}`,
     method: 'DELETE',
   });
 }

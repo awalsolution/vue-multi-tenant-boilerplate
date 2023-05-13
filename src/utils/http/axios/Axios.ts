@@ -165,7 +165,7 @@ export class VAxios {
     this.axiosInstance.interceptors.request.use((config: AxiosRequestConfig) => {
       const {
         headers: { ignoreCancelToken },
-      } = config;
+      }: any = config;
       const ignoreCancel =
         ignoreCancelToken !== undefined
           ? ignoreCancelToken

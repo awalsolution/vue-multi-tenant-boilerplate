@@ -219,11 +219,11 @@
           </div>
         </div>
 
-        <div class="drawer-setting-item">
+        <!-- <div class="drawer-setting-item">
           <n-alert type="warning" :showIcon="false">
             <p>{{ alertText }}</p>
           </n-alert>
-        </div>
+        </div> -->
       </div>
     </n-drawer-content>
   </n-drawer>
@@ -258,7 +258,7 @@
         width: props.width,
         title: props.title,
         isDrawer: false,
-        placement: 'right',
+        placement: 'right' as const,
         alertText:
           'This function is mainly to preview various layout effects in real time. More complete configurations can be set in projectSetting.ts. It is recommended to turn off the layout preview function in the production environment. ',
         appThemeList: designStore.appThemeList,
