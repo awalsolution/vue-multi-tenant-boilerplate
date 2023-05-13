@@ -23,7 +23,7 @@ const routes: Array<RouteRecordRaw> = [
           title: 'Users',
           permissions: ['dashboard_console'],
         },
-        component: () => import('@/views/list/index.vue'),
+        component: () => import('@/views/users/index.vue'),
       },
       {
         path: 'role',

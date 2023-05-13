@@ -76,7 +76,7 @@
           <div>Create New Role</div>
         </template>
         <n-space :vertical="true">
-          <add-user
+          <add-role
             @created="
               getList();
               showModal = false;
@@ -90,7 +90,7 @@
           <div>Update Role</div>
         </template>
         <n-space :vertical="true">
-          <edit-user
+          <edit-role
             :id="selectedId"
             @updated="
               getList();
@@ -104,15 +104,15 @@
 </template>
 
 <script lang="ts" setup>
-  import { getUsersApi, deleteUserApi } from '@/api/user/user';
+  import { getRolesApi, deleteRoleApi } from '@/api/role/role';
   import { userPagination } from '@/hooks/userPagination';
   import { ref, onMounted, h } from 'vue';
   import { useDialog, useMessage } from 'naive-ui';
   import type { Component } from 'vue';
   import { NIcon, NPagination } from 'naive-ui';
   import { MoreOutlined, EditOutlined, DeleteOutlined, PlusOutlined } from '@vicons/antd';
-  import AddUser from '@/components/users/AddUser.vue';
-  import EditUser from '@/components/users/EditUser.vue';
+  import AddRole from '@/components/Role/AddRole.vue';
+  import EditRole from '@/components/Role/EditRole.vue';
 
   const dialog = useDialog();
   const selectedOption: any = ref(null);
@@ -121,8 +121,8 @@
   const selectedId = ref();
   const message = useMessage();
   const { getList, list, page, pageSizes, itemCount, pageSize, params }: any =
-    userPagination(getUsersApi);
-  console.log('fetch users list ==>', list);
+    userPagination(getRolesApi);
+
   const renderIcon = (icon: Component) => {
     return () => {
       return h(NIcon, null, {
@@ -157,7 +157,7 @@
   function deleteOperation() {
     const Loading = window['$loading'] || null;
     Loading.start();
-    deleteUserApi(selectedId.value)
+    deleteRoleApi(selectedId.value)
       .then((result) => {
         message.success(result.message);
         getList();

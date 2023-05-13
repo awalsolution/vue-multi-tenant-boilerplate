@@ -2,7 +2,7 @@ import { defineStore } from 'pinia';
 import { store } from '@/store';
 import { ACCESS_TOKEN, CURRENT_USER } from '@/store/mutation-types';
 import { ResultEnum } from '@/enums/httpEnum';
-import { getUserInfo as getUserInfoApi, login } from '@/api/auth/auth';
+import { getUserInfoApi, loginApi } from '@/api/auth/auth';
 import { storage } from '@/utils/Storage';
 import _ from 'lodash';
 
@@ -64,7 +64,7 @@ export const useUserStore = defineStore({
     },
     // Log in
     async login(params: any) {
-      const response = await login(params);
+      const response = await loginApi(params);
       const { result, code } = response;
       if (code === ResultEnum.SUCCESS) {
         const ex = 7 * 24 * 60 * 60;
@@ -79,12 +79,15 @@ export const useUserStore = defineStore({
     // Get user information
     async getInfo() {
       const result = await getUserInfoApi();
+      console.log('getinfo ==>', result);
       if (result.permissions && result.permissions.length) {
+        console.log('sdfjksdfjlsdfj');
         const permissionsList = this.allPermissions(result);
         this.setPermissions(permissionsList);
         this.setUserInfo(result);
       } else {
-        throw new Error('getInfo: permissionsList must be a non-null array !');
+        const permissionsList = [];
+        return this.setPermissions(permissionsList);
       }
       this.setAvatar(result.avatar);
       return result;
@@ -92,7 +95,7 @@ export const useUserStore = defineStore({
 
     allPermissions(user: any) {
       let rolePermissions: string[] = [];
-      // console.log(user);
+      console.log('sdfsdfsdfsdf===>', user);
       if (user?.roles) {
         for (const role of user.roles) {
           rolePermissions = [...role.permissions.map((permission: any) => permission.name)];

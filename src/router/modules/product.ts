@@ -23,7 +23,7 @@ const routes: Array<RouteRecordRaw> = [
         meta: {
           title: 'Product',
         },
-        component: () => import('@/views/list/basicList/index.vue'),
+        component: () => import('@/views/products/index.vue'),
       },
     ],
   },

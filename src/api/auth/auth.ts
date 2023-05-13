@@ -15,7 +15,7 @@ export interface BasicPageParams {
 /**
  * @description: Get user information
  */
-export function getUserInfo() {
+export function getUserInfoApi() {
   return http.request({
     url: '/users/authenticated',
     method: 'get',
@@ -25,7 +25,7 @@ export function getUserInfo() {
 /**
  * @description: User login
  */
-export function login(params: any) {
+export function loginApi(params: any) {
   return http.request<BasicResponseModel>(
     {
       url: '/auth/login',
@@ -40,7 +40,7 @@ export function login(params: any) {
 /**
  * @description: User register
  */
-export function register(params: any) {
+export function registerApi(params: any) {
   return http.request<BasicResponseModel>(
     {
       url: '/auth/register',
