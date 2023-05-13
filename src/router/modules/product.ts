@@ -23,6 +23,7 @@ const routes: Array<RouteRecordRaw> = [
         name: `${routeName}_list`,
         meta: {
           title: 'Product',
+          permission: ['can view products'],
         },
         component: () => import('@/views/products/index.vue'),
       },

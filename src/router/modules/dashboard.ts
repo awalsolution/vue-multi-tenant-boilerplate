@@ -24,7 +24,6 @@ const routes: Array<RouteRecordRaw> = [
         meta: {
           title: 'Dashboard',
           permissions: ['can view dashboard'],
-          affix: true,
         },
         component: () => import('@/views/dashboard/console.vue'),
       },
