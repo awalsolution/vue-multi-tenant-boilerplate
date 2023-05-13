@@ -15,18 +15,19 @@ export interface BasicPageParams {
 /**
  * @description: Get role list
  */
-export function getRolesApi() {
+export function getRolesApi(params: any) {
   return http.request({
     url: '/roles',
     method: 'get',
+    params,
   });
 }
 /**
  * @description: Get single role
  */
-export function getRoleApi(roleId: number) {
+export function getRoleApi(id: any) {
   return http.request({
-    url: `/roles/${roleId}`,
+    url: `/roles/${id}`,
     method: 'get',
   });
 }
@@ -49,7 +50,7 @@ export function createRoleApi(params: any) {
 /**
  * @description: update role
  */
-export function updateRoleApi(roleId: number, params: any) {
+export function updateRoleApi(roleId: any, params: any) {
   return http.request<BasicResponseModel>(
     {
       url: `/roles/${roleId}`,
@@ -64,7 +65,7 @@ export function updateRoleApi(roleId: number, params: any) {
 /**
  * @description: delete role
  */
-export function deleteRoleApi(roleId: number) {
+export function deleteRoleApi(roleId: any) {
   return http.request<BasicResponseModel>({
     url: `/roles/${roleId}`,
     method: 'DELETE',

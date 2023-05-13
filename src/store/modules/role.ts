@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia';
+import { store } from '@/store';
 import { ResultEnum } from '@/enums/httpEnum';
 import {
   getRolesApi,
@@ -32,8 +33,9 @@ export const useRoleStore = defineStore({
     setRoles(roles: any) {
       this.roles = roles;
     },
-    async getRoles() {
-      const response = await getRolesApi();
+    async getRoles(params: any) {
+      const response = await getRolesApi(params);
+      console.log('roles response', response);
       const { result, code } = response;
       if (code === ResultEnum.SUCCESS) {
         this.setRoles(result);
@@ -78,3 +80,7 @@ export const useRoleStore = defineStore({
     },
   },
 });
+
+export function useRole() {
+  return useRoleStore(store);
+}

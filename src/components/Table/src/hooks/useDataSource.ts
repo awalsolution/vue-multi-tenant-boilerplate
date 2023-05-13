@@ -25,6 +25,7 @@ export function useDataSource(
       immediate: true,
     }
   );
+  console.log('dataSource', propsRef);
 
   const getRowKey = computed(() => {
     const { rowKey }: any = unref(propsRef);
@@ -44,6 +45,7 @@ export function useDataSource(
   });
 
   async function fetch(opt?) {
+    // debugger;
     try {
       setLoading(true);
       const { request, pagination, beforeRequest, afterRequest }: any = unref(propsRef);
@@ -72,6 +74,7 @@ export function useDataSource(
         params = (await beforeRequest(params)) || params;
       }
       const res = await request(params);
+      console.log('dataSourceRef', res);
 
       const resultTotal = res[totalField] || 0;
       const currentPage = res[pageField];

@@ -14,6 +14,7 @@ const whitePathList = [LOGIN_PATH]; // no redirect whitelist
 export function createRouterGuards(router: Router) {
   const userStore = useUser();
   const asyncRouteStore = useAsyncRoute();
+  // debugger;
   console.log('asyncRouteStore', asyncRouteStore);
   router.beforeEach(async (to, from, next) => {
     const Loading = window['$loading'] || null;

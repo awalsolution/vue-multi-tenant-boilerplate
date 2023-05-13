@@ -228,7 +228,7 @@
         };
       });
 
-      //获取分页信息
+      //Get pagination information
       const pagination = computed(() => toRaw(unref(getPaginationInfo)));
 
       function setProps(props: Partial<BasicTableProps>) {

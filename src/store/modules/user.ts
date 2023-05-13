@@ -93,7 +93,7 @@ export const useUserStore = defineStore({
 
     allPermissions(user: any) {
       let rolePermissions: string[] = [];
-      console.log(user);
+      // console.log(user);
       if (user?.roles) {
         for (const role of user.roles) {
           rolePermissions = [...role.permissions.map((permission: any) => permission.name)];

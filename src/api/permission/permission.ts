@@ -1,6 +1,7 @@
 import { http } from '@/utils/http/axios';
 
 export interface BasicResponseModel<T = any> {
+  [x: string]: any;
   code: number;
   message: string;
   result: T;
@@ -15,18 +16,19 @@ export interface BasicPageParams {
 /**
  * @description: Get permission list
  */
-export function getPermissionsApi() {
+export function getPermissionsApi(params: any) {
   return http.request({
     url: '/permissions',
     method: 'get',
+    params,
   });
 }
 /**
  * @description: Get single permission
  */
-export function getPermissionApi(permissionId: number) {
+export function getPermissionApi(id: any) {
   return http.request({
-    url: `/permissions/${permissionId}`,
+    url: `/permissions/${id}`,
     method: 'get',
   });
 }
@@ -49,10 +51,11 @@ export function createPermissionApi(params: any) {
 /**
  * @description: update permission
  */
-export function updatePermissionApi(permissionId: number, params: any) {
+export function updatePermissionApi(id: any, params: any) {
+  console.log('api file response', id);
   return http.request<BasicResponseModel>(
     {
-      url: `/permissions/${permissionId}`,
+      url: `/permissions/${id}`,
       method: 'PUT',
       params,
     },
@@ -64,9 +67,9 @@ export function updatePermissionApi(permissionId: number, params: any) {
 /**
  * @description: delete permission
  */
-export function deletePermissionApi(permissionId: number) {
+export function deletePermissionApi(id: any) {
   return http.request<BasicResponseModel>({
-    url: `/permissions/${permissionId}`,
+    url: `/permissions/${id}`,
     method: 'DELETE',
   });
 }
