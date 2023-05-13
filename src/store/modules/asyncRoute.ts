@@ -90,12 +90,8 @@ export const useAsyncRouteStore = defineStore({
       const routeFilter = (route: any) => {
         const { meta } = route;
         const { permissions } = meta || {};
-        console.log('permissions list form backend ==>', permissionsList);
-        console.log('permissions list form front ==>', permissions);
         if (!permissions) return true;
-        console.log('super admin ===>', data.info.user_type);
         if (data.info.user_type === 'super admin') {
-          console.log('super admin ===>', data.info.user_type);
           return true;
         } else {
           return permissionsList.some((item: any) => permissions.includes(item));
