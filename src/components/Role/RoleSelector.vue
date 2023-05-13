@@ -9,7 +9,6 @@
     :clearable="clearable"
     :remote="true"
     :clear-filter-after-select="false"
-    :size?="size"
     :label-field="labelField"
     :value-field="valueField"
     :loading="rolesLoading"
@@ -30,10 +29,6 @@
       labelField: {
         type: String,
         default: 'name',
-      },
-      size: {
-        type: String,
-        default: 'small',
       },
       placeholder: {
         type: String,

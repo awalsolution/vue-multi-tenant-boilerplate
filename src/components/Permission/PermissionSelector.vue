@@ -30,10 +30,6 @@
         type: String,
         default: 'name',
       },
-      size: {
-        type: String,
-        default: 'small',
-      },
       placeholder: {
         type: String,
         default: 'Search Permissions',

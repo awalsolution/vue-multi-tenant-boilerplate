@@ -62,7 +62,7 @@
         type="primary"
         size="large"
         :circle="true"
-        style="position: fixed; bottom: 24px; right: 24px"
+        style="position: fixed; bottom: 30px; right: 40px"
         @click="showModal = true"
       >
         <template #icon>

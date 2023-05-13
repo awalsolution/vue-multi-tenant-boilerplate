@@ -1,10 +1,10 @@
 <template>
   <n-form ref="formRef" :label-width="80" :model="formValue" :rules="rules" size="small">
-    <n-form-item style="padding-top: 24px" label="Permission Name" path="name">
-      <n-input v-model:value="formValue.name" placeholder="Edit Permission Name" />
+    <n-form-item style="padding-top: 24px" label="Name" path="name">
+      <n-input v-model:value="formValue.name" placeholder="Edit Name" />
     </n-form-item>
-    <n-form-item style="padding-top: 4px" label="Permission Description" path="description">
-      <n-input v-model:value="formValue.description" placeholder="Edit Permission Description" />
+    <n-form-item style="padding-top: 4px" label="Description" path="description">
+      <n-input v-model:value="formValue.description" placeholder="Edit Description" />
     </n-form-item>
     <n-space :vertical="true" style="align-items: center">
       <n-form-item>
@@ -33,12 +33,12 @@
   const rules = ref({
     name: {
       required: true,
-      message: 'Please Enter Permission Name',
+      message: 'Please Enter Name',
       trigger: 'blur',
     },
     description: {
       required: true,
-      message: 'Please Enter Permission Description',
+      message: 'Please Enter Description',
       trigger: 'blur',
     },
   });

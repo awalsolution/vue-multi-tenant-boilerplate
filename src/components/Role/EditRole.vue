@@ -1,7 +1,7 @@
 <template>
   <n-form ref="formRef" :label-width="80" :model="formValue" :rules="rules" size="small">
-    <n-form-item style="padding-top: 24px" label="Role Name" path="name">
-      <n-input v-model:value="formValue.name" placeholder="Edit Role Name" />
+    <n-form-item style="padding-top: 24px" label="Name" path="name">
+      <n-input v-model:value="formValue.name" placeholder="Edit Name" />
     </n-form-item>
     <n-form-item style="padding-top: 24px" label="Permissions" path="permissions">
       <permission-selector
@@ -40,7 +40,7 @@
   const rules = ref({
     name: {
       required: true,
-      message: 'Please Enter Role Name',
+      message: 'Please Enter Name',
       trigger: 'blur',
     },
   });

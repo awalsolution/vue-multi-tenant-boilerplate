@@ -15,10 +15,10 @@ export function useRoles(tag = false) {
     timer = setTimeout(() => {
       rolesLoading.value = true;
       getRolesApi({ name: query, pageSize: 1000 })
-        .then(({ result }) => {
+        .then((result) => {
           filteredRoles.value = result.data;
           if (tag && query) {
-            if (!filteredRoles.value.some((role) => role.name === query)) {
+            if (!filteredRoles.value.some((role: any) => role.name === query)) {
               filteredRoles.value.unshift({ id: 0, name: query });
             }
           }
