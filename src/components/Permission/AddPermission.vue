@@ -3,9 +3,6 @@
     <n-form-item style="padding-top: 24px" label="Name" path="name">
       <n-input v-model:value="formValue.name" placeholder="Enter Name" />
     </n-form-item>
-    <n-form-item style="padding-top: 4px" label="Description" path="description">
-      <n-input v-model:value="formValue.description" placeholder="Enter description" />
-    </n-form-item>
     <n-space :vertical="true" style="align-items: center">
       <n-form-item>
         <n-button style="alignment: center" @click="handleValidateClick"> Create</n-button>
@@ -39,8 +36,8 @@
     e.preventDefault();
     formRef.value?.validate((errors) => {
       if (!errors) {
-        const { name, description } = formValue.value;
-        createPermissionApi({ name, description }).then((result) => {
+        const { name } = formValue.value;
+        createPermissionApi({ name }).then((result) => {
           window['$message'].success(result.message);
           emits('created', result.result);
         });

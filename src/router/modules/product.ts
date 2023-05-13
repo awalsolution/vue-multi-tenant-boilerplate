@@ -14,6 +14,7 @@ const routes: Array<RouteRecordRaw> = [
     meta: {
       title: 'Product',
       icon: renderIcon(CartOutline),
+      permission: ['can view products'],
       sort: 3,
     },
     children: [

@@ -15,7 +15,7 @@ export function createRouterGuards(router: Router) {
   const userStore = useUser();
   const asyncRouteStore = useAsyncRoute();
   // debugger;
-  console.log('asyncRouteStore', asyncRouteStore);
+  // console.log('asyncRouteStore', asyncRouteStore);
   router.beforeEach(async (to, from, next) => {
     const Loading = window['$loading'] || null;
     Loading && Loading.start();

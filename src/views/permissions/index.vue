@@ -13,7 +13,6 @@
           <tr>
             <th>ID</th>
             <th>Permission Name</th>
-            <th>Description</th>
             <th>Created At</th>
             <th>Actions</th>
           </tr>
@@ -22,7 +21,6 @@
           <tr v-for="item in list" :key="item.id">
             <td>{{ item.id }}</td>
             <td>{{ item.name }}</td>
-            <td>{{ item.description }}</td>
             <td>{{ item.created_at }}</td>
             <td>
               <n-dropdown

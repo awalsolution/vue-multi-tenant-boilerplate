@@ -79,15 +79,16 @@ export const useUserStore = defineStore({
     // Get user information
     async getInfo() {
       const result = await getUserInfoApi();
-      console.log('getinfo ==>', result);
+      console.log('user getinfo result ==>', result);
       if (result.permissions && result.permissions.length) {
-        console.log('sdfjksdfjlsdfj');
         const permissionsList = this.allPermissions(result);
+        console.log('all permissions list ==>', permissionsList);
         this.setPermissions(permissionsList);
         this.setUserInfo(result);
       } else {
         const permissionsList = [];
-        return this.setPermissions(permissionsList);
+        this.setPermissions(permissionsList);
+        this.setUserInfo(result);
       }
       this.setAvatar(result.avatar);
       return result;
@@ -95,7 +96,6 @@ export const useUserStore = defineStore({
 
     allPermissions(user: any) {
       let rolePermissions: string[] = [];
-      console.log('sdfsdfsdfsdf===>', user);
       if (user?.roles) {
         for (const role of user.roles) {
           rolePermissions = [...role.permissions.map((permission: any) => permission.name)];

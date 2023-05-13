@@ -49,8 +49,8 @@
     e.preventDefault();
     formRef.value?.validate((errors) => {
       if (!errors) {
-        const { name, description, permissions } = formValue.value;
-        updateRoleApi(formValue.value.id, { name, description, permissions }).then((result) => {
+        const { name, permissions } = formValue.value;
+        updateRoleApi(formValue.value.id, { name, permissions }).then((result) => {
           window['$message'].success(result.message);
           emits('updated', result);
         });
