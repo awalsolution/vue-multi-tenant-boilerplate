@@ -21,7 +21,11 @@
         <tbody>
           <tr v-for="item in list" :key="item.id">
             <td>{{ item.id }}</td>
-            <td>{{ item.name }}</td>
+            <td
+              ><n-space>
+                <n-tag type="success">{{ item.name }}</n-tag>
+              </n-space>
+            </td>
             <td>
               <n-space>
                 <n-tag v-for="permission in item.permissions" :key="permission.id" type="success">{{

@@ -20,7 +20,11 @@
         <tbody>
           <tr v-for="item in list" :key="item.id">
             <td>{{ item.id }}</td>
-            <td>{{ item.name }}</td>
+            <td>
+              <n-space>
+                <n-tag type="success">{{ item.name }}</n-tag>
+              </n-space>
+            </td>
             <td>{{ item.created_at }}</td>
             <td>
               <n-dropdown

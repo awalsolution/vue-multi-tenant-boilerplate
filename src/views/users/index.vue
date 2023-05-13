@@ -13,22 +13,40 @@
           <tr>
             <th>ID</th>
             <th>Name</th>
-            <th>Permissions</th>
+            <th>Email</th>
+            <th>Role</th>
+            <th>Phone#</th>
+            <th>Shop</th>
+            <th>Shop Phone#</th>
+            <th>Address</th>
             <th>Created At</th>
             <th>Actions</th>
           </tr>
         </thead>
         <tbody>
           <tr v-for="item in list" :key="item.id">
-            <td>{{ item.id }}</td>
-            <td>{{ item.name }}</td>
+            <td>{{ item?.id }}</td>
+            <td>{{ item?.profile.first_name + ' ' + item?.profile.last_name }}</td>
+            <td>{{ item?.email }}</td>
             <td>
               <n-space>
-                <n-tag v-for="permission in item.permissions" :key="permission.id" type="success">{{
-                  permission?.name
+                <n-tag v-for="role in item.roles" :key="role.id" type="success">{{
+                  role?.name
                 }}</n-tag>
               </n-space>
             </td>
+            <td>{{ item?.profile.phone_number }}</td>
+            <td>{{ item?.shop.shop_name }}</td>
+            <td>{{ item?.shop.shop_phone }}</td>
+            <td>{{
+              item?.profile.address +
+              ' ' +
+              item?.profile.city +
+              ' ' +
+              item?.profile.state +
+              ' ' +
+              item?.profile.country
+            }}</td>
             <td>{{ item.created_at }}</td>
             <td>
               <n-dropdown

@@ -14,7 +14,7 @@ const routes: Array<RouteRecordRaw> = [
     meta: {
       title: 'Product',
       icon: renderIcon(CartOutline),
-      permission: ['can view products'],
+      permissions: ['can view products'],
       sort: 3,
     },
     children: [
@@ -23,7 +23,7 @@ const routes: Array<RouteRecordRaw> = [
         name: `${routeName}_list`,
         meta: {
           title: 'Product',
-          permission: ['can view products'],
+          permissions: ['can view products'],
         },
         component: () => import('@/views/products/index.vue'),
       },
