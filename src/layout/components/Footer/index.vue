@@ -1,11 +1,6 @@
 <template>
   <div class="page-footer">
-    <div class="page-footer-link">
-      <a href="https://github.com/jekip/naive-ui-admin" target="_blank"> official website </a>
-      <a href="https://github.com/jekip/naive-ui-admin" target="_blank"> Community </a>
-      <a href="https://github.com/jekip/naive-ui-admin/issues" target="_blank"> Communication </a>
-    </div>
-    <div class="copyright"> naive-ui-admin 1.4 Made by Ah Jung </div>
+    <div class="copyright"> InSync CRM Made Abend Soft </div>
   </div>
 </template>
 

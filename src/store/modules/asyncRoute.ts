@@ -1,10 +1,8 @@
-import { toRaw, unref } from 'vue';
+import { toRaw } from 'vue';
 import { defineStore } from 'pinia';
 import { RouteRecordRaw } from 'vue-router';
 import { store } from '@/store';
 import { asyncRoutes, constantRouter } from '@/router/index';
-import { generateDynamicRoutes } from '@/router/generator';
-import { useProjectSetting } from '@/hooks/setting/useProjectSetting';
 
 interface TreeHelperConfig {
   id: string;
@@ -99,21 +97,11 @@ export const useAsyncRouteStore = defineStore({
           return permissionsList.some((item: any) => permissions.includes(item));
         }
       };
-      const { permissionMode } = useProjectSetting();
-      if (unref(permissionMode) === 'BACK') {
-        // Get the menu dynamically
-        try {
-          accessedRouters = await generateDynamicRoutes();
-        } catch (error) {
-          console.log(error);
-        }
-      } else {
-        try {
-          //Filter whether the account has a certain permission, and remove the menu from the loading list
-          accessedRouters = filter(asyncRoutes, routeFilter);
-        } catch (error) {
-          console.log(error);
-        }
+      try {
+        // Filter whether the account has a certain permission, and remove the menu from the loading list
+        accessedRouters = filter(asyncRoutes, routeFilter);
+      } catch (error) {
+        console.log(error);
       }
       accessedRouters = accessedRouters.filter(routeFilter);
       this.setRouters(accessedRouters);

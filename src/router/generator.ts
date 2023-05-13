@@ -1,6 +1,6 @@
-import { adminMenus } from '@/api/auth/menu';
+// import { adminMenus } from '@/api/auth/menu';
 import { constantRouterIcon } from './icons';
-import { RouteRecordRaw } from 'vue-router';
+// import { RouteRecordRaw } from 'vue-router';
 import { Layout, ParentLayout } from '@/router/constant';
 import type { AppRouteRecordRaw } from '@/router/types';
 
@@ -53,13 +53,13 @@ export const generateRoutes = (routerMap: any, parent?: any): any[] => {
  * Dynamically generate menu
  * @returns {Promise<Router>}
  */
-export const generateDynamicRoutes = async (): Promise<RouteRecordRaw[]> => {
-  const result = await adminMenus();
-  console.log('admin routes', result);
-  const router = generateRoutes(result);
-  asyncImportRoute(router);
-  return router;
-};
+// export const generateDynamicRoutes = async (): Promise<RouteRecordRaw[]> => {
+//   const result = await adminMenus();
+//   console.log('admin routes', result);
+//   const router = generateRoutes(result);
+//   asyncImportRoute(router);
+//   return router;
+// };
 
 /**
  * Find the corresponding component file in views

@@ -85,13 +85,6 @@
         }
       );
 
-      // Monitor the shrinking state of the menu
-      // watch(
-      // () => props. collapsed,
-      // (newVal) => {
-      // }
-      // );
-
       // follow the page routing changes, switch the menu selected state
       watch(
         () => currentRoute.fullPath,

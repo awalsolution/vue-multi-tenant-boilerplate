@@ -1,3 +1,4 @@
+<!-- eslint-disable vue/v-on-event-hyphenation -->
 <template>
   <n-layout class="layout" :position="fixedMenu" has-sider>
     <n-layout-sider
@@ -58,10 +59,6 @@
             <MainView />
           </div>
         </div>
-        <!--1.15 Abandoned, useless, occupying operating space-->
-        <!-- <NLayoutFooter v-if="getShowFooter">-->
-        <!-- <PageFooter />-->
-        <!-- </NLayoutFooter>-->
       </n-layout-content>
       <n-back-top :right="100" />
     </n-layout>
