@@ -1,15 +1,28 @@
 <template>
   <n-form ref="formRef" :label-width="80" :model="formValue" :rules="rules" size="small">
-    <n-form-item style="padding-top: 24px" label="Name" path="name">
-      <n-input v-model:value="formValue.name" placeholder="Edit Name" />
+    <n-form-item style="padding-top: 24px" label="Title" path="title">
+      <n-input v-model:value="formValue.title" placeholder="Enter Title" />
     </n-form-item>
-    <n-form-item style="padding-top: 24px" label="Permissions" path="permissions">
-      <permission-selector
-        v-model:value="formValue.permissions"
-        label-field="name"
-        value-field="id"
-        :tag="true"
-      />
+    <n-form-item style="padding-top: 4px" label="SKU ID" path="product_sku">
+      <n-input v-model:value="formValue.product_sku" placeholder="Enter SKU ID" />
+    </n-form-item>
+    <n-form-item style="padding-top: 4px" label="Slug" path="slug">
+      <n-input v-model:value="formValue.slug" placeholder="Enter Slug" />
+    </n-form-item>
+    <n-form-item style="padding-top: 4px" label="Short Description" path="short_description">
+      <n-input v-model:value="formValue.short_description" placeholder="Enter Short Description" />
+    </n-form-item>
+    <n-form-item style="padding-top: 4px" label="Description" path="description">
+      <n-input v-model:value="formValue.description" placeholder="Enter Description" />
+    </n-form-item>
+    <n-form-item style="padding-top: 4px" label="Price" path="price">
+      <n-input v-model:value="formValue.price" placeholder="Enter Price" />
+    </n-form-item>
+    <n-form-item style="padding-top: 4px" label="Sale Price" path="sale_price">
+      <n-input v-model:value="formValue.sale_price" placeholder="Enter Sale Price" />
+    </n-form-item>
+    <n-form-item style="padding-top: 4px" label="product_images" path="product_images">
+      <n-input v-model:value="formValue.product_images" placeholder="product_images" />
     </n-form-item>
     <n-space :vertical="true" style="align-items: center">
       <n-form-item>
@@ -22,7 +35,7 @@
 <script lang="ts" setup>
   import { ref } from 'vue';
   import { FormInst } from 'naive-ui';
-  import { getRoleApi, updateRoleApi } from '@/api/role/role';
+  import { getProductApi, updateProductApi } from '@/api/products/product';
   const formValue: any = ref({});
   const formRef = ref<FormInst | null>(null);
   const emits = defineEmits(['updated']);
@@ -31,16 +44,50 @@
       type: Number,
     },
   });
-  // fetch single Role  using id
-  getRoleApi(props.id).then((result) => {
+  // fetch single Product  using id
+  getProductApi(props.id).then((result) => {
     formValue.value = result;
-    formValue.value.permissions = formValue.value.permissions.map((v: any) => v.id);
   });
 
   const rules = ref({
-    name: {
+    title: {
       required: true,
-      message: 'Please Enter Name',
+      message: 'Please Enter title',
+      trigger: 'blur',
+    },
+    product_sku: {
+      required: true,
+      message: 'Please Enter SKU ID',
+      trigger: 'blur',
+    },
+    slug: {
+      required: true,
+      message: 'Please Enter Slug',
+      trigger: 'blur',
+    },
+    price: {
+      required: true,
+      message: 'Please Enter price',
+      trigger: 'blur',
+    },
+    sale_price: {
+      required: true,
+      message: 'Please Enter Sale Price',
+      trigger: 'blur',
+    },
+    description: {
+      required: true,
+      message: 'Please Enter description',
+      trigger: 'blur',
+    },
+    short_description: {
+      required: true,
+      message: 'Please Enter Short Description',
+      trigger: 'blur',
+    },
+    product_images: {
+      required: true,
+      message: 'Please Upload Product Images',
       trigger: 'blur',
     },
   });
@@ -49,8 +96,17 @@
     e.preventDefault();
     formRef.value?.validate((errors) => {
       if (!errors) {
-        const { name, description, permissions } = formValue.value;
-        updateRoleApi(formValue.value.id, { name, description, permissions }).then((result) => {
+        const { title, slug, description, short_description, price, sale_price, product_images } =
+          formValue.value;
+        updateProductApi(formValue.value.id, {
+          title,
+          slug,
+          description,
+          short_description,
+          price,
+          sale_price,
+          product_images,
+        }).then((result: any) => {
           window['$message'].success(result.message);
           emits('updated', result);
         });

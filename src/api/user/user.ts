@@ -25,7 +25,7 @@ export function getUsersApi(params: any) {
 /**
  * @description: Get single user
  */
-export function getUserApi(id: number) {
+export function getUserApi(id: number | undefined) {
   return http.request({
     url: `/users/${id}`,
     method: 'get',

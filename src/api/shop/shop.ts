@@ -62,6 +62,21 @@ export function updateShopApi(shopId: any, params: any) {
   );
 }
 /**
+ * @description: update shop status
+ */
+export function updateShopStatusApi(id: any, params: any) {
+  return http.request<BasicResponseModel>(
+    {
+      url: `/shops/${id}`,
+      method: 'PUT',
+      params,
+    },
+    {
+      isTransformResponse: false,
+    }
+  );
+}
+/**
  * @description: delete shop
  */
 export function deleteShopApi(shopId: any) {

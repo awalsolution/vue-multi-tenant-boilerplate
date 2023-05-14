@@ -8,7 +8,7 @@
         @change="fetchList"
         placeholder="Email"
       />
-      <n-table :striped="true">
+      <n-table :bordered="true" :single-line="false" size="small" :striped="true">
         <thead>
           <tr>
             <th>ID</th>
@@ -20,10 +20,8 @@
         <tbody>
           <tr v-for="item in list" :key="item.id">
             <td>{{ item.id }}</td>
-            <td>
-              <n-space>
-                <n-tag type="success">{{ item.name }}</n-tag>
-              </n-space>
+            <td class="item_center">
+              <n-tag round type="success">{{ item.name }}</n-tag>
             </td>
             <td>{{ item.created_at }}</td>
             <td>
@@ -186,4 +184,8 @@
   });
 </script>
 
-<style lang="less" scoped></style>
+<style lang="less" scoped>
+  .item_center {
+    text-align: center;
+  }
+</style>
