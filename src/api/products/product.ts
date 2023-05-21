@@ -15,18 +15,19 @@ export interface BasicPageParams {
 /**
  * @description: Get product list
  */
-export function getProductsApi() {
+export function getProductsApi(params: any) {
   return http.request({
     url: '/products',
     method: 'get',
+    params,
   });
 }
 /**
  * @description: Get single product
  */
-export function getProductApi(productId: number) {
+export function getProductApi(id: number | undefined) {
   return http.request({
-    url: `/products/${productId}`,
+    url: `/products/${id}`,
     method: 'get',
   });
 }
@@ -49,10 +50,25 @@ export function createProductApi(params: any) {
 /**
  * @description: update product
  */
-export function updateProductApi(productId: number, params: any) {
+export function updateProductApi(id: number, params: any) {
   return http.request<BasicResponseModel>(
     {
-      url: `/products/${productId}`,
+      url: `/products/${id}`,
+      method: 'PUT',
+      params,
+    },
+    {
+      isTransformResponse: false,
+    }
+  );
+}
+/**
+ * @description: update product status
+ */
+export function updateProductStatusApi(id: number, params: any) {
+  return http.request<BasicResponseModel>(
+    {
+      url: `/products/${id}`,
       method: 'PUT',
       params,
     },
@@ -64,9 +80,9 @@ export function updateProductApi(productId: number, params: any) {
 /**
  * @description: delete product
  */
-export function deleteProductApi(productId: number) {
+export function deleteProductApi(id: number) {
   return http.request<BasicResponseModel>({
-    url: `/products/${productId}`,
+    url: `/products/${id}`,
     method: 'DELETE',
   });
 }

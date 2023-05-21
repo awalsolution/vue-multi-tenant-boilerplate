@@ -8,63 +8,71 @@
         @change="fetchList"
         placeholder="Search by Name"
       />
-      <n-table :striped="true">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Role</th>
-            <th>Phone#</th>
-            <th>Shop</th>
-            <th>Shop Phone#</th>
-            <th>Address</th>
-            <th>Created At</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="item in list" :key="item.id">
-            <td>{{ item?.id }}</td>
-            <td>{{ item?.profile.first_name + ' ' + item?.profile.last_name }}</td>
-            <td>{{ item?.email }}</td>
-            <td>
-              <n-space>
-                <n-tag v-for="role in item.roles" :key="role.id" type="success">{{
-                  role?.name
-                }}</n-tag>
-              </n-space>
-            </td>
-            <td>{{ item?.profile.phone_number }}</td>
-            <td>{{ item?.shop.shop_name }}</td>
-            <td>{{ item?.shop.shop_phone }}</td>
-            <td>{{
-              item?.profile.address +
-              ' ' +
-              item?.profile.city +
-              ' ' +
-              item?.profile.state +
-              ' ' +
-              item?.profile.country
-            }}</td>
-            <td>{{ item.created_at }}</td>
-            <td>
-              <n-dropdown
-                @click="actionOperation(item)"
-                :onSelect="selectedAction"
-                trigger="click"
-                :options="moreOptions"
-              >
-                <n-button size="small" :circle="true">
-                  <n-icon>
-                    <more-outlined />
-                  </n-icon>
-                </n-button>
-              </n-dropdown>
-            </td>
-          </tr>
-        </tbody>
-      </n-table>
+      <div class="table-wrap">
+        <n-table :bordered="true" :single-line="false" size="small" :striped="true">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Role</th>
+              <th>User Type</th>
+              <th>Phone#</th>
+              <th>Shop</th>
+              <th>Shop Phone#</th>
+              <th>Status</th>
+              <th>Address</th>
+              <th>Created At</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="item in list" :key="item.id">
+              <td>{{ item?.id }}</td>
+              <td>{{ item?.profile?.first_name + ' ' + item?.profile?.last_name }}</td>
+              <td>{{ item?.email }}</td>
+              <td>
+                <n-tag v-for="role in item.roles" :key="role.id" type="success">
+                  {{ role?.name }}
+                </n-tag>
+              </td>
+              <td class="item_center">
+                <n-tag v-if="item.user_type" type="success" round> {{ item.user_type }} </n-tag>
+              </td>
+              <td>{{ item?.profile?.phone_number }}</td>
+              <td>{{ item?.shop?.shop_name }}</td>
+              <td>{{ item?.shop?.shop_phone }}</td>
+              <td>
+                <n-switch />
+              </td>
+              <td>{{
+                item?.profile?.address +
+                ' ' +
+                item?.profile?.city +
+                ' ' +
+                item?.profile?.state +
+                ' ' +
+                item?.profile?.country
+              }}</td>
+              <td>{{ item.created_at }}</td>
+              <td>
+                <n-dropdown
+                  @click="actionOperation(item)"
+                  :onSelect="selectedAction"
+                  trigger="click"
+                  :options="moreOptions"
+                >
+                  <n-button size="small" :circle="true">
+                    <n-icon>
+                      <more-outlined />
+                    </n-icon>
+                  </n-button>
+                </n-dropdown>
+              </td>
+            </tr>
+          </tbody>
+        </n-table>
+      </div>
       <n-space style="align-items: center; padding-top: 15px">
         <n-pagination
           v-model:page="page"
@@ -140,7 +148,7 @@
   const message = useMessage();
   const { getList, list, page, pageSizes, itemCount, pageSize, params }: any =
     userPagination(getUsersApi);
-  console.log('fetch users list ==>', list);
+  console.log('users list ==>', list);
   const renderIcon = (icon: Component) => {
     return () => {
       return h(NIcon, null, {
@@ -211,3 +219,14 @@
     getList();
   });
 </script>
+<style lang="less" scoped>
+  .item_center {
+    text-align: center;
+  }
+  .table-wrap {
+    overflow-x: scroll;
+  }
+  td {
+    white-space: nowrap;
+  }
+</style>

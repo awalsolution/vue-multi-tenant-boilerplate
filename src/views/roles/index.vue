@@ -8,7 +8,7 @@
         @change="fetchList"
         placeholder="Search by Name"
       />
-      <n-table :striped="true">
+      <n-table :bordered="true" :single-line="false" size="small" :striped="true">
         <thead>
           <tr>
             <th>ID</th>
@@ -21,16 +21,19 @@
         <tbody>
           <tr v-for="item in list" :key="item.id">
             <td>{{ item.id }}</td>
-            <td
-              ><n-space>
-                <n-tag type="success">{{ item.name }}</n-tag>
-              </n-space>
+            <td class="item_center">
+              <n-tag v-if="item.name" type="success" round>{{ item.name }}</n-tag>
             </td>
-            <td>
-              <n-space>
-                <n-tag v-for="permission in item.permissions" :key="permission.id" type="success">{{
-                  permission?.name
-                }}</n-tag>
+            <td class="td_width" v-if="item.permissions">
+              <n-space class="item_center_sp">
+                <n-tag
+                  v-for="permission in item.permissions"
+                  :key="permission.id"
+                  round
+                  type="success"
+                >
+                  {{ permission?.name }}
+                </n-tag>
               </n-space>
             </td>
             <td>{{ item.created_at }}</td>
@@ -197,3 +200,11 @@
     getList();
   });
 </script>
+<style lang="less" scoped>
+  .item_center {
+    text-align: center;
+  }
+  .td_width {
+    width: 500px;
+  }
+</style>

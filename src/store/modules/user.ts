@@ -2,7 +2,7 @@ import { defineStore } from 'pinia';
 import { store } from '@/store';
 import { ACCESS_TOKEN, CURRENT_USER } from '@/store/mutation-types';
 import { ResultEnum } from '@/enums/httpEnum';
-import { getUserInfoApi, loginApi } from '@/api/auth/auth';
+import { getUserInfoApi, loginApi, registerApi } from '@/api/auth/auth';
 import { storage } from '@/utils/Storage';
 import _ from 'lodash';
 
@@ -73,6 +73,11 @@ export const useUserStore = defineStore({
         this.setToken(result.token);
         this.setUserInfo(result);
       }
+      return response;
+    },
+
+    async register(params: any) {
+      const response = await registerApi(params);
       return response;
     },
 

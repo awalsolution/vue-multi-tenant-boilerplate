@@ -8,12 +8,17 @@
         @change="fetchList"
         placeholder="Search by Name"
       />
-      <n-table :striped="true">
+      <n-table :bordered="true" :single-line="false" size="small" :striped="true">
         <thead>
           <tr>
             <th>ID</th>
-            <th>Name</th>
-            <th>Permissions</th>
+            <th>Image</th>
+            <th>Title</th>
+            <th>SKU ID</th>
+            <th>Price</th>
+            <th>Sale Price</th>
+            <th>Slug</th>
+            <th>Status</th>
             <th>Created At</th>
             <th>Actions</th>
           </tr>
@@ -21,12 +26,15 @@
         <tbody>
           <tr v-for="item in list" :key="item.id">
             <td>{{ item.id }}</td>
-            <td>{{ item.name }}</td>
+            <td>{{ item.product_images }}</td>
+            <td>{{ item.title }}</td>
+            <td>{{ item.product_sku }}</td>
+            <td>{{ item.price }}</td>
+            <td>{{ item.sale_price }}</td>
+            <td>{{ item.slug }}</td>
             <td>
               <n-space>
-                <n-tag v-for="permission in item.permissions" :key="permission.id" type="success">{{
-                  permission?.name
-                }}</n-tag>
+                <n-switch />
               </n-space>
             </td>
             <td>{{ item.created_at }}</td>
@@ -76,7 +84,7 @@
           <div>Create New Role</div>
         </template>
         <n-space :vertical="true">
-          <add-role
+          <add-product
             @created="
               getList();
               showModal = false;
@@ -90,7 +98,7 @@
           <div>Update Role</div>
         </template>
         <n-space :vertical="true">
-          <edit-role
+          <edit-product
             :id="selectedId"
             @updated="
               getList();
@@ -104,15 +112,15 @@
 </template>
 
 <script lang="ts" setup>
-  import { getRolesApi, deleteRoleApi } from '@/api/role/role';
+  import { getProductsApi, deleteProductApi, updateProductStatusApi } from '@/api/products/product';
   import { userPagination } from '@/hooks/userPagination';
   import { ref, onMounted, h } from 'vue';
   import { useDialog, useMessage } from 'naive-ui';
   import type { Component } from 'vue';
   import { NIcon, NPagination } from 'naive-ui';
   import { MoreOutlined, EditOutlined, DeleteOutlined, PlusOutlined } from '@vicons/antd';
-  import AddRole from '@/components/Role/AddRole.vue';
-  import EditRole from '@/components/Role/EditRole.vue';
+  import AddProduct from '@/components/products/AddProduct.vue';
+  import EditProduct from '@/components/products/EditProduct.vue';
 
   const dialog = useDialog();
   const selectedOption: any = ref(null);
@@ -121,8 +129,8 @@
   const selectedId = ref();
   const message = useMessage();
   const { getList, list, page, pageSizes, itemCount, pageSize, params }: any =
-    userPagination(getRolesApi);
-
+    userPagination(getProductsApi);
+  console.log('product list =>>', list);
   const renderIcon = (icon: Component) => {
     return () => {
       return h(NIcon, null, {
@@ -157,8 +165,8 @@
   function deleteOperation() {
     const Loading = window['$loading'] || null;
     Loading.start();
-    deleteRoleApi(selectedId.value)
-      .then((result) => {
+    deleteProductApi(selectedId.value)
+      .then((result: any) => {
         message.success(result.message);
         getList();
         Loading.finish();

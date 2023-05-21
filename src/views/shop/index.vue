@@ -8,26 +8,32 @@
         @change="fetchList"
         placeholder="Search by Name"
       />
-      <n-table :striped="true">
+      <n-table :bordered="true" :single-line="false" size="small" :striped="true">
         <thead>
           <tr>
             <th>ID</th>
+            <th>Logo</th>
             <th>Name</th>
-            <th>Permissions</th>
+            <th>Phone#</th>
+            <th>Status</th>
+            <th>Address</th>
             <th>Created At</th>
             <th>Actions</th>
           </tr>
         </thead>
         <tbody>
           <tr v-for="item in list" :key="item.id">
-            <td>{{ item.id }}</td>
-            <td>{{ item.name }}</td>
+            <td>{{ item?.id }}</td>
+            <td>{{ item?.shop_logo }}</td>
+            <td>{{ item?.shop_name }}</td>
+            <td>{{ item?.shop_phone }}</td>
             <td>
               <n-space>
-                <n-tag v-for="permission in item.permissions" :key="permission.id" type="success">{{
-                  permission?.name
-                }}</n-tag>
+                <n-switch />
               </n-space>
+            </td>
+            <td>
+              {{ item?.address + ' ' + item?.city + ' ' + item?.state + ' ' + item?.country }}
             </td>
             <td>{{ item.created_at }}</td>
             <td>
@@ -73,10 +79,10 @@
       </n-button>
       <n-modal v-model:show="showModal" preset="dialog">
         <template #header>
-          <div>Create New Role</div>
+          <div>Create New Shop</div>
         </template>
         <n-space :vertical="true">
-          <add-role
+          <add-shop
             @created="
               getList();
               showModal = false;
@@ -87,10 +93,10 @@
 
       <n-modal style="width: 70%" v-model:show="showEditModal" preset="dialog">
         <template #header>
-          <div>Update Role</div>
+          <div>Update Shop</div>
         </template>
         <n-space :vertical="true">
-          <edit-role
+          <edit-shop
             :id="selectedId"
             @updated="
               getList();
@@ -104,15 +110,15 @@
 </template>
 
 <script lang="ts" setup>
-  import { getRolesApi, deleteRoleApi } from '@/api/role/role';
+  import { getShopsApi, deleteShopApi, updateShopStatusApi } from '@/api/shop/shop';
   import { userPagination } from '@/hooks/userPagination';
   import { ref, onMounted, h } from 'vue';
   import { useDialog, useMessage } from 'naive-ui';
   import type { Component } from 'vue';
   import { NIcon, NPagination } from 'naive-ui';
   import { MoreOutlined, EditOutlined, DeleteOutlined, PlusOutlined } from '@vicons/antd';
-  import AddRole from '@/components/Role/AddRole.vue';
-  import EditRole from '@/components/Role/EditRole.vue';
+  import AddShop from '@/components/shop/AddShop.vue';
+  import EditShop from '@/components/shop/EditShop.vue';
 
   const dialog = useDialog();
   const selectedOption: any = ref(null);
@@ -121,8 +127,8 @@
   const selectedId = ref();
   const message = useMessage();
   const { getList, list, page, pageSizes, itemCount, pageSize, params }: any =
-    userPagination(getRolesApi);
-
+    userPagination(getShopsApi);
+  console.log('shop list =>>', list);
   const renderIcon = (icon: Component) => {
     return () => {
       return h(NIcon, null, {
@@ -157,7 +163,7 @@
   function deleteOperation() {
     const Loading = window['$loading'] || null;
     Loading.start();
-    deleteRoleApi(selectedId.value)
+    deleteShopApi(selectedId.value)
       .then((result) => {
         message.success(result.message);
         getList();
