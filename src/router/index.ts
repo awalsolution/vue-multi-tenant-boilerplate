@@ -37,11 +37,25 @@ export const LoginRoute: RouteRecordRaw = {
   },
 };
 
-//Authentication required
+export const RegisterRoute: RouteRecordRaw = {
+  path: '/register',
+  name: 'Register',
+  meta: {
+    title: 'Register',
+  },
+  component: () => import('@/views/register/index.vue'),
+};
+
+// Authentication required
 export const asyncRoutes = [...routeModuleList];
 
 //Ordinary routing does not require authentication permissions
-export const constantRouter: RouteRecordRaw[] = [LoginRoute, RootRoute, RedirectRoute];
+export const constantRouter: RouteRecordRaw[] = [
+  LoginRoute,
+  RegisterRoute,
+  RootRoute,
+  RedirectRoute,
+];
 
 const router = createRouter({
   history: createWebHistory(),

@@ -1,5 +1,4 @@
 import type { AxiosRequestConfig, AxiosInstance, AxiosResponse } from 'axios';
-
 import axios from 'axios';
 import { AxiosCanceler } from './axiosCancel';
 import { isFunction } from '@/utils/is';

@@ -5,7 +5,7 @@
       <!-- <div class="view-account-top"> -->
       <div class="view-account-top-logo">
         <!-- <img :src="websiteConfig.loginImage" alt="" /> -->
-        <n-h1>InSync CRM</n-h1>
+        <n-h1>InSync CRM Login with Credentials</n-h1>
       </div>
       <!-- <div class="view-account-top-desc">{{ websiteConfig.loginDesc }}</div> -->
       <!-- </div> -->
@@ -55,32 +55,9 @@
               Login
             </n-button>
           </n-form-item>
-          <!-- <n-form-item class="default-color">
-            <div class="flex view-account-other">
-              <div class="flex-initial">
-                <span>其它登录方式</span>
-              </div>
-              <div class="flex-initial mx-2">
-                <a href="javascript:">
-                  <n-icon size="24" color="#2d8cf0">
-                    <LogoGithub />
-                  </n-icon>
-                </a>
-              </div>
-              <div class="flex-initial mx-2">
-                <a href="javascript:">
-                  <n-icon size="24" color="#2d8cf0">
-                    <LogoFacebook />
-                  </n-icon>
-                </a>
-              </div>
-              <div class="flex-initial" style="margin-left: auto">
-                <a href="javascript:">注册账号</a>
-              </div>
-            </div>
-          </n-form-item> -->
         </n-form>
       </div>
+      <div>Don't have an Account! <router-link to="/register">Register</router-link></div>
     </div>
   </div>
 </template>
@@ -121,7 +98,7 @@
   const router = useRouter();
   const route = useRoute();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: any) => {
     e.preventDefault();
     formRef.value.validate(async (errors: any) => {
       if (!errors) {
@@ -164,11 +141,15 @@
     overflow: auto;
 
     &-container {
-      flex: 1;
-      padding: 32px 12px;
-      max-width: 384px;
-      min-width: 320px;
-      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100%;
+    }
+
+    &-form {
+      width: 30%;
     }
 
     &-top {
