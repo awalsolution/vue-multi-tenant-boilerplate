@@ -17,10 +17,11 @@
               <th>Email</th>
               <th>Role</th>
               <th>User Type</th>
+              <th>Permissions</th>
               <th>Phone#</th>
               <th>Shop</th>
               <th>Shop Phone#</th>
-              <th>Status</th>
+              <!-- <th>Status</th> -->
               <th>Address</th>
               <th>Created At</th>
               <th>Actions</th>
@@ -32,19 +33,31 @@
               <td>{{ item?.profile?.first_name + ' ' + item?.profile?.last_name }}</td>
               <td>{{ item?.email }}</td>
               <td>
-                <n-tag v-for="role in item.roles" :key="role.id" type="success">
-                  {{ role?.name }}
-                </n-tag>
+                <n-space>
+                  <n-tag v-for="role in item.roles" :key="role.id" type="success">
+                    {{ role?.name }}
+                  </n-tag>
+                </n-space>
               </td>
-              <td class="item_center">
-                <n-tag v-if="item.user_type" type="success" round> {{ item.user_type }} </n-tag>
+              <td>
+                <n-tag v-if="item.user_type" type="success"> {{ item.user_type }} </n-tag>
+              </td>
+              <td>
+                <n-space>
+                  <n-tag v-for="permission in item.permissions" :key="permission.id" type="success">
+                    {{ permission?.name }}
+                  </n-tag>
+                </n-space>
               </td>
               <td>{{ item?.profile?.phone_number }}</td>
               <td>{{ item?.shop?.shop_name }}</td>
               <td>{{ item?.shop?.shop_phone }}</td>
-              <td>
-                <n-switch />
-              </td>
+              <!-- <td>
+                <n-switch
+                  v-model:value="item.status"
+                  @update:value="updateUserStatus(item.id, item)"
+                />
+              </td> -->
               <td>{{
                 item?.profile?.address +
                 ' ' +
@@ -130,7 +143,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { getUsersApi, deleteUserApi } from '@/api/user/user';
+  import { getUsersApi, deleteUserApi, updateUserStatusApi } from '@/api/user/user';
   import { userPagination } from '@/hooks/userPagination';
   import { ref, onMounted, h } from 'vue';
   import { useDialog, useMessage } from 'naive-ui';
@@ -198,6 +211,23 @@
     selectedId.value = null;
     selectedOption.value = null;
   }
+
+  // function updateUserStatus(id: any, item: any) {
+  //   const Loading = window['$loading'] || null;
+  //   Loading.start();
+  //   updateUserStatusApi(id, { status: item.status })
+  //     .then((result) => {
+  //       message.success(result.message);
+  //       getList();
+  //       Loading.finish();
+  //       dialog.destroyAll;
+  //     })
+  //     .catch((result) => {
+  //       message.error(result.message);
+  //       Loading.finish();
+  //       dialog.destroyAll;
+  //     });
+  // }
 
   const actionOperation = (item: any) => {
     if (selectedOption.value === 'edit') {
