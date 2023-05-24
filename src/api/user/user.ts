@@ -77,6 +77,23 @@ export function updateUserStatusApi(id: number, params: any) {
     }
   );
 }
+
+/**
+ * @description: update user profile
+ */
+export function profileUpdateApi(id: number, params: any) {
+  return http.request<BasicResponseModel>(
+    {
+      url: `/users/profile/${id}`,
+      method: 'PUT',
+      params,
+    },
+    {
+      isTransformResponse: false,
+    }
+  );
+}
+
 /**
  * @description: delete user
  */

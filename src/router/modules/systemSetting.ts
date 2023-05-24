@@ -26,6 +26,15 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import('@/views/users/index.vue'),
       },
       {
+        path: 'profile',
+        name: 'system_profile',
+        meta: {
+          title: 'Profile',
+          permissions: ['can view Profile'],
+        },
+        component: () => import('@/views/users/Profile.vue'),
+      },
+      {
         path: 'role',
         name: 'system_role',
         meta: {
