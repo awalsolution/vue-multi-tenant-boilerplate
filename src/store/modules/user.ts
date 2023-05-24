@@ -11,6 +11,7 @@ export type UserInfoType = {
   name: string;
   email: string;
   user_type: string;
+  profile: object;
 };
 
 export interface IUserState {
@@ -111,7 +112,7 @@ export const useUserStore = defineStore({
     // Sign out
     async logout() {
       this.setPermissions([]);
-      this.setUserInfo({ name: '', email: '', user_type: '' });
+      this.setUserInfo({ name: '', email: '', user_type: '', profile: {} });
       storage.remove(ACCESS_TOKEN);
       storage.remove(CURRENT_USER);
     },

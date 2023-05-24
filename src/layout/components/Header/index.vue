@@ -182,8 +182,8 @@
       const router = useRouter();
       const route = useRoute();
 
-      const generator: any = (routerMap) => {
-        return routerMap.map((item) => {
+      const generator: any = (routerMap: any) => {
+        return routerMap.map((item: any) => {
           const currentMenu = {
             ...item,
             label: item.meta.title,
@@ -258,6 +258,7 @@
           }
         }
       };
+
       const avatarOptions = [
         {
           label: 'Profile Setting',
@@ -273,7 +274,7 @@
       const avatarSelect = (key: any) => {
         switch (key) {
           case 1:
-            router.push({ name: 'Setting' });
+            router.push({ name: 'system_profile' });
             break;
           case 2:
             doLogout();
