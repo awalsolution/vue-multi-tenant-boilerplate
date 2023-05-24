@@ -77,7 +77,7 @@
           </n-icon>
         </template>
       </n-button>
-      <n-modal v-model:show="showModal" preset="dialog">
+      <n-modal style="width: 60%" v-model:show="showModal" preset="dialog">
         <template #header>
           <div>Create New Shop</div>
         </template>
@@ -91,7 +91,7 @@
         </n-space>
       </n-modal>
 
-      <n-modal style="width: 70%" v-model:show="showEditModal" preset="dialog">
+      <n-modal style="width: 60%" v-model:show="showEditModal" preset="dialog">
         <template #header>
           <div>Update Shop</div>
         </template>
