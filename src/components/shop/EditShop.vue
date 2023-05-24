@@ -1,29 +1,31 @@
 <template>
   <n-form ref="formRef" :label-width="80" :model="formValue" :rules="rules" size="small">
-    <n-form-item style="padding-top: 24px" label="Name" path="shop_name">
-      <n-input v-model:value="formValue.shop_name" placeholder="Enter Name" />
-    </n-form-item>
-    <n-form-item style="padding-top: 4px" label="Phone" path="shop_phone">
-      <n-input v-model:value="formValue.shop_phone" placeholder="Enter Phone" />
-    </n-form-item>
-    <n-form-item style="padding-top: 4px" label="Address" path="address">
-      <n-input v-model:value="formValue.address" placeholder="Enter Address" />
-    </n-form-item>
-    <n-form-item style="padding-top: 4px" label="City" path="city">
-      <n-input v-model:value="formValue.city" placeholder="Enter City" />
-    </n-form-item>
-    <n-form-item style="padding-top: 4px" label="State" path="state">
-      <n-input v-model:value="formValue.state" placeholder="Enter State" />
-    </n-form-item>
-    <n-form-item style="padding-top: 4px" label="Country" path="country">
-      <n-input v-model:value="formValue.country" placeholder="Enter Country" />
-    </n-form-item>
-    <n-form-item style="padding-top: 4px" label="Logo" path="shop_logo">
-      <n-input v-model:value="formValue.shop_logo" placeholder="Enter Logo" />
-    </n-form-item>
-    <n-space :vertical="true" style="align-items: center">
+    <n-grid x-gap="10">
+      <n-form-item-gi :span="8" class="pt-6" label="Name" path="shop_name">
+        <n-input v-model:value="formValue.shop_name" placeholder="Enter Name" />
+      </n-form-item-gi>
+      <n-form-item-gi :span="8" class="pt-6" label="Phone" path="shop_phone">
+        <n-input v-model:value="formValue.shop_phone" placeholder="Enter Phone" />
+      </n-form-item-gi>
+      <n-form-item-gi :span="8" class="pt-6" label="Address" path="address">
+        <n-input v-model:value="formValue.address" placeholder="Enter Address" />
+      </n-form-item-gi>
+      <n-form-item-gi :span="8" label="City" path="city">
+        <n-input v-model:value="formValue.city" placeholder="Enter City" />
+      </n-form-item-gi>
+      <n-form-item-gi :span="8" style="padding-top: 4px" label="State" path="state">
+        <n-input v-model:value="formValue.state" placeholder="Enter State" />
+      </n-form-item-gi>
+      <n-form-item-gi :span="8" style="padding-top: 4px" label="Country" path="country">
+        <n-input v-model:value="formValue.country" placeholder="Enter Country" />
+      </n-form-item-gi>
+      <n-form-item-gi :span="8" style="padding-top: 4px" label="Logo" path="shop_logo">
+        <n-input v-model:value="formValue.shop_logo" placeholder="Enter Logo" />
+      </n-form-item-gi>
+    </n-grid>
+    <n-space :vertical="true">
       <n-form-item>
-        <n-button style="alignment: center" @click="handleValidateClick"> Save</n-button>
+        <n-button @click="handleValidateClick">Update</n-button>
       </n-form-item>
     </n-space>
   </n-form>
@@ -43,6 +45,7 @@
   });
   // fetch single Shop  using id
   getShopApi(props.id).then((result) => {
+    console.log('fetch shop ==>', result);
     formValue.value = result;
   });
 
