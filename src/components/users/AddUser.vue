@@ -1,23 +1,30 @@
 <template>
   <n-form ref="formRef" :label-width="80" :model="formValue" :rules="rules" size="small">
-    <n-form-item style="padding-top: 24px" label="First Name" path="first_name">
-      <n-input v-model:value="formValue.first_name" placeholder="Enter First Name" />
-    </n-form-item>
-    <n-form-item style="padding-top: 4px" label="Last Name" path="last_name">
-      <n-input v-model:value="formValue.last_name" placeholder="Enter Last Name" />
-    </n-form-item>
-    <n-form-item style="padding-top: 4px" label="Email" path="email">
-      <n-input v-model:value="formValue.email" placeholder="Enter Email" />
-    </n-form-item>
-    <n-form-item style="padding-top: 4px" label="Password" path="password">
-      <n-input v-model:value="formValue.password" placeholder="Enter Password" />
-    </n-form-item>
-    <n-form-item style="padding-top: 4px" label="Confirm Password" path="confirmPassword">
-      <n-input v-model:value="formValue.confirmPassword" placeholder="Enter confirm password" />
-    </n-form-item>
-    <n-form-item style="padding-top: 4px" label="User Type" path="user_type">
-      <n-select v-model:value="formValue.user_type" size="medium" :options="options" />
-    </n-form-item>
+    <n-grid :span="24" :x-gap="24">
+      <n-form-item-gi :span="12" label="First Name" path="first_name">
+        <n-input v-model:value="formValue.first_name" placeholder="Enter First Name" />
+      </n-form-item-gi>
+      <n-form-item-gi :span="12" label="Last Name" path="last_name">
+        <n-input v-model:value="formValue.last_name" placeholder="Enter Last Name" />
+      </n-form-item-gi>
+      <n-form-item-gi :span="12" label="Email" path="email">
+        <n-input v-model:value="formValue.email" placeholder="Enter Email" />
+      </n-form-item-gi>
+      <n-form-item-gi :span="12" label="Password" path="password">
+        <n-input
+          v-model:value="formValue.password"
+          type="password"
+          showPasswordOn="click"
+          placeholder="Enter Password"
+        />
+      </n-form-item-gi>
+      <!-- <n-form-item-gi :span="12" label="Confirm Password" path="confirmPassword">
+        <n-input v-model:value="formValue.confirmPassword" placeholder="Enter confirm password" />
+      </n-form-item-gi> -->
+      <n-form-item-gi :span="12" label="User Type" path="user_type">
+        <n-select v-model:value="formValue.user_type" size="medium" :options="options" />
+      </n-form-item-gi>
+    </n-grid>
     <n-space :vertical="true" style="align-items: center">
       <n-form-item>
         <n-button style="alignment: center" @click="handleValidateClick"> Create</n-button>
