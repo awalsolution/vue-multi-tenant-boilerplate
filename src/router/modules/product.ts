@@ -22,10 +22,19 @@ const routes: Array<RouteRecordRaw> = [
         path: 'list',
         name: `${routeName}_list`,
         meta: {
-          title: 'Product',
+          title: 'Product List',
           permissions: ['can view products'],
         },
         component: () => import('@/views/products/index.vue'),
+      },
+      {
+        path: 'add',
+        name: `${routeName}_add`,
+        meta: {
+          title: 'Add Product',
+          permissions: ['can view products'],
+        },
+        component: () => import('@/views/products/AddProduct.vue'),
       },
     ],
   },
