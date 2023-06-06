@@ -5,7 +5,7 @@
       <n-row :gutter="10">
         <n-col :span="18">
           <n-space :vertical="true">
-            <n-card title="Add New Product">
+            <n-card title="Title">
               <n-input v-model:value="product.title" placeholder="Enter Product Title" />
             </n-card>
             <n-card title="Description">
@@ -17,25 +17,52 @@
                 class="quillEditor"
               />
             </n-card>
-            <n-card title="Product Data">
-              <n-form-item label="Product Type" path="product_type">
-                <n-select v-model:value="product.product_type" :options="product_type" />
-              </n-form-item>
+            <n-card title="Media"></n-card>
+            <n-card title="Pricing">
+              <n-row :gutter="10">
+                <n-col :span="12">
+                  <n-form-item label="Product Price" path="price">
+                    <n-input v-model:value="product.price" placeholder="Enter Product Price" />
+                  </n-form-item>
+                </n-col>
+                <n-col :span="12">
+                  <n-form-item label="Product Regular Price" path="regular_price">
+                    <n-input
+                      v-model:value="product.regular_price"
+                      placeholder="Enter Product Regular Price"
+                    />
+                  </n-form-item>
+                </n-col>
+              </n-row>
+            </n-card>
+            <n-card title="Inventory">
+              <n-row :gutter="10">
+                <n-col :span="12">
+                  <n-form-item label="Product Price" path="price">
+                    <n-input v-model:value="product.price" placeholder="Enter Product Price" />
+                  </n-form-item>
+                </n-col>
+                <n-col :span="12">
+                  <n-form-item label="Product Regular Price" path="regular_price">
+                    <n-input
+                      v-model:value="product.regular_price"
+                      placeholder="Enter Product Regular Price"
+                    />
+                  </n-form-item>
+                </n-col>
+              </n-row>
               <n-form-item label="Product SKU ID" path="product_sku_id">
                 <n-input
                   v-model:value="product.product_sku_id"
                   placeholder="Enter Product SKU ID"
                 />
               </n-form-item>
-              <n-form-item label="Product Price" path="price">
-                <n-input v-model:value="product.price" placeholder="Enter Product Price" />
+            </n-card>
+            <n-card title="Variants">
+              <n-form-item label="Product Type" path="product_type">
+                <n-select v-model:value="product.varients" :options="varients" />
               </n-form-item>
-              <n-form-item label="Product Regular Price" path="regular_price">
-                <n-input
-                  v-model:value="product.regular_price"
-                  placeholder="Enter Product Regular Price"
-                />
-              </n-form-item>
+              <n-dynamic-input v-model:value="product.varients" placeholder="Come on" />
             </n-card>
           </n-space>
         </n-col>
@@ -53,27 +80,6 @@
               </n-form-item>
               <n-button>Add New Category</n-button>
             </n-card>
-            <!-- <n-card title="Product Image">
-              <n-form-item path="img">
-                <BasicUpload
-                  :action="`${uploadUrl}/v1.0/files`"
-                  :headers="uploadHeaders"
-                  :data="{ type: 0 }"
-                  name="files"
-                  :width="100"
-                  :height="100"
-                  @uploadChange="uploadChange"
-                  v-model:value="product.product_images"
-                />
-              </n-form-item>
-              <n-button>Remove Image</n-button>
-            </n-card> -->
-            <!-- <n-card title="Product Gallery">
-              <n-form-item label="Status" path="status">
-                <n-select v-model:value="formValue.status" :options="status" />
-              </n-form-item>
-              <n-button>Add Product gallery Image</n-button>
-            </n-card> -->
           </n-space>
         </n-col>
       </n-row>
@@ -130,7 +136,7 @@
       trigger: 'blur',
     },
     description: {
-      required: true,
+      required: false,
       message: 'Please Enter description',
       trigger: 'blur',
     },
@@ -139,10 +145,18 @@
       message: 'Please Select Categories',
       trigger: 'blur',
     },
-    product_type: {
-      required: true,
-      message: 'Please Select Product Type',
-      trigger: 'blur',
+    // product_type: {
+    //   required: true,
+    //   message: 'Please Select Product Type',
+    //   trigger: 'blur',
+    // },
+    // dynamicInputValue: [{ value: '', name: '' }],
+    dynamicInputRule: {
+      trigger: 'input',
+      validator(rule: unknown, value: string) {
+        if (value.length >= 5) return new Error('Input up to 4 characters');
+        return true;
+      },
     },
     product_images: {
       required: true,
@@ -180,24 +194,34 @@
 
   const status = [
     {
-      label: 'Public',
-      value: 'public',
+      label: 'Active',
+      value: 'active',
     },
     {
-      label: 'private',
-      value: 'private',
+      label: 'Draft',
+      value: 'draft',
     },
   ];
-  const product_type = [
+  const varients = [
     {
-      label: 'Simple Product',
-      value: 'simple_product',
+      label: 'Color',
+      value: 'color',
     },
     {
-      label: 'Variable Product',
-      value: 'variable_product',
+      label: 'Size',
+      value: 'size',
     },
   ];
+  // const product_type = [
+  //   {
+  //     label: 'Simple Product',
+  //     value: 'simple_product',
+  //   },
+  //   {
+  //     label: 'Variable Product',
+  //     value: 'variable_product',
+  //   },
+  // ];
 
   const options = reactive({
     modules: {
