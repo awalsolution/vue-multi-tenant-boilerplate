@@ -18,11 +18,12 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="item in list" :key="item.id">
+          <tr v-if="list.length === 0">
+            <td colspan="4" class="data_placeholder"> Record is Empty </td>
+          </tr>
+          <tr v-else v-for="item in list" :key="item.id">
             <td>{{ item.id }}</td>
-            <td class="item_center">
-              <n-tag round type="success">{{ item.name }}</n-tag>
-            </td>
+            <td>{{ item.name }}</td>
             <td>{{ item.created_at }}</td>
             <td>
               <n-dropdown
@@ -188,5 +189,12 @@
 <style lang="less" scoped>
   .item_center {
     text-align: center;
+  }
+  .data_placeholder {
+    text-align: center;
+    color: gray;
+    padding: 20px 0;
+    font-size: 18px;
+    font-style: italic;
   }
 </style>
