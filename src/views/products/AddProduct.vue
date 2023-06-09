@@ -1,4 +1,116 @@
-<!-- eslint-disable vue/v-on-event-hyphenation -->
+<template>
+  <n-card>
+    <n-form ref="formRef" :label-width="80" :model="product" :rules="rules">
+      <n-row :gutter="10">
+        <n-col :span="18">
+          <n-space :vertical="true">
+            <n-card title="Title">
+              <n-input v-model:value="product.name" placeholder="Enter Product Title" />
+            </n-card>
+            <n-card title="Description">
+              <QuillEditor
+                ref="quillEditor"
+                :options="options"
+                v-model:content="product.description"
+                style="height: 350px"
+                class="quillEditor"
+              />
+            </n-card>
+            <n-card title="Media">
+              <n-image v-for="image in product.images" :key="image.id" :src="image.src" />
+            </n-card>
+            <n-card title="Pricing">
+              <n-row :gutter="10">
+                <n-col :span="12">
+                  <n-form-item label="Product Price" path="price">
+                    <n-input v-model:value="product.price" placeholder="Enter Product Price" />
+                  </n-form-item>
+                </n-col>
+                <n-col :span="12">
+                  <n-form-item label="Product Regular Price" path="regular_price">
+                    <n-input
+                      v-model:value="product.regular_price"
+                      placeholder="Enter Product Regular Price"
+                    />
+                  </n-form-item>
+                </n-col>
+              </n-row>
+            </n-card>
+            <n-card title="Inventory">
+              <n-row :gutter="10">
+                <n-col :span="12">
+                  <n-form-item label="Product Stock Status" path="stock_status">
+                    <n-input
+                      v-model:value="product.stock_status"
+                      placeholder="Enter Product Stock Status"
+                    />
+                  </n-form-item>
+                </n-col>
+              </n-row>
+              <n-form-item label="Product SKU ID" path="sku">
+                <n-input v-model:value="product.sku" placeholder="Enter Product SKU ID" />
+              </n-form-item>
+            </n-card>
+            <n-card title="Variants and Attributes">
+              <n-form-item
+                v-for="attribute in product.attributes"
+                :key="attribute.id"
+                :label="attribute.name"
+                :path="attribute.name"
+              >
+                <n-select v-model:value="attribute.options" :options="attribute.options" />
+              </n-form-item>
+            </n-card>
+          </n-space>
+        </n-col>
+        <n-col :span="6">
+          <n-space :vertical="true">
+            <n-card title="Publish">
+              <n-form-item label="Status" path="status">
+                <n-select v-model:value="product.status" :options="statusOptions" />
+              </n-form-item>
+              <n-button @click="handleValidateClick" class="float-right"> Create</n-button>
+            </n-card>
+            <n-card title="Product Categories">
+              <n-form-item
+                v-for="category in product.categories"
+                :key="category.id"
+                label="Category"
+                path="category.name"
+              >
+                <n-select v-model:value="category.name" :options="categories" />
+              </n-form-item>
+              <n-button>Add New Category</n-button>
+            </n-card>
+          </n-space>
+        </n-col>
+      </n-row>
+    </n-form>
+  </n-card>
+</template>
+
+<script>
+  export default {
+    data() {
+      return {
+        product: {}, // Fetch your product data here
+        statusOptions: ['active', 'inactive', 'draft'],
+        categories: [], // Fetch your categories here
+        options: {}, // Quill Editor options
+        rules: {}, // Validation rules
+      };
+    },
+    methods: {
+      handleValidateClick() {
+        // Validation and submit logic here
+      },
+    },
+    created() {
+      // Fetch product data and categories on component creation
+    },
+  };
+</script>
+<!-- eslint-disable vue/v-on-event-hyphenation
 <template>
   <n-card>
     <n-form ref="formRef" :label-width="80" :model="product" :rules="rules">
@@ -276,4 +388,4 @@
   .ql-container.ql-snow {
     border: none;
   }
-</style>
+</style> -->

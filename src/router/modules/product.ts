@@ -36,6 +36,15 @@ const routes: Array<RouteRecordRaw> = [
         },
         component: () => import('@/views/products/AddProduct.vue'),
       },
+      {
+        path: 'attributes',
+        name: `${routeName}_attributes`,
+        meta: {
+          title: 'Product Attributes',
+          permissions: ['can view products'],
+        },
+        component: () => import('@/views/products/attributes/index.vue'),
+      },
     ],
   },
 ];
