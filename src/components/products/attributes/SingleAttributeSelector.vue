@@ -10,15 +10,15 @@
     :clear-filter-after-select="false"
     :label-field="labelField"
     :value-field="valueField"
-    :loading="rolesLoading"
-    :options="filteredRoles"
-    @search="filterRoles"
+    :loading="attributesLoading"
+    :options="filteredAttributes"
+    @search="filterAttributes"
   />
 </template>
 
 <script lang="ts">
   import { defineComponent, ref } from 'vue';
-  import { useRoles } from '@/hooks/acl/useRoles';
+  import { useAttribute } from '@/hooks/useAttribute';
 
   export default defineComponent({
     props: {
@@ -52,12 +52,12 @@
     },
     emits: ['update:modelValue'],
     setup(props) {
-      const { filterRoles, filteredRoles, rolesLoading } = useRoles(props.tag);
+      const { filterAttributes, filteredAttributes, attributesLoading } = useAttribute(props.tag);
       const selectValue = ref(null);
       return {
-        filterRoles,
-        filteredRoles,
-        rolesLoading,
+        filterAttributes,
+        filteredAttributes,
+        attributesLoading,
         selectValue,
       };
     },
