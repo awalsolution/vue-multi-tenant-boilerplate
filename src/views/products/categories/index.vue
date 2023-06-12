@@ -57,6 +57,7 @@
         :circle="true"
         style="position: fixed; bottom: 30px; right: 40px"
         @click="showModal = true"
+        v-permission="{ action: ['can view add categories'] }"
       >
         <template #icon>
           <n-icon>

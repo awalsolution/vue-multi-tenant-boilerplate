@@ -8,9 +8,10 @@ export function usePermission() {
    * @param accesses
    */
   function _somePermissions(accesses: string[]) {
-    return userStore.getPermissions.some((item) => {
-      const { value }: any = item;
-      return accesses.includes(value);
+    return userStore.getPermissions.some((item: any) => {
+      // const { value }: any = item;
+      // return accesses.includes(value);
+      return accesses.includes(item);
     });
   }
 
