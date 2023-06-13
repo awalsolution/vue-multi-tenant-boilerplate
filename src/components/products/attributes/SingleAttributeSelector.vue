@@ -31,7 +31,7 @@
       },
       placeholder: {
         type: String,
-        default: 'Search Roles',
+        default: 'Search Attributes',
       },
       clearable: {
         type: Boolean,
