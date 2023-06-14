@@ -70,9 +70,7 @@
             <td>{{ item.sale_price }}</td>
             <td>{{ item.slug }}</td>
             <td>
-              <n-space>
-                <n-switch />
-              </n-space>
+              {{ item.status }}
             </td>
             <td>{{ item.created_at }}</td>
             <td>
@@ -103,26 +101,12 @@
           :show-size-picker="true"
         />
       </n-space>
-      <n-modal style="width: 70%" v-model:show="showEditModal" preset="dialog">
-        <template #header>
-          <div>Update Product</div>
-        </template>
-        <n-space :vertical="true">
-          <edit-product
-            :id="selectedId"
-            @updated="
-              getList();
-              showEditModal = false;
-            "
-          />
-        </n-space>
-      </n-modal>
     </n-space>
   </n-card>
 </template>
-<!-- updateProductStatusApi -->
 <script lang="ts" setup>
-  import { getProductsApi, deleteProductApi } from '@/api/products/product';
+  import { deleteRecordApi } from '@/api';
+  import { getProductsApi } from '@/api/products/product';
   import { useRouter } from 'vue-router';
   import { userPagination } from '@/hooks/userPagination';
   import { ref, onMounted, h } from 'vue';
@@ -132,14 +116,10 @@
   import { MoreOutlined, EditOutlined, DeleteOutlined } from '@vicons/antd';
   import { FileImport } from '@vicons/tabler';
   import { Search20Regular } from '@vicons/fluent';
-  // import AddProduct from '@/components/products/AddProduct.vue';
-  import EditProduct from '@/components/products/EditProduct.vue';
 
   const router = useRouter();
   const dialog = useDialog();
   const selectedOption: any = ref(null);
-  // const showModal = ref(false);
-  const showEditModal = ref(false);
   const selectedId = ref();
   const message = useMessage();
   const { getList, list, page, pageSizes, itemCount, pageSize, params }: any =
@@ -179,7 +159,7 @@
   function deleteOperation() {
     const Loading = window['$loading'] || null;
     Loading.start();
-    deleteProductApi(selectedId.value)
+    deleteRecordApi(`/products/${selectedId.value}`)
       .then((result: any) => {
         message.success(result.message);
         getList();
@@ -194,12 +174,9 @@
     selectedId.value = null;
     selectedOption.value = null;
   }
-
   const actionOperation = (item: any) => {
     if (selectedOption.value === 'edit') {
-      showEditModal.value = true;
-      selectedId.value = item.id;
-      // router.push(`/roles/${item.id}`);
+      router.push({ name: 'product_update', params: { id: item.id } });
     } else if (selectedOption.value === 'delete') {
       selectedId.value = item.id;
       confirmationDialog();
