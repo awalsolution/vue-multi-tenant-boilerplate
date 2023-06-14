@@ -25,9 +25,9 @@
         <n-select v-model:value="formValue.user_type" size="medium" :options="options" />
       </n-form-item-gi>
     </n-grid>
-    <n-space :vertical="true" style="align-items: center">
-      <n-form-item>
-        <n-button style="alignment: center" @click="handleValidateClick"> Create</n-button>
+    <n-space justify="end">
+      <n-form-item :theme-overrides="{ labelHeightSmall: '0', feedbackHeightSmall: '0' }">
+        <n-button type="success" @click="handleValidateClick"> Create</n-button>
       </n-form-item>
     </n-space>
   </n-form>

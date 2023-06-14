@@ -23,9 +23,9 @@
         <n-input v-model:value="formValue.shop_logo" placeholder="Enter Logo" />
       </n-form-item-gi>
     </n-grid>
-    <n-space :vertical="true">
-      <n-form-item>
-        <n-button @click="handleValidateClick">Update</n-button>
+    <n-space justify="end">
+      <n-form-item :theme-overrides="{ labelHeightSmall: '0', feedbackHeightSmall: '0' }">
+        <n-button type="success" @click="handleValidateClick"> Update</n-button>
       </n-form-item>
     </n-space>
   </n-form>

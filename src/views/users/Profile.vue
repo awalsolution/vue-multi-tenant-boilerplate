@@ -54,9 +54,9 @@
               </n-row>
             </n-card>
           </n-space>
-          <n-space>
-            <n-form-item>
-              <n-button @click="handleValidateClick">Save Profile</n-button>
+          <n-space justify="end">
+            <n-form-item :theme-overrides="{ feedbackHeightSmall: '0' }">
+              <n-button type="success" @click="handleValidateClick"> Save Profile</n-button>
             </n-form-item>
           </n-space>
         </n-form>

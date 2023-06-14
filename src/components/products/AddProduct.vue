@@ -154,8 +154,8 @@
                 <n-select v-model:value="product.status" :options="status" />
               </n-form-item>
               <n-button type="success" @click="handleValidateClick" class="float-right">
-                Create</n-button
-              >
+                Create
+              </n-button>
             </n-card>
             <n-card title="Product Categories">
               <n-form-item label="Categories" path="category_id">

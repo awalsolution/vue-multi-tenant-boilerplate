@@ -20,9 +20,7 @@
         <tbody>
           <tr v-for="item in list" :key="item.id">
             <td>{{ item.id }}</td>
-            <td class="item_center">
-              <n-tag round type="success">{{ item.name }}</n-tag>
-            </td>
+            <td>{{ item.name }}</td>
             <td>{{ item.created_at }}</td>
             <td>
               <n-dropdown
@@ -184,8 +182,4 @@
   });
 </script>
 
-<style lang="less" scoped>
-  .item_center {
-    text-align: center;
-  }
-</style>
+<style lang="less" scoped></style>
