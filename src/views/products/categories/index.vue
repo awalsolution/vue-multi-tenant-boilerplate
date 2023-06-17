@@ -19,7 +19,7 @@
         </thead>
         <tbody>
           <tr v-if="list.length === 0">
-            <td colspan="4" class="data_placeholder"> Record is Empty </td>
+            <td colspan="4" class="data_placeholder"> Record Not Exist </td>
           </tr>
           <tr v-else v-for="item in list" :key="item.id">
             <td>{{ item.id }}</td>
