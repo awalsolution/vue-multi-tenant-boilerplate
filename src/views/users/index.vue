@@ -39,25 +39,15 @@
                   </n-tag>
                 </n-space>
               </td>
+              <td v-if="item.user_type">{{ item.user_type }}</td>
               <td>
-                <n-tag v-if="item.user_type" type="success"> {{ item.user_type }} </n-tag>
-              </td>
-              <td>
-                <n-space>
-                  <n-tag v-for="permission in item.permissions" :key="permission.id" type="success">
-                    {{ permission?.name }}
-                  </n-tag>
+                <n-space v-for="permission in item.permissions" :key="permission.id">
+                  {{ permission?.name }}
                 </n-space>
               </td>
               <td>{{ item?.profile?.phone_number }}</td>
               <td>{{ item?.shop?.shop_name }}</td>
               <td>{{ item?.shop?.shop_phone }}</td>
-              <!-- <td>
-                <n-switch
-                  v-model:value="item.status"
-                  @update:value="updateUserStatus(item.id, item)"
-                />
-              </td> -->
               <td>{{
                 item?.profile?.address +
                 ' ' +
@@ -143,7 +133,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { getUsersApi, deleteUserApi, updateUserStatusApi } from '@/api/user/user';
+  import { getUsersApi, deleteUserApi } from '@/api/user/user';
   import { userPagination } from '@/hooks/userPagination';
   import { ref, onMounted, h } from 'vue';
   import { useDialog, useMessage } from 'naive-ui';

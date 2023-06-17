@@ -12,7 +12,7 @@ const routes: Array<RouteRecordRaw> = [
     redirect: '/product/list',
     component: Layout,
     meta: {
-      title: 'Product',
+      title: 'Products',
       icon: renderIcon(CartOutline),
       permissions: ['can view products'],
       sort: 3,
@@ -22,10 +22,48 @@ const routes: Array<RouteRecordRaw> = [
         path: 'list',
         name: `${routeName}_list`,
         meta: {
-          title: 'Product',
+          title: 'Products',
           permissions: ['can view products'],
         },
         component: () => import('@/views/products/index.vue'),
+      },
+      {
+        path: 'add',
+        name: `${routeName}_add`,
+        meta: {
+          title: 'Add Product',
+          permissions: ['can view products'],
+          hidden: true,
+        },
+        component: () => import('@/components/products/AddProduct.vue'),
+      },
+      {
+        path: 'update/:id',
+        name: `${routeName}_update`,
+        meta: {
+          title: 'Update Product',
+          permissions: ['can view products'],
+          hidden: true,
+        },
+        component: () => import('@/components/products/EditProduct.vue'),
+      },
+      {
+        path: 'attributes',
+        name: `${routeName}_attributes`,
+        meta: {
+          title: 'Attributes',
+          permissions: ['can view products'],
+        },
+        component: () => import('@/views/products/attributes/index.vue'),
+      },
+      {
+        path: 'categories',
+        name: `${routeName}_categories`,
+        meta: {
+          title: 'Categories',
+          permissions: ['can view products'],
+        },
+        component: () => import('@/views/products/categories/index.vue'),
       },
     ],
   },

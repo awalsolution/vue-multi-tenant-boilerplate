@@ -13,11 +13,11 @@ export interface BasicPageParams {
 }
 
 /**
- * @description: Get product list
+ * @description: Get Categories list
  */
-export function getProductsApi(params: any) {
+export function getCategoriesListApi(params: any) {
   return http.request({
-    url: '/products',
+    url: '/categories',
     method: 'get',
     params,
   });

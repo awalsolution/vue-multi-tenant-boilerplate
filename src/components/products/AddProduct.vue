@@ -1,49 +1,216 @@
 <template>
-  <n-form ref="formRef" :label-width="80" :model="formValue" :rules="rules" size="small">
-    <n-grid x-gap="10">
-      <n-form-item-gi :span="8" class="pt-6" label="Title" path="title">
-        <n-input v-model:value="formValue.title" placeholder="Enter Title" />
-      </n-form-item-gi>
-      <n-form-item-gi :span="8" class="pt-6" label="SKU ID" path="product_sku">
-        <n-input v-model:value="formValue.product_sku" placeholder="Enter SKU ID" />
-      </n-form-item-gi>
-      <n-form-item-gi :span="8" class="pt-6" label="Slug" path="slug">
-        <n-input v-model:value="formValue.slug" placeholder="Enter Slug" />
-      </n-form-item-gi>
-      <n-form-item-gi :span="8" class="pt-1" label="Short Description" path="short_description">
-        <n-input
-          v-model:value="formValue.short_description"
-          placeholder="Enter Short Description"
-        />
-      </n-form-item-gi>
-      <n-form-item-gi :span="8" class="pt-1" label="Description" path="description">
-        <n-input v-model:value="formValue.description" placeholder="Enter Description" />
-      </n-form-item-gi>
-      <n-form-item-gi :span="8" class="pt-1" label="Price" path="price">
-        <n-input v-model:value="formValue.price" placeholder="Enter Price" />
-      </n-form-item-gi>
-      <n-form-item-gi :span="8" class="pt-1" label="Sale Price" path="sale_price">
-        <n-input v-model:value="formValue.sale_price" placeholder="Enter Sale Price" />
-      </n-form-item-gi>
-      <n-form-item-gi :span="8" class="pt-1" label="product_images" path="product_images">
-        <n-input v-model:value="formValue.product_images" placeholder="product_images" />
-      </n-form-item-gi>
-    </n-grid>
-    <n-space :vertical="true">
-      <n-form-item>
-        <n-button @click="handleValidateClick"> Create</n-button>
-      </n-form-item>
-    </n-space>
-  </n-form>
+  <n-card>
+    <n-form ref="formRef" :label-width="80" :model="product" :rules="rules">
+      <n-row :gutter="10">
+        <n-col :span="18">
+          <n-space :vertical="true">
+            <n-card title="Title">
+              <n-form-item label="Product Title" path="title">
+                <n-input v-model:value="product.title" placeholder="Enter Product Title" />
+              </n-form-item>
+            </n-card>
+            <n-card title="Description">
+              <!-- <QuillEditor
+                ref="quillEditor"
+                :options="options"
+                v-model:content="product.description"
+                style="height: 350px"
+                class="quillEditor"
+              /> -->
+              <n-form-item label="Product Description" path="description">
+                <n-input
+                  v-model:value="product.description"
+                  type="textarea"
+                  placeholder="Enter Product Description"
+                />
+              </n-form-item>
+              <n-form-item label="Product Product SKU ID" path="product_sku">
+                <n-input v-model:value="product.product_sku" placeholder="Enter Product SKU ID" />
+              </n-form-item>
+            </n-card>
+            <n-card title="Inventory" class="flex w-full mb-1">
+              <template #header-extra>
+                <n-space>
+                  <n-button type="success" @click="showVariantModal = true"> Add Variant </n-button>
+                </n-space>
+              </template>
+              <n-row gutter="12">
+                <n-table v-if="product.variations.length" :striped="true">
+                  <thead>
+                    <tr>
+                      <th>Attribute ID</th>
+                      <th>Product Price</th>
+                      <th>Product Regular Price</th>
+                      <th>Product Image</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr v-for="(item, index) in product.variations" :key="index">
+                      <td>{{ item.attribute_id }}</td>
+                      <td>{{ item.attribute_value }}</td>
+                      <td>{{ item.price }}</td>
+                      <td>{{ item.regular_price }}</td>
+                      <td>{{ item.product_images }}</td>
+                      <td>
+                        <n-button
+                          strong
+                          secondary
+                          circle
+                          type="error"
+                          @click="product.variations.splice(index, 1)"
+                        >
+                          <template #icon>
+                            <n-icon>
+                              <Delete20Filled />
+                            </n-icon>
+                          </template>
+                        </n-button>
+                        <n-button
+                          strong
+                          secondary
+                          circle
+                          type="success"
+                          @click="editVariant(item, index)"
+                        >
+                          <template #icon>
+                            <n-icon>
+                              <NotepadEdit20Filled />
+                            </n-icon>
+                          </template>
+                        </n-button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </n-table>
+              </n-row>
+            </n-card>
+          </n-space>
+        </n-col>
+        <n-modal style="width: 70%" v-model:show="showVariantModal" preset="dialog">
+          <template #header>
+            <div>{{ modelTitle }}</div>
+          </template>
+          <n-space :vertical="true">
+            <n-card title="Inventory">
+              <n-row :gutter="10">
+                <n-col :span="12">
+                  <n-form-item label="Attribute" path="attribute_id">
+                    <single-attribute-selector
+                      v-model:value="variant.attribute_id"
+                      label-field="name"
+                      value-field="id"
+                    />
+                  </n-form-item>
+                </n-col>
+                <n-col :span="12">
+                  <n-form-item label="Attribute Value" path="attribute_value">
+                    <n-input
+                      v-model:value="variant.attribute_value"
+                      placeholder="Enter Attribute value"
+                    />
+                  </n-form-item>
+                </n-col>
+              </n-row>
+              <n-row :gutter="10">
+                <n-col :span="12">
+                  <n-form-item label="Product Price" path="price">
+                    <n-input v-model:value="variant.price" placeholder="Enter Product Price" />
+                  </n-form-item>
+                </n-col>
+                <n-col :span="12">
+                  <n-form-item label="Product Regular Price" path="regular_price">
+                    <n-input
+                      v-model:value="variant.regular_price"
+                      placeholder="Enter Product Regular Price"
+                    />
+                  </n-form-item>
+                </n-col>
+                <n-col :span="12">
+                  <n-form-item label="Product Image" path="product_image">
+                    <n-input
+                      v-model:value="variant.product_images"
+                      placeholder="Enter Product Image"
+                    />
+                  </n-form-item>
+                </n-col>
+              </n-row>
+            </n-card>
+            <n-row>
+              <n-button strong secondary circle type="success" size="large" @click="addVariant">
+                <template #icon>
+                  <n-icon size="30">
+                    <SaveArrowRight20Filled />
+                  </n-icon>
+                </template>
+              </n-button>
+            </n-row>
+          </n-space>
+        </n-modal>
+        <n-col :span="6">
+          <n-space :vertical="true">
+            <n-card title="Publish">
+              <n-form-item label="Status" path="status">
+                <n-select v-model:value="product.status" :options="status" />
+              </n-form-item>
+              <n-button type="success" @click="handleValidateClick" class="float-right">
+                Create
+              </n-button>
+            </n-card>
+            <n-card title="Product Categories">
+              <n-form-item label="Categories" path="category_id">
+                <single-category-selector
+                  v-model:value="product.category_id"
+                  label-field="name"
+                  value-field="id"
+                  :tag="false"
+                />
+              </n-form-item>
+            </n-card>
+          </n-space>
+        </n-col>
+      </n-row>
+    </n-form>
+  </n-card>
 </template>
 
 <script lang="ts" setup>
   import { ref } from 'vue';
   import { FormInst } from 'naive-ui';
-  import { createProductApi } from '@/api/products/product';
+  import { useRouter } from 'vue-router';
+  import { SaveArrowRight20Filled, Delete20Filled, NotepadEdit20Filled } from '@vicons/fluent';
+  import { createRecordApi } from '@/api';
+  // import { QuillEditor } from '@vueup/vue-quill';
+  import '@vueup/vue-quill/dist/vue-quill.snow.css';
+  // import { BasicUpload } from '@/components/Upload';
+  // import { useGlobSetting } from '@/hooks/setting';
 
-  const formValue: any = ref({});
+  // const quillEditor = ref();
   const formRef = ref<FormInst | null>(null);
+  const product: any = ref({
+    variations: [],
+  });
+  const variant: any = ref({});
+  const showVariantModal = ref(false);
+  const modelTitle = ref('Add Product Variant');
+  const loading = ref(false);
+  const router = useRouter();
+  function addVariant() {
+    showVariantModal.value = false;
+    product.value.variations.push(variant.value);
+    variant.value = {};
+    modelTitle.value = 'Add Product Variant';
+  }
+
+  function editVariant(item: any, index: any) {
+    variant.value = item;
+    product.value.variations.splice(index, 1);
+    modelTitle.value = 'Update Product Variant';
+    showVariantModal.value = true;
+  }
+  // const globSetting = useGlobSetting();
+  // const { uploadUrl } = globSetting;
+
   const emits = defineEmits(['created']);
   const rules = ref({
     title: {
@@ -51,39 +218,14 @@
       message: 'Please Enter title',
       trigger: 'blur',
     },
-    product_sku: {
+    status: {
       required: true,
-      message: 'Please Enter SKU ID',
-      trigger: 'blur',
-    },
-    slug: {
-      required: true,
-      message: 'Please Enter Slug',
-      trigger: 'blur',
-    },
-    price: {
-      required: true,
-      message: 'Please Enter price',
-      trigger: 'blur',
-    },
-    sale_price: {
-      required: true,
-      message: 'Please Enter Sale Price',
+      message: 'Please Select Status',
       trigger: 'blur',
     },
     description: {
       required: true,
       message: 'Please Enter description',
-      trigger: 'blur',
-    },
-    short_description: {
-      required: true,
-      message: 'Please Enter Short Description',
-      trigger: 'blur',
-    },
-    product_images: {
-      required: true,
-      message: 'Please Upload Product Images',
       trigger: 'blur',
     },
   });
@@ -92,30 +234,13 @@
     e.preventDefault();
     formRef.value?.validate((errors) => {
       if (!errors) {
-        const {
-          title,
-          product_sku,
-          slug,
-          description,
-          short_description,
-          price,
-          sale_price,
-          product_images,
-          is_active,
-        } = formValue.value;
-        createProductApi({
-          title,
-          product_sku,
-          slug,
-          description,
-          short_description,
-          price,
-          sale_price,
-          product_images,
-          is_active,
-        }).then((result: any) => {
+        console.log('product object ==>', product.value);
+        loading.value = true;
+        createRecordApi(`/products`, product.value).then((result: any) => {
           window['$message'].success(result.message);
           emits('created', result.result);
+          loading.value = false;
+          router.replace('/product');
         });
       } else {
         console.log(errors);
@@ -123,6 +248,54 @@
       }
     });
   };
+
+  const status = [
+    {
+      label: 'Active',
+      value: 'active',
+    },
+    {
+      label: 'Draft',
+      value: 'draft',
+    },
+  ];
+
+  // const options = reactive({
+  //   modules: {
+  //     toolbar: [
+  //       ['bold', 'italic', 'underline', 'strike'], // toggled buttons
+  //       ['blockquote', 'code-block'],
+  //       [{ header: 1 }, { header: 2 }], // custom button values
+  //       [{ list: 'ordered' }, { list: 'bullet' }],
+  //       [{ script: 'sub' }, { script: 'super' }], // superscript/subscript
+  //       [{ indent: '-1' }, { indent: '+1' }], // outdent/indent
+  //       [{ direction: 'rtl' }], // text direction
+  //       [{ size: ['small', false, 'large', 'huge'] }], // custom dropdown
+  //       [{ header: [1, 2, 3, 4, 5, 6, false] }],
+  //       [{ color: [] }, { background: [] }], // dropdown with defaults from theme
+  //       [{ font: [] }],
+  //       [{ align: [] }],
+  //       ['clean'],
+  //       ['image'],
+  //     ],
+  //   },
+  //   theme: 'snow',
+  //   placeholder: 'Enter what you like!',
+  // });
 </script>
 
-<style lang="less" scoped></style>
+<style lang="less" scoped>
+  .bg_transparent {
+    background-color: transparent;
+  }
+  .ql-toolbar.ql-snow {
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    border-bottom: 1px solid #eee;
+    margin-top: -10px;
+  }
+  .ql-container.ql-snow {
+    border: none;
+  }
+</style>

@@ -14,7 +14,7 @@
 <script lang="ts" setup>
   import { ref } from 'vue';
   import { FormInst } from 'naive-ui';
-  import { createPermissionApi } from '@/api/permission/permission';
+  import { createRecordApi } from '@/api';
 
   const formValue: any = ref({});
   const formRef = ref<FormInst | null>(null);
@@ -25,11 +25,6 @@
       message: 'Please Enter Name',
       trigger: 'blur',
     },
-    description: {
-      required: true,
-      message: 'Please Enter Description',
-      trigger: 'blur',
-    },
   });
 
   const handleValidateClick = (e: MouseEvent) => {
@@ -37,7 +32,7 @@
     formRef.value?.validate((errors) => {
       if (!errors) {
         const { name } = formValue.value;
-        createPermissionApi({ name }).then((result) => {
+        createRecordApi('/categories', { name }).then((result) => {
           window['$message'].success(result.message);
           emits('created', result.result);
         });

@@ -12,13 +12,16 @@
         <thead>
           <tr>
             <th>ID</th>
-            <th>Permission Name</th>
+            <th>Attribute Name</th>
             <th>Created At</th>
             <th>Actions</th>
           </tr>
         </thead>
         <tbody>
-          <tr v-for="item in list" :key="item.id">
+          <tr v-if="list.length === 0">
+            <td colspan="4" class="data_placeholder"> Record is Empty </td>
+          </tr>
+          <tr v-else v-for="item in list" :key="item.id">
             <td>{{ item.id }}</td>
             <td>{{ item.name }}</td>
             <td>{{ item.created_at }}</td>
@@ -63,10 +66,10 @@
       </n-button>
       <n-modal v-model:show="showModal" preset="dialog">
         <template #header>
-          <div>Create New Permission</div>
+          <div>Create New Attribute</div>
         </template>
         <n-space :vertical="true">
-          <add-permission
+          <add-attribute
             @created="
               getList();
               showModal = false;
@@ -77,10 +80,10 @@
 
       <n-modal v-model:show="showEditModal" preset="dialog">
         <template #header>
-          <div>Update Permission</div>
+          <div>Update Attribute</div>
         </template>
         <n-space :vertical="true">
-          <edit-permission
+          <edit-attribute
             :id="selectedId"
             @updated="
               getList();
@@ -94,15 +97,16 @@
 </template>
 
 <script lang="ts" setup>
-  import { getPermissionsApi, deletePermissionApi } from '@/api/permission/permission';
+  import { deleteRecordApi } from '@/api';
+  import { getAttributeListApi } from '@/api/products/attributes/attribute';
   import { userPagination } from '@/hooks/userPagination';
   import { ref, onMounted, h } from 'vue';
   import { useDialog, useMessage } from 'naive-ui';
   import type { Component } from 'vue';
   import { NIcon, NPagination } from 'naive-ui';
   import { MoreOutlined, EditOutlined, DeleteOutlined, PlusOutlined } from '@vicons/antd';
-  import AddPermission from '@/components/Permission/AddPermission.vue';
-  import EditPermission from '@/components/Permission/EditPermission.vue';
+  import AddAttribute from '@/components/products/attributes/AddAttribute.vue';
+  import EditAttribute from '@/components/products/attributes/EditAttribute.vue';
 
   const dialog = useDialog();
   const showModal = ref(false);
@@ -111,7 +115,7 @@
   const selectedId = ref();
   const message = useMessage();
   const { getList, list, page, pageSizes, itemCount, pageSize, params }: any =
-    userPagination(getPermissionsApi);
+    userPagination(getAttributeListApi);
 
   const renderIcon = (icon: Component) => {
     return () => {
@@ -147,8 +151,8 @@
   function deleteOperation() {
     const Loading = window['$loading'] || null;
     Loading.start();
-    deletePermissionApi(selectedId.value)
-      .then((result) => {
+    deleteRecordApi(`/attributes/${selectedId.value}`)
+      .then((result: any) => {
         message.success(result.message);
         getList();
         Loading.finish();
@@ -182,4 +186,15 @@
   });
 </script>
 
-<style lang="less" scoped></style>
+<style lang="less" scoped>
+  .item_center {
+    text-align: center;
+  }
+  .data_placeholder {
+    text-align: center;
+    color: gray;
+    padding: 20px 0;
+    font-size: 18px;
+    font-style: italic;
+  }
+</style>

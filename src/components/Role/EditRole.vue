@@ -3,7 +3,7 @@
     <n-form-item style="padding-top: 24px" label="Name" path="name">
       <n-input v-model:value="formValue.name" placeholder="Edit Name" />
     </n-form-item>
-    <n-form-item style="padding-top: 24px" label="Permissions" path="permissions">
+    <n-form-item label="Permissions" path="permissions">
       <permission-selector
         v-model:value="formValue.permissions"
         label-field="name"
@@ -11,9 +11,9 @@
         :tag="true"
       />
     </n-form-item>
-    <n-space :vertical="true" style="align-items: center">
-      <n-form-item>
-        <n-button style="alignment: center" @click="handleValidateClick"> Save</n-button>
+    <n-space justify="end">
+      <n-form-item :theme-overrides="{ labelHeightSmall: '0', feedbackHeightSmall: '0' }">
+        <n-button type="success" @click="handleValidateClick"> Update</n-button>
       </n-form-item>
     </n-space>
   </n-form>

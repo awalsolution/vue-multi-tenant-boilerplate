@@ -13,11 +13,11 @@ export interface BasicPageParams {
 }
 
 /**
- * @description: Get product list
+ * @description: Get Attribute list
  */
-export function getProductsApi(params: any) {
+export function getAttributeListApi(params: any) {
   return http.request({
-    url: '/products',
+    url: '/attributes',
     method: 'get',
     params,
   });

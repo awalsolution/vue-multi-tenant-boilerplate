@@ -13,32 +13,31 @@ export interface BasicPageParams {
 }
 
 /**
- * @description: Get permission list
+ * @description: Get Record list
  */
-export function getPermissionsApi(params: any) {
-  return http.request({
-    url: '/permissions',
+export async function getRecordListApi(endpoint: string) {
+  return await http.request({
+    url: endpoint,
     method: 'get',
-    params,
   });
 }
 /**
- * @description: Get single permission
+ * @description: Get single Record
  */
-export function getPermissionApi(id: any) {
+export function getRecordApi(endpoint: string) {
   return http.request({
-    url: `/permissions/${id}`,
+    url: endpoint,
     method: 'get',
   });
 }
 
 /**
- * @description: create new permission
+ * @description: create Record
  */
-export function createPermissionApi(params: any) {
+export function createRecordApi(endpoint: string, params: any) {
   return http.request<BasicResponseModel>(
     {
-      url: '/permissions',
+      url: endpoint,
       method: 'POST',
       params,
     },
@@ -48,12 +47,12 @@ export function createPermissionApi(params: any) {
   );
 }
 /**
- * @description: update permission
+ * @description: update Record
  */
-export function updatePermissionApi(id: any, params: any) {
+export function updateRecordApi(endpoint: string, params: any) {
   return http.request<BasicResponseModel>(
     {
-      url: `/permissions/${id}`,
+      url: endpoint,
       method: 'PUT',
       params,
     },
@@ -63,11 +62,11 @@ export function updatePermissionApi(id: any, params: any) {
   );
 }
 /**
- * @description: delete permission
+ * @description: delete Record
  */
-export function deletePermissionApi(id: any) {
+export async function deleteRecordApi(endpoint: string) {
   return http.request<BasicResponseModel>({
-    url: `/permissions/${id}`,
+    url: endpoint,
     method: 'DELETE',
   });
 }

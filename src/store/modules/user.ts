@@ -6,19 +6,26 @@ import { getUserInfoApi, loginApi, registerApi } from '@/api/auth/auth';
 import { storage } from '@/utils/Storage';
 import _ from 'lodash';
 
+export type Profile = {
+  address: string;
+  city: string;
+  country: string;
+  first_name: string;
+  last_name: string;
+  phone_number: string;
+  profile_picture: string;
+  state: string;
+};
+
 export type UserInfoType = {
-  // TODO: add your own data
-  name: string;
   email: string;
   user_type: string;
-  profile: object;
+  profile: Profile;
 };
 
 export interface IUserState {
   token: string;
   email: string;
-  welcome: string;
-  avatar: string;
   permissions: any[];
   info: UserInfoType;
 }
@@ -28,8 +35,6 @@ export const useUserStore = defineStore({
   state: (): IUserState => ({
     token: storage.get(ACCESS_TOKEN, ''),
     email: '',
-    welcome: '',
-    avatar: '',
     permissions: [],
     info: storage.get(CURRENT_USER, {}),
   }),
@@ -37,10 +42,7 @@ export const useUserStore = defineStore({
     getToken(): string {
       return this.token;
     },
-    getAvatar(): string {
-      return this.avatar;
-    },
-    getNickname(): string {
+    getEmail(): string {
       return this.email;
     },
     getPermissions(): [any][] {
@@ -53,9 +55,6 @@ export const useUserStore = defineStore({
   actions: {
     setToken(token: string) {
       this.token = token;
-    },
-    setAvatar(avatar: string) {
-      this.avatar = avatar;
     },
     setPermissions(permissions: any) {
       this.permissions = permissions;
@@ -94,7 +93,6 @@ export const useUserStore = defineStore({
         this.setPermissions(permissionsList);
         this.setUserInfo(result);
       }
-      this.setAvatar(result.avatar);
       return result;
     },
 
@@ -112,7 +110,20 @@ export const useUserStore = defineStore({
     // Sign out
     async logout() {
       this.setPermissions([]);
-      this.setUserInfo({ name: '', email: '', user_type: '', profile: {} });
+      this.setUserInfo({
+        email: '',
+        user_type: '',
+        profile: {
+          address: '',
+          city: '',
+          country: '',
+          first_name: '',
+          last_name: '',
+          phone_number: '',
+          profile_picture: '',
+          state: '',
+        },
+      });
       storage.remove(ACCESS_TOKEN);
       storage.remove(CURRENT_USER);
     },

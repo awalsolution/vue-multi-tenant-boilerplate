@@ -85,12 +85,11 @@
           <span>Full Screen</span>
         </n-tooltip>
       </div>
-      <!-- Personal Center -->
+      <!-- user profile icon  -->
       <div class="layout-header-trigger layout-header-trigger-min">
         <n-dropdown trigger="hover" @select="avatarSelect" :options="avatarOptions">
           <div class="avatar">
             <n-avatar round>
-              {{ username }}
               <template #icon>
                 <UserOutlined />
               </template>
@@ -115,8 +114,12 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent, reactive, toRefs, ref, computed, unref } from 'vue';
+  import { defineComponent, h, reactive, toRefs, ref, computed, unref } from 'vue';
+  import type { Component } from 'vue';
   import { useRouter, useRoute } from 'vue-router';
+  import { LogOutOutline } from '@vicons/ionicons5';
+  import { PersonEdit20Regular } from '@vicons/fluent';
+  import { NIcon } from 'naive-ui';
   import components from './components';
   import { NDialogProvider, useDialog, useMessage } from 'naive-ui';
   import { TABS_ROUTES } from '@/store/mutation-types';
@@ -141,14 +144,13 @@
       const userStore = useUserStore();
       const message = useMessage();
       const dialog = useDialog();
-      const { navMode, navTheme, headerSetting, menuSetting, crumbsSetting } = useProjectSetting();
-
-      const { name } = userStore?.info || {};
-
       const drawerSetting = ref();
+      const { navMode, navTheme, headerSetting, menuSetting, crumbsSetting } = useProjectSetting();
+      // user profile info
+      const { profile_picture } = userStore?.info.profile;
 
       const state = reactive({
-        username: name ?? '',
+        username: profile_picture || '',
         fullscreenIcon: 'FullscreenOutlined',
         navMode,
         navTheme,
@@ -203,7 +205,7 @@
         return generator(route.matched);
       });
 
-      const dropdownSelect = (key) => {
+      const dropdownSelect = (key: any) => {
         router.push({ name: key });
       };
 
@@ -258,15 +260,23 @@
           }
         }
       };
-
+      const renderIcon = (icon: Component) => {
+        return () => {
+          return h(NIcon, null, {
+            default: () => h(icon),
+          });
+        };
+      };
       const avatarOptions = [
         {
-          label: 'Profile Setting',
+          label: 'Profile',
           key: 1,
+          icon: renderIcon(PersonEdit20Regular),
         },
         {
           label: 'Logout',
           key: 2,
+          icon: renderIcon(LogOutOutline),
         },
       ];
 
