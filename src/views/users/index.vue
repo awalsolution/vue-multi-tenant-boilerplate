@@ -163,7 +163,7 @@
   const message = useMessage();
   const { getList, list, page, pageSizes, itemCount, pageSize, params }: any =
     userPagination(getUsersApi);
-  console.log('users list ==>', list);
+
   const renderIcon = (icon: Component) => {
     return () => {
       return h(NIcon, null, {

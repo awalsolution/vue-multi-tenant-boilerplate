@@ -14,7 +14,7 @@
             <th>ID</th>
             <th>Category Name</th>
             <th>Created At</th>
-            <th>Created At</th>
+            <th>Updated At</th>
             <th
               v-permission="{
                 action: ['can view category update', 'can view category delete'],
@@ -31,6 +31,7 @@
             <td>{{ item.id }}</td>
             <td>{{ item.name }}</td>
             <td>{{ item.created_at }}</td>
+            <td>{{ item.updated_at }}</td>
             <td
               v-permission="{
                 action: ['can view category update', 'can view category delete'],
@@ -67,7 +68,7 @@
         :circle="true"
         style="position: fixed; bottom: 30px; right: 40px"
         @click="showModal = true"
-        v-permission="{ action: ['can view add category'] }"
+        v-permission="{ action: ['can view category create'] }"
       >
         <template #icon>
           <n-icon>
