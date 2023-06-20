@@ -22,7 +22,7 @@
 <script lang="ts" setup>
   import { ref } from 'vue';
   import { FormInst } from 'naive-ui';
-  import { createRoleApi } from '@/api/role/role';
+  import { createRecordApi } from '@/api';
 
   const formValue: any = ref({});
   const formRef = ref<FormInst | null>(null);
@@ -39,8 +39,7 @@
     e.preventDefault();
     formRef.value?.validate((errors) => {
       if (!errors) {
-        const { name, permissions } = formValue.value;
-        createRoleApi({ name, permissions }).then((result) => {
+        createRecordApi('/roles', formValue.value).then((result: any) => {
           window['$message'].success(result.message);
           emits('created', result.result);
         });

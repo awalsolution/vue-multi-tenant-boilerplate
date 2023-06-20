@@ -34,7 +34,7 @@
 <script lang="ts" setup>
   import { ref } from 'vue';
   import { FormInst } from 'naive-ui';
-  import { createShopApi } from '@/api/shop/shop';
+  import { createRecordApi } from '@/api';
 
   const formValue: any = ref({});
   const formRef = ref<FormInst | null>(null);
@@ -81,18 +81,7 @@
     e.preventDefault();
     formRef.value?.validate((errors) => {
       if (!errors) {
-        const { shop_name, shop_phone, address, city, state, country, shop_logo, status } =
-          formValue.value;
-        createShopApi({
-          shop_name,
-          shop_phone,
-          address,
-          city,
-          state,
-          country,
-          shop_logo,
-          status,
-        }).then((result) => {
+        createRecordApi('/shops', formValue.value).then((result: any) => {
           window['$message'].success(result.message);
           emits('created', result.result);
         });

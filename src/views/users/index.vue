@@ -143,7 +143,8 @@
 </template>
 
 <script lang="ts" setup>
-  import { getUsersApi, deleteUserApi } from '@/api/user/user';
+  import { deleteRecordApi } from '@/api';
+  import { getUsersApi } from '@/api/user/user';
   import { userPagination } from '@/hooks/userPagination';
   import { usePermission } from '@/hooks/web/usePermission';
   import { ref, onMounted, h, computed } from 'vue';
@@ -204,8 +205,8 @@
   function deleteOperation() {
     const Loading = window['$loading'] || null;
     Loading.start();
-    deleteUserApi(selectedId.value)
-      .then((result) => {
+    deleteRecordApi(`/users/${selectedId.value}`)
+      .then((result: any) => {
         message.success(result.message);
         getList();
         Loading.finish();

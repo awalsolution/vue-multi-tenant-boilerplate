@@ -18,9 +18,6 @@
           placeholder="Enter Password"
         />
       </n-form-item-gi>
-      <!-- <n-form-item-gi :span="12" label="Confirm Password" path="confirmPassword">
-        <n-input v-model:value="formValue.confirmPassword" placeholder="Enter confirm password" />
-      </n-form-item-gi> -->
       <n-form-item-gi :span="12" label="User Type" path="user_type">
         <n-select v-model:value="formValue.user_type" size="medium" :options="options" />
       </n-form-item-gi>
@@ -36,7 +33,7 @@
 <script lang="ts" setup>
   import { ref } from 'vue';
   import { FormInst } from 'naive-ui';
-  import { createUserApi } from '@/api/user/user';
+  import { createRecordApi } from '@/api';
   const options = ref([
     {
       label: 'Vendor',
@@ -71,25 +68,16 @@
       message: 'Please Enter Password',
       trigger: 'blur',
     },
-    confirmPassword: {
-      required: true,
-      message: 'Please Enter confirm password',
-      trigger: 'blur',
-    },
   });
 
   const handleValidateClick = (e: MouseEvent) => {
     e.preventDefault();
     formRef.value?.validate((errors) => {
       if (!errors) {
-        const { first_name, last_name, email, password, confirmPassword, user_type } =
-          formValue.value;
-        createUserApi({ first_name, last_name, email, password, confirmPassword, user_type }).then(
-          (result: any) => {
-            window['$message'].success(result.message);
-            emits('created', result.result);
-          }
-        );
+        createRecordApi('/customers', formValue.value).then((result: any) => {
+          window['$message'].success(result.message);
+          emits('created', result.result);
+        });
       } else {
         console.log(errors);
         window['$message'].error('Please fill out required fields');

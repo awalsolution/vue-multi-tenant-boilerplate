@@ -133,7 +133,8 @@
 </template>
 
 <script lang="ts" setup>
-  import { getUsersApi, deleteUserApi } from '@/api/user/user';
+  import { deleteRecordApi } from '@/api';
+  import { getCustomersApi } from '@/api/customers/customer';
   import { userPagination } from '@/hooks/userPagination';
   import { ref, onMounted, h } from 'vue';
   import { useDialog, useMessage } from 'naive-ui';
@@ -150,7 +151,7 @@
   const selectedId = ref();
   const message = useMessage();
   const { getList, list, page, pageSizes, itemCount, pageSize, params }: any =
-    userPagination(getUsersApi);
+    userPagination(getCustomersApi);
   console.log('customer list ==>', list);
   const renderIcon = (icon: Component) => {
     return () => {
@@ -186,8 +187,8 @@
   function deleteOperation() {
     const Loading = window['$loading'] || null;
     Loading.start();
-    deleteUserApi(selectedId.value)
-      .then((result) => {
+    deleteRecordApi(`/customers/${selectedId.value}`)
+      .then((result: any) => {
         message.success(result.message);
         getList();
         Loading.finish();

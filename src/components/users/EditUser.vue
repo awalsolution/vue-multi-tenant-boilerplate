@@ -32,7 +32,7 @@
 <script lang="ts" setup>
   import { ref } from 'vue';
   import { FormInst } from 'naive-ui';
-  import { getUserApi, updateUserApi } from '@/api/user/user';
+  import { getRecordApi, updateRecordApi } from '@/api';
   const formValue: any = ref({});
   const formRef = ref<FormInst | null>(null);
   const emits = defineEmits(['updated']);
@@ -42,16 +42,31 @@
     },
   });
   // fetch single user using id
-  getUserApi(props.id).then((result) => {
+  getRecordApi(`/users/${props.id}`).then((result) => {
     formValue.value = result;
     formValue.value.permissions = formValue.value.permissions.map((v: any) => v.id);
     formValue.value.roles = formValue.value.roles.map((v: any) => v.id);
   });
 
   const rules = ref({
+    first_name: {
+      required: true,
+      message: 'Please Enter First Name',
+      trigger: 'blur',
+    },
+    last_name: {
+      required: true,
+      message: 'Please Enter last Name',
+      trigger: 'blur',
+    },
     email: {
       required: true,
       message: 'Please Enter email',
+      trigger: 'blur',
+    },
+    password: {
+      required: true,
+      message: 'Please Enter Password',
       trigger: 'blur',
     },
   });
@@ -60,8 +75,7 @@
     e.preventDefault();
     formRef.value?.validate((errors) => {
       if (!errors) {
-        const { email, permissions, roles } = formValue.value;
-        updateUserApi(formValue.value.id, { email, permissions, roles }).then((result) => {
+        updateRecordApi(`/users/${formValue.value.id}`, formValue.value).then((result) => {
           window['$message'].success(result.message);
           emits('updated', result);
         });

@@ -114,7 +114,8 @@
 </template>
 
 <script lang="ts" setup>
-  import { getRolesApi, deleteRoleApi } from '@/api/role/role';
+  import { deleteRecordApi } from '@/api';
+  import { getRolesApi } from '@/api/role/role';
   import { userPagination } from '@/hooks/userPagination';
   import { usePermission } from '@/hooks/web/usePermission';
   import { ref, onMounted, h, computed } from 'vue';
@@ -175,8 +176,8 @@
   function deleteOperation() {
     const Loading = window['$loading'] || null;
     Loading.start();
-    deleteRoleApi(selectedId.value)
-      .then((result) => {
+    deleteRecordApi(`/roles/${selectedId.value}`)
+      .then((result: any) => {
         message.success(result.message);
         getList();
         Loading.finish();

@@ -14,7 +14,7 @@
 <script lang="ts" setup>
   import { ref } from 'vue';
   import { FormInst } from 'naive-ui';
-  import { updatePermissionApi, getPermissionApi } from '@/api/permission/permission';
+  import { getRecordApi, updateRecordApi } from '@/api';
 
   const formValue: any = ref({});
   const formRef = ref<FormInst | null>(null);
@@ -25,17 +25,12 @@
     },
   });
   // get permission for update
-  getPermissionApi(props.id).then((result) => (formValue.value = result));
+  getRecordApi(`/permissions/${props.id}`).then((result: any) => (formValue.value = result));
 
   const rules = ref({
     name: {
       required: true,
       message: 'Please Enter Name',
-      trigger: 'blur',
-    },
-    description: {
-      required: true,
-      message: 'Please Enter Description',
       trigger: 'blur',
     },
   });
@@ -44,11 +39,12 @@
     e.preventDefault();
     formRef.value?.validate((errors) => {
       if (!errors) {
-        const { name } = formValue.value;
-        updatePermissionApi(formValue.value.id, { name }).then((result) => {
-          window['$message'].success(result.message);
-          emits('updated', result);
-        });
+        updateRecordApi(`/permissions/${formValue.value.id}`, formValue.value).then(
+          (result: any) => {
+            window['$message'].success(result.message);
+            emits('updated', result);
+          }
+        );
       } else {
         console.log(errors);
         window['$message'].error('Invalid');

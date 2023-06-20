@@ -106,7 +106,8 @@
 </template>
 
 <script lang="ts" setup>
-  import { getPermissionsApi, deletePermissionApi } from '@/api/permission/permission';
+  import { deleteRecordApi } from '@/api';
+  import { getPermissionsApi } from '@/api/permission/permission';
   import { userPagination } from '@/hooks/userPagination';
   import { usePermission } from '@/hooks/web/usePermission';
   import { ref, onMounted, h } from 'vue';
@@ -168,7 +169,7 @@
   function deleteOperation() {
     const Loading = window['$loading'] || null;
     Loading.start();
-    deletePermissionApi(selectedId.value)
+    deleteRecordApi(`/permissions/${selectedId.value}`)
       .then((result) => {
         message.success(result.message);
         getList();
