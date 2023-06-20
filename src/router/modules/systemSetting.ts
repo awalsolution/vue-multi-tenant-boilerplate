@@ -3,10 +3,12 @@ import { Layout } from '@/router/constant';
 import { SettingsOutline } from '@vicons/ionicons5';
 import { renderIcon } from '@/utils/index';
 
+const routeName = 'system';
+
 const routes: Array<RouteRecordRaw> = [
   {
     path: '/system',
-    name: 'System',
+    name: routeName,
     redirect: '/system/menu',
     component: Layout,
     meta: {
@@ -18,7 +20,7 @@ const routes: Array<RouteRecordRaw> = [
     children: [
       {
         path: 'user',
-        name: 'system_user',
+        name: `${routeName}_user`,
         meta: {
           title: 'Users',
           permissions: ['can view users'],
@@ -27,16 +29,17 @@ const routes: Array<RouteRecordRaw> = [
       },
       {
         path: 'profile',
-        name: 'system_profile',
+        name: `${routeName}_profile`,
         meta: {
           title: 'Profile',
-          permissions: ['can view Profile'],
+          permissions: ['can view profile'],
+          hidden: true,
         },
         component: () => import('@/views/users/Profile.vue'),
       },
       {
         path: 'role',
-        name: 'system_role',
+        name: `${routeName}_role`,
         meta: {
           title: 'Roles',
           permissions: ['can view roles'],
@@ -45,7 +48,7 @@ const routes: Array<RouteRecordRaw> = [
       },
       {
         path: 'permission',
-        name: 'system_permission',
+        name: `${routeName}_permission`,
         meta: {
           title: 'Permissions',
           permissions: ['can view permissions'],

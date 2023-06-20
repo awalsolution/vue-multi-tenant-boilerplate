@@ -1,5 +1,5 @@
 <template>
-  <n-card>
+  <n-card title="Users" v-permission="{ action: ['can view users'] }">
     <n-space :vertical="true">
       <n-input
         type="text"
@@ -24,7 +24,12 @@
               <!-- <th>Status</th> -->
               <th>Address</th>
               <th>Created At</th>
-              <th>Actions</th>
+              <th
+                v-permission="{
+                  action: ['can view user update', 'can view user delete'],
+                }"
+                >Actions</th
+              >
             </tr>
           </thead>
           <tbody>
@@ -58,12 +63,16 @@
                 item?.profile?.country
               }}</td>
               <td>{{ item.created_at }}</td>
-              <td>
+              <td
+                v-permission="{
+                  action: ['can view user update', 'can view user delete'],
+                }"
+              >
                 <n-dropdown
                   @click="actionOperation(item)"
                   :onSelect="selectedAction"
                   trigger="click"
-                  :options="moreOptions"
+                  :options="filteredOptions"
                 >
                   <n-button size="small" :circle="true">
                     <n-icon>
@@ -93,6 +102,7 @@
         :circle="true"
         style="position: fixed; bottom: 30px; right: 40px"
         @click="showModal = true"
+        v-permission="{ action: ['can view user create'] }"
       >
         <template #icon>
           <n-icon>
@@ -135,7 +145,8 @@
 <script lang="ts" setup>
   import { getUsersApi, deleteUserApi } from '@/api/user/user';
   import { userPagination } from '@/hooks/userPagination';
-  import { ref, onMounted, h } from 'vue';
+  import { usePermission } from '@/hooks/web/usePermission';
+  import { ref, onMounted, h, computed } from 'vue';
   import { useDialog, useMessage } from 'naive-ui';
   import type { Component } from 'vue';
   import { NIcon, NPagination } from 'naive-ui';
@@ -148,6 +159,7 @@
   const showModal = ref(false);
   const showEditModal = ref(false);
   const selectedId = ref();
+  const { hasPermission } = usePermission();
   const message = useMessage();
   const { getList, list, page, pageSizes, itemCount, pageSize, params }: any =
     userPagination(getUsersApi);
@@ -165,13 +177,19 @@
       label: 'Edit',
       key: 'edit',
       icon: renderIcon(EditOutlined),
+      permission: hasPermission(['can view user update']),
     },
     {
       label: 'Delete',
       key: 'delete',
       icon: renderIcon(DeleteOutlined),
+      permission: hasPermission(['can view user delete']),
     },
   ]);
+
+  const filteredOptions = computed(() => {
+    return moreOptions.value.filter((option) => option.permission);
+  });
 
   function confirmationDialog() {
     dialog.error({
@@ -201,23 +219,6 @@
     selectedId.value = null;
     selectedOption.value = null;
   }
-
-  // function updateUserStatus(id: any, item: any) {
-  //   const Loading = window['$loading'] || null;
-  //   Loading.start();
-  //   updateUserStatusApi(id, { status: item.status })
-  //     .then((result) => {
-  //       message.success(result.message);
-  //       getList();
-  //       Loading.finish();
-  //       dialog.destroyAll;
-  //     })
-  //     .catch((result) => {
-  //       message.error(result.message);
-  //       Loading.finish();
-  //       dialog.destroyAll;
-  //     });
-  // }
 
   const actionOperation = (item: any) => {
     if (selectedOption.value === 'edit') {

@@ -1,10 +1,22 @@
 <template>
-  <n-card title="Products">
+  <n-card title="Products" v-permission="{ action: ['can view products'] }">
     <template #header-extra>
       <n-space>
-        <n-button type="success" @click="router.push({ name: 'product_add' })"> Add New </n-button>
-        <n-button type="success"> Export </n-button>
-        <n-button type="success" icon-placement="left">
+        <n-button
+          v-permission="{ action: ['can view product create'] }"
+          type="success"
+          @click="router.push({ name: 'product_add' })"
+        >
+          Add New
+        </n-button>
+        <n-button v-permission="{ action: ['can view product export'] }" type="success">
+          Export
+        </n-button>
+        <n-button
+          v-permission="{ action: ['can view product import'] }"
+          type="success"
+          icon-placement="left"
+        >
           Import
           <template #icon>
             <n-icon :component="FileImport" />
@@ -57,7 +69,12 @@
             <th>Slug</th>
             <th>Status</th>
             <th>Created At</th>
-            <th>Actions</th>
+            <th
+              v-permission="{
+                action: ['can view product update', 'can view product delete'],
+              }"
+              >Actions</th
+            >
           </tr>
         </thead>
         <tbody>
@@ -73,7 +90,11 @@
               {{ item.status }}
             </td>
             <td>{{ item.created_at }}</td>
-            <td>
+            <td
+              v-permission="{
+                action: ['can view product update', 'can view product delete'],
+              }"
+            >
               <n-dropdown
                 @click="actionOperation(item)"
                 :onSelect="selectedAction"
@@ -124,7 +145,7 @@
   const message = useMessage();
   const { getList, list, page, pageSizes, itemCount, pageSize, params }: any =
     userPagination(getProductsApi);
-  console.log('product list =>>', list);
+
   const renderIcon = (icon: Component) => {
     return () => {
       return h(NIcon, null, {
