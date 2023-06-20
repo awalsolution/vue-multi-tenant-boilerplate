@@ -32,7 +32,7 @@ const routes: Array<RouteRecordRaw> = [
         name: `${routeName}_add`,
         meta: {
           title: 'Add Product',
-          permissions: ['can view products'],
+          permissions: ['can view product create'],
           hidden: true,
         },
         component: () => import('@/components/products/AddProduct.vue'),
@@ -42,7 +42,7 @@ const routes: Array<RouteRecordRaw> = [
         name: `${routeName}_update`,
         meta: {
           title: 'Update Product',
-          permissions: ['can view products'],
+          permissions: ['can view product update'],
           hidden: true,
         },
         component: () => import('@/components/products/EditProduct.vue'),
@@ -52,7 +52,7 @@ const routes: Array<RouteRecordRaw> = [
         name: `${routeName}_attributes`,
         meta: {
           title: 'Attributes',
-          permissions: ['can view products'],
+          permissions: ['can view attributes'],
         },
         component: () => import('@/views/products/attributes/index.vue'),
       },
@@ -61,7 +61,7 @@ const routes: Array<RouteRecordRaw> = [
         name: `${routeName}_categories`,
         meta: {
           title: 'Categories',
-          permissions: ['can view products'],
+          permissions: ['can view categories'],
         },
         component: () => import('@/views/products/categories/index.vue'),
       },

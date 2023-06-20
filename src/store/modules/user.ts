@@ -107,7 +107,7 @@ export const useUserStore = defineStore({
 
       return _.uniq([...userPermissions, ...rolePermissions]);
     },
-    // Sign out
+    // Logout
     async logout() {
       this.setPermissions([]);
       this.setUserInfo({

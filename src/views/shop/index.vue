@@ -1,5 +1,5 @@
 <template>
-  <n-card>
+  <n-card title="Shops" v-permission="{ action: ['can view shops'] }">
     <n-space :vertical="true">
       <n-input
         type="text"
@@ -18,7 +18,13 @@
             <th>Status</th>
             <th>Address</th>
             <th>Created At</th>
-            <th>Actions</th>
+            <th>Updated At</th>
+            <th
+              v-permission="{
+                action: ['can view permissions update', 'can view permissions delete'],
+              }"
+              >Actions</th
+            >
           </tr>
         </thead>
         <tbody>
@@ -36,12 +42,17 @@
               {{ item?.address + ' ' + item?.city + ' ' + item?.state + ' ' + item?.country }}
             </td>
             <td>{{ item.created_at }}</td>
-            <td>
+            <td>{{ item.updated_at }}</td>
+            <td
+              v-permission="{
+                action: ['can view permissions update', 'can view permissions delete'],
+              }"
+            >
               <n-dropdown
                 @click="actionOperation(item)"
                 :onSelect="selectedAction"
                 trigger="click"
-                :options="moreOptions"
+                :options="filteredOptions"
               >
                 <n-button size="small" :circle="true">
                   <n-icon>
@@ -70,6 +81,7 @@
         :circle="true"
         style="position: fixed; bottom: 30px; right: 40px"
         @click="showModal = true"
+        v-permission="{ action: ['can view shop create'] }"
       >
         <template #icon>
           <n-icon>
@@ -110,9 +122,10 @@
 </template>
 
 <script lang="ts" setup>
-  import { getShopsApi, deleteShopApi, updateShopStatusApi } from '@/api/shop/shop';
+  import { getShopsApi, deleteShopApi } from '@/api/shop/shop';
   import { userPagination } from '@/hooks/userPagination';
-  import { ref, onMounted, h } from 'vue';
+  import { usePermission } from '@/hooks/web/usePermission';
+  import { ref, onMounted, h, computed } from 'vue';
   import { useDialog, useMessage } from 'naive-ui';
   import type { Component } from 'vue';
   import { NIcon, NPagination } from 'naive-ui';
@@ -125,10 +138,11 @@
   const showModal = ref(false);
   const showEditModal = ref(false);
   const selectedId = ref();
+  const { hasPermission } = usePermission();
   const message = useMessage();
   const { getList, list, page, pageSizes, itemCount, pageSize, params }: any =
     userPagination(getShopsApi);
-  console.log('shop list =>>', list);
+
   const renderIcon = (icon: Component) => {
     return () => {
       return h(NIcon, null, {
@@ -142,13 +156,19 @@
       label: 'Edit',
       key: 'edit',
       icon: renderIcon(EditOutlined),
+      permission: hasPermission(['can view shop update']),
     },
     {
       label: 'Delete',
       key: 'delete',
       icon: renderIcon(DeleteOutlined),
+      permission: hasPermission(['can view shop delete']),
     },
   ]);
+
+  const filteredOptions = computed(() => {
+    return moreOptions.value.filter((option) => option.permission);
+  });
 
   function confirmationDialog() {
     dialog.error({

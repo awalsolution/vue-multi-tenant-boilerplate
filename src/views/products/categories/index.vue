@@ -1,5 +1,5 @@
 <template>
-  <n-card>
+  <n-card title="Categories" v-permission="{ action: ['can view categories'] }">
     <n-space :vertical="true">
       <n-input
         type="text"
@@ -14,7 +14,13 @@
             <th>ID</th>
             <th>Category Name</th>
             <th>Created At</th>
-            <th>Actions</th>
+            <th>Created At</th>
+            <th
+              v-permission="{
+                action: ['can view category update', 'can view category delete'],
+              }"
+              >Actions</th
+            >
           </tr>
         </thead>
         <tbody>
@@ -25,12 +31,16 @@
             <td>{{ item.id }}</td>
             <td>{{ item.name }}</td>
             <td>{{ item.created_at }}</td>
-            <td>
+            <td
+              v-permission="{
+                action: ['can view category update', 'can view category delete'],
+              }"
+            >
               <n-dropdown
                 @click="actionOperation(item)"
                 :onSelect="selectedAction"
                 trigger="click"
-                :options="moreOptions"
+                :options="filteredOptions"
               >
                 <n-button size="small" :circle="true">
                   <n-icon>
@@ -57,7 +67,7 @@
         :circle="true"
         style="position: fixed; bottom: 30px; right: 40px"
         @click="showModal = true"
-        v-permission="{ action: ['can view add categories'] }"
+        v-permission="{ action: ['can view add category'] }"
       >
         <template #icon>
           <n-icon>
@@ -101,7 +111,8 @@
   import { deleteRecordApi } from '@/api';
   import { getCategoriesListApi } from '@/api/products/categories/categories';
   import { userPagination } from '@/hooks/userPagination';
-  import { ref, onMounted, h } from 'vue';
+  import { usePermission } from '@/hooks/web/usePermission';
+  import { ref, onMounted, h, computed } from 'vue';
   import { useDialog, useMessage } from 'naive-ui';
   import type { Component } from 'vue';
   import { NIcon, NPagination } from 'naive-ui';
@@ -114,6 +125,7 @@
   const selectedOption: any = ref(null);
   const showEditModal = ref(false);
   const selectedId = ref();
+  const { hasPermission } = usePermission();
   const message = useMessage();
   const { getList, list, page, pageSizes, itemCount, pageSize, params }: any =
     userPagination(getCategoriesListApi);
@@ -131,13 +143,19 @@
       label: 'Edit',
       key: 'edit',
       icon: renderIcon(EditOutlined),
+      permission: hasPermission(['can view category update']),
     },
     {
       label: 'Delete',
       key: 'delete',
       icon: renderIcon(DeleteOutlined),
+      permission: hasPermission(['can view category delete']),
     },
   ]);
+
+  const filteredOptions = computed(() => {
+    return moreOptions.value.filter((option) => option.permission);
+  });
 
   function confirmationDialog() {
     dialog.error({

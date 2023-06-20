@@ -7,8 +7,6 @@
         <!-- <img :src="websiteConfig.loginImage" alt="" /> -->
         <n-h1>InSync CRM Login with Credentials</n-h1>
       </div>
-      <!-- <div class="view-account-top-desc">{{ websiteConfig.loginDesc }}</div> -->
-      <!-- </div> -->
       <div class="view-account-form">
         <n-form
           ref="formRef"
@@ -40,16 +38,6 @@
               </template>
             </n-input>
           </n-form-item>
-          <!-- <n-form-item class="default-color">
-            <div class="flex justify-between">
-              <div class="flex-initial">
-                <n-checkbox v-model:checked="autoLogin">自动登录</n-checkbox>
-              </div>
-              <div class="flex-initial order-last">
-                <a href="javascript:">忘记密码</a>
-              </div>
-            </div>
-          </n-form-item> -->
           <n-form-item>
             <n-button type="primary" @click="handleSubmit" size="large" :loading="loading" block>
               Login
@@ -89,7 +77,7 @@
   });
 
   const rules = {
-    email: { required: true, message: 'Please Enter User Name', trigger: 'blur' },
+    email: { required: true, message: 'Please Enter User Email', trigger: 'blur' },
     password: { required: true, message: 'Please Enter Password', trigger: 'blur' },
   };
 

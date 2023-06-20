@@ -1,5 +1,5 @@
 <template>
-  <n-card>
+  <n-card title="Permissions" v-permission="{ action: ['can view permissions'] }">
     <n-space :vertical="true">
       <n-input
         type="text"
@@ -14,7 +14,13 @@
             <th>ID</th>
             <th>Permission Name</th>
             <th>Created At</th>
-            <th>Actions</th>
+            <th>Updated At</th>
+            <th
+              v-permission="{
+                action: ['can view permissions update', 'can view permissions delete'],
+              }"
+              >Actions</th
+            >
           </tr>
         </thead>
         <tbody>
@@ -22,12 +28,17 @@
             <td>{{ item.id }}</td>
             <td>{{ item.name }}</td>
             <td>{{ item.created_at }}</td>
-            <td>
+            <td>{{ item.updated_at }}</td>
+            <td
+              v-permission="{
+                action: ['can view permissions update', 'can view permissions delete'],
+              }"
+            >
               <n-dropdown
                 @click="actionOperation(item)"
                 :onSelect="selectedAction"
                 trigger="click"
-                :options="moreOptions"
+                :options="filteredOptions"
               >
                 <n-button size="small" :circle="true">
                   <n-icon>
@@ -54,6 +65,7 @@
         :circle="true"
         style="position: fixed; bottom: 30px; right: 40px"
         @click="showModal = true"
+        v-permission="{ action: ['can view permission create'] }"
       >
         <template #icon>
           <n-icon>
@@ -96,6 +108,7 @@
 <script lang="ts" setup>
   import { getPermissionsApi, deletePermissionApi } from '@/api/permission/permission';
   import { userPagination } from '@/hooks/userPagination';
+  import { usePermission } from '@/hooks/web/usePermission';
   import { ref, onMounted, h } from 'vue';
   import { useDialog, useMessage } from 'naive-ui';
   import type { Component } from 'vue';
@@ -103,12 +116,14 @@
   import { MoreOutlined, EditOutlined, DeleteOutlined, PlusOutlined } from '@vicons/antd';
   import AddPermission from '@/components/Permission/AddPermission.vue';
   import EditPermission from '@/components/Permission/EditPermission.vue';
+  import { computed } from 'vue';
 
   const dialog = useDialog();
   const showModal = ref(false);
   const selectedOption: any = ref(null);
   const showEditModal = ref(false);
   const selectedId = ref();
+  const { hasPermission } = usePermission();
   const message = useMessage();
   const { getList, list, page, pageSizes, itemCount, pageSize, params }: any =
     userPagination(getPermissionsApi);
@@ -126,13 +141,19 @@
       label: 'Edit',
       key: 'edit',
       icon: renderIcon(EditOutlined),
+      permission: hasPermission(['can view permission update']),
     },
     {
       label: 'Delete',
       key: 'delete',
       icon: renderIcon(DeleteOutlined),
+      permission: hasPermission(['can view permission delete']),
     },
   ]);
+
+  const filteredOptions = computed(() => {
+    return moreOptions.value.filter((option) => option.permission);
+  });
 
   function confirmationDialog() {
     dialog.error({
