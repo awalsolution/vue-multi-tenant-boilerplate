@@ -14,7 +14,7 @@
             <th>ID</th>
             <th>Attribute Name</th>
             <th>Created At</th>
-            <th>Created At</th>
+            <th>Updated At</th>
             <th
               v-permission="{
                 action: ['can view attribute update', 'can view attribute delete'],
@@ -31,6 +31,7 @@
             <td>{{ item.id }}</td>
             <td>{{ item.name }}</td>
             <td>{{ item.created_at }}</td>
+            <td>{{ item.updated_at }}</td>
             <td
               v-permission="{
                 action: ['can view attribute update', 'can view attribute delete'],
