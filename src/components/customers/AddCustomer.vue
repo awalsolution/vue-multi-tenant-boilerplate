@@ -1,27 +1,165 @@
 <template>
-  <n-form ref="formRef" :label-width="80" :model="formValue" :rules="rules" size="small">
-    <n-grid :span="24" :x-gap="24">
-      <n-form-item-gi :span="12" label="First Name" path="first_name">
-        <n-input v-model:value="formValue.first_name" placeholder="Enter First Name" />
-      </n-form-item-gi>
-      <n-form-item-gi :span="12" label="Last Name" path="last_name">
-        <n-input v-model:value="formValue.last_name" placeholder="Enter Last Name" />
-      </n-form-item-gi>
-      <n-form-item-gi :span="12" label="Email" path="email">
-        <n-input v-model:value="formValue.email" placeholder="Enter Email" />
-      </n-form-item-gi>
-      <n-form-item-gi :span="12" label="Password" path="password">
-        <n-input
-          v-model:value="formValue.password"
-          type="password"
-          showPasswordOn="click"
-          placeholder="Enter Password"
-        />
-      </n-form-item-gi>
-      <n-form-item-gi :span="12" label="User Type" path="user_type">
-        <n-select v-model:value="formValue.user_type" size="medium" :options="options" />
-      </n-form-item-gi>
-    </n-grid>
+  <n-form ref="formRef" :label-width="80" :model="customer" :rules="rules" size="small">
+    <n-space>
+      <n-card title="Personal Information">
+        <n-row :gutter="10">
+          <n-col :span="12">
+            <n-form-item label="First Name" path="first_name">
+              <n-input v-model:value="customer.first_name" placeholder="Enter First Name" />
+            </n-form-item>
+          </n-col>
+          <n-col :span="12">
+            <n-form-item label="Last Name" path="last_name">
+              <n-input v-model:value="customer.last_name" placeholder="Enter Last Name" />
+            </n-form-item>
+          </n-col>
+          <n-col :span="12">
+            <n-form-item label="Email" path="email">
+              <n-input v-model:value="customer.email" placeholder="Enter Email" />
+            </n-form-item>
+          </n-col>
+          <n-col :span="12">
+            <n-form-item label="Phone Number" path="phone">
+              <n-input v-model:value="customer.phone" placeholder="Enter Phone Number" />
+            </n-form-item>
+          </n-col>
+          <n-col :span="12">
+            <n-form-item label="Password" path="password">
+              <n-input
+                v-model:value="customer.password"
+                type="password"
+                showPasswordOn="click"
+                placeholder="Enter Password"
+              />
+            </n-form-item>
+          </n-col>
+        </n-row>
+      </n-card>
+      <n-card title="Shipping Address">
+        <n-row :gutter="10">
+          <n-col :span="12">
+            <n-form-item :span="12" label="First Name" path="first_name">
+              <n-input
+                v-model:value="customer.shipping_address.first_name"
+                placeholder="Enter First Name"
+              />
+            </n-form-item>
+          </n-col>
+          <n-col :span="12">
+            <n-form-item :span="12" label="Last Name" path="last_name">
+              <n-input
+                v-model:value="customer.shipping_address.last_name"
+                placeholder="Enter Last Name"
+              />
+            </n-form-item>
+          </n-col>
+          <n-col :span="12">
+            <n-form-item :span="12" label="Address Phone Number" path="phone_number">
+              <n-input
+                v-model:value="customer.shipping_address.phone_number"
+                placeholder="Enter Phone Number"
+              />
+            </n-form-item>
+          </n-col>
+          <n-col :span="12">
+            <n-form-item :span="12" label="Address" path="address_1">
+              <n-input
+                v-model:value="customer.shipping_address.address_1"
+                placeholder="Enter Address 1"
+              />
+            </n-form-item>
+          </n-col>
+          <n-col :span="12">
+            <n-form-item :span="12" label="Address" path="address_2">
+              <n-input
+                v-model:value="customer.shipping_address.address_2"
+                placeholder="Enter Address 2"
+              />
+            </n-form-item>
+          </n-col>
+          <n-col :span="12">
+            <n-form-item :span="12" label="City" path="city">
+              <n-input v-model:value="customer.shipping_address.city" placeholder="Enter City" />
+            </n-form-item>
+          </n-col>
+          <n-col :span="12">
+            <n-form-item :span="12" label="state" path="state">
+              <n-input v-model:value="customer.shipping_address.state" placeholder="Enter State" />
+            </n-form-item>
+          </n-col>
+          <n-col :span="12">
+            <n-form-item :span="12" label="Country" path="country">
+              <n-input
+                v-model:value="customer.shipping_address.country"
+                placeholder="Enter Country"
+              />
+            </n-form-item>
+          </n-col>
+        </n-row>
+      </n-card>
+      <n-card title="Billing Address">
+        <n-row :gutter="10">
+          <n-col :span="12">
+            <n-form-item :span="12" label="First Name" path="first_name">
+              <n-input
+                v-model:value="customer.billing_address.first_name"
+                placeholder="Enter First Name"
+              />
+            </n-form-item>
+          </n-col>
+          <n-col :span="12">
+            <n-form-item :span="12" label="Last Name" path="last_name">
+              <n-input
+                v-model:value="customer.billing_address.last_name"
+                placeholder="Enter Last Name"
+              />
+            </n-form-item>
+          </n-col>
+          <n-col :span="12">
+            <n-form-item :span="12" label="Address Phone Number" path="phone_number">
+              <n-input
+                v-model:value="customer.billing_address.phone_number"
+                placeholder="Enter Phone Number"
+              />
+            </n-form-item>
+          </n-col>
+          <n-col :span="12">
+            <n-form-item :span="12" label="Address" path="address_1">
+              <n-input
+                v-model:value="customer.billing_address.address_1"
+                placeholder="Enter Address 1"
+              />
+            </n-form-item>
+          </n-col>
+          <n-col :span="12">
+            <n-form-item :span="12" label="Address" path="address_2">
+              <n-input
+                v-model:value="customer.billing_address.address_2"
+                placeholder="Enter Address 2"
+              />
+            </n-form-item>
+          </n-col>
+          <n-col :span="12">
+            <n-form-item :span="12" label="City" path="city">
+              <n-input v-model:value="customer.billing_address.city" placeholder="Enter City" />
+            </n-form-item>
+          </n-col>
+          <n-col :span="12">
+            <n-form-item :span="12" label="state" path="state">
+              <n-input v-model:value="customer.billing_address.state" placeholder="Enter State" />
+            </n-form-item>
+          </n-col>
+          <n-col :span="12">
+            <n-form-item :span="12" label="Country" path="country">
+              <n-input
+                v-model:value="customer.billing_address.country"
+                placeholder="Enter Country"
+              />
+            </n-form-item>
+          </n-col>
+        </n-row>
+      </n-card>
+    </n-space>
     <n-space justify="end">
       <n-form-item :theme-overrides="{ labelHeightSmall: '0', feedbackHeightSmall: '0' }">
         <n-button type="success" @click="handleValidateClick"> Create</n-button>
@@ -34,19 +172,28 @@
   import { ref } from 'vue';
   import { FormInst } from 'naive-ui';
   import { createRecordApi } from '@/api';
-  const options = ref([
-    {
-      label: 'Vendor',
-      value: 'vendor',
-    },
-    {
-      label: 'User',
-      value: 'user',
-    },
-  ]);
-  const formValue: any = ref({});
   const formRef = ref<FormInst | null>(null);
+  const customer: any = ref({
+    shipping_address: {},
+    billing_address: {},
+  });
   const emits = defineEmits(['created']);
+
+  const handleValidateClick = (e: MouseEvent) => {
+    e.preventDefault();
+    formRef.value?.validate((errors) => {
+      console.log('customer info', customer.value);
+      if (!errors) {
+        createRecordApi('/customers', customer.value).then((result: any) => {
+          window['$message'].success(result.message);
+          emits('created', result.result);
+        });
+      } else {
+        console.log(errors);
+        window['$message'].error('Please fill out required fields');
+      }
+    });
+  };
   const rules = ref({
     first_name: {
       required: true,
@@ -68,22 +215,12 @@
       message: 'Please Enter Password',
       trigger: 'blur',
     },
+    phone: {
+      required: true,
+      message: 'Please Enter Password',
+      trigger: 'blur',
+    },
   });
-
-  const handleValidateClick = (e: MouseEvent) => {
-    e.preventDefault();
-    formRef.value?.validate((errors) => {
-      if (!errors) {
-        createRecordApi('/customers', formValue.value).then((result: any) => {
-          window['$message'].success(result.message);
-          emits('created', result.result);
-        });
-      } else {
-        console.log(errors);
-        window['$message'].error('Please fill out required fields');
-      }
-    });
-  };
 </script>
 
 <style lang="less" scoped></style>
