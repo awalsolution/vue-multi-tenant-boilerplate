@@ -1,5 +1,5 @@
 <template>
-  <n-card>
+  <n-card title="Customers" v-permission="{ action: ['can view customers'] }">
     <n-space :vertical="true">
       <n-input
         type="text"
@@ -15,13 +15,18 @@
               <th>ID</th>
               <th>Name</th>
               <th>Email</th>
-              <th>Type</th>
               <th>Phone Number</th>
               <th>Shop Name</th>
-              <!-- <th>Status</th> -->
-              <th>Address</th>
+              <th>Shop Phone</th>
+              <th>Billing Address</th>
+              <th>Shipping Address</th>
               <th>Created At</th>
-              <th>Actions</th>
+              <th
+                v-permission="{
+                  action: ['can view customer update', 'can view customer delete'],
+                }"
+                >Actions</th
+              >
             </tr>
           </thead>
           <tbody>
@@ -30,40 +35,48 @@
             </tr>
             <tr v-else v-for="item in list" :key="item.id">
               <td>{{ item?.id }}</td>
-              <td>{{ item?.profile?.first_name + ' ' + item?.profile?.last_name }}</td>
+              <td>{{ item?.first_name + ' ' + item?.last_name }}</td>
               <td>{{ item?.email }}</td>
-              <td>
-                <n-space>
-                  <n-tag v-for="role in item.roles" :key="role.id" type="success">
-                    {{ role?.name }}
-                  </n-tag>
-                </n-space>
-              </td>
-              <td v-if="item.user_type">{{ item.user_type }}</td>
-              <td>
-                <n-space v-for="permission in item.permissions" :key="permission.id">
-                  {{ permission?.name }}
-                </n-space>
-              </td>
-              <td>{{ item?.profile?.phone_number }}</td>
+              <td>{{ item.phone_number }}</td>
               <td>{{ item?.shop?.shop_name }}</td>
               <td>{{ item?.shop?.shop_phone }}</td>
-              <td>{{
-                item?.profile?.address +
-                ' ' +
-                item?.profile?.city +
-                ' ' +
-                item?.profile?.state +
-                ' ' +
-                item?.profile?.country
-              }}</td>
-              <td>{{ item.created_at }}</td>
               <td>
+                <n-space>
+                  {{
+                    item?.billing_address.street +
+                    ' ' +
+                    item?.billing_address?.city +
+                    ' ' +
+                    item?.billing_address?.state +
+                    ' ' +
+                    item?.billing_address?.country
+                  }}
+                </n-space>
+              </td>
+              <td>
+                <n-space>
+                  {{
+                    item?.shipping_address.street +
+                    ' ' +
+                    item?.shipping_address?.city +
+                    ' ' +
+                    item?.shipping_address?.state +
+                    ' ' +
+                    item?.shipping_address?.country
+                  }}
+                </n-space>
+              </td>
+              <td>{{ item.created_at }}</td>
+              <td
+                v-permission="{
+                  action: ['can view customer update', 'can view customer delete'],
+                }"
+              >
                 <n-dropdown
                   @click="actionOperation(item)"
                   :onSelect="selectedAction"
                   trigger="click"
-                  :options="moreOptions"
+                  :options="filteredOptions"
                 >
                   <n-button size="small" :circle="true">
                     <n-icon>
@@ -93,6 +106,7 @@
         :circle="true"
         style="position: fixed; bottom: 30px; right: 40px"
         @click="showModal = true"
+        v-permission="{ action: ['can view customer create'] }"
       >
         <template #icon>
           <n-icon>
@@ -100,7 +114,7 @@
           </n-icon>
         </template>
       </n-button>
-      <n-modal style="width: 70%" v-model:show="showModal" preset="dialog">
+      <n-modal style="width: 50%" v-model:show="showModal" preset="dialog">
         <template #header>
           <div>Create New Customer</div>
         </template>
@@ -114,7 +128,7 @@
         </n-space>
       </n-modal>
 
-      <n-modal style="width: 70%" v-model:show="showEditModal" preset="dialog">
+      <n-modal style="width: 50%" v-model:show="showEditModal" preset="dialog">
         <template #header>
           <div>Update Customer</div>
         </template>
@@ -133,24 +147,27 @@
 </template>
 
 <script lang="ts" setup>
-  import { getUsersApi, deleteUserApi } from '@/api/user/user';
+  import { deleteRecordApi } from '@/api';
+  import { getCustomersApi } from '@/api/customer/customer';
   import { userPagination } from '@/hooks/userPagination';
-  import { ref, onMounted, h } from 'vue';
+  import { usePermission } from '@/hooks/web/usePermission';
+  import { ref, onMounted, h, computed } from 'vue';
   import { useDialog, useMessage } from 'naive-ui';
   import type { Component } from 'vue';
   import { NIcon, NPagination } from 'naive-ui';
   import { MoreOutlined, EditOutlined, DeleteOutlined, PlusOutlined } from '@vicons/antd';
-  import AddCustomer from '@/components/customers/AddCustomer.vue.js';
-  import EditCustomer from '@/components/customers/EditCustomer.vue.js';
+  import AddCustomer from '@/components/customer/AddCustomer.vue';
+  import EditCustomer from '@/components/customer/EditCustomer.vue';
 
   const dialog = useDialog();
   const selectedOption: any = ref(null);
   const showModal = ref(false);
   const showEditModal = ref(false);
   const selectedId = ref();
+  const { hasPermission } = usePermission();
   const message = useMessage();
   const { getList, list, page, pageSizes, itemCount, pageSize, params }: any =
-    userPagination(getUsersApi);
+    userPagination(getCustomersApi);
   console.log('customer list ==>', list);
   const renderIcon = (icon: Component) => {
     return () => {
@@ -165,13 +182,19 @@
       label: 'Edit',
       key: 'edit',
       icon: renderIcon(EditOutlined),
+      permission: hasPermission(['can view user update']),
     },
     {
       label: 'Delete',
       key: 'delete',
       icon: renderIcon(DeleteOutlined),
+      permission: hasPermission(['can view user delete']),
     },
   ]);
+
+  const filteredOptions = computed(() => {
+    return moreOptions.value.filter((option) => option.permission);
+  });
 
   function confirmationDialog() {
     dialog.error({
@@ -186,8 +209,8 @@
   function deleteOperation() {
     const Loading = window['$loading'] || null;
     Loading.start();
-    deleteUserApi(selectedId.value)
-      .then((result) => {
+    deleteRecordApi(`/customers/${selectedId.value}`)
+      .then((result: any) => {
         message.success(result.message);
         getList();
         Loading.finish();
@@ -258,3 +281,4 @@
     font-style: italic;
   }
 </style>
+@/api/customer/customer

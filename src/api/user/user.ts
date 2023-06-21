@@ -22,46 +22,7 @@ export function getUsersApi(params: any) {
     params,
   });
 }
-/**
- * @description: Get single user
- */
-export function getUserApi(id: number | undefined) {
-  return http.request({
-    url: `/users/${id}`,
-    method: 'get',
-  });
-}
 
-/**
- * @description: create new user
- */
-export function createUserApi(params: any) {
-  return http.request<BasicResponseModel>(
-    {
-      url: '/users',
-      method: 'POST',
-      params,
-    },
-    {
-      isTransformResponse: false,
-    }
-  );
-}
-/**
- * @description: update user
- */
-export function updateUserApi(id: number, params: any) {
-  return http.request<BasicResponseModel>(
-    {
-      url: `/users/${id}`,
-      method: 'PUT',
-      params,
-    },
-    {
-      isTransformResponse: false,
-    }
-  );
-}
 /**
  * @description: update user status
  */
@@ -92,14 +53,4 @@ export function profileUpdateApi(id: number, params: any) {
       isTransformResponse: false,
     }
   );
-}
-
-/**
- * @description: delete user
- */
-export function deleteUserApi(id: number) {
-  return http.request<BasicResponseModel>({
-    url: `/users/${id}`,
-    method: 'DELETE',
-  });
 }

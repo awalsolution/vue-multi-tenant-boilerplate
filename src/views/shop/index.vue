@@ -122,7 +122,8 @@
 </template>
 
 <script lang="ts" setup>
-  import { getShopsApi, deleteShopApi } from '@/api/shop/shop';
+  import { deleteRecordApi } from '@/api';
+  import { getShopsApi } from '@/api/shop/shop';
   import { userPagination } from '@/hooks/userPagination';
   import { usePermission } from '@/hooks/web/usePermission';
   import { ref, onMounted, h, computed } from 'vue';
@@ -183,8 +184,8 @@
   function deleteOperation() {
     const Loading = window['$loading'] || null;
     Loading.start();
-    deleteShopApi(selectedId.value)
-      .then((result) => {
+    deleteRecordApi(`/shops/${selectedId.value}`)
+      .then((result: any) => {
         message.success(result.message);
         getList();
         Loading.finish();

@@ -34,7 +34,7 @@
 <script lang="ts" setup>
   import { ref } from 'vue';
   import { FormInst } from 'naive-ui';
-  import { getShopApi, updateShopApi } from '@/api/shop/shop';
+  import { getRecordApi, updateRecordApi } from '@/api';
   const formValue: any = ref({});
   const formRef = ref<FormInst | null>(null);
   const emits = defineEmits(['updated']);
@@ -44,8 +44,7 @@
     },
   });
   // fetch single Shop  using id
-  getShopApi(props.id).then((result) => {
-    console.log('fetch shop ==>', result);
+  getRecordApi(`/shops/${props.id}`).then((result: any) => {
     formValue.value = result;
   });
 
@@ -91,16 +90,7 @@
     e.preventDefault();
     formRef.value?.validate((errors) => {
       if (!errors) {
-        const { shop_name, shop_phone, address, city, state, country, shop_logo } = formValue.value;
-        updateShopApi(formValue.value.id, {
-          shop_name,
-          shop_phone,
-          address,
-          city,
-          state,
-          country,
-          shop_logo,
-        }).then((result) => {
+        updateRecordApi(`/shops/${formValue.value.id}`, formValue.value).then((result: any) => {
           window['$message'].success(result.message);
           emits('updated', result);
         });

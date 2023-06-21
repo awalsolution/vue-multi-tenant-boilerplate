@@ -22,7 +22,7 @@
 <script lang="ts" setup>
   import { ref } from 'vue';
   import { FormInst } from 'naive-ui';
-  import { getRoleApi, updateRoleApi } from '@/api/role/role';
+  import { getRecordApi, updateRecordApi } from '@/api';
   const formValue: any = ref({});
   const formRef = ref<FormInst | null>(null);
   const emits = defineEmits(['updated']);
@@ -32,7 +32,7 @@
     },
   });
   // fetch single Role  using id
-  getRoleApi(props.id).then((result) => {
+  getRecordApi(`/roles/${props.id}`).then((result: any) => {
     formValue.value = result;
     formValue.value.permissions = formValue.value.permissions.map((v: any) => v.id);
   });
@@ -49,8 +49,7 @@
     e.preventDefault();
     formRef.value?.validate((errors) => {
       if (!errors) {
-        const { name, permissions } = formValue.value;
-        updateRoleApi(formValue.value.id, { name, permissions }).then((result) => {
+        updateRecordApi(`/roles/${formValue.value.id}`, formValue.value).then((result: any) => {
           window['$message'].success(result.message);
           emits('updated', result);
         });
