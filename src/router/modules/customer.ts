@@ -25,7 +25,7 @@ const routes: Array<RouteRecordRaw> = [
           title: 'Customer',
           permissions: ['can view customers'],
         },
-        component: () => import('@/views/customers/index.vue'),
+        component: () => import('@/views/customer/index.vue'),
       },
     ],
   },

@@ -18,8 +18,8 @@
               <th>Phone Number</th>
               <th>Shop Name</th>
               <th>Shop Phone</th>
-              <th>Shipping Address</th>
               <th>Billing Address</th>
+              <th>Shipping Address</th>
               <th>Created At</th>
               <th
                 v-permission="{
@@ -37,21 +37,32 @@
               <td>{{ item?.id }}</td>
               <td>{{ item?.first_name + ' ' + item?.last_name }}</td>
               <td>{{ item?.email }}</td>
-              <td>{{ item.phone }}</td>
+              <td>{{ item.phone_number }}</td>
               <td>{{ item?.shop?.shop_name }}</td>
               <td>{{ item?.shop?.shop_phone }}</td>
-              <td v-for="address in item.customer_addresses" :key="address.id">
+              <td>
                 <n-space>
                   {{
-                    address?.address_1 +
+                    item?.billing_address.street +
                     ' ' +
-                    address?.address_2 +
+                    item?.billing_address?.city +
                     ' ' +
-                    address?.city +
+                    item?.billing_address?.state +
                     ' ' +
-                    address?.state +
+                    item?.billing_address?.country
+                  }}
+                </n-space>
+              </td>
+              <td>
+                <n-space>
+                  {{
+                    item?.shipping_address.street +
                     ' ' +
-                    address?.country
+                    item?.shipping_address?.city +
+                    ' ' +
+                    item?.shipping_address?.state +
+                    ' ' +
+                    item?.shipping_address?.country
                   }}
                 </n-space>
               </td>
@@ -137,7 +148,7 @@
 
 <script lang="ts" setup>
   import { deleteRecordApi } from '@/api';
-  import { getCustomersApi } from '@/api/customers/customer';
+  import { getCustomersApi } from '@/api/customer/customer';
   import { userPagination } from '@/hooks/userPagination';
   import { usePermission } from '@/hooks/web/usePermission';
   import { ref, onMounted, h, computed } from 'vue';
@@ -145,8 +156,8 @@
   import type { Component } from 'vue';
   import { NIcon, NPagination } from 'naive-ui';
   import { MoreOutlined, EditOutlined, DeleteOutlined, PlusOutlined } from '@vicons/antd';
-  import AddCustomer from '@/components/customers/AddCustomer.vue';
-  import EditCustomer from '@/components/customers/EditCustomer.vue';
+  import AddCustomer from '@/components/customer/AddCustomer.vue';
+  import EditCustomer from '@/components/customer/EditCustomer.vue';
 
   const dialog = useDialog();
   const selectedOption: any = ref(null);
@@ -270,3 +281,4 @@
     font-style: italic;
   }
 </style>
+@/api/customer/customer
