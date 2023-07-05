@@ -54,3 +54,9 @@ export function profileUpdateApi(id: number, params: any) {
     }
   );
 }
+
+// export function imageUpload(params: any) {
+//   const res = http.uploadFile<BasicResponseModel>({ url: '/upload' }, { file: params });
+//   console.log(res);
+//   // return;
+// }

@@ -25,11 +25,7 @@
         </div>
 
         <!--Upload picture-->
-        <div
-          class="upload-card-item upload-card-item-select-picture"
-          :style="getCSSProperties"
-          v-if="imgList.length < maxNumber"
-        >
+        <div class="upload-card-item upload-card-item-select-picture" :style="getCSSProperties">
           <n-upload
             v-bind="$props"
             :file-list-style="{ display: 'none' }"
@@ -46,13 +42,6 @@
         </div>
       </div>
     </div>
-
-    <!--Upload picture-->
-    <n-space>
-      <n-alert title="hint" type="info" v-if="helpText" class="flex w-full">
-        {{ helpText }}
-      </n-alert>
-    </n-space>
   </div>
 
   <!--Preview image-->
@@ -110,7 +99,8 @@
       watch(
         () => props.value,
         () => {
-          state.imgList = props.value.map((item) => {
+          console.log('props', props);
+          state.imgList = props.value?.map((item) => {
             return getImgUrl(item);
           });
         },
@@ -155,7 +145,6 @@
         const fileInfo = file.file;
         const { maxSize, accept } = props;
         const acceptRef = (isString(accept) && accept.split(',')) || [];
-
         // Set the maximum value, then judge
         if (maxSize && fileInfo.size / 1024 / 1024 >= maxSize) {
           message.error(`The maximum upload file size cannot exceed${maxSize}M`);
@@ -168,7 +157,6 @@
           message.error(`Only upload file type is ${fileType.join(',')}`);
           return false;
         }
-
         return true;
       }
 
@@ -181,9 +169,7 @@
         const result = res[infoField];
         //success
         if (code === ResultEnum.SUCCESS) {
-          let imgUrl: string = getImgUrl(result.photo);
-          state.imgList.push(imgUrl);
-          state.originalImgList.push(result.photo);
+          state.originalImgList.push(result);
           emit('uploadChange', state.originalImgList);
         } else message.error(message);
       }

@@ -274,13 +274,3 @@ function createAxios(opt?: Partial<CreateAxiosOptions>) {
 }
 
 export const http = createAxios();
-
-// Project, multiple different api addresses, export multiple directly here
-// The interface in src/api ts can use this request alone,
-// import { httpTwo } from '@/utils/http/axios'
-// export const httpTwo = createAxios({
-// requestOptions: {
-// apiUrl: 'http://localhost:9001',
-// urlPrefix: 'api',
-// },
-// });
