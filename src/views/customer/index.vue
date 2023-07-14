@@ -281,4 +281,3 @@
     font-style: italic;
   }
 </style>
-@/api/customer/customer

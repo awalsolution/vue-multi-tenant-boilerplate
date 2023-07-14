@@ -3,21 +3,16 @@
     <div class="upload">
       <div class="upload-card">
         <!--Image List-->
-        <div
-          class="upload-card-item"
-          :style="getCSSProperties"
-          v-for="(item, index) in imgList"
-          :key="`img_${index}`"
-        >
+        <div class="upload-card-item" :style="getCSSProperties">
           <div class="upload-card-item-info">
             <div class="img-box">
-              <img :src="item" />
+              <img :src="imgList" />
             </div>
             <div class="img-box-actions">
-              <n-icon size="18" class="mx-2 action-icon" @click="preview(item)">
+              <n-icon size="18" class="mx-2 action-icon" @click="preview(imgList)">
                 <EyeOutlined />
               </n-icon>
-              <n-icon size="18" class="mx-2 action-icon" @click="remove(index)">
+              <n-icon size="18" class="mx-2 action-icon" @click="remove()">
                 <DeleteOutlined />
               </n-icon>
             </div>
@@ -25,11 +20,7 @@
         </div>
 
         <!--Upload picture-->
-        <div
-          class="upload-card-item upload-card-item-select-picture"
-          :style="getCSSProperties"
-          v-if="imgList.length < maxNumber"
-        >
+        <div class="upload-card-item upload-card-item-select-picture" :style="getCSSProperties">
           <n-upload
             v-bind="$props"
             :file-list-style="{ display: 'none' }"
@@ -46,13 +37,6 @@
         </div>
       </div>
     </div>
-
-    <!--Upload picture-->
-    <n-space>
-      <n-alert title="hint" type="info" v-if="helpText" class="flex w-full">
-        {{ helpText }}
-      </n-alert>
-    </n-space>
   </div>
 
   <!--Preview image-->
@@ -102,18 +86,14 @@
       const state = reactive({
         showModal: false,
         previewUrl: '',
-        originalImgList: [] as string[],
-        imgList: [] as string[],
+        originalImgList: '',
+        imgList: '',
       });
 
       //Assign the default image display
       watch(
         () => props.value,
-        () => {
-          state.imgList = props.value.map((item) => {
-            return getImgUrl(item);
-          });
-        },
+        () => (state.imgList = getImgUrl(props.value)),
         { immediate: true }
       );
 
@@ -124,15 +104,15 @@
       }
 
       //delete
-      function remove(index: number) {
+      function remove() {
         dialog.info({
           title: 'Prompt',
           content: 'Are you sure you want to delete? ',
           positiveText: 'OK',
           negativeText: 'Cancel',
           onPositiveClick: () => {
-            state.imgList.splice(index, 1);
-            state.originalImgList.splice(index, 1);
+            state.imgList;
+            state.originalImgList;
             emit('uploadChange', state.originalImgList);
             emit('delete', state.originalImgList);
           },
@@ -155,7 +135,6 @@
         const fileInfo = file.file;
         const { maxSize, accept } = props;
         const acceptRef = (isString(accept) && accept.split(',')) || [];
-
         // Set the maximum value, then judge
         if (maxSize && fileInfo.size / 1024 / 1024 >= maxSize) {
           message.error(`The maximum upload file size cannot exceed${maxSize}M`);
@@ -168,7 +147,6 @@
           message.error(`Only upload file type is ${fileType.join(',')}`);
           return false;
         }
-
         return true;
       }
 
@@ -181,9 +159,7 @@
         const result = res[infoField];
         //success
         if (code === ResultEnum.SUCCESS) {
-          let imgUrl: string = getImgUrl(result.photo);
-          state.imgList.push(imgUrl);
-          state.originalImgList.push(result.photo);
+          state.originalImgList = result;
           emit('uploadChange', state.originalImgList);
         } else message.error(message);
       }
