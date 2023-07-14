@@ -3,21 +3,16 @@
     <div class="upload">
       <div class="upload-card">
         <!--Image List-->
-        <div
-          class="upload-card-item"
-          :style="getCSSProperties"
-          v-for="(item, index) in imgList"
-          :key="`img_${index}`"
-        >
+        <div class="upload-card-item" :style="getCSSProperties">
           <div class="upload-card-item-info">
             <div class="img-box">
-              <img :src="item" />
+              <img :src="imgList" />
             </div>
             <div class="img-box-actions">
-              <n-icon size="18" class="mx-2 action-icon" @click="preview(item)">
+              <n-icon size="18" class="mx-2 action-icon" @click="preview(imgList)">
                 <EyeOutlined />
               </n-icon>
-              <n-icon size="18" class="mx-2 action-icon" @click="remove(index)">
+              <n-icon size="18" class="mx-2 action-icon" @click="remove()">
                 <DeleteOutlined />
               </n-icon>
             </div>
@@ -91,19 +86,14 @@
       const state = reactive({
         showModal: false,
         previewUrl: '',
-        originalImgList: [] as string[],
-        imgList: [] as string[],
+        originalImgList: '',
+        imgList: '',
       });
 
       //Assign the default image display
       watch(
         () => props.value,
-        () => {
-          console.log('props', props);
-          state.imgList = props.value?.map((item) => {
-            return getImgUrl(item);
-          });
-        },
+        () => (state.imgList = getImgUrl(props.value)),
         { immediate: true }
       );
 
@@ -114,15 +104,15 @@
       }
 
       //delete
-      function remove(index: number) {
+      function remove() {
         dialog.info({
           title: 'Prompt',
           content: 'Are you sure you want to delete? ',
           positiveText: 'OK',
           negativeText: 'Cancel',
           onPositiveClick: () => {
-            state.imgList.splice(index, 1);
-            state.originalImgList.splice(index, 1);
+            state.imgList;
+            state.originalImgList;
             emit('uploadChange', state.originalImgList);
             emit('delete', state.originalImgList);
           },
@@ -169,7 +159,7 @@
         const result = res[infoField];
         //success
         if (code === ResultEnum.SUCCESS) {
-          state.originalImgList.push(result);
+          state.originalImgList = result;
           emit('uploadChange', state.originalImgList);
         } else message.error(message);
       }

@@ -1,4 +1,4 @@
-import type { PropType } from 'vue';
+// import type { PropType } from 'vue';
 import { NUpload } from 'naive-ui';
 
 export const basicProps = {
@@ -8,27 +8,27 @@ export const basicProps = {
     default: '.jpg,.png,.jpeg,.svg,.gif',
   },
   helpText: {
-    type: String as PropType<string>,
+    type: String,
     default: '',
   },
   maxSize: {
-    type: Number as PropType<number>,
+    type: Number,
     default: 2,
   },
   maxNumber: {
-    type: Number as PropType<number>,
+    type: Number,
     default: Infinity,
   },
   value: {
-    type: Array as PropType<string[]>,
-    default: () => [],
+    type: String,
+    default: '',
   },
   width: {
-    type: Number as PropType<number>,
+    type: Number,
     default: 104,
   },
   height: {
-    type: Number as PropType<number>,
-    default: 104, //It is recommended not to be smaller than this size. If the page is too small, there may be abnormalities displayed
+    type: Number,
+    default: 104,
   },
 };
