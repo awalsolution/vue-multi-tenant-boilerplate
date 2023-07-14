@@ -1,4 +1,3 @@
-<!-- eslint-disable vue/v-on-event-hyphenation -->
 <template>
   <n-card title="Profile" v-permission="{ action: ['can view profile'] }">
     <n-form ref="formRef" :label-width="80" :model="profileData" size="small">
@@ -28,10 +27,10 @@
           <BasicUpload
             :action="uploadUrl"
             :data="{ type: 0 }"
-            name="profile_picture"
+            name="images"
             :width="100"
             :height="100"
-            @uploadChange="uploadChange"
+            @upload-change="uploadChange"
             v-model:value="profileData.profile_picture"
           />
         </n-form-item-gi>
@@ -60,9 +59,9 @@
   const emits = defineEmits(['updated']);
   const { uploadUrl } = globSetting;
 
-  function uploadChange(list: string[]) {
+  const uploadChange = (list: string) => {
     profileData.value.profile_picture = unref(list);
-  }
+  };
   const handleValidateClick = (e: MouseEvent) => {
     e.preventDefault();
     formRef.value?.validate((errors) => {

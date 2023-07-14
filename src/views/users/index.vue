@@ -14,6 +14,7 @@
             <tr>
               <th>ID</th>
               <th>Name</th>
+              <th>Picture</th>
               <th>Email</th>
               <th>Role</th>
               <th>User Type</th>
@@ -36,6 +37,9 @@
             <tr v-for="item in list" :key="item.id">
               <td>{{ item?.id }}</td>
               <td>{{ item?.profile?.first_name + ' ' + item?.profile?.last_name }}</td>
+              <td>
+                <n-avatar round size="large" :src="`${imgUrl}${item?.profile.profile_picture}`" />
+              </td>
               <td>{{ item?.email }}</td>
               <td>
                 <n-space>
@@ -154,7 +158,10 @@
   import { MoreOutlined, EditOutlined, DeleteOutlined, PlusOutlined } from '@vicons/antd';
   import AddUser from '@/components/users/AddUser.vue';
   import EditUser from '@/components/users/EditUser.vue';
+  import { useGlobSetting } from '@/hooks/setting';
 
+  const globSetting = useGlobSetting();
+  const { imgUrl } = globSetting;
   const dialog = useDialog();
   const selectedOption: any = ref(null);
   const showModal = ref(false);

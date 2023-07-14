@@ -30,7 +30,9 @@
         <tbody>
           <tr v-for="item in list" :key="item.id">
             <td>{{ item?.id }}</td>
-            <td>{{ item?.shop_logo }}</td>
+            <td>
+              <n-avatar round size="large" :src="`${imgUrl}${item?.shop_logo}`" />
+            </td>
             <td>{{ item?.shop_name }}</td>
             <td>{{ item?.shop_phone }}</td>
             <td>
@@ -133,7 +135,10 @@
   import { MoreOutlined, EditOutlined, DeleteOutlined, PlusOutlined } from '@vicons/antd';
   import AddShop from '@/components/shop/AddShop.vue';
   import EditShop from '@/components/shop/EditShop.vue';
+  import { useGlobSetting } from '@/hooks/setting';
 
+  const globSetting = useGlobSetting();
+  const { imgUrl } = globSetting;
   const dialog = useDialog();
   const selectedOption: any = ref(null);
   const showModal = ref(false);
