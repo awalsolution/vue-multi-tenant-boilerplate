@@ -19,8 +19,16 @@
       <n-form-item-gi :span="8" style="padding-top: 4px" label="Country" path="country">
         <n-input v-model:value="formValue.country" placeholder="Enter Country" />
       </n-form-item-gi>
-      <n-form-item-gi :span="8" style="padding-top: 4px" label="Logo" path="shop_logo">
-        <n-input v-model:value="formValue.shop_logo" placeholder="Enter Logo" />
+      <n-form-item-gi :span="8" path="shop_logo">
+        <BasicUpload
+          :action="uploadUrl"
+          :data="{ type: 0 }"
+          name="images"
+          :width="100"
+          :height="100"
+          @upload-change="uploadChange"
+          v-model:value="formValue.shop_logo"
+        />
       </n-form-item-gi>
     </n-grid>
     <n-space justify="end">
@@ -32,9 +40,14 @@
 </template>
 
 <script lang="ts" setup>
-  import { ref } from 'vue';
+  import { ref, unref } from 'vue';
   import { FormInst } from 'naive-ui';
   import { getRecordApi, updateRecordApi } from '@/api';
+  import { BasicUpload } from '@/components/Upload';
+  import { useGlobSetting } from '@/hooks/setting';
+
+  const globSetting = useGlobSetting();
+  const { uploadUrl } = globSetting;
   const formValue: any = ref({});
   const formRef = ref<FormInst | null>(null);
   const emits = defineEmits(['updated']);
@@ -43,6 +56,11 @@
       type: Number,
     },
   });
+
+  const uploadChange = (list: string) => {
+    formValue.value.shop_logo = unref(list);
+  };
+
   // fetch single Shop  using id
   getRecordApi(`/shops/${props.id}`).then((result: any) => {
     formValue.value = result;

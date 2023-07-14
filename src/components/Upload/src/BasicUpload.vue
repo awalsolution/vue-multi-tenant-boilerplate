@@ -3,7 +3,7 @@
     <div class="upload">
       <div class="upload-card">
         <!--Image List-->
-        <div class="upload-card-item" :style="getCSSProperties">
+        <div v-if="imgList" class="upload-card-item" :style="getCSSProperties">
           <div class="upload-card-item-info">
             <div class="img-box">
               <img :src="imgList" />
@@ -123,7 +123,7 @@
       //Assemble the complete image address
       function getImgUrl(url: string): string {
         const { imgUrl } = globSetting;
-        return /(^http|https:\/\/)/g.test(url) ? url : `${imgUrl}${url}`;
+        return url ? (/(^http|https:\/\/)/g.test(url) ? url : `${imgUrl}${url}`) : '';
       }
 
       function checkFileType(fileType: string) {

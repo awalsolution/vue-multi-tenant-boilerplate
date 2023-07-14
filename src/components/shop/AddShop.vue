@@ -19,8 +19,16 @@
       <n-form-item-gi :span="8" style="padding-top: 4px" label="Country" path="country">
         <n-input v-model:value="formValue.country" placeholder="Enter Country" />
       </n-form-item-gi>
-      <n-form-item-gi :span="8" style="padding-top: 4px" label="Logo" path="shop_logo">
-        <n-input v-model:value="formValue.shop_logo" placeholder="Enter Logo" />
+      <n-form-item-gi :span="8" path="shop_logo">
+        <BasicUpload
+          :action="uploadUrl"
+          :data="{ type: 0 }"
+          name="images"
+          :width="100"
+          :height="100"
+          @upload-change="uploadChange"
+          v-model:value="formValue.shop_logo"
+        />
       </n-form-item-gi>
     </n-grid>
     <n-space justify="end">
@@ -32,13 +40,38 @@
 </template>
 
 <script lang="ts" setup>
-  import { ref } from 'vue';
+  import { ref, unref } from 'vue';
   import { FormInst } from 'naive-ui';
   import { createRecordApi } from '@/api';
+  import { BasicUpload } from '@/components/Upload';
+  import { useGlobSetting } from '@/hooks/setting';
 
+  const globSetting = useGlobSetting();
+  const { uploadUrl } = globSetting;
   const formValue: any = ref({});
   const formRef = ref<FormInst | null>(null);
   const emits = defineEmits(['created']);
+
+  const uploadChange = (list: string) => {
+    formValue.value.shop_logo = unref(list);
+  };
+
+  const handleValidateClick = (e: MouseEvent) => {
+    e.preventDefault();
+    formRef.value?.validate((errors) => {
+      if (!errors) {
+        console.log(formValue.value);
+        createRecordApi('/shops', formValue.value).then((result: any) => {
+          window['$message'].success(result.message);
+          emits('created', result.result);
+        });
+      } else {
+        console.log(errors);
+        window['$message'].error('Please fill out required fields');
+      }
+    });
+  };
+
   const rules = ref({
     shop_name: {
       required: true,
@@ -76,21 +109,6 @@
       trigger: 'blur',
     },
   });
-
-  const handleValidateClick = (e: MouseEvent) => {
-    e.preventDefault();
-    formRef.value?.validate((errors) => {
-      if (!errors) {
-        createRecordApi('/shops', formValue.value).then((result: any) => {
-          window['$message'].success(result.message);
-          emits('created', result.result);
-        });
-      } else {
-        console.log(errors);
-        window['$message'].error('Please fill out required fields');
-      }
-    });
-  };
 </script>
 
 <style lang="less" scoped></style>
