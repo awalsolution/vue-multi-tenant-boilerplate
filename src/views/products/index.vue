@@ -80,7 +80,9 @@
         <tbody>
           <tr v-for="item in list" :key="item.id">
             <td>{{ item.id }}</td>
-            <td>{{ item.product_images }}</td>
+            <td>
+              <n-avatar round size="large" :src="`${imgUrl}${item.product_images}`" />
+            </td>
             <td>{{ item.title }}</td>
             <td>{{ item.product_sku }}</td>
             <td>{{ item.price }}</td>
@@ -137,7 +139,10 @@
   import { MoreOutlined, EditOutlined, DeleteOutlined } from '@vicons/antd';
   import { FileImport } from '@vicons/tabler';
   import { Search20Regular } from '@vicons/fluent';
+  import { useGlobSetting } from '@/hooks/setting';
 
+  const globSetting = useGlobSetting();
+  const { imgUrl } = globSetting;
   const router = useRouter();
   const dialog = useDialog();
   const selectedOption: any = ref(null);

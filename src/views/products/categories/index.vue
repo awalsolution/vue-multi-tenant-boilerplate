@@ -13,6 +13,7 @@
           <tr>
             <th>ID</th>
             <th>Category Name</th>
+            <th>Image</th>
             <th>Created At</th>
             <th>Updated At</th>
             <th
@@ -30,6 +31,9 @@
           <tr v-else v-for="item in list" :key="item.id">
             <td>{{ item.id }}</td>
             <td>{{ item.name }}</td>
+            <td>
+              <n-avatar round size="large" :src="`${imgUrl}${item.images}`" />
+            </td>
             <td>{{ item.created_at }}</td>
             <td>{{ item.updated_at }}</td>
             <td
@@ -120,7 +124,10 @@
   import { MoreOutlined, EditOutlined, DeleteOutlined, PlusOutlined } from '@vicons/antd';
   import AddCategory from '@/components/products/categories/AddCategory.vue';
   import EditCategory from '@/components/products/categories/EditCategory.vue';
+  import { useGlobSetting } from '@/hooks/setting';
 
+  const globSetting = useGlobSetting();
+  const { imgUrl } = globSetting;
   const dialog = useDialog();
   const showModal = ref(false);
   const selectedOption: any = ref(null);
