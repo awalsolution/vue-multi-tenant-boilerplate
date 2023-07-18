@@ -127,10 +127,15 @@
                   </n-form-item>
                 </n-col>
                 <n-col :span="12">
-                  <n-form-item label="Product Image" path="product_image">
-                    <n-input
+                  <n-form-item :span="8" path="product_image">
+                    <BasicUpload
+                      :action="uploadUrl"
+                      :data="{ type: 0 }"
+                      name="productImages"
+                      :width="100"
+                      :height="100"
+                      @upload-change="uploadChange"
                       v-model:value="variant.product_images"
-                      placeholder="Enter Product Image"
                     />
                   </n-form-item>
                 </n-col>
@@ -175,15 +180,18 @@
 </template>
 
 <script lang="ts" setup>
-  import { ref } from 'vue';
+  import { ref, unref } from 'vue';
   import { FormInst } from 'naive-ui';
   import { useRouter } from 'vue-router';
   import { SaveArrowRight20Filled, Delete20Filled, NotepadEdit20Filled } from '@vicons/fluent';
-  import { createRecordApi } from '@/api';
+  // import '@vueup/vue-quill/dist/vue-quill.snow.css';
   // import { QuillEditor } from '@vueup/vue-quill';
-  import '@vueup/vue-quill/dist/vue-quill.snow.css';
-  // import { BasicUpload } from '@/components/Upload';
-  // import { useGlobSetting } from '@/hooks/setting';
+  import { createRecordApi } from '@/api';
+  import { BasicUpload } from '@/components/Upload';
+  import { useGlobSetting } from '@/hooks/setting';
+
+  const globSetting = useGlobSetting();
+  const { uploadUrl } = globSetting;
 
   // const quillEditor = ref();
   const formRef = ref<FormInst | null>(null);
@@ -208,27 +216,12 @@
     modelTitle.value = 'Update Product Variant';
     showVariantModal.value = true;
   }
-  // const globSetting = useGlobSetting();
-  // const { uploadUrl } = globSetting;
 
   const emits = defineEmits(['created']);
-  const rules = ref({
-    title: {
-      required: true,
-      message: 'Please Enter title',
-      trigger: 'blur',
-    },
-    status: {
-      required: true,
-      message: 'Please Select Status',
-      trigger: 'blur',
-    },
-    description: {
-      required: true,
-      message: 'Please Enter description',
-      trigger: 'blur',
-    },
-  });
+
+  const uploadChange = (list: string) => {
+    variant.value.product_images = unref(list);
+  };
 
   const handleValidateClick = (e: MouseEvent) => {
     e.preventDefault();
@@ -282,6 +275,23 @@
   //   theme: 'snow',
   //   placeholder: 'Enter what you like!',
   // });
+  const rules = ref({
+    title: {
+      required: true,
+      message: 'Please Enter title',
+      trigger: 'blur',
+    },
+    status: {
+      required: true,
+      message: 'Please Select Status',
+      trigger: 'blur',
+    },
+    description: {
+      required: true,
+      message: 'Please Enter description',
+      trigger: 'blur',
+    },
+  });
 </script>
 
 <style lang="less" scoped>

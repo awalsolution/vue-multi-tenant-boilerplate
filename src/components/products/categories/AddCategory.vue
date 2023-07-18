@@ -3,6 +3,17 @@
     <n-form-item style="padding-top: 24px" label="Name" path="name">
       <n-input v-model:value="formValue.name" placeholder="Enter Name" />
     </n-form-item>
+    <n-form-item :span="8" path="image">
+      <BasicUpload
+        :action="uploadUrl"
+        :data="{ type: 0 }"
+        name="categoriesImages"
+        :width="100"
+        :height="100"
+        @upload-change="uploadChange"
+        v-model:value="formValue.image"
+      />
+    </n-form-item>
     <n-space justify="end">
       <n-form-item :theme-overrides="{ labelHeightSmall: '0', feedbackHeightSmall: '0' }">
         <n-button type="success" @click="handleValidateClick"> Create</n-button>
@@ -12,13 +23,22 @@
 </template>
 
 <script lang="ts" setup>
-  import { ref } from 'vue';
+  import { ref, unref } from 'vue';
   import { FormInst } from 'naive-ui';
   import { createRecordApi } from '@/api';
+  import { BasicUpload } from '@/components/Upload';
+  import { useGlobSetting } from '@/hooks/setting';
 
+  const globSetting = useGlobSetting();
+  const { uploadUrl } = globSetting;
   const formValue: any = ref({});
   const formRef = ref<FormInst | null>(null);
   const emits = defineEmits(['created']);
+
+  const uploadChange = (list: string) => {
+    formValue.value.image = unref(list);
+  };
+
   const rules = ref({
     name: {
       required: true,
@@ -31,8 +51,7 @@
     e.preventDefault();
     formRef.value?.validate((errors) => {
       if (!errors) {
-        const { name } = formValue.value;
-        createRecordApi('/categories', { name }).then((result) => {
+        createRecordApi('/categories', formValue.value).then((result) => {
           window['$message'].success(result.message);
           emits('created', result.result);
         });
