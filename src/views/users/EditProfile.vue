@@ -27,7 +27,7 @@
           <BasicUpload
             :action="uploadUrl"
             :data="{ type: 0 }"
-            name="images"
+            name="profile_image"
             :width="100"
             :height="100"
             @upload-change="uploadChange"

@@ -62,11 +62,14 @@
           <tr>
             <th>ID</th>
             <th>Image</th>
+            <th>Vendor</th>
             <th>Title</th>
             <th>SKU ID</th>
             <th>Price</th>
-            <th>Sale Price</th>
-            <th>Slug</th>
+            <th>Regular Price</th>
+            <th>Stock Status</th>
+            <th>Stock Quantity</th>
+            <th>Total Sales</th>
             <th>Status</th>
             <th>Created At</th>
             <th
@@ -83,14 +86,15 @@
             <td>
               <n-avatar round size="large" :src="`${imgUrl}${item.product_images}`" />
             </td>
+            <td>{{ item.shop.shop_name }}</td>
             <td>{{ item.title }}</td>
             <td>{{ item.product_sku }}</td>
             <td>{{ item.price }}</td>
-            <td>{{ item.sale_price }}</td>
-            <td>{{ item.slug }}</td>
-            <td>
-              {{ item.status }}
-            </td>
+            <td>{{ item.regular_price }}</td>
+            <td>{{ item.stock_status }}</td>
+            <td>{{ item.stock_quantity }}</td>
+            <td>{{ item.total_sales }}</td>
+            <td>{{ item.status }}</td>
             <td>{{ item.created_at }}</td>
             <td
               v-permission="{

@@ -12,7 +12,7 @@
         <thead>
           <tr>
             <th>ID</th>
-            <th>Category Name</th>
+            <th>Name</th>
             <th>Image</th>
             <th>Created At</th>
             <th>Updated At</th>
@@ -32,7 +32,7 @@
             <td>{{ item.id }}</td>
             <td>{{ item.name }}</td>
             <td>
-              <n-avatar round size="large" :src="`${imgUrl}${item.images}`" />
+              <n-avatar round size="large" :src="`${imgUrl}${item.image}`" />
             </td>
             <td>{{ item.created_at }}</td>
             <td>{{ item.updated_at }}</td>

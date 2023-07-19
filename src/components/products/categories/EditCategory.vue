@@ -36,7 +36,7 @@
   const emits = defineEmits(['updated']);
 
   const uploadChange = (list: string) => {
-    formValue.value.shop_logo = unref(list);
+    formValue.value.image = unref(list);
   };
 
   const props = defineProps({
@@ -59,8 +59,8 @@
     e.preventDefault();
     formRef.value?.validate((errors) => {
       if (!errors) {
-        const { name } = formValue.value;
-        updateRecordApi(`/categories/${formValue.value.id}`, { name }).then((result) => {
+        console.log(formValue.value);
+        updateRecordApi(`/categories/${formValue.value.id}`, formValue.value).then((result) => {
           window['$message'].success(result.message);
           emits('updated', result);
         });

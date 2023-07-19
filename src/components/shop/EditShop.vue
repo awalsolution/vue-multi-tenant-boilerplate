@@ -23,7 +23,7 @@
         <BasicUpload
           :action="uploadUrl"
           :data="{ type: 0 }"
-          name="images"
+          name="shop_images"
           :width="100"
           :height="100"
           @upload-change="uploadChange"

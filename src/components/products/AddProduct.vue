@@ -24,11 +24,64 @@
                   placeholder="Enter Product Description"
                 />
               </n-form-item>
-              <n-form-item label="Product Product SKU ID" path="product_sku">
-                <n-input v-model:value="product.product_sku" placeholder="Enter Product SKU ID" />
-              </n-form-item>
             </n-card>
-            <n-card title="Inventory" class="flex w-full mb-1">
+            <n-card title="Inventory">
+              <n-row :gutter="10">
+                <n-col :span="12">
+                  <n-form-item label="Product SKU ID" path="product_sku">
+                    <n-input
+                      v-model:value="product.product_sku"
+                      placeholder="Enter Product SKU ID"
+                    />
+                  </n-form-item>
+                </n-col>
+                <n-col :span="12">
+                  <n-form-item label="Stock Quantity" path="stock_quantity">
+                    <n-input
+                      v-model:value="product.stock_quantity"
+                      placeholder="Enter Stock Quantity"
+                    />
+                  </n-form-item>
+                </n-col>
+                <n-col :span="12">
+                  <n-form-item label="Stock Status" path="stock_status">
+                    <n-select v-model:value="product.stock_status" :options="stock_status" />
+                  </n-form-item>
+                </n-col>
+                <n-col :span="12">
+                  <n-form-item label="Product Price" path="price">
+                    <n-input-number
+                      class="w-full"
+                      v-model:value="product.price"
+                      clearable
+                      placeholder="Enter Product Price"
+                    />
+                  </n-form-item>
+                </n-col>
+                <n-col :span="12">
+                  <n-form-item label="Product Regular Price" path="regular_price">
+                    <n-input-number
+                      class="w-full"
+                      v-model:value="product.regular_price"
+                      clearable
+                      placeholder="Enter Product Regular Price"
+                    />
+                  </n-form-item>
+                </n-col>
+                <n-col :span="24">
+                  <BasicUpload
+                    :action="uploadUrl"
+                    :data="{ type: 0 }"
+                    name="productImages"
+                    :width="100"
+                    :height="100"
+                    @upload-change="uploadChange"
+                    v-model:value="product.product_images"
+                  />
+                </n-col>
+              </n-row>
+            </n-card>
+            <!-- <n-card title="Inventory" class="flex w-full mb-1">
               <template #header-extra>
                 <n-space>
                   <n-button type="success" @click="showVariantModal = true"> Add Variant </n-button>
@@ -84,10 +137,10 @@
                   </tbody>
                 </n-table>
               </n-row>
-            </n-card>
+            </n-card> -->
           </n-space>
         </n-col>
-        <n-modal style="width: 70%" v-model:show="showVariantModal" preset="dialog">
+        <!-- <n-modal style="width: 70%" v-model:show="showVariantModal" preset="dialog">
           <template #header>
             <div>{{ modelTitle }}</div>
           </template>
@@ -151,7 +204,7 @@
               </n-button>
             </n-row>
           </n-space>
-        </n-modal>
+        </n-modal> -->
         <n-col :span="6">
           <n-space :vertical="true">
             <n-card title="Publish">
@@ -183,7 +236,7 @@
   import { ref, unref } from 'vue';
   import { FormInst } from 'naive-ui';
   import { useRouter } from 'vue-router';
-  import { SaveArrowRight20Filled, Delete20Filled, NotepadEdit20Filled } from '@vicons/fluent';
+  // import { SaveArrowRight20Filled, Delete20Filled, NotepadEdit20Filled } from '@vicons/fluent';
   // import '@vueup/vue-quill/dist/vue-quill.snow.css';
   // import { QuillEditor } from '@vueup/vue-quill';
   import { createRecordApi } from '@/api';
@@ -199,23 +252,23 @@
     variations: [],
   });
   const variant: any = ref({});
-  const showVariantModal = ref(false);
-  const modelTitle = ref('Add Product Variant');
+  // const showVariantModal = ref(false);
+  // const modelTitle = ref('Add Product Variant');
   const loading = ref(false);
   const router = useRouter();
-  function addVariant() {
-    showVariantModal.value = false;
-    product.value.variations.push(variant.value);
-    variant.value = {};
-    modelTitle.value = 'Add Product Variant';
-  }
+  // function addVariant() {
+  //   showVariantModal.value = false;
+  //   product.value.variations.push(variant.value);
+  //   variant.value = {};
+  //   modelTitle.value = 'Add Product Variant';
+  // }
 
-  function editVariant(item: any, index: any) {
-    variant.value = item;
-    product.value.variations.splice(index, 1);
-    modelTitle.value = 'Update Product Variant';
-    showVariantModal.value = true;
-  }
+  // function editVariant(item: any, index: any) {
+  //   variant.value = item;
+  //   product.value.variations.splice(index, 1);
+  //   modelTitle.value = 'Update Product Variant';
+  //   showVariantModal.value = true;
+  // }
 
   const emits = defineEmits(['created']);
 
@@ -250,6 +303,17 @@
     {
       label: 'Draft',
       value: 'draft',
+    },
+  ];
+
+  const stock_status = [
+    {
+      label: 'Instock',
+      value: 'instock',
+    },
+    {
+      label: 'Outofstock',
+      value: 'outofstock',
     },
   ];
 
