@@ -25,6 +25,7 @@
               <!-- <th>Status</th> -->
               <th>Address</th>
               <th>Created At</th>
+              <th>Updated At</th>
               <th
                 v-permission="{
                   action: ['can view user update', 'can view user delete'],
@@ -37,7 +38,7 @@
             <tr v-for="item in list" :key="item.id">
               <td>{{ item?.id }}</td>
               <td>{{ item?.profile?.first_name + ' ' + item?.profile?.last_name }}</td>
-              <td>
+              <td class="text-center">
                 <n-avatar round size="large" :src="`${imgUrl}${item?.profile.profile_picture}`" />
               </td>
               <td>{{ item?.email }}</td>
@@ -67,6 +68,7 @@
                 item?.profile?.country
               }}</td>
               <td>{{ item.created_at }}</td>
+              <td>{{ item.updated_at }}</td>
               <td
                 v-permission="{
                   action: ['can view user update', 'can view user delete'],

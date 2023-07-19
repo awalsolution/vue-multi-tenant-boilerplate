@@ -3,17 +3,15 @@
     <n-form-item style="padding-top: 24px" label="Name" path="name">
       <n-input v-model:value="formValue.name" placeholder="Enter Name" />
     </n-form-item>
-    <n-form-item :span="8" path="image">
-      <BasicUpload
-        :action="uploadUrl"
-        :data="{ type: 0 }"
-        name="categoriesImages"
-        :width="100"
-        :height="100"
-        @upload-change="uploadChange"
-        v-model:value="formValue.image"
-      />
-    </n-form-item>
+    <BasicUpload
+      :action="uploadUrl"
+      :data="{ type: 0 }"
+      name="categoriesImages"
+      :width="100"
+      :height="100"
+      @upload-change="uploadChange"
+      v-model:value="formValue.image"
+    />
     <n-space justify="end">
       <n-form-item :theme-overrides="{ labelHeightSmall: '0', feedbackHeightSmall: '0' }">
         <n-button type="success" @click="handleValidateClick"> Create</n-button>

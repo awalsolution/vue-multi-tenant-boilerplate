@@ -31,7 +31,7 @@
           <tr v-else v-for="item in list" :key="item.id">
             <td>{{ item.id }}</td>
             <td>{{ item.name }}</td>
-            <td>
+            <td class="text-center">
               <n-avatar round size="large" :src="`${imgUrl}${item.image}`" />
             </td>
             <td>{{ item.created_at }}</td>

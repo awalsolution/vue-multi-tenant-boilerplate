@@ -29,19 +29,19 @@
         </thead>
         <tbody>
           <tr v-for="item in list" :key="item.id">
-            <td>{{ item?.id }}</td>
-            <td>
-              <n-avatar round size="large" :src="`${imgUrl}${item?.shop_logo}`" />
+            <td>{{ item.id }}</td>
+            <td class="text-center">
+              <n-avatar round size="large" :src="`${imgUrl}${item.shop_logo}`" />
             </td>
-            <td>{{ item?.shop_name }}</td>
-            <td>{{ item?.shop_phone }}</td>
+            <td>{{ item.shop_name }}</td>
+            <td>{{ item.shop_phone }}</td>
             <td>
               <n-space>
                 <n-switch />
               </n-space>
             </td>
             <td>
-              {{ item?.address + ' ' + item?.city + ' ' + item?.state + ' ' + item?.country }}
+              {{ item.address + ' ' + item.city + ' ' + item?.state + ' ' + item.country }}
             </td>
             <td>{{ item.created_at }}</td>
             <td>{{ item.updated_at }}</td>

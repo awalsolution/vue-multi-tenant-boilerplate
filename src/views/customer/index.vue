@@ -21,6 +21,7 @@
               <th>Billing Address</th>
               <th>Shipping Address</th>
               <th>Created At</th>
+              <th>Updated At</th>
               <th
                 v-permission="{
                   action: ['can view customer update', 'can view customer delete'],
@@ -67,6 +68,7 @@
                 </n-space>
               </td>
               <td>{{ item.created_at }}</td>
+              <td>{{ item.updated_at }}</td>
               <td
                 v-permission="{
                   action: ['can view customer update', 'can view customer delete'],

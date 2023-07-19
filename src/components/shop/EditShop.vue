@@ -19,18 +19,16 @@
       <n-form-item-gi :span="8" style="padding-top: 4px" label="Country" path="country">
         <n-input v-model:value="formValue.country" placeholder="Enter Country" />
       </n-form-item-gi>
-      <n-form-item-gi :span="8" path="shop_logo">
-        <BasicUpload
-          :action="uploadUrl"
-          :data="{ type: 0 }"
-          name="shop_images"
-          :width="100"
-          :height="100"
-          @upload-change="uploadChange"
-          v-model:value="formValue.shop_logo"
-        />
-      </n-form-item-gi>
     </n-grid>
+    <BasicUpload
+      :action="uploadUrl"
+      :data="{ type: 0 }"
+      name="shop_images"
+      :width="100"
+      :height="100"
+      @upload-change="uploadChange"
+      v-model:value="formValue.shop_logo"
+    />
     <n-space justify="end">
       <n-form-item :theme-overrides="{ labelHeightSmall: '0', feedbackHeightSmall: '0' }">
         <n-button type="success" @click="handleValidateClick"> Update</n-button>

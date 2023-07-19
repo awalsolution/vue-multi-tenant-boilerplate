@@ -72,6 +72,7 @@
             <th>Total Sales</th>
             <th>Status</th>
             <th>Created At</th>
+            <th>Updated At</th>
             <th
               v-permission="{
                 action: ['can view product update', 'can view product delete'],
@@ -83,7 +84,7 @@
         <tbody>
           <tr v-for="item in list" :key="item.id">
             <td>{{ item.id }}</td>
-            <td>
+            <td class="text-center">
               <n-avatar round size="large" :src="`${imgUrl}${item.product_images}`" />
             </td>
             <td>{{ item.shop.shop_name }}</td>
@@ -96,6 +97,7 @@
             <td>{{ item.total_sales }}</td>
             <td>{{ item.status }}</td>
             <td>{{ item.created_at }}</td>
+            <td>{{ item.updated_at }}</td>
             <td
               v-permission="{
                 action: ['can view product update', 'can view product delete'],
