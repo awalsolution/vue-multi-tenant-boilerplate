@@ -151,7 +151,6 @@
       const { imgUrl } = globSetting;
       // user profile info
       const { profile_picture } = userStore.info.profile;
-      console.log(profile_picture);
 
       const state = reactive({
         username: imgUrl + profile_picture || '',
