@@ -57,68 +57,71 @@
           <template #suffix><n-icon :component="Search20Regular" /></template>
         </n-input>
       </n-space>
-      <n-table :bordered="true" :single-line="false" size="small" :striped="true">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Image</th>
-            <th>Vendor</th>
-            <th>Title</th>
-            <th>SKU ID</th>
-            <th>Price</th>
-            <th>Regular Price</th>
-            <th>Stock Status</th>
-            <th>Stock Quantity</th>
-            <th>Total Sales</th>
-            <th>Status</th>
-            <th>Created At</th>
-            <th>Updated At</th>
-            <th
-              v-permission="{
-                action: ['can view product update', 'can view product delete'],
-              }"
-              >Actions</th
-            >
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="item in list" :key="item.id">
-            <td>{{ item.id }}</td>
-            <td class="text-center">
-              <n-avatar round size="large" :src="`${imgUrl}${item.product_images}`" />
-            </td>
-            <td>{{ item.shop.shop_name }}</td>
-            <td>{{ item.title }}</td>
-            <td>{{ item.product_sku }}</td>
-            <td>{{ item.price }}</td>
-            <td>{{ item.regular_price }}</td>
-            <td>{{ item.stock_status }}</td>
-            <td>{{ item.stock_quantity }}</td>
-            <td>{{ item.total_sales }}</td>
-            <td>{{ item.status }}</td>
-            <td>{{ item.created_at }}</td>
-            <td>{{ item.updated_at }}</td>
-            <td
-              v-permission="{
-                action: ['can view product update', 'can view product delete'],
-              }"
-            >
-              <n-dropdown
-                @click="actionOperation(item)"
-                :onSelect="selectedAction"
-                trigger="click"
-                :options="moreOptions"
+      <div class="overflow-x-scroll">
+        <n-table :bordered="true" :single-line="false" size="small" :striped="true">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Image</th>
+              <th>Vendor</th>
+              <th>Title</th>
+              <th>SKU ID</th>
+              <th>Price</th>
+              <th>Regular Price</th>
+              <th>Stock Status</th>
+              <th>Stock Quantity</th>
+              <th>Total Sales</th>
+              <th>Status</th>
+              <th>Created At</th>
+              <th>Updated At</th>
+              <th
+                v-permission="{
+                  action: ['can view product update', 'can view product delete'],
+                }"
               >
-                <n-button size="small" :circle="true">
-                  <n-icon>
-                    <more-outlined />
-                  </n-icon>
-                </n-button>
-              </n-dropdown>
-            </td>
-          </tr>
-        </tbody>
-      </n-table>
+                Actions
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="item in list" :key="item.id">
+              <td>{{ item.id }}</td>
+              <td class="text-center">
+                <n-avatar round size="large" :src="`${imgUrl}${item.product_images}`" />
+              </td>
+              <td>{{ item.shop.shop_name }}</td>
+              <td>{{ item.title }}</td>
+              <td>{{ item.product_sku }}</td>
+              <td>{{ item.price }}</td>
+              <td>{{ item.regular_price }}</td>
+              <td>{{ item.stock_status }}</td>
+              <td>{{ item.stock_quantity }}</td>
+              <td>{{ item.total_sales }}</td>
+              <td>{{ item.status }}</td>
+              <td>{{ item.created_at }}</td>
+              <td>{{ item.updated_at }}</td>
+              <td
+                v-permission="{
+                  action: ['can view product update', 'can view product delete'],
+                }"
+              >
+                <n-dropdown
+                  @click="actionOperation(item)"
+                  :onSelect="selectedAction"
+                  trigger="click"
+                  :options="moreOptions"
+                >
+                  <n-button size="small" :circle="true">
+                    <n-icon>
+                      <more-outlined />
+                    </n-icon>
+                  </n-button>
+                </n-dropdown>
+              </td>
+            </tr>
+          </tbody>
+        </n-table>
+      </div>
       <n-space style="align-items: center; padding-top: 15px">
         <n-pagination
           v-model:page="page"
@@ -224,3 +227,8 @@
     getList();
   });
 </script>
+<style lang="less" scoped>
+  td {
+    white-space: nowrap;
+  }
+</style>

@@ -65,7 +65,7 @@
   const globSetting = useGlobSetting();
 
   export default defineComponent({
-    name: 'BasicUpload',
+    name: 'SingleImageUploader',
 
     components: { EyeOutlined, DeleteOutlined, CloudUpload },
     props: {

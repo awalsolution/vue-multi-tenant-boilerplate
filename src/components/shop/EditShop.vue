@@ -20,7 +20,7 @@
         <n-input v-model:value="formValue.country" placeholder="Enter Country" />
       </n-form-item-gi>
     </n-grid>
-    <BasicUpload
+    <SingleImageUploader
       :action="uploadUrl"
       :data="{ type: 0 }"
       name="shop_images"
@@ -41,7 +41,7 @@
   import { ref, unref } from 'vue';
   import { FormInst } from 'naive-ui';
   import { getRecordApi, updateRecordApi } from '@/api';
-  import { BasicUpload } from '@/components/Upload';
+  import { SingleImageUploader } from '@/components/upload';
   import { useGlobSetting } from '@/hooks/setting';
 
   const globSetting = useGlobSetting();

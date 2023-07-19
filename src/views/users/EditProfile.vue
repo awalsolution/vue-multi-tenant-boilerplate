@@ -24,7 +24,7 @@
           <n-input v-model:value="profileData.country" placeholder="Enter Country" />
         </n-form-item-gi>
         <n-form-item-gi :span="24" path="profile_picture">
-          <BasicUpload
+          <SingleImageUploader
             :action="uploadUrl"
             :data="{ type: 0 }"
             name="profile_image"
@@ -48,7 +48,7 @@
   import { onMounted, ref, unref } from 'vue';
   import { FormInst } from 'naive-ui';
   import { profileUpdateApi } from '@/api/user/user';
-  import { BasicUpload } from '@/components/Upload';
+  import { SingleImageUploader } from '@/components/upload';
   import { useUserStore } from '@/store/modules/user';
   import { useGlobSetting } from '@/hooks/setting';
 

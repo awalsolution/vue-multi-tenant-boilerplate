@@ -1,1 +1,1 @@
-export { default as BasicUpload } from './src/BasicUpload.vue';
+export { default as SingleImageUploader } from './src/SingleImageUploader.vue';

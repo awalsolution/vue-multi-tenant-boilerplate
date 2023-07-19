@@ -3,7 +3,7 @@
     <n-form-item style="padding-top: 24px" label="Name" path="name">
       <n-input v-model:value="formValue.name" placeholder="Edit Name" />
     </n-form-item>
-    <BasicUpload
+    <SingleImageUploader
       :action="uploadUrl"
       :data="{ type: 0 }"
       name="categoriesImages"
@@ -24,7 +24,7 @@
   import { ref, unref } from 'vue';
   import { FormInst } from 'naive-ui';
   import { updateRecordApi, getRecordApi } from '@/api';
-  import { BasicUpload } from '@/components/Upload';
+  import { SingleImageUploader } from '@/components/upload';
   import { useGlobSetting } from '@/hooks/setting';
 
   const globSetting = useGlobSetting();

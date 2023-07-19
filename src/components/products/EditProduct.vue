@@ -71,7 +71,7 @@
                   </n-form-item>
                 </n-col>
                 <n-col :span="24">
-                  <BasicUpload
+                  <SingleImageUploader
                     :action="uploadUrl"
                     :data="{ type: 0 }"
                     name="productImages"
@@ -242,7 +242,7 @@
   // import { QuillEditor } from '@vueup/vue-quill';
   // import '@vueup/vue-quill/dist/vue-quill.snow.css';
   import { getRecordApi, updateRecordApi } from '@/api';
-  import { BasicUpload } from '@/components/Upload';
+  import { SingleImageUploader } from '@/components/upload';
   import { useGlobSetting } from '@/hooks/setting';
 
   const globSetting = useGlobSetting();
