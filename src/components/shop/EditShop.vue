@@ -19,18 +19,19 @@
       <n-form-item-gi :span="8" style="padding-top: 4px" label="Country" path="country">
         <n-input v-model:value="formValue.country" placeholder="Enter Country" />
       </n-form-item-gi>
-      <n-form-item-gi :span="8" path="shop_logo">
-        <BasicUpload
-          :action="uploadUrl"
-          :data="{ type: 0 }"
-          name="images"
-          :width="100"
-          :height="100"
-          @upload-change="uploadChange"
-          v-model:value="formValue.shop_logo"
-        />
+      <n-form-item-gi :span="12" style="padding-top: 4px" label="Status" path="status">
+        <n-switch type="small" v-model:value="formValue.is_active" />
       </n-form-item-gi>
     </n-grid>
+    <SingleImageUploader
+      :action="uploadUrl"
+      :data="{ type: 0 }"
+      name="shop_images"
+      :width="100"
+      :height="100"
+      @upload-change="uploadChange"
+      v-model:value="formValue.shop_logo"
+    />
     <n-space justify="end">
       <n-form-item :theme-overrides="{ labelHeightSmall: '0', feedbackHeightSmall: '0' }">
         <n-button type="success" @click="handleValidateClick"> Update</n-button>
@@ -43,13 +44,13 @@
   import { ref, unref } from 'vue';
   import { FormInst } from 'naive-ui';
   import { getRecordApi, updateRecordApi } from '@/api';
-  import { BasicUpload } from '@/components/Upload';
+  import { SingleImageUploader } from '@/components/upload';
   import { useGlobSetting } from '@/hooks/setting';
 
   const globSetting = useGlobSetting();
   const { uploadUrl } = globSetting;
-  const formValue: any = ref({});
   const formRef = ref<FormInst | null>(null);
+  const formValue: any = ref({});
   const emits = defineEmits(['updated']);
   const props = defineProps({
     id: {

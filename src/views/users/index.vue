@@ -22,9 +22,10 @@
               <th>Phone#</th>
               <th>Shop</th>
               <th>Shop Phone#</th>
-              <!-- <th>Status</th> -->
+              <th>Status</th>
               <th>Address</th>
               <th>Created At</th>
+              <th>Updated At</th>
               <th
                 v-permission="{
                   action: ['can view user update', 'can view user delete'],
@@ -34,10 +35,13 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="item in list" :key="item.id">
+            <tr v-if="list.length === 0">
+              <td colspan="7" class="data_placeholder"> Record Not Exist </td>
+            </tr>
+            <tr v-else v-for="item in list" :key="item.id">
               <td>{{ item?.id }}</td>
               <td>{{ item?.profile?.first_name + ' ' + item?.profile?.last_name }}</td>
-              <td>
+              <td class="text-center">
                 <n-avatar round size="large" :src="`${imgUrl}${item?.profile.profile_picture}`" />
               </td>
               <td>{{ item?.email }}</td>
@@ -57,6 +61,9 @@
               <td>{{ item?.profile?.phone_number }}</td>
               <td>{{ item?.shop?.shop_name }}</td>
               <td>{{ item?.shop?.shop_phone }}</td>
+              <td>
+                <n-tag :bordered="false" type="info">{{ item.status }}</n-tag>
+              </td>
               <td>{{
                 item?.profile?.address +
                 ' ' +
@@ -67,6 +74,7 @@
                 item?.profile?.country
               }}</td>
               <td>{{ item.created_at }}</td>
+              <td>{{ item.updated_at }}</td>
               <td
                 v-permission="{
                   action: ['can view user update', 'can view user delete'],
@@ -257,5 +265,12 @@
   }
   td {
     white-space: nowrap;
+  }
+  .data_placeholder {
+    text-align: center;
+    color: gray;
+    padding: 20px 0;
+    font-size: 18px;
+    font-style: italic;
   }
 </style>

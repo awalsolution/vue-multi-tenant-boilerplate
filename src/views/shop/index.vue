@@ -21,33 +21,34 @@
             <th>Updated At</th>
             <th
               v-permission="{
-                action: ['can view permissions update', 'can view permissions delete'],
+                action: ['can view shop update', 'can view shop delete'],
               }"
               >Actions</th
             >
           </tr>
         </thead>
         <tbody>
-          <tr v-for="item in list" :key="item.id">
-            <td>{{ item?.id }}</td>
-            <td>
-              <n-avatar round size="large" :src="`${imgUrl}${item?.shop_logo}`" />
+          <tr v-if="list.length === 0">
+            <td colspan="4" class="data_placeholder"> Record Not Exist </td>
+          </tr>
+          <tr v-else v-for="item in list" :key="item.id">
+            <td>{{ item.id }}</td>
+            <td class="text-center">
+              <n-avatar round size="large" :src="`${imgUrl}${item.shop_logo}`" />
             </td>
-            <td>{{ item?.shop_name }}</td>
-            <td>{{ item?.shop_phone }}</td>
+            <td>{{ item.shop_name }}</td>
+            <td>{{ item.shop_phone }}</td>
             <td>
-              <n-space>
-                <n-switch />
-              </n-space>
+              <n-tag :bordered="false" type="info">{{ item.status }}</n-tag>
             </td>
             <td>
-              {{ item?.address + ' ' + item?.city + ' ' + item?.state + ' ' + item?.country }}
+              {{ item.address + ' ' + item.city + ' ' + item?.state + ' ' + item.country }}
             </td>
             <td>{{ item.created_at }}</td>
             <td>{{ item.updated_at }}</td>
             <td
               v-permission="{
-                action: ['can view permissions update', 'can view permissions delete'],
+                action: ['can view shop update', 'can view shop delete'],
               }"
             >
               <n-dropdown
@@ -225,3 +226,12 @@
     getList();
   });
 </script>
+<style lang="less" scoped>
+  .data_placeholder {
+    text-align: center;
+    color: gray;
+    padding: 20px 0;
+    font-size: 18px;
+    font-style: italic;
+  }
+</style>

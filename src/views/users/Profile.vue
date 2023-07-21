@@ -91,11 +91,11 @@
   import EditProfile from '@/views/users/EditProfile.vue';
   import { useGlobSetting } from '@/hooks/setting';
 
+  const globSetting = useGlobSetting();
+  const { imgUrl } = globSetting;
   const profileData: any = ref({});
   const userStore = useUserStore();
   const showEditModal = ref(false);
-  const globSetting = useGlobSetting();
-  const { imgUrl } = globSetting;
 
   const handleValidateClick = (e: MouseEvent) => {
     e.preventDefault();

@@ -89,7 +89,7 @@
       <div class="layout-header-trigger layout-header-trigger-min">
         <n-dropdown trigger="hover" @select="avatarSelect" :options="avatarOptions">
           <div class="avatar">
-            <n-avatar round>
+            <n-avatar round :src="username">
               <template #icon>
                 <UserOutlined />
               </template>
@@ -128,6 +128,7 @@
   import { AsideMenu } from '@/layout/components/Menu';
   import { useProjectSetting } from '@/hooks/setting/useProjectSetting';
   import { websiteConfig } from '@/config/website.config';
+  import { useGlobSetting } from '@/hooks/setting';
 
   export default defineComponent({
     name: 'PageHeader',
@@ -146,11 +147,13 @@
       const dialog = useDialog();
       const drawerSetting = ref();
       const { navMode, navTheme, headerSetting, menuSetting, crumbsSetting } = useProjectSetting();
+      const globSetting = useGlobSetting();
+      const { imgUrl } = globSetting;
       // user profile info
-      const { profile_picture } = userStore?.info.profile;
+      const { profile_picture } = userStore.info.profile;
 
       const state = reactive({
-        username: profile_picture || '',
+        username: imgUrl + profile_picture || '',
         fullscreenIcon: 'FullscreenOutlined',
         navMode,
         navTheme,

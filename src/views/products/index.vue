@@ -57,60 +57,66 @@
           <template #suffix><n-icon :component="Search20Regular" /></template>
         </n-input>
       </n-space>
-      <n-table :bordered="true" :single-line="false" size="small" :striped="true">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Image</th>
-            <th>Title</th>
-            <th>SKU ID</th>
-            <th>Price</th>
-            <th>Sale Price</th>
-            <th>Slug</th>
-            <th>Status</th>
-            <th>Created At</th>
-            <th
-              v-permission="{
-                action: ['can view product update', 'can view product delete'],
-              }"
-              >Actions</th
-            >
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="item in list" :key="item.id">
-            <td>{{ item.id }}</td>
-            <td>{{ item.product_images }}</td>
-            <td>{{ item.title }}</td>
-            <td>{{ item.product_sku }}</td>
-            <td>{{ item.price }}</td>
-            <td>{{ item.sale_price }}</td>
-            <td>{{ item.slug }}</td>
-            <td>
-              {{ item.status }}
-            </td>
-            <td>{{ item.created_at }}</td>
-            <td
-              v-permission="{
-                action: ['can view product update', 'can view product delete'],
-              }"
-            >
-              <n-dropdown
-                @click="actionOperation(item)"
-                :onSelect="selectedAction"
-                trigger="click"
-                :options="moreOptions"
+      <div class="overflow-x-scroll">
+        <n-table :bordered="true" :single-line="false" size="small" :striped="true">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Image</th>
+              <th>Vendor</th>
+              <th>Title</th>
+              <th>Product Code</th>
+              <th>Status</th>
+              <th>Created At</th>
+              <th>Updated At</th>
+              <th
+                v-permission="{
+                  action: ['can view product update', 'can view product delete'],
+                }"
               >
-                <n-button size="small" :circle="true">
-                  <n-icon>
-                    <more-outlined />
-                  </n-icon>
-                </n-button>
-              </n-dropdown>
-            </td>
-          </tr>
-        </tbody>
-      </n-table>
+                Actions
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-if="list.length === 0">
+              <td colspan="4" class="data_placeholder"> Record Not Exist </td>
+            </tr>
+            <tr v-else v-for="item in list" :key="item.id">
+              <td>{{ item.id }}</td>
+              <td class="text-center">
+                <n-avatar round size="large" :src="`${imgUrl}${item.product_image}`" />
+              </td>
+              <td>{{ item.shop.shop_name }}</td>
+              <td>{{ item.title }}</td>
+              <td>{{ item.product_code }}</td>
+              <td>
+                <n-tag :bordered="false" type="info">{{ item.status }}</n-tag>
+              </td>
+              <td>{{ item.created_at }}</td>
+              <td>{{ item.updated_at }}</td>
+              <td
+                v-permission="{
+                  action: ['can view product update', 'can view product delete'],
+                }"
+              >
+                <n-dropdown
+                  @click="actionOperation(item)"
+                  :onSelect="selectedAction"
+                  trigger="click"
+                  :options="moreOptions"
+                >
+                  <n-button size="small" :circle="true">
+                    <n-icon>
+                      <more-outlined />
+                    </n-icon>
+                  </n-button>
+                </n-dropdown>
+              </td>
+            </tr>
+          </tbody>
+        </n-table>
+      </div>
       <n-space style="align-items: center; padding-top: 15px">
         <n-pagination
           v-model:page="page"
@@ -137,7 +143,10 @@
   import { MoreOutlined, EditOutlined, DeleteOutlined } from '@vicons/antd';
   import { FileImport } from '@vicons/tabler';
   import { Search20Regular } from '@vicons/fluent';
+  import { useGlobSetting } from '@/hooks/setting';
 
+  const globSetting = useGlobSetting();
+  const { imgUrl } = globSetting;
   const router = useRouter();
   const dialog = useDialog();
   const selectedOption: any = ref(null);
@@ -213,3 +222,15 @@
     getList();
   });
 </script>
+<style lang="less" scoped>
+  td {
+    white-space: nowrap;
+  }
+  .data_placeholder {
+    text-align: center;
+    color: gray;
+    padding: 20px 0;
+    font-size: 18px;
+    font-style: italic;
+  }
+</style>

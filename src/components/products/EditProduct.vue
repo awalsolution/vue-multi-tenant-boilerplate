@@ -24,75 +24,126 @@
                   placeholder="Enter Product Description"
                 />
               </n-form-item>
-              <n-form-item label="Product Product SKU ID" path="product_sku">
-                <n-input v-model:value="product.product_sku" placeholder="Enter Product SKU ID" />
-              </n-form-item>
             </n-card>
-            <n-card title="Inventory" class="flex w-full mb-1">
+            <n-card title="Inventory">
+              <n-row :gutter="10">
+                <n-col :span="24">
+                  <n-form-item label="Product Code" path="product_code">
+                    <n-input
+                      v-model:value="product.product_code"
+                      placeholder="Enter Product Code"
+                    />
+                  </n-form-item>
+                </n-col>
+                <n-col :span="24">
+                  <SingleImageUploader
+                    :action="uploadUrl"
+                    :data="{ type: 0 }"
+                    name="productImages"
+                    :width="100"
+                    :height="100"
+                    @upload-change="imageUploadChange"
+                    v-model:value="product.product_image"
+                  />
+                </n-col>
+              </n-row>
+            </n-card>
+            <!-- <n-card title="Variant Inventory" class="flex w-full mb-1">
               <template #header-extra>
                 <n-space>
                   <n-button type="success" @click="showVariantModal = true"> Add Variant </n-button>
                 </n-space>
               </template>
               <n-row gutter="12">
-                <n-table v-if="product.variations.length" :striped="true">
-                  <thead>
-                    <tr>
-                      <th>Attribute ID</th>
-                      <th>Product Price</th>
-                      <th>Product Regular Price</th>
-                      <th>Product Image</th>
-                      <th>Actions</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr v-for="(item, index) in product.variations" :key="index">
-                      <td>{{ item.attribute_id }}</td>
-                      <td>{{ item.attribute_value }}</td>
-                      <td>{{ item.price }}</td>
-                      <td>{{ item.regular_price }}</td>
-                      <td>{{ item.product_images }}</td>
-                      <td>
-                        <n-button
-                          strong
-                          secondary
-                          circle
-                          type="error"
-                          @click="product.variations.splice(index, 1)"
-                        >
-                          <template #icon>
-                            <n-icon>
-                              <Delete20Filled />
-                            </n-icon>
-                          </template>
-                        </n-button>
-                        <n-button
-                          strong
-                          secondary
-                          circle
-                          type="success"
-                          @click="editVariant(item, index)"
-                        >
-                          <template #icon>
-                            <n-icon>
-                              <NotepadEdit20Filled />
-                            </n-icon>
-                          </template>
-                        </n-button>
-                      </td>
-                    </tr>
-                  </tbody>
-                </n-table>
+                <div class="overflow-x-scroll">
+                  <n-table
+                    :bordered="true"
+                    :single-line="false"
+                    size="small"
+                    :striped="true"
+                    v-if="product.variations.length"
+                  >
+                    <thead>
+                      <tr>
+                        <th>SKU ID</th>
+                        <th>Attribute ID</th>
+                        <th>Attribute Name</th>
+                        <th>Attribute Value</th>
+                        <th>Image</th>
+                        <th>Status</th>
+                        <th>Price</th>
+                        <th>Regular Price</th>
+                        <th>Stock Status</th>
+                        <th>Quantity</th>
+                        <th>Created At</th>
+                        <th>Updated At</th>
+                        <th>Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr v-for="(item, index) in product.variations" :key="index">
+                        <td>{{ item.sku_id }}</td>
+                        <td>{{ item.attribute_id }}</td>
+                        <td>{{ item.attributes.name }}</td>
+                        <td>{{ item.attribute_value }}</td>
+                        <td class="text-center">
+                          <n-avatar
+                            round
+                            size="large"
+                            :src="`${imgUrl}${item.variation_images.variant_images}`"
+                          />
+                        </td>
+                        <td>
+                          <n-tag :bordered="false" type="info">{{ item.status }}</n-tag>
+                        </td>
+                        <td>{{ item.price }}</td>
+                        <td>{{ item.regular_price }}</td>
+                        <td>{{ item.stock_status }}</td>
+                        <td>{{ item.stock_quantity }}</td>
+                        <td>{{ item.created_at }}</td>
+                        <td>{{ item.updated_at }}</td>
+                        <td>
+                          <n-button
+                            strong
+                            secondary
+                            circle
+                            type="error"
+                            @click="product.variations.splice(index, 1)"
+                          >
+                            <template #icon>
+                              <n-icon>
+                                <Delete20Filled />
+                              </n-icon>
+                            </template>
+                          </n-button>
+                          <n-button
+                            strong
+                            secondary
+                            circle
+                            type="success"
+                            @click="editVariant(item, index)"
+                          >
+                            <template #icon>
+                              <n-icon>
+                                <NotepadEdit20Filled />
+                              </n-icon>
+                            </template>
+                          </n-button>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </n-table>
+                </div>
               </n-row>
-            </n-card>
+            </n-card> -->
           </n-space>
         </n-col>
-        <n-modal style="width: 70%" v-model:show="showVariantModal" preset="dialog">
+        <!-- <n-modal style="width: 70%" v-model:show="showVariantModal" preset="dialog">
           <template #header>
             <div>{{ modelTitle }}</div>
           </template>
           <n-space :vertical="true">
-            <n-card title="Inventory">
+            <n-card title="Variant Inventory">
               <n-row :gutter="10">
                 <n-col :span="12">
                   <n-form-item label="Attribute" path="attribute_id">
@@ -114,25 +165,61 @@
               </n-row>
               <n-row :gutter="10">
                 <n-col :span="12">
+                  <n-form-item label="SKU ID" path="sku_id">
+                    <n-input v-model:value="variant.sku_id" placeholder="Enter Product SKU ID" />
+                  </n-form-item>
+                </n-col>
+                <n-col :span="12">
+                  <n-form-item label="Stock Status" path="stock_status">
+                    <n-select v-model:value="variant.stock_status" :options="stock_status" />
+                  </n-form-item>
+                </n-col>
+                <n-col :span="12">
                   <n-form-item label="Product Price" path="price">
-                    <n-input v-model:value="variant.price" placeholder="Enter Product Price" />
+                    <n-input-number
+                      class="w-full"
+                      v-model:value="variant.price"
+                      clearable
+                      placeholder="Enter Product Price"
+                    />
                   </n-form-item>
                 </n-col>
                 <n-col :span="12">
                   <n-form-item label="Product Regular Price" path="regular_price">
-                    <n-input
+                    <n-input-number
+                      class="w-full"
                       v-model:value="variant.regular_price"
+                      clearable
                       placeholder="Enter Product Regular Price"
                     />
                   </n-form-item>
                 </n-col>
                 <n-col :span="12">
-                  <n-form-item label="Product Image" path="product_image">
-                    <n-input
-                      v-model:value="variant.product_images"
-                      placeholder="Enter Product Image"
+                  <n-form-item label="Stock Quantity" path="stock_quantity">
+                    <n-input-number
+                      class="w-full"
+                      v-model:value="variant.stock_quantity"
+                      clearable
+                      placeholder="Enter Stock Quantity"
                     />
                   </n-form-item>
+                </n-col>
+                <n-col :span="12">
+                  <n-form-item label="Stock Quantity" path="status">
+                    <n-switch type="small" v-model:value="variant.status" />
+                  </n-form-item>
+                </n-col>
+                <n-col :span="24">
+                  <MultiImageUploader
+                    multiple
+                    :action="uploadUrl"
+                    :data="{ type: 0 }"
+                    name="productImages"
+                    :width="100"
+                    :height="100"
+                    @upload-change="MultiUploadChange"
+                    v-model:value="variantim"
+                  />
                 </n-col>
               </n-row>
             </n-card>
@@ -146,7 +233,7 @@
               </n-button>
             </n-row>
           </n-space>
-        </n-modal>
+        </n-modal> -->
         <n-col :span="6">
           <n-space :vertical="true">
             <n-card title="Publish">
@@ -157,7 +244,7 @@
                 Update
               </n-button>
             </n-card>
-            <n-card title="Product Categories">
+            <n-card title="Categories">
               <n-form-item label="Categories" path="category_id">
                 <single-category-selector
                   v-model:value="product.category_id"
@@ -175,75 +262,77 @@
 </template>
 
 <script lang="ts" setup>
-  import { ref } from 'vue';
+  import { ref, unref } from 'vue';
   import { FormInst } from 'naive-ui';
   import { useRouter, useRoute } from 'vue-router';
-  import { SaveArrowRight20Filled, Delete20Filled, NotepadEdit20Filled } from '@vicons/fluent';
+  // import { SaveArrowRight20Filled, Delete20Filled, NotepadEdit20Filled } from '@vicons/fluent';
   // import { QuillEditor } from '@vueup/vue-quill';
   // import '@vueup/vue-quill/dist/vue-quill.snow.css';
   import { getRecordApi, updateRecordApi } from '@/api';
+  import { SingleImageUploader } from '@/components/upload';
+  import { useGlobSetting } from '@/hooks/setting';
 
+  const globSetting = useGlobSetting();
+  const { uploadUrl } = globSetting;
   // const quillEditor = ref();
   const router = useRouter();
   const route = useRoute();
 
   const formRef = ref<FormInst | null>(null);
-  const product: any = ref({
-    variations: [],
-  });
-  const variant: any = ref({});
-  const showVariantModal = ref(false);
-  const modelTitle = ref('Add Product Variant');
-  const loading = ref(false);
+  const product: any = ref({});
+  // const variant: any = ref({});
+  // const variantim: any = ref([]);
+  // const showVariantModal = ref(false);
+  // const modelTitle = ref('Add Product Variant');
+  // const loading = ref(false);
 
-  function addVariant() {
-    showVariantModal.value = false;
-    product.value.variations.push(variant.value);
-    variant.value = {};
-    modelTitle.value = 'Add Product Variant';
-  }
+  // function addVariant() {
+  //   showVariantModal.value = false;
+  //   product.value.variations.push(variant.value);
+  //   // product.value.variations.variation_images.push(variantim);
+  //   // console.log('add variant', variantim);
+  //   console.log('product =>', product);
+  //   variant.value = {};
+  //   modelTitle.value = 'Add Product Variant';
+  // }
 
-  function editVariant(item: any, index: any) {
-    variant.value = item;
-    product.value.variations.splice(index, 1);
-    modelTitle.value = 'Update Product Variant';
-    showVariantModal.value = true;
-  }
+  // function editVariant(item: any, index: any) {
+  //   console.log('edit variant', item);
+  //   variant.value = item;
+  //   variantim.value = item.variation_images;
+  //   console.log(variantim);
+  //   product.value.variations.splice(index, 1);
+  //   modelTitle.value = 'Update Product Variant';
+  //   showVariantModal.value = true;
+  // }
 
   const emits = defineEmits(['updated']);
+
+  const imageUploadChange = (list: string) => {
+    // console.log(list);
+    product.value.product_image = unref(list);
+  };
+  // const MultiUploadChange = (list: string) => {
+  //   variantim.value = unref(list);
+  //   // console.log('variant image =>', variant);
+  //   // console.log('product =>', product);
+  // };
 
   // fetch single Product  using id
   getRecordApi(`/products/${route.params.id}`).then((result) => {
     product.value = result;
   });
 
-  const rules = ref({
-    title: {
-      required: true,
-      message: 'Please Enter title',
-      trigger: 'blur',
-    },
-    status: {
-      required: true,
-      message: 'Please Select Status',
-      trigger: 'blur',
-    },
-    description: {
-      required: true,
-      message: 'Please Enter description',
-      trigger: 'blur',
-    },
-  });
-
   const handleValidateClick = (e: MouseEvent) => {
     e.preventDefault();
     formRef.value?.validate((errors) => {
       if (!errors) {
-        loading.value = true;
+        console.log('databse insert objec', product.value);
+        // loading.value = true;
         updateRecordApi(`/products/${product.value.id}`, product.value).then((result: any) => {
           window['$message'].success(result.message);
           emits('updated', result);
-          loading.value = false;
+          // loading.value = false;
           router.replace('/product');
         });
       } else {
@@ -264,6 +353,16 @@
     },
   ];
 
+  // const stock_status = [
+  //   {
+  //     label: 'Instock',
+  //     value: 'instock',
+  //   },
+  //   {
+  //     label: 'Outofstock',
+  //     value: 'outofstock',
+  //   },
+  // ];
   // const options = reactive({
   //   modules: {
   //     toolbar: [
@@ -286,6 +385,23 @@
   //   theme: 'snow',
   //   placeholder: 'Enter what you like!',
   // });
+  const rules = ref({
+    title: {
+      required: true,
+      message: 'Please Enter title',
+      trigger: 'blur',
+    },
+    status: {
+      required: true,
+      message: 'Please Select Status',
+      trigger: 'blur',
+    },
+    description: {
+      required: true,
+      message: 'Please Enter description',
+      trigger: 'blur',
+    },
+  });
 </script>
 
 <style lang="less" scoped>
@@ -301,5 +417,8 @@
   }
   .ql-container.ql-snow {
     border: none;
+  }
+  td {
+    white-space: nowrap;
   }
 </style>
