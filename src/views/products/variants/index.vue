@@ -1,5 +1,5 @@
 <template>
-  <n-card title="Users" v-permission="{ action: ['can view users'] }">
+  <n-card title="Shops" v-permission="{ action: ['can view variants'] }">
     <n-space :vertical="true">
       <n-input
         type="text"
@@ -8,27 +8,27 @@
         @change="fetchList"
         placeholder="Search by Name"
       />
-      <div class="table-wrap">
-        <n-table :bordered="true" :single-line="false" size="small" :striped="true">
+      <div class="overflow-x-scroll">
+        <n-table :bordered="true" :single-line="false" size="medium" :striped="true">
           <thead>
             <tr>
               <th>ID</th>
-              <th>Name</th>
-              <th>Picture</th>
-              <th>Email</th>
-              <th>Role</th>
-              <th>User Type</th>
-              <th>Permissions</th>
-              <th>Phone#</th>
-              <th>Shop</th>
-              <th>Shop Phone#</th>
+              <th>Product Title</th>
+              <th>Product Code</th>
+              <th>SKU ID</th>
+              <th>Images</th>
+              <th>Attribute Name</th>
+              <th>Attribute Value</th>
               <th>Status</th>
-              <th>Address</th>
+              <th>Stock Status</th>
+              <th>Quantity</th>
+              <th>Price</th>
+              <th>Regular Price</th>
               <th>Created At</th>
               <th>Updated At</th>
               <th
                 v-permission="{
-                  action: ['can view user update', 'can view user delete'],
+                  action: ['can view variant update', 'can view variant delete'],
                 }"
                 >Actions</th
               >
@@ -39,45 +39,27 @@
               <td colspan="7" class="data_placeholder"> Record Not Exist </td>
             </tr>
             <tr v-else v-for="item in list" :key="item.id">
-              <td>{{ item?.id }}</td>
-              <td>{{ item?.profile?.first_name + ' ' + item?.profile?.last_name }}</td>
+              <td>{{ item.id }}</td>
+              <td>{{ item.products.title }}</td>
+              <td>{{ item.products.product_code }}</td>
+              <td>{{ item.sku_id }}</td>
               <td class="text-center">
-                <n-avatar round size="large" :src="`${imgUrl}${item?.profile.profile_picture}`" />
+                <n-avatar round size="large" :src="`${imgUrl}${item.images[0].images}`" />
               </td>
-              <td>{{ item?.email }}</td>
-              <td>
-                <n-space>
-                  <n-tag v-for="role in item.roles" :key="role.id" type="success">
-                    {{ role?.name }}
-                  </n-tag>
-                </n-space>
-              </td>
-              <td v-if="item.user_type">{{ item.user_type }}</td>
-              <td>
-                <n-space v-for="permission in item.permissions" :key="permission.id">
-                  {{ permission?.name }}
-                </n-space>
-              </td>
-              <td>{{ item?.profile?.phone_number }}</td>
-              <td>{{ item?.shop?.shop_name }}</td>
-              <td>{{ item?.shop?.shop_phone }}</td>
+              <td>{{ item.attributes.name }}</td>
+              <td>{{ item.attribute_value }}</td>
               <td>
                 <n-tag :bordered="false" type="info">{{ item.status }}</n-tag>
               </td>
-              <td>{{
-                item?.profile?.address +
-                ' ' +
-                item?.profile?.city +
-                ' ' +
-                item?.profile?.state +
-                ' ' +
-                item?.profile?.country
-              }}</td>
+              <td>{{ item.stock_status }}</td>
+              <td>{{ item.stock_quantity }}</td>
+              <td>{{ item.price }}</td>
+              <td>{{ item.regular_price }}</td>
               <td>{{ item.created_at }}</td>
               <td>{{ item.updated_at }}</td>
               <td
                 v-permission="{
-                  action: ['can view user update', 'can view user delete'],
+                  action: ['can view variant update', 'can view variant delete'],
                 }"
               >
                 <n-dropdown
@@ -108,40 +90,39 @@
           :show-size-picker="true"
         />
       </n-space>
-      <n-button
+      <!-- <n-button
         type="primary"
         size="large"
         :circle="true"
         style="position: fixed; bottom: 30px; right: 40px"
         @click="showModal = true"
-        v-permission="{ action: ['can view user create'] }"
+        v-permission="{ action: ['can view variant create'] }"
       >
         <template #icon>
           <n-icon>
             <plus-outlined />
           </n-icon>
         </template>
-      </n-button>
-      <n-modal style="width: 70%" v-model:show="showModal" preset="dialog">
+      </n-button> -->
+      <!-- <n-modal style="width: 60%" v-model:show="showModal" preset="dialog">
         <template #header>
-          <div>Create New User</div>
+          <div>Create New Variant</div>
         </template>
         <n-space :vertical="true">
-          <add-user
+          <add-variant
             @created="
               getList();
               showModal = false;
             "
           />
         </n-space>
-      </n-modal>
-
-      <n-modal style="width: 70%" v-model:show="showEditModal" preset="dialog">
+      </n-modal> -->
+      <n-modal style="width: 60%" v-model:show="showEditModal" preset="dialog">
         <template #header>
-          <div>Update User</div>
+          <div>Update Variant</div>
         </template>
         <n-space :vertical="true">
-          <edit-user
+          <edit-variant
             :id="selectedId"
             @updated="
               getList();
@@ -155,30 +136,30 @@
 </template>
 
 <script lang="ts" setup>
-  import { deleteRecordApi } from '@/api';
-  import { getUsersApi } from '@/api/user/user';
+  // import { deleteRecordApi } from '@/api';
+  import { getVariantsApi } from '@/api/variant/variant';
   import { userPagination } from '@/hooks/userPagination';
   import { usePermission } from '@/hooks/web/usePermission';
   import { ref, onMounted, h, computed } from 'vue';
-  import { useDialog, useMessage } from 'naive-ui';
+  // import { useDialog, useMessage } from 'naive-ui';
   import type { Component } from 'vue';
   import { NIcon, NPagination } from 'naive-ui';
-  import { MoreOutlined, EditOutlined, DeleteOutlined, PlusOutlined } from '@vicons/antd';
-  import AddUser from '@/components/users/AddUser.vue';
-  import EditUser from '@/components/users/EditUser.vue';
+  import { MoreOutlined, EditOutlined } from '@vicons/antd';
+  // import AddVariant from '@/components/products/variants/AddVariant.vue';
+  import EditVariant from '@/components/products/variants/EditVariant.vue';
   import { useGlobSetting } from '@/hooks/setting';
 
   const globSetting = useGlobSetting();
   const { imgUrl } = globSetting;
-  const dialog = useDialog();
+  // const dialog = useDialog();
   const selectedOption: any = ref(null);
-  const showModal = ref(false);
+  // const showModal = ref(false);
   const showEditModal = ref(false);
   const selectedId = ref();
   const { hasPermission } = usePermission();
-  const message = useMessage();
+  // const message = useMessage();
   const { getList, list, page, pageSizes, itemCount, pageSize, params }: any =
-    userPagination(getUsersApi);
+    userPagination(getVariantsApi);
 
   const renderIcon = (icon: Component) => {
     return () => {
@@ -193,58 +174,59 @@
       label: 'Edit',
       key: 'edit',
       icon: renderIcon(EditOutlined),
-      permission: hasPermission(['can view user update']),
+      permission: hasPermission(['can view variant update']),
     },
-    {
-      label: 'Delete',
-      key: 'delete',
-      icon: renderIcon(DeleteOutlined),
-      permission: hasPermission(['can view user delete']),
-    },
+    // {
+    //   label: 'Delete',
+    //   key: 'delete',
+    //   icon: renderIcon(DeleteOutlined),
+    //   permission: hasPermission(['can view variant delete']),
+    // },
   ]);
 
   const filteredOptions = computed(() => {
     return moreOptions.value.filter((option) => option.permission);
   });
 
-  function confirmationDialog() {
-    dialog.error({
-      title: 'Confirmation',
-      content: () => 'Are you sure you want to delete?',
-      positiveText: 'Delete',
-      negativeText: 'Cancel',
-      onPositiveClick: deleteOperation,
-    });
-  }
+  // function confirmationDialog() {
+  //   dialog.error({
+  //     title: 'Confirmation',
+  //     content: () => 'Are you sure you want to delete?',
+  //     positiveText: 'Delete',
+  //     negativeText: 'Cancel',
+  //     onPositiveClick: deleteOperation,
+  //   });
+  // }
 
-  function deleteOperation() {
-    const Loading = window['$loading'] || null;
-    Loading.start();
-    deleteRecordApi(`/users/${selectedId.value}`)
-      .then((result: any) => {
-        message.success(result.message);
-        getList();
-        Loading.finish();
-        dialog.destroyAll;
-      })
-      .catch((result) => {
-        message.error(result.message);
-        Loading.finish();
-        dialog.destroyAll;
-      });
-    selectedId.value = null;
-    selectedOption.value = null;
-  }
+  // function deleteOperation() {
+  //   const Loading = window['$loading'] || null;
+  //   Loading.start();
+  //   deleteRecordApi(`/variants/${selectedId.value}`)
+  //     .then((result: any) => {
+  //       message.success(result.message);
+  //       getList();
+  //       Loading.finish();
+  //       dialog.destroyAll;
+  //     })
+  //     .catch((result) => {
+  //       message.error(result.message);
+  //       Loading.finish();
+  //       dialog.destroyAll;
+  //     });
+  //   selectedId.value = null;
+  //   selectedOption.value = null;
+  // }
 
   const actionOperation = (item: any) => {
     if (selectedOption.value === 'edit') {
       showEditModal.value = true;
       selectedId.value = item.id;
-      // router.push(`/roles/${item.id}`);
-    } else if (selectedOption.value === 'delete') {
-      selectedId.value = item.id;
-      confirmationDialog();
+      // router.push(`/variants/${item.id}`);
     }
+    // else if (selectedOption.value === 'delete') {
+    //   selectedId.value = item.id;
+    //   confirmationDialog();
+    // }
   };
   const selectedAction = (key: any) => {
     selectedOption.value = key;
@@ -257,12 +239,6 @@
   });
 </script>
 <style lang="less" scoped>
-  .item_center {
-    text-align: center;
-  }
-  .table-wrap {
-    overflow-x: scroll;
-  }
   td {
     white-space: nowrap;
   }

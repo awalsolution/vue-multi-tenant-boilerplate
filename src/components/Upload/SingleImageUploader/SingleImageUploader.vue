@@ -31,7 +31,7 @@
               <n-icon size="20" class="m-auto">
                 <CloudUpload />
               </n-icon>
-              <span class="upload-title pl-2">Upload</span>
+              <span class="upload-title pl-2">Image</span>
             </div>
           </n-upload>
         </div>

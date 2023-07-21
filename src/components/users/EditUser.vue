@@ -20,6 +20,9 @@
           :tag="true"
         />
       </n-form-item-gi>
+      <n-form-item-gi :span="12" label="Status" path="is_active">
+        <n-switch type="small" v-model:value="formValue.is_active" />
+      </n-form-item-gi>
     </n-grid>
     <n-space justify="end">
       <n-form-item :theme-overrides="{ labelHeightSmall: '0', feedbackHeightSmall: '0' }">

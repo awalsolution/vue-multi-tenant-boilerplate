@@ -65,6 +65,15 @@ const routes: Array<RouteRecordRaw> = [
         },
         component: () => import('@/views/products/categories/index.vue'),
       },
+      {
+        path: 'variants',
+        name: `${routeName}_variants`,
+        meta: {
+          title: 'Variants',
+          permissions: ['can view variants'],
+        },
+        component: () => import('@/views/products/variants/index.vue'),
+      },
     ],
   },
 ];

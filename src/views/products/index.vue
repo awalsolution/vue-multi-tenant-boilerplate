@@ -65,12 +65,7 @@
               <th>Image</th>
               <th>Vendor</th>
               <th>Title</th>
-              <th>SKU ID</th>
-              <th>Price</th>
-              <th>Regular Price</th>
-              <th>Stock Status</th>
-              <th>Stock Quantity</th>
-              <th>Total Sales</th>
+              <th>Product Code</th>
               <th>Status</th>
               <th>Created At</th>
               <th>Updated At</th>
@@ -84,20 +79,20 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="item in list" :key="item.id">
+            <tr v-if="list.length === 0">
+              <td colspan="4" class="data_placeholder"> Record Not Exist </td>
+            </tr>
+            <tr v-else v-for="item in list" :key="item.id">
               <td>{{ item.id }}</td>
               <td class="text-center">
-                <n-avatar round size="large" :src="`${imgUrl}${item.product_images}`" />
+                <n-avatar round size="large" :src="`${imgUrl}${item.product_image}`" />
               </td>
               <td>{{ item.shop.shop_name }}</td>
               <td>{{ item.title }}</td>
-              <td>{{ item.product_sku }}</td>
-              <td>{{ item.price }}</td>
-              <td>{{ item.regular_price }}</td>
-              <td>{{ item.stock_status }}</td>
-              <td>{{ item.stock_quantity }}</td>
-              <td>{{ item.total_sales }}</td>
-              <td>{{ item.status }}</td>
+              <td>{{ item.product_code }}</td>
+              <td>
+                <n-tag :bordered="false" type="info">{{ item.status }}</n-tag>
+              </td>
               <td>{{ item.created_at }}</td>
               <td>{{ item.updated_at }}</td>
               <td
@@ -230,5 +225,12 @@
 <style lang="less" scoped>
   td {
     white-space: nowrap;
+  }
+  .data_placeholder {
+    text-align: center;
+    color: gray;
+    padding: 20px 0;
+    font-size: 18px;
+    font-style: italic;
   }
 </style>

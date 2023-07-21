@@ -19,6 +19,9 @@
       <n-form-item-gi :span="8" style="padding-top: 4px" label="Country" path="country">
         <n-input v-model:value="formValue.country" placeholder="Enter Country" />
       </n-form-item-gi>
+      <n-form-item-gi :span="12" style="padding-top: 4px" label="Status" path="status">
+        <n-switch type="small" v-model:value="formValue.is_active" />
+      </n-form-item-gi>
     </n-grid>
     <SingleImageUploader
       :action="uploadUrl"
@@ -46,8 +49,8 @@
 
   const globSetting = useGlobSetting();
   const { uploadUrl } = globSetting;
-  const formValue: any = ref({});
   const formRef = ref<FormInst | null>(null);
+  const formValue: any = ref({});
   const emits = defineEmits(['updated']);
   const props = defineProps({
     id: {

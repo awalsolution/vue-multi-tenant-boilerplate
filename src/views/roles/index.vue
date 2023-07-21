@@ -25,7 +25,10 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="item in list" :key="item.id">
+          <tr v-if="list.length === 0">
+            <td colspan="2" class="data_placeholder"> Record Not Exist </td>
+          </tr>
+          <tr v-else v-for="item in list" :key="item.id">
             <td>{{ item.id }}</td>
             <td v-if="item.name">{{ item.name }}</td>
             <td v-if="item.permissions">
@@ -213,10 +216,11 @@
   });
 </script>
 <style lang="less" scoped>
-  // .item_center {
-  //   text-align: center;
-  // }
-  // .td_width {
-  //   width: auto;
-  // }
+  .data_placeholder {
+    text-align: center;
+    color: gray;
+    padding: 20px 0;
+    font-size: 18px;
+    font-style: italic;
+  }
 </style>
