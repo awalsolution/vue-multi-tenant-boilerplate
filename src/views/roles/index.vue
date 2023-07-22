@@ -17,11 +17,13 @@
             <th>Created At</th>
             <th>Updated At</th>
             <th
+              class="text_center"
               v-permission="{
-                action: ['can view permissions update', 'can view permissions delete'],
+                action: ['can view role update', 'can view role delete'],
               }"
-              >Actions</th
             >
+              Actions
+            </th>
           </tr>
         </thead>
         <tbody>
@@ -40,8 +42,9 @@
             <td>{{ item.updated_at }}</td>
             <td
               v-permission="{
-                action: ['can view permissions update', 'can view permissions delete'],
+                action: ['can view role update', 'can view role delete'],
               }"
+              class="text-center"
             >
               <n-dropdown
                 @click="actionOperation(item)"
@@ -216,6 +219,9 @@
   });
 </script>
 <style lang="less" scoped>
+  .text_center {
+    text-align: center;
+  }
   .data_placeholder {
     text-align: center;
     color: gray;

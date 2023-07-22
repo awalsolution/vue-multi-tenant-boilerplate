@@ -27,11 +27,13 @@
               <th>Created At</th>
               <th>Updated At</th>
               <th
+                class="text_center"
                 v-permission="{
                   action: ['can view variant update', 'can view variant delete'],
                 }"
-                >Actions</th
               >
+                Actions
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -51,13 +53,16 @@
               <td>
                 <n-tag :bordered="false" type="info">{{ item.status }}</n-tag>
               </td>
-              <td>{{ item.stock_status }}</td>
+              <td>
+                <n-tag :bordered="false" type="info">{{ item.stock_status }}</n-tag>
+              </td>
               <td>{{ item.stock_quantity }}</td>
               <td>{{ item.price }}</td>
               <td>{{ item.regular_price }}</td>
               <td>{{ item.created_at }}</td>
               <td>{{ item.updated_at }}</td>
               <td
+                class="text-center"
                 v-permission="{
                   action: ['can view variant update', 'can view variant delete'],
                 }"
@@ -239,6 +244,9 @@
   });
 </script>
 <style lang="less" scoped>
+  .text_center {
+    text-align: center;
+  }
   td {
     white-space: nowrap;
   }

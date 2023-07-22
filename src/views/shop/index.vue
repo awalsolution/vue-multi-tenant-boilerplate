@@ -20,11 +20,13 @@
             <th>Created At</th>
             <th>Updated At</th>
             <th
+              class="text_center"
               v-permission="{
                 action: ['can view shop update', 'can view shop delete'],
               }"
-              >Actions</th
             >
+              Actions
+            </th>
           </tr>
         </thead>
         <tbody>
@@ -227,6 +229,9 @@
   });
 </script>
 <style lang="less" scoped>
+  .text_center {
+    text-align: center;
+  }
   .data_placeholder {
     text-align: center;
     color: gray;

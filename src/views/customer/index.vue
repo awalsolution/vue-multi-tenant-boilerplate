@@ -23,11 +23,13 @@
               <th>Created At</th>
               <th>Updated At</th>
               <th
+                class="text_center"
                 v-permission="{
                   action: ['can view customer update', 'can view customer delete'],
                 }"
-                >Actions</th
               >
+                Actions
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -70,6 +72,7 @@
               <td>{{ item.created_at }}</td>
               <td>{{ item.updated_at }}</td>
               <td
+                class="text-center"
                 v-permission="{
                   action: ['can view customer update', 'can view customer delete'],
                 }"
@@ -265,7 +268,7 @@
   });
 </script>
 <style lang="less" scoped>
-  .item_center {
+  .text_center {
     text-align: center;
   }
   .table-wrap {

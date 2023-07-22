@@ -1,5 +1,5 @@
 <template>
-  <n-form ref="formRef" :label-width="80" :model="variants" :rules="rules" size="small">
+  <n-form ref="formRef" :label-width="80" :model="variants" size="small">
     <n-grid x-gap="10">
       <n-form-item-gi :span="12" label="Attribute" path="attribute_id">
         <single-attribute-selector
@@ -42,12 +42,11 @@
         />
       </n-form-item-gi>
       <n-form-item-gi :span="12" label="Status" path="status">
-        <n-switch type="small" v-model:value="variants.is_active" />
+        <n-select v-model:value="variants.status" size="small" :options="status" />
       </n-form-item-gi>
     </n-grid>
     <MultiImageUploader
       :action="uploadUrl"
-      :data="{ type: 0 }"
       multiple
       name="productImages"
       :width="100"
@@ -64,7 +63,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { ref, unref } from 'vue';
+  import { ref } from 'vue';
   import { FormInst } from 'naive-ui';
   import { getRecordApi, updateRecordApi } from '@/api';
   import { MultiImageUploader } from '@/components/upload';
@@ -80,10 +79,25 @@
 
   const emits = defineEmits(['updated']);
 
-  const imagesUploadChange = (list: string) => {
-    // console.log(list);
-    variants.value = unref(list);
+  const imagesUploadChange = (list: string[]) => {
+    list.forEach((listImage) => {
+      const existImg = variants.value.images.find((img: any) => img.images === listImage);
+
+      if (existImg) {
+        // If an image with the same URL exists, update its properties with the data from 'list'
+        const index = variants.value.images.indexOf(existImg);
+        variants.value.images[index] = Object.assign(existImg, {
+          images: listImage,
+        });
+      } else {
+        // If the image does not exist, add it to the 'variants.value.images' array
+        variants.value.images.push({
+          images: listImage,
+        });
+      }
+    });
   };
+
   const props = defineProps({
     id: {
       type: Number,
@@ -122,18 +136,16 @@
     },
   ];
 
-  const rules = ref({
-    sku_id: {
-      required: true,
-      message: 'Please Enter title',
-      trigger: 'blur',
+  const status = ref([
+    {
+      label: 'active',
+      value: 'active',
     },
-    status: {
-      required: true,
-      message: 'Please Select Status',
-      trigger: 'blur',
+    {
+      label: 'disabled',
+      value: 'disabled',
     },
-  });
+  ]);
 </script>
 
 <style lang="less" scoped>

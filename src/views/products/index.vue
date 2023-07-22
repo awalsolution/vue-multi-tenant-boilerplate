@@ -70,6 +70,7 @@
               <th>Created At</th>
               <th>Updated At</th>
               <th
+                class="text_center"
                 v-permission="{
                   action: ['can view product update', 'can view product delete'],
                 }"
@@ -96,6 +97,7 @@
               <td>{{ item.created_at }}</td>
               <td>{{ item.updated_at }}</td>
               <td
+                class="text-center"
                 v-permission="{
                   action: ['can view product update', 'can view product delete'],
                 }"
@@ -223,6 +225,9 @@
   });
 </script>
 <style lang="less" scoped>
+  .text_center {
+    text-align: center;
+  }
   td {
     white-space: nowrap;
   }

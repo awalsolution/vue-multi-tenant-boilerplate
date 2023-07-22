@@ -42,18 +42,17 @@
         />
       </n-form-item-gi>
       <n-form-item-gi :span="12" label="Status" path="status">
-        <n-switch type="small" v-model:value="variants.is_active" />
+        <n-select v-model:value="variants.status" size="small" :options="status" />
       </n-form-item-gi>
     </n-grid>
-    <SingleImageUploader
+    <MultiImageUploader
       :action="uploadUrl"
-      :data="{ type: 0 }"
       multiple
       name="productImages"
       :width="100"
       :height="100"
       @upload-change="imagesUploadChange"
-      v-model:value="variants.variant_images"
+      v-model:value="variants.images"
     />
     <n-space justify="end">
       <n-form-item :theme-overrides="{ labelHeightSmall: '0', feedbackHeightSmall: '0' }">
@@ -64,10 +63,10 @@
 </template>
 
 <script lang="ts" setup>
-  import { ref, unref } from 'vue';
+  import { ref } from 'vue';
   import { FormInst } from 'naive-ui';
   import { createRecordApi } from '@/api';
-  import { SingleImageUploader } from '@/components/upload';
+  import { MultiImageUploader } from '@/components/upload';
   import { useGlobSetting } from '@/hooks/setting';
 
   const globSetting = useGlobSetting();
@@ -80,9 +79,23 @@
 
   const emits = defineEmits(['created']);
 
-  const imagesUploadChange = (list: string) => {
-    // console.log(list);
-    variants.value = unref(list);
+  const imagesUploadChange = (list: string[]) => {
+    list.forEach((listImage) => {
+      const existImg = variants.value.images.find((img: any) => img.images === listImage);
+
+      if (existImg) {
+        // If an image with the same URL exists, update its properties with the data from 'list'
+        const index = variants.value.images.indexOf(existImg);
+        variants.value.images[index] = Object.assign(existImg, {
+          images: listImage,
+        });
+      } else {
+        // If the image does not exist, add it to the 'variants.value.images' array
+        variants.value.images.push({
+          images: listImage,
+        });
+      }
+    });
   };
 
   const handleValidateClick = (e: MouseEvent) => {
@@ -111,6 +124,17 @@
       value: 'outofstock',
     },
   ];
+
+  const status = ref([
+    {
+      label: 'active',
+      value: 'active',
+    },
+    {
+      label: 'disabled',
+      value: 'disabled',
+    },
+  ]);
 
   const rules = ref({
     sku_id: {

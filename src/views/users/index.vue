@@ -27,11 +27,13 @@
               <th>Created At</th>
               <th>Updated At</th>
               <th
+                class="text_center"
                 v-permission="{
                   action: ['can view user update', 'can view user delete'],
                 }"
-                >Actions</th
               >
+                Actions
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -47,7 +49,7 @@
               <td>{{ item?.email }}</td>
               <td>
                 <n-space>
-                  <n-tag v-for="role in item.roles" :key="role.id" type="success">
+                  <n-tag v-for="role in item.roles" :key="role.id" type="success" :bordered="false">
                     {{ role?.name }}
                   </n-tag>
                 </n-space>
@@ -62,7 +64,9 @@
               <td>{{ item?.shop?.shop_name }}</td>
               <td>{{ item?.shop?.shop_phone }}</td>
               <td>
-                <n-tag :bordered="false" type="info">{{ item.status }}</n-tag>
+                <n-tag :bordered="false" type="info">
+                  {{ item.status }}
+                </n-tag>
               </td>
               <td>{{
                 item?.profile?.address +
@@ -76,6 +80,7 @@
               <td>{{ item.created_at }}</td>
               <td>{{ item.updated_at }}</td>
               <td
+                class="text-center"
                 v-permission="{
                   action: ['can view user update', 'can view user delete'],
                 }"
@@ -257,7 +262,7 @@
   });
 </script>
 <style lang="less" scoped>
-  .item_center {
+  .text_center {
     text-align: center;
   }
   .table-wrap {
