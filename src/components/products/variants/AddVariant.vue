@@ -1,70 +1,73 @@
 <template>
-  <n-form ref="formRef" :label-width="80" :model="variants" :rules="rules" size="small">
-    <n-grid x-gap="10">
-      <n-form-item-gi :span="12" label="Attribute" path="attribute_id">
-        <single-attribute-selector
-          v-model:value="variants.attribute_id"
-          label-field="name"
-          value-field="id"
-        />
-      </n-form-item-gi>
-      <n-form-item-gi :span="12" label="Attribute Value" path="attribute_value">
-        <n-input v-model:value="variants.attribute_value" placeholder="Enter Attribute value" />
-      </n-form-item-gi>
-      <n-form-item-gi :span="12" label="SKU ID" path="sku_id">
-        <n-input v-model:value="variants.sku_id" placeholder="Enter Product SKU ID" />
-      </n-form-item-gi>
-      <n-form-item-gi :span="12" label="Stock Status" path="stock_status">
-        <n-select v-model:value="variants.stock_status" :options="stock_status" />
-      </n-form-item-gi>
-      <n-form-item-gi :span="12" label="Product Price" path="price">
-        <n-input-number
-          class="w-full"
-          v-model:value="variants.price"
-          clearable
-          placeholder="Enter Product Price"
-        />
-      </n-form-item-gi>
-      <n-form-item-gi :span="12" label="Product Regular Price" path="regular_price">
-        <n-input-number
-          class="w-full"
-          v-model:value="variants.regular_price"
-          clearable
-          placeholder="Enter Product Regular Price"
-        />
-      </n-form-item-gi>
-      <n-form-item-gi :span="12" label="Stock Quantity" path="stock_quantity">
-        <n-input-number
-          class="w-full"
-          v-model:value="variants.stock_quantity"
-          clearable
-          placeholder="Enter Stock Quantity"
-        />
-      </n-form-item-gi>
-      <n-form-item-gi :span="12" label="Status" path="status">
-        <n-select v-model:value="variants.status" size="small" :options="status" />
-      </n-form-item-gi>
-    </n-grid>
-    <MultiImageUploader
-      :action="uploadUrl"
-      multiple
-      name="productImages"
-      :width="100"
-      :height="100"
-      @upload-change="imagesUploadChange"
-      v-model:value="variants.images"
-    />
-    <n-space justify="end">
-      <n-form-item :theme-overrides="{ labelHeightSmall: '0', feedbackHeightSmall: '0' }">
-        <n-button type="success" @click="handleValidateClick"> Create</n-button>
-      </n-form-item>
-    </n-space>
-  </n-form>
+  <n-card title="Create New Variant">
+    <n-form ref="formRef" :label-width="80" :model="variants" :rules="rules" size="small">
+      <n-grid x-gap="10">
+        <n-form-item-gi :span="12" label="Attribute" path="attribute_id">
+          <single-attribute-selector
+            v-model:value="variants.attribute_id"
+            label-field="name"
+            value-field="id"
+          />
+        </n-form-item-gi>
+        <n-form-item-gi :span="12" label="Attribute Value" path="attribute_value">
+          <n-input v-model:value="variants.attribute_value" placeholder="Enter Attribute value" />
+        </n-form-item-gi>
+        <n-form-item-gi :span="12" label="SKU ID" path="sku_id">
+          <n-input v-model:value="variants.sku_id" placeholder="Enter Product SKU ID" />
+        </n-form-item-gi>
+        <n-form-item-gi :span="12" label="Stock Status" path="stock_status">
+          <n-select v-model:value="variants.stock_status" :options="stock_status" />
+        </n-form-item-gi>
+        <n-form-item-gi :span="12" label="Product Price" path="price">
+          <n-input-number
+            class="w-full"
+            v-model:value="variants.price"
+            clearable
+            placeholder="Enter Product Price"
+          />
+        </n-form-item-gi>
+        <n-form-item-gi :span="12" label="Product Regular Price" path="regular_price">
+          <n-input-number
+            class="w-full"
+            v-model:value="variants.regular_price"
+            clearable
+            placeholder="Enter Product Regular Price"
+          />
+        </n-form-item-gi>
+        <n-form-item-gi :span="12" label="Stock Quantity" path="stock_quantity">
+          <n-input-number
+            class="w-full"
+            v-model:value="variants.stock_quantity"
+            clearable
+            placeholder="Enter Stock Quantity"
+          />
+        </n-form-item-gi>
+        <n-form-item-gi :span="12" label="Status" path="status">
+          <n-select v-model:value="variants.status" size="small" :options="status" />
+        </n-form-item-gi>
+      </n-grid>
+      <MultiImageUploader
+        :action="uploadUrl"
+        multiple
+        name="productImages"
+        :width="100"
+        :height="100"
+        @upload-change="imagesUploadChange"
+        v-model:value="variants.images"
+      />
+      <n-space justify="end">
+        <n-form-item :theme-overrides="{ labelHeightSmall: '0', feedbackHeightSmall: '0' }">
+          <n-button type="success" @click="handleValidateClick"> Create</n-button>
+        </n-form-item>
+      </n-space>
+    </n-form>
+  </n-card>
 </template>
 
 <script lang="ts" setup>
   import { ref } from 'vue';
   import { FormInst } from 'naive-ui';
+  import { useRoute, useRouter } from 'vue-router';
   import { createRecordApi } from '@/api';
   import { MultiImageUploader } from '@/components/upload';
   import { useGlobSetting } from '@/hooks/setting';
@@ -72,9 +75,12 @@
   const globSetting = useGlobSetting();
   const { uploadUrl } = globSetting;
 
+  const router = useRouter();
+  const route = useRoute();
+
   const formRef = ref<FormInst | null>(null);
   const variants: any = ref({
-    variant_images: [],
+    images: [],
   });
 
   const emits = defineEmits(['created']);
@@ -103,9 +109,10 @@
     formRef.value?.validate((errors) => {
       if (!errors) {
         console.log('product object ==>', variants.value);
-        createRecordApi(`/variants`, variants.value).then((result: any) => {
+        createRecordApi(`/variants/${route.params.id}`, variants.value).then((result: any) => {
           window['$message'].success(result.message);
           emits('created', result);
+          router.replace('/variants');
         });
       } else {
         console.log(errors);

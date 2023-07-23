@@ -142,7 +142,7 @@
   import { useDialog, useMessage } from 'naive-ui';
   import type { Component } from 'vue';
   import { NIcon, NPagination } from 'naive-ui';
-  import { MoreOutlined, EditOutlined, DeleteOutlined } from '@vicons/antd';
+  import { MoreOutlined, EditOutlined, DeleteOutlined, PlusOutlined } from '@vicons/antd';
   import { FileImport } from '@vicons/tabler';
   import { Search20Regular } from '@vicons/fluent';
   import { useGlobSetting } from '@/hooks/setting';
@@ -166,6 +166,11 @@
   };
 
   const moreOptions = ref([
+    {
+      label: 'Add Variant',
+      key: 'add_variant',
+      icon: renderIcon(PlusOutlined),
+    },
     {
       label: 'Edit',
       key: 'edit',
@@ -207,7 +212,9 @@
     selectedOption.value = null;
   }
   const actionOperation = (item: any) => {
-    if (selectedOption.value === 'edit') {
+    if (selectedOption.value === 'add_variant') {
+      router.push({ name: 'product_variant', params: { id: item.id } });
+    } else if (selectedOption.value === 'edit') {
       router.push({ name: 'product_update', params: { id: item.id } });
     } else if (selectedOption.value === 'delete') {
       selectedId.value = item.id;

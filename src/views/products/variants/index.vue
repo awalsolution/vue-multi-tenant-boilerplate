@@ -1,5 +1,5 @@
 <template>
-  <n-card title="Shops" v-permission="{ action: ['can view variants'] }">
+  <n-card title="Variants" v-permission="{ action: ['can view variants'] }">
     <n-space :vertical="true">
       <n-input
         type="text"
@@ -141,28 +141,26 @@
 </template>
 
 <script lang="ts" setup>
-  // import { deleteRecordApi } from '@/api';
+  import { deleteRecordApi } from '@/api';
   import { getVariantsApi } from '@/api/variant/variant';
   import { userPagination } from '@/hooks/userPagination';
   import { usePermission } from '@/hooks/web/usePermission';
   import { ref, onMounted, h, computed } from 'vue';
-  // import { useDialog, useMessage } from 'naive-ui';
+  import { useDialog, useMessage } from 'naive-ui';
   import type { Component } from 'vue';
   import { NIcon, NPagination } from 'naive-ui';
-  import { MoreOutlined, EditOutlined } from '@vicons/antd';
-  // import AddVariant from '@/components/products/variants/AddVariant.vue';
+  import { MoreOutlined, EditOutlined, DeleteOutlined } from '@vicons/antd';
   import EditVariant from '@/components/products/variants/EditVariant.vue';
   import { useGlobSetting } from '@/hooks/setting';
 
   const globSetting = useGlobSetting();
   const { imgUrl } = globSetting;
-  // const dialog = useDialog();
+  const dialog = useDialog();
   const selectedOption: any = ref(null);
-  // const showModal = ref(false);
   const showEditModal = ref(false);
   const selectedId = ref();
   const { hasPermission } = usePermission();
-  // const message = useMessage();
+  const message = useMessage();
   const { getList, list, page, pageSizes, itemCount, pageSize, params }: any =
     userPagination(getVariantsApi);
 
@@ -181,57 +179,56 @@
       icon: renderIcon(EditOutlined),
       permission: hasPermission(['can view variant update']),
     },
-    // {
-    //   label: 'Delete',
-    //   key: 'delete',
-    //   icon: renderIcon(DeleteOutlined),
-    //   permission: hasPermission(['can view variant delete']),
-    // },
+    {
+      label: 'Delete',
+      key: 'delete',
+      icon: renderIcon(DeleteOutlined),
+      permission: hasPermission(['can view variant delete']),
+    },
   ]);
 
   const filteredOptions = computed(() => {
     return moreOptions.value.filter((option) => option.permission);
   });
 
-  // function confirmationDialog() {
-  //   dialog.error({
-  //     title: 'Confirmation',
-  //     content: () => 'Are you sure you want to delete?',
-  //     positiveText: 'Delete',
-  //     negativeText: 'Cancel',
-  //     onPositiveClick: deleteOperation,
-  //   });
-  // }
+  function confirmationDialog() {
+    dialog.error({
+      title: 'Confirmation',
+      content: () => 'Are you sure you want to delete?',
+      positiveText: 'Delete',
+      negativeText: 'Cancel',
+      onPositiveClick: deleteOperation,
+    });
+  }
 
-  // function deleteOperation() {
-  //   const Loading = window['$loading'] || null;
-  //   Loading.start();
-  //   deleteRecordApi(`/variants/${selectedId.value}`)
-  //     .then((result: any) => {
-  //       message.success(result.message);
-  //       getList();
-  //       Loading.finish();
-  //       dialog.destroyAll;
-  //     })
-  //     .catch((result) => {
-  //       message.error(result.message);
-  //       Loading.finish();
-  //       dialog.destroyAll;
-  //     });
-  //   selectedId.value = null;
-  //   selectedOption.value = null;
-  // }
+  function deleteOperation() {
+    const Loading = window['$loading'] || null;
+    Loading.start();
+    deleteRecordApi(`/variants/${selectedId.value}`)
+      .then((result: any) => {
+        message.success(result.message);
+        getList();
+        Loading.finish();
+        dialog.destroyAll;
+      })
+      .catch((result) => {
+        message.error(result.message);
+        Loading.finish();
+        dialog.destroyAll;
+      });
+    selectedId.value = null;
+    selectedOption.value = null;
+  }
 
   const actionOperation = (item: any) => {
     if (selectedOption.value === 'edit') {
       showEditModal.value = true;
       selectedId.value = item.id;
       // router.push(`/variants/${item.id}`);
+    } else if (selectedOption.value === 'delete') {
+      selectedId.value = item.id;
+      confirmationDialog();
     }
-    // else if (selectedOption.value === 'delete') {
-    //   selectedId.value = item.id;
-    //   confirmationDialog();
-    // }
   };
   const selectedAction = (key: any) => {
     selectedOption.value = key;
