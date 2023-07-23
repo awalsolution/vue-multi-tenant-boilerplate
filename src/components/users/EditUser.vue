@@ -20,8 +20,8 @@
           :tag="true"
         />
       </n-form-item-gi>
-      <n-form-item-gi :span="12" label="Status" path="is_active">
-        <n-switch type="small" v-model:value="formValue.is_active" />
+      <n-form-item-gi :span="12" label="Status" path="status">
+        <n-select v-model:value="formValue.status" size="small" :options="status" />
       </n-form-item-gi>
     </n-grid>
     <n-space justify="end">
@@ -36,8 +36,10 @@
   import { ref } from 'vue';
   import { FormInst } from 'naive-ui';
   import { getRecordApi, updateRecordApi } from '@/api';
-  const formValue: any = ref({});
+
   const formRef = ref<FormInst | null>(null);
+  const formValue: any = ref({});
+
   const emits = defineEmits(['updated']);
   const props = defineProps({
     id: {
@@ -50,6 +52,32 @@
     formValue.value.permissions = formValue.value.permissions.map((v: any) => v.id);
     formValue.value.roles = formValue.value.roles.map((v: any) => v.id);
   });
+
+  const handleValidateClick = (e: MouseEvent) => {
+    e.preventDefault();
+    formRef.value?.validate((errors) => {
+      if (!errors) {
+        console.log(formValue.value);
+        updateRecordApi(`/users/${formValue.value.id}`, formValue.value).then((result) => {
+          window['$message'].success(result.message);
+          emits('updated', result);
+        });
+      } else {
+        console.log(errors);
+        window['$message'].error('Invalid');
+      }
+    });
+  };
+  const status = ref([
+    {
+      label: 'active',
+      value: 'active',
+    },
+    {
+      label: 'disabled',
+      value: 'disabled',
+    },
+  ]);
 
   const rules = ref({
     first_name: {
@@ -73,21 +101,6 @@
       trigger: 'blur',
     },
   });
-
-  const handleValidateClick = (e: MouseEvent) => {
-    e.preventDefault();
-    formRef.value?.validate((errors) => {
-      if (!errors) {
-        updateRecordApi(`/users/${formValue.value.id}`, formValue.value).then((result) => {
-          window['$message'].success(result.message);
-          emits('updated', result);
-        });
-      } else {
-        console.log(errors);
-        window['$message'].error('Invalid');
-      }
-    });
-  };
 </script>
 
 <style lang="less" scoped></style>

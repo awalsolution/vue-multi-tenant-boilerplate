@@ -19,8 +19,8 @@
       <n-form-item-gi :span="8" style="padding-top: 4px" label="Country" path="country">
         <n-input v-model:value="formValue.country" placeholder="Enter Country" />
       </n-form-item-gi>
-      <n-form-item-gi :span="12" style="padding-top: 4px" label="Status" path="status">
-        <n-switch type="small" v-model:value="formValue.is_active" />
+      <n-form-item-gi :span="12" label="Status" path="status">
+        <n-select v-model:value="formValue.status" size="small" :options="status" />
       </n-form-item-gi>
     </n-grid>
     <SingleImageUploader
@@ -67,6 +67,30 @@
     formValue.value = result;
   });
 
+  const handleValidateClick = (e: MouseEvent) => {
+    e.preventDefault();
+    formRef.value?.validate((errors) => {
+      if (!errors) {
+        updateRecordApi(`/shops/${formValue.value.id}`, formValue.value).then((result: any) => {
+          window['$message'].success(result.message);
+          emits('updated', result);
+        });
+      } else {
+        console.log(errors);
+        window['$message'].error('Invalid');
+      }
+    });
+  };
+  const status = ref([
+    {
+      label: 'active',
+      value: 'active',
+    },
+    {
+      label: 'disabled',
+      value: 'disabled',
+    },
+  ]);
   const rules = ref({
     shop_name: {
       required: true,
@@ -104,21 +128,6 @@
       trigger: 'blur',
     },
   });
-
-  const handleValidateClick = (e: MouseEvent) => {
-    e.preventDefault();
-    formRef.value?.validate((errors) => {
-      if (!errors) {
-        updateRecordApi(`/shops/${formValue.value.id}`, formValue.value).then((result: any) => {
-          window['$message'].success(result.message);
-          emits('updated', result);
-        });
-      } else {
-        console.log(errors);
-        window['$message'].error('Invalid');
-      }
-    });
-  };
 </script>
 
 <style lang="less" scoped></style>

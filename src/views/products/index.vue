@@ -70,6 +70,7 @@
               <th>Created At</th>
               <th>Updated At</th>
               <th
+                class="text_center"
                 v-permission="{
                   action: ['can view product update', 'can view product delete'],
                 }"
@@ -96,6 +97,7 @@
               <td>{{ item.created_at }}</td>
               <td>{{ item.updated_at }}</td>
               <td
+                class="text-center"
                 v-permission="{
                   action: ['can view product update', 'can view product delete'],
                 }"
@@ -140,7 +142,7 @@
   import { useDialog, useMessage } from 'naive-ui';
   import type { Component } from 'vue';
   import { NIcon, NPagination } from 'naive-ui';
-  import { MoreOutlined, EditOutlined, DeleteOutlined } from '@vicons/antd';
+  import { MoreOutlined, EditOutlined, DeleteOutlined, PlusOutlined } from '@vicons/antd';
   import { FileImport } from '@vicons/tabler';
   import { Search20Regular } from '@vicons/fluent';
   import { useGlobSetting } from '@/hooks/setting';
@@ -164,6 +166,11 @@
   };
 
   const moreOptions = ref([
+    {
+      label: 'Add Variant',
+      key: 'add_variant',
+      icon: renderIcon(PlusOutlined),
+    },
     {
       label: 'Edit',
       key: 'edit',
@@ -205,7 +212,9 @@
     selectedOption.value = null;
   }
   const actionOperation = (item: any) => {
-    if (selectedOption.value === 'edit') {
+    if (selectedOption.value === 'add_variant') {
+      router.push({ name: 'product_variant', params: { id: item.id } });
+    } else if (selectedOption.value === 'edit') {
       router.push({ name: 'product_update', params: { id: item.id } });
     } else if (selectedOption.value === 'delete') {
       selectedId.value = item.id;
@@ -223,6 +232,9 @@
   });
 </script>
 <style lang="less" scoped>
+  .text_center {
+    text-align: center;
+  }
   td {
     white-space: nowrap;
   }
