@@ -15,7 +15,7 @@ export interface BasicPageParams {
 /**
  * @description: Get Attribute list
  */
-export function getAttributeListApi(params: any) {
+export function getAttributeApi(params: any) {
   return http.request({
     url: '/attributes',
     method: 'get',

@@ -15,7 +15,7 @@ export interface BasicPageParams {
 /**
  * @description: Get Categories list
  */
-export function getCategoriesListApi(params: any) {
+export function getCategoriesApi(params: any) {
   return http.request({
     url: '/categories',
     method: 'get',

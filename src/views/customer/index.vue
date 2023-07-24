@@ -18,6 +18,8 @@
               <th>Phone Number</th>
               <th>Shop Name</th>
               <th>Shop Phone</th>
+              <th>Status</th>
+              <th>Address</th>
               <th>Billing Address</th>
               <th>Shipping Address</th>
               <th>Created At</th>
@@ -37,35 +39,49 @@
               <td colspan="4" class="data_placeholder"> Record Not Exist </td>
             </tr>
             <tr v-else v-for="item in list" :key="item.id">
-              <td>{{ item?.id }}</td>
-              <td>{{ item?.first_name + ' ' + item?.last_name }}</td>
-              <td>{{ item?.email }}</td>
-              <td>{{ item.phone_number }}</td>
-              <td>{{ item?.shop?.shop_name }}</td>
-              <td>{{ item?.shop?.shop_phone }}</td>
+              <td>{{ item.id }}</td>
+              <td>{{ item.profile.first_name + ' ' + item.profile.last_name }}</td>
+              <td>{{ item.email }}</td>
+              <td>{{ item.profile.phone_number }}</td>
+              <td>{{ item.shop.shop_name }}</td>
+              <td>{{ item.shop.shop_phone }}</td>
+              <td>
+                <n-tag :bordered="false" type="info">
+                  {{ item.status }}
+                </n-tag>
+              </td>
+              <td>{{
+                item.profile?.street +
+                ' ' +
+                item.profile?.city +
+                ' ' +
+                item.profile?.state +
+                ' ' +
+                item.profile?.country
+              }}</td>
               <td>
                 <n-space>
                   {{
-                    item?.billing_address.street +
+                    item.billing_address?.street +
                     ' ' +
-                    item?.billing_address?.city +
+                    item.billing_address?.city +
                     ' ' +
-                    item?.billing_address?.state +
+                    item.billing_address?.state +
                     ' ' +
-                    item?.billing_address?.country
+                    item.billing_address?.country
                   }}
                 </n-space>
               </td>
               <td>
                 <n-space>
                   {{
-                    item?.shipping_address.street +
+                    item.shipping_address?.street +
                     ' ' +
-                    item?.shipping_address?.city +
+                    item.shipping_address?.city +
                     ' ' +
-                    item?.shipping_address?.state +
+                    item.shipping_address?.state +
                     ' ' +
-                    item?.shipping_address?.country
+                    item.shipping_address?.country
                   }}
                 </n-space>
               </td>
@@ -132,7 +148,6 @@
           />
         </n-space>
       </n-modal>
-
       <n-modal style="width: 50%" v-model:show="showEditModal" preset="dialog">
         <template #header>
           <div>Update Customer</div>
@@ -143,6 +158,20 @@
             @updated="
               getList();
               showEditModal = false;
+            "
+          />
+        </n-space>
+      </n-modal>
+      <n-modal style="width: 50%" v-model:show="showEditProfile" preset="dialog">
+        <template #header>
+          <div>Update Customer Profile</div>
+        </template>
+        <n-space :vertical="true">
+          <edit-customer-profile
+            :id="selectedId"
+            @updated="
+              getList();
+              showEditProfile = false;
             "
           />
         </n-space>
@@ -163,17 +192,19 @@
   import { MoreOutlined, EditOutlined, DeleteOutlined, PlusOutlined } from '@vicons/antd';
   import AddCustomer from '@/components/customer/AddCustomer.vue';
   import EditCustomer from '@/components/customer/EditCustomer.vue';
+  import EditCustomerProfile from '@/components/customer/EditCustomerProfile.vue';
 
   const dialog = useDialog();
   const selectedOption: any = ref(null);
   const showModal = ref(false);
+  const showEditProfile = ref(false);
   const showEditModal = ref(false);
   const selectedId = ref();
   const { hasPermission } = usePermission();
   const message = useMessage();
   const { getList, list, page, pageSizes, itemCount, pageSize, params }: any =
     userPagination(getCustomersApi);
-  console.log('customer list ==>', list);
+
   const renderIcon = (icon: Component) => {
     return () => {
       return h(NIcon, null, {
@@ -183,6 +214,12 @@
   };
 
   const moreOptions = ref([
+    {
+      label: 'Edit Profile',
+      key: 'edit_profile',
+      icon: renderIcon(EditOutlined),
+      permission: hasPermission(['can view customer profile']),
+    },
     {
       label: 'Edit',
       key: 'edit',
@@ -230,26 +267,13 @@
     selectedOption.value = null;
   }
 
-  // function updateUserStatus(id: any, item: any) {
-  //   const Loading = window['$loading'] || null;
-  //   Loading.start();
-  //   updateUserStatusApi(id, { status: item.status })
-  //     .then((result) => {
-  //       message.success(result.message);
-  //       getList();
-  //       Loading.finish();
-  //       dialog.destroyAll;
-  //     })
-  //     .catch((result) => {
-  //       message.error(result.message);
-  //       Loading.finish();
-  //       dialog.destroyAll;
-  //     });
-  // }
-
   const actionOperation = (item: any) => {
     if (selectedOption.value === 'edit') {
       showEditModal.value = true;
+      selectedId.value = item.id;
+      // router.push(`/roles/${item.id}`);
+    } else if (selectedOption.value === 'edit_profile') {
+      showEditProfile.value = true;
       selectedId.value = item.id;
       // router.push(`/roles/${item.id}`);
     } else if (selectedOption.value === 'delete') {

@@ -21,16 +21,3 @@ export function getVariantsApi() {
     method: 'get',
   });
 }
-
-export function createRecordApi(endpoint: string, params: any) {
-  return http.request<BasicResponseModel>(
-    {
-      url: endpoint,
-      method: 'POST',
-      params,
-    },
-    {
-      isTransformResponse: false,
-    }
-  );
-}

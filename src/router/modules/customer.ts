@@ -27,6 +27,15 @@ const routes: Array<RouteRecordRaw> = [
         },
         component: () => import('@/views/customer/index.vue'),
       },
+      {
+        path: 'profile/:id',
+        name: `${routeName}_profile`,
+        meta: {
+          title: 'Customer Profile',
+          permissions: ['can view customers'],
+        },
+        component: () => import('@/views/customer/Profile.vue'),
+      },
     ],
   },
 ];

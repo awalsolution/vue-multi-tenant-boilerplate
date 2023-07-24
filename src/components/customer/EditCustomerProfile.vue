@@ -11,8 +11,8 @@
         <n-form-item-gi :span="12" label="Phone Number" path="phone_number">
           <n-input v-model:value="profileData.phone_number" placeholder="Enter Phone Number" />
         </n-form-item-gi>
-        <n-form-item-gi :span="12" label="Address" path="address">
-          <n-input v-model:value="profileData.address" placeholder="Enter Address" />
+        <n-form-item-gi :span="12" label="Address" path="street">
+          <n-input v-model:value="profileData.street" placeholder="Enter Address" />
         </n-form-item-gi>
         <n-form-item-gi :span="12" label="City" path="city">
           <n-input v-model:value="profileData.city" placeholder="Enter City" />
@@ -27,7 +27,7 @@
           <SingleImageUploader
             :action="uploadUrl"
             :data="{ type: 0 }"
-            name="profile_image"
+            name="customerProfile"
             :width="100"
             :height="100"
             @upload-change="uploadChange"
@@ -45,19 +45,30 @@
 </template>
 
 <script lang="ts" setup>
-  import { onMounted, ref, unref } from 'vue';
+  import { ref, unref } from 'vue';
   import { FormInst } from 'naive-ui';
-  import { profileUpdateApi } from '@/api/user/user';
+  import { getRecordApi } from '@/api';
+  import { profileUpdateApi } from '@/api/customer/customer';
   import { SingleImageUploader } from '@/components/upload';
-  import { useUserStore } from '@/store/modules/user';
   import { useGlobSetting } from '@/hooks/setting';
 
   const globSetting = useGlobSetting();
+  const { uploadUrl } = globSetting;
+
   const formRef = ref<FormInst | null>(null);
   const profileData: any = ref({});
-  const userStore = useUserStore();
   const emits = defineEmits(['updated']);
-  const { uploadUrl } = globSetting;
+
+  const props = defineProps({
+    id: {
+      type: Number,
+    },
+  });
+  // fetch customer using id
+  getRecordApi(`/customers/${props.id}`).then((result: any) => {
+    console.log(result.profile);
+    profileData.value = result.profile;
+  });
 
   const uploadChange = (list: string) => {
     profileData.value.profile_picture = unref(list);
@@ -76,9 +87,5 @@
       }
     });
   };
-
-  onMounted(() => {
-    profileData.value = userStore.info.profile;
-  });
 </script>
 <style lang="less" scoped></style>

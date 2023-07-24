@@ -113,7 +113,7 @@
 
 <script lang="ts" setup>
   import { deleteRecordApi } from '@/api';
-  import { getAttributeListApi } from '@/api/products/attributes/attribute';
+  import { getAttributeApi } from '@/api/products/attributes/attribute';
   import { userPagination } from '@/hooks/userPagination';
   import { usePermission } from '@/hooks/web/usePermission';
   import { ref, onMounted, h, computed } from 'vue';
@@ -132,7 +132,7 @@
   const { hasPermission } = usePermission();
   const message = useMessage();
   const { getList, list, page, pageSizes, itemCount, pageSize, params }: any =
-    userPagination(getAttributeListApi);
+    userPagination(getAttributeApi);
 
   const renderIcon = (icon: Component) => {
     return () => {
