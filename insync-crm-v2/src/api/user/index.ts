@@ -1,8 +1,4 @@
-import type {
-  BaseResponse,
-  PageRequestModel,
-  PageResponse,
-} from '@src/types/request';
+import type { BaseResponse, PageRequestModel, PageResponse } from '@src/types/request';
 import type { User } from '@src/types/user';
 import { useEnv } from '@src/hooks/useEnv';
 
@@ -38,6 +34,10 @@ export class UserAPI {
     });
   }
 
+  static profileUpdateApi(id: number, params: any) {
+    return Request.put(`/users/profile/${id}`, params);
+  }
+
   static enableUser(id: number) {
     return Request.post<BaseResponse<User>>(`${this.PREFIX}/${id}/activate`);
   }
@@ -47,16 +47,16 @@ export class UserAPI {
   }
 
   static resetPassword(id: number, password: string) {
-    return Request.post<BaseResponse<User>>(
-      `${this.PREFIX}/${id}/reset-password`,
-      { password }
-    );
+    return Request.post<BaseResponse<User>>(`${this.PREFIX}/${id}/reset-password`, { password });
   }
 
   static changePassword(id: number, data: ChangePasswordModel) {
-    return Request.post<BaseResponse<User>>(
-      `${this.PREFIX}/${id}/change-password`,
-      { ...data }
-    );
+    return Request.post<BaseResponse<User>>(`${this.PREFIX}/${id}/change-password`, { ...data });
   }
 }
+
+// export const profileUpdateApi = (endpoint: any, data: any) => {
+//   return Request.put<BaseResponse<any>>(endpoint, {
+//     ...data,
+//   });
+// };

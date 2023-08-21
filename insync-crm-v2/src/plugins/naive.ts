@@ -71,12 +71,14 @@ import {
   NGradientText,
   NScrollbar,
   NH1,
+  NFormItemGi,
 } from 'naive-ui';
 
 // https://www.naiveui.com/en-US/os-theme/docs/import-on-demand
 const naive = create({
   components: [
     NH1,
+    NFormItemGi,
     NEllipsis,
     NScrollbar,
     NGradientText,

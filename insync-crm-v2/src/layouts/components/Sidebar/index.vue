@@ -1,19 +1,10 @@
 <template>
   <div
     class="bg-default-light dark:bg-default-dark absolute inset-y-0 left-0 z-[100] h-full border-r border-gray-300 shadow-sm transition-[width] dark:border-gray-800 sm:static"
-    :class="[
-      sidebarStore.isDisplay
-        ? sidebarStore.isCollapse
-          ? 'w-16'
-          : 'w-56'
-        : 'w-0',
-    ]"
+    :class="[sidebarStore.isDisplay ? (sidebarStore.isCollapse ? 'w-16' : 'w-56') : 'w-0']"
   >
     <!-- Header -->
-    <div
-      class="flex h-14 w-full select-none items-center justify-center"
-      @click="router.push('/')"
-    >
+    <div class="flex h-14 w-full select-none items-center justify-center" @click="router.push('/')">
       <img
         class="animate-pulse cursor-pointer select-none"
         width="36"
@@ -77,59 +68,63 @@
     class="absolute inset-0 z-[75] bg-black opacity-40 sm:hidden"
     :class="sidebarStore.isDisplay ? 'block' : 'hidden'"
     @click="sidebarStore.toggleSidebarDisplay()"
-  />
+  ></div>
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from 'vue';
-import { MenuFoldOutlined } from '@vicons/antd';
-import { MenuInst, MenuOption } from 'naive-ui';
-import { useRoute, useRouter } from 'vue-router';
-import { menuOptions } from '@src/constants/sidebarItems';
-import { useSidebarStore } from '@src/store/modules/sidebar';
-import { useEnv } from '@src/hooks/useEnv';
+  import { ref, watch } from 'vue';
+  import { MenuFoldOutlined } from '@vicons/antd';
+  import { MenuInst, MenuOption } from 'naive-ui';
+  import { useRoute, useRouter } from 'vue-router';
+  import { menuOptions } from '@src/constants/sidebarItems';
+  import { useSidebarStore } from '@src/store/modules/sidebar';
+  import { useEnv } from '@src/hooks/useEnv';
 
-const route = useRoute();
-const router = useRouter();
-const { appTitle } = useEnv();
-const sidebarStore = useSidebarStore();
+  const route = useRoute();
+  const router = useRouter();
+  const { appTitle } = useEnv();
+  const sidebarStore = useSidebarStore();
+  const menuInstRef = ref<MenuInst | null>(null);
+  const menuData = ref(menuOptions);
 
-const menuInstRef = ref<MenuInst | null>(null);
-const menuData = ref(menuOptions);
-const selectedKey = ref();
-const accordion = ref(false);
+  // console.log(route);
+  const selectedKey = ref();
+  const accordion = ref(false);
 
-const handleChangeRouter = () => {
-  selectedKey.value = route.name;
-  menuInstRef.value?.showOption(route.name as string);
-};
+  const handleChangeRouter = () => {
+    selectedKey.value = route.name;
+    menuInstRef.value?.showOption(route.name as string);
+    // console.log('handle change with selected key', menuInstRef);
+  };
 
-const handleChangeMenu = (key: string, item: MenuOption) => {
-  if (item.children) {
-    return;
-  }
-  router.push({ name: key });
-};
+  const handleChangeMenu = (key: string, item: MenuOption) => {
+    // console.log('item ==>', item);
+    if (item.children) {
+      return;
+    }
+    // console.log('route key', key);
+    router.push({ name: key });
+  };
 
-watch(
-  () => route.name,
-  () => handleChangeRouter(),
-  { immediate: true }
-);
+  watch(
+    () => route.name,
+    () => handleChangeRouter(),
+    { immediate: true }
+  );
 </script>
 
 <style scoped lang="scss">
-.icon-animation {
-  transition: all 0.3s ease-in-out;
-}
+  .icon-animation {
+    transition: all 0.3s ease-in-out;
+  }
 
-.hover-container:hover .icon-animation {
-  transform: scale(1.2);
-  opacity: 0.9;
-}
+  .hover-container:hover .icon-animation {
+    transform: scale(1.2);
+    opacity: 0.9;
+  }
 
-.hover-container:active .icon-animation {
-  transform: scale(1);
-  opacity: 0.75;
-}
+  .hover-container:active .icon-animation {
+    transform: scale(1);
+    opacity: 0.75;
+  }
 </style>

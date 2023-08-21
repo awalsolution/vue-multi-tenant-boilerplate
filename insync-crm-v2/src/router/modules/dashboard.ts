@@ -3,15 +3,9 @@ import { DashboardOutlined } from '@vicons/antd';
 
 export const DashboardRoute: RouteRecordRaw = {
   path: '/dashboard',
-  name: 'dashboard-layout',
+  name: 'dashboard',
   redirect: '/dashboard',
   component: () => import('@src/layouts/DashbaordLayout/index.vue'),
-  meta: {
-    title: 'Dashboard',
-    icon: DashboardOutlined,
-    permissions: ['can view dashboard'],
-    sort: 0,
-  },
   children: [
     {
       path: '',
@@ -22,6 +16,78 @@ export const DashboardRoute: RouteRecordRaw = {
         permissions: ['can view dashboard'],
       },
       component: () => import('@src/views/dashboard/index.vue'),
+    },
+    {
+      path: 'system/users',
+      name: 'users',
+      meta: {
+        title: 'Users',
+        permissions: ['can view users'],
+      },
+      component: () => import('@src/views/users/index.vue'),
+    },
+    {
+      path: 'profile',
+      name: 'profile',
+      meta: {
+        title: 'Profile',
+        permissions: ['can view profile'],
+      },
+      component: () => import('@src/views/users/Profile.vue'),
+    },
+    {
+      path: 'system/permissions',
+      name: 'permissions',
+      meta: {
+        title: 'Permissions',
+        permissions: ['can view permissions'],
+      },
+      component: () => import('@src/views/permissions/index.vue'),
+    },
+    {
+      path: 'system/roles',
+      name: 'roles',
+      meta: {
+        title: 'Roles',
+        permissions: ['can view roles'],
+      },
+      component: () => import('@src/views/roles/index.vue'),
+    },
+    {
+      path: 'shops',
+      name: 'shops',
+      meta: {
+        title: 'Shops',
+        permissions: ['can view shop'],
+      },
+      component: () => import('@src/views/shop/index.vue'),
+    },
+    {
+      path: 'products/list',
+      name: 'product_list',
+      meta: {
+        title: 'Product',
+        permissions: ['can view products'],
+      },
+      component: () => import('@src/views/products/index.vue'),
+    },
+    {
+      path: 'product/add',
+      name: 'product_add',
+      meta: {
+        title: 'Add Product',
+        permissions: ['can view add product'],
+      },
+      component: () => import('@src/components/products/AddProduct.vue'),
+    },
+    {
+      path: 'product/update/:id',
+      name: 'product_update',
+      meta: {
+        title: 'Edit Product',
+        permissions: ['can view edit product'],
+      },
+      component: () => import('@src/components/products/EditProduct.vue'),
     },
   ],
 };

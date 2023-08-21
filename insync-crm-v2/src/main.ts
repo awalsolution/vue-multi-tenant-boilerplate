@@ -7,7 +7,7 @@ import { faviconLoader } from '@src/constants/faviconLoader';
 import { naiveUILoader } from '@src/constants/naiveUILoader';
 import { setupStore } from '@src/store';
 import { router, setupRouter } from '@src/router';
-import { setupNaive } from '@src/plugins';
+import { setupNaive, setupDirectives } from '@src/plugins';
 
 const app = createApp(App);
 
@@ -17,6 +17,8 @@ naiveUILoader();
 setupNaive(app);
 
 setupStore(app);
+
+setupDirectives(app);
 
 setupRouter(app);
 

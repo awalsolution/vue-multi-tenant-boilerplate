@@ -14,9 +14,9 @@ import { axiosConfig } from './config';
 import { errorMessageMap, ResponseStatusCode } from './statusCode';
 import { useThemeStore } from '@src/store/modules/theme';
 import { AuthUtils } from '@src/utils/auth';
-import { useEnv } from '@src/hooks/useEnv';
+// import { useEnv } from '@src/hooks/useEnv';
 
-const { apiPrefix } = useEnv();
+// const { apiPrefix } = useEnv();
 const themeStore = useThemeStore();
 
 const { message } = createDiscreteApi(['message'], {
@@ -36,7 +36,7 @@ class Request {
     this.instance.interceptors.request.use(
       (req: InternalAxiosRequestConfig) => {
         const { url } = req;
-        if (AuthUtils.isAuthenticated() && url?.startsWith(apiPrefix)) {
+        if (AuthUtils.isAuthenticated() && url) {
           req.headers.Authorization = AuthUtils.getAuthorization();
         }
         return req;
@@ -112,19 +112,11 @@ class Request {
     return this.instance.get(url, { params, ...config });
   }
 
-  post<T>(
-    url: string,
-    data?: Record<string, unknown>,
-    config?: AxiosRequestConfig
-  ): Promise<T> {
+  post<T>(url: string, data?: Record<string, unknown>, config?: AxiosRequestConfig): Promise<T> {
     return this.instance.post(url, data, config);
   }
 
-  put<T>(
-    url: string,
-    data?: Record<string, unknown>,
-    config?: AxiosRequestConfig
-  ): Promise<T> {
+  put<T>(url: string, data?: Record<string, unknown>, config?: AxiosRequestConfig): Promise<T> {
     return this.instance.put(url, data, config);
   }
 
@@ -136,11 +128,7 @@ class Request {
     return this.instance.delete(url, { params, ...config });
   }
 
-  patch<T>(
-    url: string,
-    data?: Record<string, unknown>,
-    config?: AxiosRequestConfig
-  ): Promise<T> {
+  patch<T>(url: string, data?: Record<string, unknown>, config?: AxiosRequestConfig): Promise<T> {
     return this.instance.patch(url, data, config);
   }
 }

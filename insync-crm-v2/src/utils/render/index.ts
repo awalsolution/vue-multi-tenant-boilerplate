@@ -19,7 +19,7 @@ export class RenderUtils {
       );
   }
 
-  static renderIcon(icon: any, size: number = 16, options?: any) {
+  static renderIcon(icon: any, size = 16, options?: any) {
     return () =>
       h(
         NIcon,

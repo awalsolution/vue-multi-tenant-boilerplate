@@ -21,7 +21,6 @@
         @dragenter="setReplace(index)"
       >
         {{ tagItem.label }}
-        <component :is="tagItem.label" />
         <template #icon>
           <NIcon :component="tagItem.icon" />
         </template>
@@ -51,11 +50,7 @@
         <NIcon size="18" :component="ArrowsLeft" />
       </div>
 
-      <NDropdown
-        trigger="hover"
-        :options="tabsOptions"
-        @select="selectTabsOption"
-      >
+      <NDropdown trigger="hover" :options="tabsOptions" @select="selectTabsOption">
         <NIcon size="20" class="cursor-pointer" :component="MenuOutlined" />
       </NDropdown>
     </div>
@@ -63,126 +58,125 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, ref } from 'vue';
-import type { Tab } from '@src/types/tab';
-import { MenuOutlined } from '@vicons/antd';
-import { ArrowsLeft } from '@vicons/tabler';
+  import { reactive, ref } from 'vue';
+  import type { Tab } from '@src/types/tab';
+  import { MenuOutlined } from '@vicons/antd';
+  import { ArrowsLeft } from '@vicons/tabler';
 
-import type { ScrollDirection, TabsOptionKey } from './private';
-import { tabsOptions } from './private';
-import { useRoute, useRouter } from 'vue-router';
-import { useTabStore } from '@src/store/modules/tab';
-import { BrowserUtils } from '@src/utils/browser';
+  import type { ScrollDirection, TabsOptionKey } from './private';
+  import { tabsOptions } from './private';
+  import { useRoute, useRouter } from 'vue-router';
+  import { useTabStore } from '@src/store/modules/tab';
+  import { BrowserUtils } from '@src/utils/browser';
 
-const route = useRoute();
-const router = useRouter();
-const tabStore = useTabStore();
-// console.log(tabStore.tabs);
-const record = reactive({
-  current: -1,
-  replace: -1,
-});
+  const route = useRoute();
+  const router = useRouter();
+  const tabStore = useTabStore();
+  const record = reactive({
+    current: -1,
+    replace: -1,
+  });
 
-const selectTabsOption = (key: TabsOptionKey) => {
-  switch (key) {
-    case 'CLEAR_ALL_TABS':
-      tabStore.clearAll();
-      router.push('/');
-      break;
-    default:
-      break;
-  }
-};
-
-let scrollInterval: ReturnType<typeof setInterval> | null = null;
-
-const scrollbarRef = ref<HTMLElement | null>(null);
-
-let animationFrameId: number | null = null;
-
-const handleCloseTab = (tab: Tab, index: number) => {
-  if (tab.href === route.path && tabStore.tabs.length > 1) {
-    if (index === tabStore.tabs.length - 1) {
-      router.push(tabStore.tabs[index - 1].href);
-    } else {
-      router.push(tabStore.tabs[index + 1].href);
+  const selectTabsOption = (key: TabsOptionKey) => {
+    switch (key) {
+      case 'CLEAR_ALL_TABS':
+        tabStore.clearAll();
+        router.push('/');
+        break;
+      default:
+        break;
     }
-  }
+  };
 
-  if (tabStore.tabs.length === 1) {
-    router.push('/');
-  }
+  let scrollInterval: ReturnType<typeof setInterval> | null = null;
 
-  tabStore.removeTab(index);
-};
+  const scrollbarRef = ref<HTMLElement | null>(null);
 
-const scrollLeft = () => {
-  if (scrollbarRef.value) {
-    const currentScrollLeft = scrollbarRef.value.scrollLeft;
-    animationFrameId = BrowserUtils.smoothScroll({
-      element: scrollbarRef.value,
-      target: currentScrollLeft - 100,
-      animationFrameId,
-    });
-  }
-};
+  let animationFrameId: number | null = null;
 
-const scrollRight = () => {
-  if (scrollbarRef.value) {
-    const currentScrollLeft = scrollbarRef.value.scrollLeft;
-    animationFrameId = BrowserUtils.smoothScroll({
-      element: scrollbarRef.value,
-      target: currentScrollLeft + 100,
-      animationFrameId,
-    });
-  }
-};
+  const handleCloseTab = (tab: Tab, index: number) => {
+    if (tab.href === route.path && tabStore.tabs.length > 1) {
+      if (index === tabStore.tabs.length - 1) {
+        router.push(tabStore.tabs[index - 1].href);
+      } else {
+        router.push(tabStore.tabs[index + 1].href);
+      }
+    }
 
-const handleScroll = (direction: ScrollDirection) => {
-  switch (direction) {
-    case 'left':
-      scrollLeft();
-      scrollInterval = setInterval(() => scrollLeft(), 100);
-      break;
-    case 'right':
-      scrollRight();
-      scrollInterval = setInterval(() => scrollRight(), 100);
-      break;
-    default:
-      break;
-  }
-};
+    if (tabStore.tabs.length === 1) {
+      router.push('/');
+    }
 
-const scrollStop = () => {
-  if (scrollInterval) {
-    clearInterval(scrollInterval);
-  }
-  if (animationFrameId) {
-    cancelAnimationFrame(animationFrameId);
-    animationFrameId = null;
-  }
-};
+    tabStore.removeTab(index);
+  };
 
-const haveScrollBar = () => {
-  if (scrollbarRef.value) {
-    return scrollbarRef.value.scrollWidth > scrollbarRef.value.clientWidth;
-  }
-  return false;
-};
+  const scrollLeft = () => {
+    if (scrollbarRef.value) {
+      const currentScrollLeft = scrollbarRef.value.scrollLeft;
+      animationFrameId = BrowserUtils.smoothScroll({
+        element: scrollbarRef.value,
+        target: currentScrollLeft - 100,
+        animationFrameId,
+      });
+    }
+  };
 
-const dragTabs = () => {
-  if (record.current === -1 || record.replace === -1) {
-    return;
-  }
-  const [removedValue] = tabStore.tabs.splice(record.current, 1);
-  tabStore.tabs.splice(record.replace, 0, removedValue);
-};
+  const scrollRight = () => {
+    if (scrollbarRef.value) {
+      const currentScrollLeft = scrollbarRef.value.scrollLeft;
+      animationFrameId = BrowserUtils.smoothScroll({
+        element: scrollbarRef.value,
+        target: currentScrollLeft + 100,
+        animationFrameId,
+      });
+    }
+  };
 
-const setCurrent = (index: number) => {
-  record.current = index;
-};
+  const handleScroll = (direction: ScrollDirection) => {
+    switch (direction) {
+      case 'left':
+        scrollLeft();
+        scrollInterval = setInterval(() => scrollLeft(), 100);
+        break;
+      case 'right':
+        scrollRight();
+        scrollInterval = setInterval(() => scrollRight(), 100);
+        break;
+      default:
+        break;
+    }
+  };
 
-const setReplace = (index: number) => {
-  record.replace = index;
-};
+  const scrollStop = () => {
+    if (scrollInterval) {
+      clearInterval(scrollInterval);
+    }
+    if (animationFrameId) {
+      cancelAnimationFrame(animationFrameId);
+      animationFrameId = null;
+    }
+  };
+
+  const haveScrollBar = () => {
+    if (scrollbarRef.value) {
+      return scrollbarRef.value.scrollWidth > scrollbarRef.value.clientWidth;
+    }
+    return false;
+  };
+
+  const dragTabs = () => {
+    if (record.current === -1 || record.replace === -1) {
+      return;
+    }
+    const [removedValue] = tabStore.tabs.splice(record.current, 1);
+    tabStore.tabs.splice(record.replace, 0, removedValue);
+  };
+
+  const setCurrent = (index: number) => {
+    record.current = index;
+  };
+
+  const setReplace = (index: number) => {
+    record.replace = index;
+  };
 </script>

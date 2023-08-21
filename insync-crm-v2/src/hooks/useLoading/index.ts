@@ -1,9 +1,7 @@
 import { Ref, ref } from 'vue';
 import type { LoadingDispatcher } from './type';
 
-export const useLoading = (
-  defaultStatus: boolean = false
-): [Ref<boolean>, LoadingDispatcher] => {
+export const useLoading = (defaultStatus = false): [Ref<boolean>, LoadingDispatcher] => {
   const loading = ref(defaultStatus);
 
   const dispatcher: LoadingDispatcher = {

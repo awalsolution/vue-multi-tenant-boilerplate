@@ -1,10 +1,10 @@
 import { RouteRecordRaw } from 'vue-router';
 
-const routeName = 'login';
+// const routeName = 'login';
 
 export const LoginRoute: RouteRecordRaw = {
   path: '/login',
-  name: routeName,
+  name: 'auth-layout',
   component: () => import('@src/layouts/AuthLayout/index.vue'),
   meta: {
     title: 'Login',
@@ -12,7 +12,7 @@ export const LoginRoute: RouteRecordRaw = {
   children: [
     {
       path: '',
-      name: routeName,
+      name: 'login',
       component: () => import('@src/views/login/index.vue'),
       meta: {
         title: 'Login',

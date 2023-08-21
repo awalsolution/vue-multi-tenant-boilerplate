@@ -1,4 +1,4 @@
 export type LoadingDispatcher = {
-  loading: () => void
-  loaded: () => void
-}
+  loading: () => void;
+  loaded: () => void;
+};

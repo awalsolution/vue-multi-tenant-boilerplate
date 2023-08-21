@@ -1,46 +1,75 @@
 import type { MenuOption } from 'naive-ui';
 import { RenderUtils } from '@src/utils/render';
-
-import { DocumentError24Regular } from '@vicons/fluent';
-import { BarChartOutlined, SettingOutlined, UserOutlined } from '@vicons/antd';
+import {
+  DocumentSync24Regular,
+  TagLock32Regular,
+  DocumentArrowRight20Regular,
+} from '@vicons/fluent';
+import {
+  DashboardOutlined,
+  BarChartOutlined,
+  SettingOutlined,
+  UserOutlined,
+  UnlockOutlined,
+  FileSyncOutlined,
+} from '@vicons/antd';
 
 const { renderIcon: renderMenuIcon, renderMenuLabel } = RenderUtils;
 
 export const menuOptions: MenuOption[] = [
   {
-    label: renderMenuLabel('System'),
-    key: 'system',
+    label: renderMenuLabel('Dashboard'),
+    key: 'dashboard',
+    icon: renderMenuIcon(DashboardOutlined),
+  },
+  {
+    label: renderMenuLabel('System Setting'),
+    key: 'system-setting',
     icon: renderMenuIcon(SettingOutlined),
     children: [
       {
-        label: renderMenuLabel('User'),
-        key: 'user',
+        label: renderMenuLabel('Users'),
+        key: 'users',
         icon: renderMenuIcon(UserOutlined),
-        show: false,
+        // show: false,
+      },
+      {
+        label: renderMenuLabel('Permissions'),
+        key: 'permissions',
+        icon: renderMenuIcon(TagLock32Regular),
+        // show: false,
+      },
+      {
+        label: renderMenuLabel('Roles'),
+        key: 'roles',
+        icon: renderMenuIcon(UnlockOutlined),
+        // show: false,
       },
     ],
   },
   {
-    label: renderMenuLabel('Components'),
-    key: 'components',
+    label: renderMenuLabel('Shops'),
+    key: 'shops',
     icon: renderMenuIcon(BarChartOutlined),
-    children: [
-      {
-        label: renderMenuLabel('Charts'),
-        key: 'charts',
-        icon: renderMenuIcon(BarChartOutlined),
-      },
-    ],
+    // show: false,
   },
   {
-    label: renderMenuLabel('ErrorPages'),
-    key: 'error-pages',
-    icon: renderMenuIcon(DocumentError24Regular),
+    label: renderMenuLabel('Products'),
+    key: 'products',
+    icon: renderMenuIcon(DocumentSync24Regular),
+    // show: false,
     children: [
       {
-        label: renderMenuLabel('404'),
-        key: '404',
-        icon: renderMenuIcon(DocumentError24Regular),
+        label: renderMenuLabel('List'),
+        key: 'product_list',
+        icon: renderMenuIcon(FileSyncOutlined),
+        // show: false,
+      },
+      {
+        label: renderMenuLabel('Add'),
+        key: 'product_add',
+        icon: renderMenuIcon(DocumentArrowRight20Regular),
+        // show: false,
       },
     ],
   },

@@ -8,9 +8,7 @@
           <NIcon
             class="cursor-pointer"
             size="20"
-            :component="
-              sidebarStore.isDisplay ? MenuFoldOutlined : MenuUnfoldOutlined
-            "
+            :component="sidebarStore.isDisplay ? MenuFoldOutlined : MenuUnfoldOutlined"
             @click="sidebarStore.toggleSidebarDisplay"
           />
         </template>
@@ -36,11 +34,7 @@
       <template v-if="false">
         <NTooltip placement="bottom" trigger="hover">
           <template #trigger>
-            <NIcon
-              class="cursor-pointer"
-              size="20"
-              :component="NotificationsCircleOutline"
-            />
+            <NIcon class="cursor-pointer" size="20" :component="NotificationsCircleOutline" />
           </template>
           Notification
         </NTooltip>
@@ -51,14 +45,8 @@
           <NIcon
             class="cursor-pointer"
             size="20"
-            :component="
-              themeStore.themeMode === 'light' ? SunnyOutline : MoonOutline
-            "
-            @click="
-              themeStore.changeThemeMode(
-                themeStore.themeMode === 'light' ? 'dark' : 'light'
-              )
-            "
+            :component="themeStore.themeMode === 'light' ? SunnyOutline : MoonOutline"
+            @click="themeStore.changeThemeMode(themeStore.themeMode === 'light' ? 'dark' : 'light')"
           />
         </template>
         SwitchTheme
@@ -67,22 +55,14 @@
       <template v-if="false">
         <NTooltip placement="bottom" trigger="hover">
           <template #trigger>
-            <NIcon
-              class="cursor-pointer"
-              size="20"
-              :component="SettingsOutline"
-            />
+            <NIcon class="cursor-pointer" size="20" :component="SettingsOutline" />
           </template>
           Settings
         </NTooltip>
       </template>
       <!-- :src="userStore.user.avatarUrl" -->
       <template v-if="userStore.hasData()">
-        <NDropdown
-          trigger="hover"
-          :options="userOptions"
-          @select="selectUserOption"
-        >
+        <NDropdown trigger="hover" :options="userOptions" @select="selectUserOption">
           <template v-if="userStore.user.avatarUrl">
             <NAvatar
               class="cursor-pointer select-none shadow-md !transition-all hover:opacity-90 active:opacity-70"
@@ -101,57 +81,57 @@
 </template>
 
 <script setup lang="ts">
-import { useRouter } from 'vue-router';
-import { useMessage } from 'naive-ui';
-import { BrandGithub, UserCircle } from '@vicons/tabler';
-import { MenuFoldOutlined, MenuUnfoldOutlined } from '@vicons/antd';
-import {
-  NotificationsCircleOutline,
-  SunnyOutline,
-  MoonOutline,
-  SettingsOutline,
-} from '@vicons/ionicons5';
-import { useThemeStore } from '@src/store/modules/theme';
-import { useSidebarStore } from '@src/store/modules/sidebar';
-import { useUserStore } from '@src/store/modules/user';
-import Breadcrumb from '@src/components/Breadcrumb/index.vue';
-import { useEnv } from '@src/hooks/useEnv';
-import { BrowserUtils } from '@src/utils/browser';
-import type { UserOptionKey } from './private';
-import { userOptions } from './private';
-import { AuthUtils } from '@src/utils/auth';
+  import { useRouter } from 'vue-router';
+  import { useMessage } from 'naive-ui';
+  import { BrandGithub, UserCircle } from '@vicons/tabler';
+  import { MenuFoldOutlined, MenuUnfoldOutlined } from '@vicons/antd';
+  import {
+    NotificationsCircleOutline,
+    SunnyOutline,
+    MoonOutline,
+    SettingsOutline,
+  } from '@vicons/ionicons5';
+  import { useThemeStore } from '@src/store/modules/theme';
+  import { useSidebarStore } from '@src/store/modules/sidebar';
+  import { useUserStore } from '@src/store/modules/user';
+  import Breadcrumb from '@src/components/Breadcrumb/index.vue';
+  import { useEnv } from '@src/hooks/useEnv';
+  import { BrowserUtils } from '@src/utils/browser';
+  import type { UserOptionKey } from './private';
+  import { userOptions } from './private';
+  import { AuthUtils } from '@src/utils/auth';
 
-const { teamGitHubURL } = useEnv();
-const { openNewWindow } = BrowserUtils;
+  const { teamGitHubURL } = useEnv();
+  const { openNewWindow } = BrowserUtils;
 
-const themeStore = useThemeStore();
-const sidebarStore = useSidebarStore();
-const userStore = useUserStore();
-const router = useRouter();
-const message = useMessage();
-// const { isFullscreen, toggle: toggleFullscreen } = useFullscreen();
+  const themeStore = useThemeStore();
+  const sidebarStore = useSidebarStore();
+  const userStore = useUserStore();
+  const router = useRouter();
+  const message = useMessage();
+  // const { isFullscreen, toggle: toggleFullscreen } = useFullscreen();
 
-const logout = async () => {
-  return await router.replace('/login').then(() => {
-    message.success('Logout Successfully');
-    userStore.clearUser();
-    AuthUtils.clearToken();
-  });
-};
+  const logout = async () => {
+    return await router.replace('/login').then(() => {
+      message.success('Logout Successfully');
+      userStore.clearUser();
+      AuthUtils.clearToken();
+    });
+  };
 
-const selectUserOption = (key: UserOptionKey) => {
-  switch (key) {
-    case 'logout':
-      logout();
-      break;
-    case 'profile':
-      router.push('/profile');
-      break;
-    case 'change-password':
-      router.push('/change-password');
-      break;
-    default:
-      break;
-  }
-};
+  const selectUserOption = (key: UserOptionKey) => {
+    switch (key) {
+      case 'logout':
+        logout();
+        break;
+      case 'profile':
+        router.push('/profile');
+        break;
+      case 'change-password':
+        router.push('/change-password');
+        break;
+      default:
+        break;
+    }
+  };
 </script>
