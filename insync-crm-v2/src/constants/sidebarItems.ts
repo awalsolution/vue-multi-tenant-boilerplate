@@ -71,6 +71,24 @@ export const menuOptions: MenuOption[] = [
         icon: renderMenuIcon(DocumentArrowRight20Regular),
         // show: false,
       },
+      {
+        label: renderMenuLabel('Attributes'),
+        key: 'product_attributes',
+        icon: renderMenuIcon(DocumentArrowRight20Regular),
+        // show: false,
+      },
+      {
+        label: renderMenuLabel('Variants'),
+        key: 'product_variants',
+        icon: renderMenuIcon(DocumentArrowRight20Regular),
+        // show: false,
+      },
+      {
+        label: renderMenuLabel('Categories'),
+        key: 'product_categories',
+        icon: renderMenuIcon(DocumentArrowRight20Regular),
+        // show: false,
+      },
     ],
   },
 ];

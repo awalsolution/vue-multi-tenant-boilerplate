@@ -124,7 +124,7 @@
   import { useLoading } from '@src/hooks/useLoading';
   import { usePagination } from '@src/hooks/pagination/usePagination';
   import { useEnv } from '@src/hooks/useEnv';
-  import EditVariant from '@/components/products/variants/EditVariant.vue';
+  import EditVariant from '@src/components/products/variants/EditVariant.vue';
 
   const { imgUrl } = useEnv();
   const dialog = useDialog();

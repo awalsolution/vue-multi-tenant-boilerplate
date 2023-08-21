@@ -147,7 +147,7 @@
 
   // fetch all records
   const getList = (params?: any) => {
-    getRecordsApi('/variants', { ...params }).then((res: any) => {
+    getRecordsApi('/categories', { ...params }).then((res: any) => {
       list.value = res?.result?.data;
       meta.value = res?.result?.meta;
       console.log('record list => ', res.result);

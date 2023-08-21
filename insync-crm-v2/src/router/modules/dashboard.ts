@@ -89,5 +89,50 @@ export const DashboardRoute: RouteRecordRaw = {
       },
       component: () => import('@src/components/products/EditProduct.vue'),
     },
+    {
+      path: 'product/attributes',
+      name: 'product_attributes',
+      meta: {
+        title: 'Product Attributes',
+        permissions: ['can view edit product'],
+      },
+      component: () => import('@src/views/products/attributes/index.vue'),
+    },
+    {
+      path: 'product/variants',
+      name: 'product_variants',
+      meta: {
+        title: 'Product Variants',
+        permissions: ['can view edit product'],
+      },
+      component: () => import('@src/views/products/variants/index.vue'),
+    },
+    {
+      path: 'product/variants',
+      name: 'product_variants_add',
+      meta: {
+        title: 'Edit Variant',
+        permissions: ['can view edit product'],
+      },
+      component: () => import('@src/components/products/variants/AddVariant.vue'),
+    },
+    {
+      path: 'product/variants/:id',
+      name: 'product_variants_update',
+      meta: {
+        title: 'Edit Variant',
+        permissions: ['can view edit product'],
+      },
+      component: () => import('@src/components/products/variants/EditVariant.vue'),
+    },
+    {
+      path: 'product/categories',
+      name: 'product_categories',
+      meta: {
+        title: 'Edit Variant',
+        permissions: ['can view edit product'],
+      },
+      component: () => import('@src/views/products/categories/index.vue'),
+    },
   ],
 };
