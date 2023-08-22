@@ -99,9 +99,9 @@
     e.preventDefault();
     showEditModal.value = true;
   };
-
+  console.log(profileData);
   onMounted(() => {
-    profileData.value = userStore.user;
+    profileData.value = userStore.user.profile;
   });
 </script>
 <style lang="less" scoped></style>

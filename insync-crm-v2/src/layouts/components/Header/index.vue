@@ -125,7 +125,7 @@
         logout();
         break;
       case 'profile':
-        router.push('/profile');
+        router.push({ name: 'user_profile' });
         break;
       case 'change-password':
         router.push('/change-password');

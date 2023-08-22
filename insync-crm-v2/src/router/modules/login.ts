@@ -17,6 +17,7 @@ export const LoginRoute: RouteRecordRaw = {
       meta: {
         title: 'Login',
         dismissTab: true,
+        ignorAuth: true,
       },
     },
   ],

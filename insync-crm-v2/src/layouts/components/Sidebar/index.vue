@@ -74,20 +74,36 @@
 <script setup lang="ts">
   import { ref, watch } from 'vue';
   import { MenuFoldOutlined } from '@vicons/antd';
-  import { MenuInst, MenuOption } from 'naive-ui';
+  import { MenuInst, useMessage } from 'naive-ui';
   import { useRoute, useRouter } from 'vue-router';
   import { menuOptions } from '@src/constants/sidebarItems';
   import { useSidebarStore } from '@src/store/modules/sidebar';
   import { useEnv } from '@src/hooks/useEnv';
+  import { usePermission } from '@src/utils/permission/usePermission';
 
   const route = useRoute();
   const router = useRouter();
+  const { hasPermission } = usePermission();
+
   const { appTitle } = useEnv();
+  const message: any = useMessage();
   const sidebarStore = useSidebarStore();
   const menuInstRef = ref<MenuInst | null>(null);
-  const menuData = ref(menuOptions);
 
-  // console.log(route);
+  function filterMenuOptions(menuOptions: any): any {
+    return menuOptions.filter((option: any) => {
+      if (hasPermission(option.permissions)) {
+        if (option.children && option.children.length > 0) {
+          option.children = filterMenuOptions(option.children); // Recursively filter children
+        }
+        return true;
+      }
+      return false;
+    });
+  }
+
+  const menuData = ref(filterMenuOptions(menuOptions));
+
   const selectedKey = ref();
   const accordion = ref(false);
 
@@ -97,13 +113,45 @@
     // console.log('handle change with selected key', menuInstRef);
   };
 
-  const handleChangeMenu = (key: string, item: MenuOption) => {
-    // console.log('item ==>', item);
-    if (item.children) {
+  // const handleChangeMenu = (key: string, item: MenuOption) => {
+  //   // console.log('item ==>', item);
+  //   if (item.children) {
+  //     return;
+  //   }
+  //   // console.log('route key', key);
+  //   router.push({ name: key });
+  // };
+
+  // const handleChangeMenu = (key: string, item: any) => {
+  //   if (item.children || hasPermission(item.permissions)) {
+  //     router.push({ name: key });
+  //   } else {
+  //     // Handle no permission case (e.g., show an error message)
+  //     console.log('User does not have permission for this menu item.');
+  //   }
+  // };
+
+  const handleChangeMenu = (key: string, item: any) => {
+    if (!item) {
       return;
     }
-    // console.log('route key', key);
-    router.push({ name: key });
+    if (hasPermission(item.permissions)) {
+      if (item.children) {
+        const hasPermissionForChildren = item.children.every((childItem: any) =>
+          hasPermission(childItem.permissions)
+        );
+
+        if (hasPermissionForChildren) {
+          router.push({ name: key });
+        } else {
+          message.error('User does not have permission for child Route.');
+        }
+      } else {
+        router.push({ name: key });
+      }
+    } else {
+      message.error('User does not have permission for this Route.');
+    }
   };
 
   watch(

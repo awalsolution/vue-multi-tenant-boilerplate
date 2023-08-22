@@ -81,7 +81,7 @@
   };
 
   onMounted(() => {
-    profileData.value = userStore.user;
+    profileData.value = userStore.user.profile;
   });
 </script>
 <style lang="less" scoped></style>

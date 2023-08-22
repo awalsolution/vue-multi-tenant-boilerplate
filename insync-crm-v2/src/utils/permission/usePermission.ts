@@ -9,8 +9,7 @@ export function usePermission() {
    */
   function _somePermissions(accesses: string[]) {
     return userStore.permissions.some((item: any) => {
-      // const { value }: any = item;
-      // return accesses.includes(value);
+      console.log('permission access list =>', item);
       return accesses.includes(item);
     });
   }
@@ -24,6 +23,7 @@ export function usePermission() {
     if (userStore.user.user_type === 'super admin') {
       return true;
     } else {
+      // console.log('you do not permission to access this route');
       return _somePermissions(accesses);
     }
   }

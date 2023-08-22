@@ -11,6 +11,8 @@ import {
   UnlockOutlined,
   FileSyncOutlined,
 } from '@vicons/antd';
+// import { RenderUtils } from '@src/utils/render';
+// const { renderIcon } = RenderUtils;
 
 export const DashboardRoute: RouteRecordRaw = {
   path: '/dashboard',
@@ -23,6 +25,7 @@ export const DashboardRoute: RouteRecordRaw = {
       name: 'dashbaord',
       meta: {
         title: 'Dashboard',
+        // icon: renderIcon(DashboardOutlined),
         icon: DashboardOutlined,
         permissions: ['can view dashboard'],
       },
@@ -35,16 +38,18 @@ export const DashboardRoute: RouteRecordRaw = {
         title: 'Users',
         icon: UserOutlined,
         permissions: ['can view users'],
+        // disableAuth: true,
       },
       component: () => import('@src/views/users/index.vue'),
     },
     {
-      path: 'profile',
-      name: 'profile',
+      path: 'system/user/profile',
+      name: 'user_profile',
       meta: {
         title: 'Profile',
+        // icon: renderIcon(UserOutlined),
         icon: UserOutlined,
-        permissions: ['can view profile'],
+        // hidden: true,
       },
       component: () => import('@src/views/users/Profile.vue'),
     },

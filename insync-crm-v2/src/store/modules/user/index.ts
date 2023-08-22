@@ -1,20 +1,36 @@
 import { ref } from 'vue';
 import { defineStore } from 'pinia';
-import type { User } from '@src/types/user';
+// import type { User } from '@src/types/user';
 
 export const useUserStore = defineStore('user', () => {
   const user = ref<any>({});
   const currentUser = ref<any>({});
-  const permissions = ref<any>([]);
+  const permissions: any = ref([]);
 
   const hasData = () => user.value.id;
 
-  const setUser = (data: User) => {
+  const setUser = (data: any) => {
     user.value = { ...user.value, ...data };
+    let rolePermissions: string[] = [];
+    if (data?.roles) {
+      for (const role of data.roles) {
+        rolePermissions = [...role.permissions.map((permission: any) => permission.name)];
+      }
+    }
+    const userPermissions = data?.permissions.map((permission: any) => permission.name) || [];
+    permissions.value = [...userPermissions, ...rolePermissions];
   };
 
-  const setCurrentUser = (data: User) => {
+  const setCurrentUser = (data: any) => {
     currentUser.value = { ...currentUser.value, ...data };
+    let rolePermissions: string[] = [];
+    if (data?.roles) {
+      for (const role of data.roles) {
+        rolePermissions = [...role.permissions.map((permission: any) => permission.name)];
+      }
+    }
+    const userPermissions = data?.permissions.map((permission: any) => permission.name) || [];
+    permissions.value = [...userPermissions, ...rolePermissions];
   };
 
   const clearUser = () => {
@@ -29,8 +45,8 @@ export const useUserStore = defineStore('user', () => {
     currentUser,
     setCurrentUser,
     clearCurrentUser,
-    user,
     permissions,
+    user,
     hasData,
     setUser,
     clearUser,
