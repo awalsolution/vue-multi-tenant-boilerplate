@@ -26,7 +26,7 @@
     },
   });
   // get attribute for update
-  getRecordApi(`/attributes/${props.id}`).then((result: any) => (formValue.value = result));
+  getRecordApi(`/attributes/${props.id}`).then((result: any) => (formValue.value = result.result));
 
   const rules = ref({
     name: {

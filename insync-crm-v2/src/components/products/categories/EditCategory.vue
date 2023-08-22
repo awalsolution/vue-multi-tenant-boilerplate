@@ -43,7 +43,7 @@
     },
   });
   // get category for update
-  getRecordApi(`/categories/${props.id}`).then((result: any) => (formValue.value = result));
+  getRecordApi(`/categories/${props.id}`).then((result: any) => (formValue.value = result.result));
 
   const rules = ref({
     name: {

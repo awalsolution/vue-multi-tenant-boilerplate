@@ -105,14 +105,13 @@
 
   // fetch single variant using id
   getRecordApi(`/variants/${props.id}`).then((result: any) => {
-    variants.value = result;
+    variants.value = result.result;
   });
 
   const handleValidateClick = (e: MouseEvent) => {
     e.preventDefault();
     formRef.value?.validate((errors) => {
       if (!errors) {
-        console.log('databse insert object', variants.value);
         updateRecordApi(`/variants/${variants.value.id}`, variants.value).then((result: any) => {
           message.success(result.message);
           emits('updated', result);
