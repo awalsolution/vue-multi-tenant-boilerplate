@@ -1,5 +1,16 @@
 import { RouteRecordRaw } from 'vue-router';
-import { DashboardOutlined } from '@vicons/antd';
+import {
+  DocumentSync24Regular,
+  TagLock32Regular,
+  DocumentArrowRight20Regular,
+} from '@vicons/fluent';
+import {
+  DashboardOutlined,
+  BarChartOutlined,
+  UserOutlined,
+  UnlockOutlined,
+  FileSyncOutlined,
+} from '@vicons/antd';
 
 export const DashboardRoute: RouteRecordRaw = {
   path: '/dashboard',
@@ -22,6 +33,7 @@ export const DashboardRoute: RouteRecordRaw = {
       name: 'users',
       meta: {
         title: 'Users',
+        icon: UserOutlined,
         permissions: ['can view users'],
       },
       component: () => import('@src/views/users/index.vue'),
@@ -31,6 +43,7 @@ export const DashboardRoute: RouteRecordRaw = {
       name: 'profile',
       meta: {
         title: 'Profile',
+        icon: UserOutlined,
         permissions: ['can view profile'],
       },
       component: () => import('@src/views/users/Profile.vue'),
@@ -40,6 +53,7 @@ export const DashboardRoute: RouteRecordRaw = {
       name: 'permissions',
       meta: {
         title: 'Permissions',
+        icon: TagLock32Regular,
         permissions: ['can view permissions'],
       },
       component: () => import('@src/views/permissions/index.vue'),
@@ -49,6 +63,7 @@ export const DashboardRoute: RouteRecordRaw = {
       name: 'roles',
       meta: {
         title: 'Roles',
+        icon: UnlockOutlined,
         permissions: ['can view roles'],
       },
       component: () => import('@src/views/roles/index.vue'),
@@ -58,6 +73,7 @@ export const DashboardRoute: RouteRecordRaw = {
       name: 'shops',
       meta: {
         title: 'Shops',
+        icon: BarChartOutlined,
         permissions: ['can view shop'],
       },
       component: () => import('@src/views/shop/index.vue'),
@@ -67,6 +83,7 @@ export const DashboardRoute: RouteRecordRaw = {
       name: 'product_list',
       meta: {
         title: 'Product',
+        icon: FileSyncOutlined,
         permissions: ['can view products'],
       },
       component: () => import('@src/views/products/index.vue'),
@@ -76,6 +93,7 @@ export const DashboardRoute: RouteRecordRaw = {
       name: 'product_add',
       meta: {
         title: 'Add Product',
+        icon: DocumentArrowRight20Regular,
         permissions: ['can view add product'],
       },
       component: () => import('@src/components/products/AddProduct.vue'),
@@ -94,6 +112,7 @@ export const DashboardRoute: RouteRecordRaw = {
       name: 'product_attributes',
       meta: {
         title: 'Product Attributes',
+        icon: DocumentArrowRight20Regular,
         permissions: ['can view edit product'],
       },
       component: () => import('@src/views/products/attributes/index.vue'),
@@ -103,12 +122,13 @@ export const DashboardRoute: RouteRecordRaw = {
       name: 'product_variants',
       meta: {
         title: 'Product Variants',
+        icon: DocumentSync24Regular,
         permissions: ['can view edit product'],
       },
       component: () => import('@src/views/products/variants/index.vue'),
     },
     {
-      path: 'product/variants',
+      path: 'product/variants/add',
       name: 'product_variants_add',
       meta: {
         title: 'Edit Variant',
@@ -130,6 +150,7 @@ export const DashboardRoute: RouteRecordRaw = {
       name: 'product_categories',
       meta: {
         title: 'Edit Variant',
+        icon: DocumentSync24Regular,
         permissions: ['can view edit product'],
       },
       component: () => import('@src/views/products/categories/index.vue'),

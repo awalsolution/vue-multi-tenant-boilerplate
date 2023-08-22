@@ -189,7 +189,7 @@
   const moreOptions = ref([
     {
       label: 'Add Variant',
-      key: 'add_variant',
+      key: 'product_variants_add',
       icon: renderIcon(PlusOutlined),
     },
     {
@@ -233,8 +233,8 @@
   }
 
   const actionOperation = (item: any) => {
-    if (selectedOption.value === 'add_variant') {
-      router.push({ name: 'product_variant', params: { id: item.id } });
+    if (selectedOption.value === 'product_variants_add') {
+      router.push({ name: 'product_variants_add', params: { id: item.id } });
     } else if (selectedOption.value === 'edit') {
       router.push({ name: 'product_update', params: { id: item.id } });
     } else if (selectedOption.value === 'delete') {

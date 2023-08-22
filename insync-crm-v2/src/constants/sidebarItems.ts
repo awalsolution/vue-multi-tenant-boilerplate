@@ -83,6 +83,12 @@ export const menuOptions: MenuOption[] = [
         icon: renderMenuIcon(DocumentArrowRight20Regular),
         // show: false,
       },
+      // {
+      //   label: renderMenuLabel('Add Variants'),
+      //   key: 'product_variants_add',
+      //   icon: renderMenuIcon(DocumentArrowRight20Regular),
+      //   // show: false,
+      // },
       {
         label: renderMenuLabel('Categories'),
         key: 'product_categories',
