@@ -1,23 +1,56 @@
 <template>
-  <n-card :loading="loading" title="Roles" v-permission="{ action: ['can view roles'] }">
-    <n-space :vertical="true">
-      <n-input
-        type="text"
-        size="small"
-        v-model:value="searchParams.name"
-        @change="fetchList"
-        placeholder="Search by Name"
-      />
-      <n-table :bordered="true" :single-line="false" size="small" :striped="true">
-        <thead>
+  <DataTableLayout :loading="loading" v-permission="{ action: ['can view roles'] }">
+    <template #tableHeader>
+      <div class="flex flex-col items-center space-y-2 sm:flex-row sm:justify-between sm:space-y-0">
+        <div class="flex flex-col items-center space-y-2 sm:flex-row sm:space-x-3 sm:space-y-0">
+          <div class="flex w-full items-center !space-x-2 sm:w-fit">
+            <NInput
+              v-model:value="searchParams.name"
+              class="sm:!w-[200px]"
+              clearable
+              placeholder="KeywordSearch"
+              @change="fetchList"
+            >
+              <template #prefix>
+                <NIcon :component="SearchOutlined" class="mr-1" />
+              </template>
+            </NInput>
+            <NButton type="primary" :size="isMobile ? 'small' : 'medium'" @click="fetchList">
+              Search
+            </NButton>
+          </div>
+          <NDatePicker
+            v-model:value="searchParams.daterange"
+            class="sm:!w-[250px]"
+            type="daterange"
+            clearable
+            input-readonly
+            @update:value="fetchList"
+          />
+        </div>
+        <div class="flex w-full items-center justify-between space-x-3 sm:justify-end">
+          <NButton
+            :size="isMobile ? 'small' : 'medium'"
+            @click="showModal = true"
+            v-permission="{ action: ['can view role create'] }"
+          >
+            Create
+          </NButton>
+        </div>
+      </div>
+    </template>
+
+    <template #tableContent>
+      <table class="table">
+        <thead class="head">
           <tr>
-            <th>ID</th>
-            <th>Name</th>
-            <th>Permissions</th>
-            <th>Created At</th>
-            <th>Updated At</th>
+            <th class="sticky_el left-0 z-10">ID</th>
+            <th class="th">Name</th>
+            <th class="th">Permissions</th>
+            <th class="th">Created At</th>
+            <th class="th">Updated At</th>
             <th
-              class="text_center"
+              class="sticky_el right-0 z-10"
               v-permission="{
                 action: ['can view role update', 'can view role delete'],
               }"
@@ -28,23 +61,23 @@
         </thead>
         <tbody>
           <tr v-if="list.length === 0">
-            <td colspan="2" class="data_placeholder"> Record Not Exist </td>
+            <td colspan="6" class="data_placeholder"> Record Not Exist </td>
           </tr>
-          <tr v-else v-for="item in list" :key="item.id">
-            <td>{{ item.id }}</td>
-            <td v-if="item.name">{{ item.name }}</td>
-            <td v-if="item.permissions">
+          <tr v-else v-for="item in list" :key="item.id" class="body_tr">
+            <td class="sticky_el left-0 z-10">{{ item.id }}</td>
+            <td v-if="item.name" class="td">{{ item.name }}</td>
+            <td v-if="item.permissions" class="td">
               <n-space v-for="permission in item.permissions" :key="permission.id">
                 {{ permission?.name }}
               </n-space>
             </td>
-            <td>{{ item.created_at }}</td>
-            <td>{{ item.updated_at }}</td>
+            <td class="td">{{ item.created_at }}</td>
+            <td class="td">{{ item.updated_at }}</td>
             <td
+              class="sticky_el right-0 z-10"
               v-permission="{
                 action: ['can view role update', 'can view role delete'],
               }"
-              class="text-center"
             >
               <n-dropdown
                 @click="actionOperation(item)"
@@ -61,8 +94,11 @@
             </td>
           </tr>
         </tbody>
-      </n-table>
-      <n-space style="align-items: center; padding-top: 15px">
+      </table>
+    </template>
+
+    <template #tableFooter>
+      <div class="flex flex-col items-center space-y-2 sm:flex-row sm:justify-end sm:space-y-0">
         <n-pagination
           v-model:page="page"
           v-model:page-size="pageSize"
@@ -72,51 +108,38 @@
           :show-quick-jumper="true"
           :show-size-picker="true"
         />
-      </n-space>
-      <n-button
-        type="primary"
-        size="large"
-        :circle="true"
-        style="position: fixed; bottom: 30px; right: 40px"
-        @click="showModal = true"
-        v-permission="{ action: ['can view role create'] }"
-      >
-        <template #icon>
-          <n-icon>
-            <plus-outlined />
-          </n-icon>
-        </template>
-      </n-button>
-      <n-modal v-model:show="showModal" preset="dialog">
-        <template #header>
-          <div>Create New Role</div>
-        </template>
-        <n-space :vertical="true">
-          <add-role
-            @created="
-              getList();
-              showModal = false;
-            "
-          />
-        </n-space>
-      </n-modal>
+      </div>
+    </template>
 
-      <n-modal style="width: 70%" v-model:show="showEditModal" preset="dialog">
-        <template #header>
-          <div>Update Role</div>
-        </template>
-        <n-space :vertical="true">
-          <edit-role
-            :id="selectedId"
-            @updated="
-              getList();
-              showEditModal = false;
-            "
-          />
-        </n-space>
-      </n-modal>
-    </n-space>
-  </n-card>
+    <n-modal v-model:show="showModal" preset="dialog">
+      <template #header>
+        <div>Create New Role</div>
+      </template>
+      <n-space :vertical="true">
+        <add-role
+          @created="
+            getList();
+            showModal = false;
+          "
+        />
+      </n-space>
+    </n-modal>
+
+    <n-modal v-model:show="showEditModal" preset="dialog">
+      <template #header>
+        <div>Update Role</div>
+      </template>
+      <n-space :vertical="true">
+        <edit-role
+          :id="selectedId"
+          @updated="
+            getList();
+            showEditModal = false;
+          "
+        />
+      </n-space>
+    </n-modal>
+  </DataTableLayout>
 </template>
 
 <script lang="ts" setup>
@@ -124,15 +147,18 @@
   import { usePagination } from '@src/hooks/pagination/usePagination';
   import { useLoading } from '@src/hooks/useLoading';
   import { usePermission } from '@src/utils/permission/usePermission';
+  import { useMobile } from '@src/hooks/useMediaQuery';
   import { ref, onMounted, h, computed } from 'vue';
   import { useDialog, useMessage } from 'naive-ui';
   import type { Component } from 'vue';
   import { NIcon, NPagination } from 'naive-ui';
-  import { MoreOutlined, EditOutlined, DeleteOutlined, PlusOutlined } from '@vicons/antd';
+  import { MoreOutlined, EditOutlined, DeleteOutlined, SearchOutlined } from '@vicons/antd';
+  import DataTableLayout from '@src/layouts/DataTableLayout/index.vue';
   import AddRole from '@src/components/Role/AddRole.vue';
   import EditRole from '@src/components/Role/EditRole.vue';
 
   const searchParams: any = ref({});
+  const isMobile = useMobile();
   const dialog = useDialog();
   const selectedOption: any = ref(null);
   const showModal = ref(false);
@@ -231,9 +257,25 @@
     getList(searchParams.value);
   };
 </script>
-<style lang="less" scoped>
-  .text_center {
-    text-align: center;
+
+<style lang="scss" scoped>
+  .table {
+    @apply w-full text-sm text-left text-gray-500 dark:text-gray-400;
+  }
+  .head {
+    @apply sticky top-0 text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 z-20;
+  }
+  .th {
+    @apply px-6 py-3 border-r border-b border-gray-200 dark:border-gray-800 text-center whitespace-nowrap;
+  }
+  .body_tr {
+    @apply hover:bg-gray-50 dark:hover:bg-gray-600;
+  }
+  .td {
+    @apply px-3 border-r border-b border-gray-200 dark:border-gray-800 whitespace-nowrap;
+  }
+  .sticky_el {
+    @apply sticky bg-gray-50 dark:bg-gray-700 px-6 whitespace-nowrap text-center border border-gray-200 dark:border-gray-800;
   }
   .data_placeholder {
     text-align: center;

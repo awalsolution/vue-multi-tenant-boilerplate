@@ -318,7 +318,7 @@
     @apply px-3 border-r border-b border-gray-200 dark:border-gray-800 whitespace-nowrap;
   }
   .sticky_el {
-    @apply sticky bg-slate-100 dark:bg-gray-700 px-6 whitespace-nowrap text-center border border-gray-200 dark:border-gray-800;
+    @apply sticky bg-gray-50 dark:bg-gray-700 px-6 whitespace-nowrap text-center border border-gray-200 dark:border-gray-800;
   }
 
   .data_placeholder {

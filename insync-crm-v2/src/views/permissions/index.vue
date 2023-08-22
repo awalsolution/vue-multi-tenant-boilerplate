@@ -1,26 +1,55 @@
 <template>
-  <n-card
-    :loading="loading"
-    title="Permissions"
-    v-permission="{ action: ['can view permissions'] }"
-  >
-    <n-space :vertical="true">
-      <n-input
-        type="text"
-        size="small"
-        v-model:value="searchParams.name"
-        @change="fetchList"
-        placeholder="Email"
-      />
-      <n-table :bordered="true" :single-line="false" size="small" :striped="true">
-        <thead>
+  <DataTableLayout :loading="loading" v-permission="{ action: ['can view permissions'] }">
+    <template #tableHeader>
+      <div class="flex flex-col items-center space-y-2 sm:flex-row sm:justify-between sm:space-y-0">
+        <div class="flex flex-col items-center space-y-2 sm:flex-row sm:space-x-3 sm:space-y-0">
+          <div class="flex w-full items-center !space-x-2 sm:w-fit">
+            <NInput
+              v-model:value="searchParams.name"
+              class="sm:!w-[200px]"
+              clearable
+              placeholder="KeywordSearch"
+              @change="fetchList"
+            >
+              <template #prefix>
+                <NIcon :component="SearchOutlined" class="mr-1" />
+              </template>
+            </NInput>
+            <NButton type="primary" :size="isMobile ? 'small' : 'medium'" @click="fetchList">
+              Search
+            </NButton>
+          </div>
+          <NDatePicker
+            v-model:value="searchParams.daterange"
+            class="sm:!w-[250px]"
+            type="daterange"
+            clearable
+            input-readonly
+            @update:value="fetchList"
+          />
+        </div>
+        <div class="flex w-full items-center justify-between space-x-3 sm:justify-end">
+          <NButton
+            :size="isMobile ? 'small' : 'medium'"
+            @click="showModal = true"
+            v-permission="{ action: ['can view permission create'] }"
+          >
+            Create
+          </NButton>
+        </div>
+      </div>
+    </template>
+
+    <template #tableContent>
+      <table class="table">
+        <thead class="head">
           <tr>
-            <th>ID</th>
-            <th>Permission Name</th>
-            <th>Created At</th>
-            <th>Updated At</th>
+            <th class="sticky_el left-0 z-20">ID</th>
+            <th class="th">Permission Name</th>
+            <th class="th">Created At</th>
+            <th class="th">Updated At</th>
             <th
-              class="text_center"
+              class="sticky_el right-0 z-20"
               v-permission="{
                 action: ['can view permissions update', 'can view permissions delete'],
               }"
@@ -34,12 +63,12 @@
             <td colspan="2" class="data_placeholder"> Record Not Exist </td>
           </tr>
           <tr v-else v-for="item in list" :key="item.id">
-            <td>{{ item.id }}</td>
-            <td>{{ item.name }}</td>
-            <td>{{ item.created_at }}</td>
-            <td>{{ item.updated_at }}</td>
+            <td class="sticky_el left-0 z-10">{{ item.id }}</td>
+            <td class="td">{{ item.name }}</td>
+            <td class="td">{{ item.created_at }}</td>
+            <td class="td">{{ item.updated_at }}</td>
             <td
-              class="text-center"
+              class="sticky_el right-0 z-10"
               v-permission="{
                 action: ['can view permissions update', 'can view permissions delete'],
               }"
@@ -59,60 +88,51 @@
             </td>
           </tr>
         </tbody>
-      </n-table>
-      <n-pagination
-        v-model:page="page"
-        v-model:page-size="pageSize"
-        :item-count="itemCount"
-        :page-sizes="pageSizes"
-        size="small"
-        :show-quick-jumper="true"
-        :show-size-picker="true"
-      />
-      <n-button
-        type="primary"
-        size="large"
-        :circle="true"
-        style="position: fixed; bottom: 30px; right: 40px"
-        @click="showModal = true"
-        v-permission="{ action: ['can view permission create'] }"
-      >
-        <template #icon>
-          <n-icon>
-            <plus-outlined />
-          </n-icon>
-        </template>
-      </n-button>
-      <n-modal v-model:show="showModal" preset="dialog">
-        <template #header>
-          <div>Create New Permission</div>
-        </template>
-        <n-space :vertical="true">
-          <add-permission
-            @created="
-              getList();
-              showModal = false;
-            "
-          />
-        </n-space>
-      </n-modal>
+      </table>
+    </template>
 
-      <n-modal v-model:show="showEditModal" preset="dialog">
-        <template #header>
-          <div>Update Permission</div>
-        </template>
-        <n-space :vertical="true">
-          <edit-permission
-            :id="selectedId"
-            @updated="
-              getList();
-              showEditModal = false;
-            "
-          />
-        </n-space>
-      </n-modal>
-    </n-space>
-  </n-card>
+    <template #tableFooter>
+      <div class="flex flex-col items-center space-y-2 sm:flex-row sm:justify-end sm:space-y-0">
+        <n-pagination
+          v-model:page="page"
+          v-model:page-size="pageSize"
+          :item-count="itemCount"
+          :page-sizes="pageSizes"
+          size="small"
+          :show-quick-jumper="true"
+          :show-size-picker="true"
+        />
+      </div>
+    </template>
+    <n-modal v-model:show="showModal" preset="dialog">
+      <template #header>
+        <div>Create New Permission</div>
+      </template>
+      <n-space :vertical="true">
+        <add-permission
+          @created="
+            getList();
+            showModal = false;
+          "
+        />
+      </n-space>
+    </n-modal>
+
+    <n-modal v-model:show="showEditModal" preset="dialog">
+      <template #header>
+        <div>Update Permission</div>
+      </template>
+      <n-space :vertical="true">
+        <edit-permission
+          :id="selectedId"
+          @updated="
+            getList();
+            showEditModal = false;
+          "
+        />
+      </n-space>
+    </n-modal>
+  </DataTableLayout>
 </template>
 
 <script lang="ts" setup>
@@ -124,11 +144,14 @@
   import type { Component } from 'vue';
   import { useDialog, useMessage } from 'naive-ui';
   import { NIcon, NPagination } from 'naive-ui';
-  import { MoreOutlined, EditOutlined, DeleteOutlined, PlusOutlined } from '@vicons/antd';
+  import { MoreOutlined, EditOutlined, DeleteOutlined, SearchOutlined } from '@vicons/antd';
   import AddPermission from '@src/components/Permission/AddPermission.vue';
   import EditPermission from '@src/components/Permission/EditPermission.vue';
+  import DataTableLayout from '@src/layouts/DataTableLayout/index.vue';
+  import { useMobile } from '@src/hooks/useMediaQuery';
 
   const dialog = useDialog();
+  const isMobile = useMobile();
   const showModal = ref(false);
   const selectedOption: any = ref(null);
   const showEditModal = ref(false);
@@ -229,9 +252,24 @@
   };
 </script>
 
-<style lang="less" scoped>
-  .text_center {
-    text-align: center;
+<style lang="scss" scoped>
+  .table {
+    @apply w-full text-sm text-left text-gray-500 dark:text-gray-400;
+  }
+  .head {
+    @apply sticky top-0 text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 z-20;
+  }
+  .th {
+    @apply px-6 py-3 border-r border-b border-gray-200 dark:border-gray-800 text-center whitespace-nowrap;
+  }
+  .body_tr {
+    @apply hover:bg-gray-50 dark:hover:bg-gray-600;
+  }
+  .td {
+    @apply px-3 border-r border-b border-gray-200 dark:border-gray-800 whitespace-nowrap;
+  }
+  .sticky_el {
+    @apply sticky bg-gray-50 dark:bg-gray-700 px-6 whitespace-nowrap text-center border border-gray-200 dark:border-gray-800;
   }
   .data_placeholder {
     text-align: center;

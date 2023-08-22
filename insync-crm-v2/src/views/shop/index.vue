@@ -1,5 +1,5 @@
 <template>
-  <DataTableLayout :loading="loading">
+  <DataTableLayout :loading="loading" v-permission="{ action: ['can view shop'] }">
     <template #tableHeader>
       <div class="flex flex-col items-center space-y-2 sm:flex-row sm:justify-between sm:space-y-0">
         <div class="flex flex-col items-center space-y-2 sm:flex-row sm:space-x-3 sm:space-y-0">
@@ -44,7 +44,7 @@
       <table class="table">
         <thead class="head">
           <tr>
-            <th class="sticky_el left-0 z-10">ID</th>
+            <th class="sticky_el left-0 z-20">ID</th>
             <th class="th">Logo</th>
             <th class="th">Name</th>
             <th class="th">Phone#</th>
@@ -53,7 +53,7 @@
             <th class="th">Created At</th>
             <th class="th">Updated At</th>
             <th
-              class="sticky_el right-0 z-10"
+              class="sticky_el right-0 z-20"
               v-permission="{
                 action: ['can view shop update', 'can view shop delete'],
               }"
@@ -288,7 +288,7 @@
     @apply px-3 border-r border-b border-gray-200 dark:border-gray-800 whitespace-nowrap;
   }
   .sticky_el {
-    @apply sticky bg-slate-100 dark:bg-gray-700 px-6 whitespace-nowrap text-center border border-gray-200 dark:border-gray-800;
+    @apply sticky bg-gray-50 dark:bg-gray-700 px-6 whitespace-nowrap text-center border border-gray-200 dark:border-gray-800;
   }
   .data_placeholder {
     text-align: center;
