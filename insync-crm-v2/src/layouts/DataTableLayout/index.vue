@@ -8,6 +8,7 @@
         flex: '1 1 auto',
         flexDirection: 'column',
         padding: '16px',
+        overflow: 'scroll',
       }"
     >
       <div class="mb-2 sm:mb-3">
@@ -18,10 +19,27 @@
             overflow: 'hidden',
           }"
         >
-          <slot name="operate"></slot>
+          <slot name="tableHeader"></slot>
         </NCard>
       </div>
+      <!-- #efeff5 -->
+      <div
+        class="relative overflow-x-auto sm:rounded-lg border border-gray-200 dark:border-gray-800"
+      >
+        <slot name="tableContent"></slot>
+      </div>
       <slot></slot>
+      <div class="mt-2 sm:mt-3">
+        <NCard
+          embedded
+          :content-style="{
+            padding: '12px',
+            overflow: 'hidden',
+          }"
+        >
+          <slot name="tableFooter"></slot>
+        </NCard>
+      </div>
     </NCard>
   </main>
 </template>

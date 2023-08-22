@@ -1,74 +1,107 @@
 <template>
-  <n-card :loading="loading" title="Users" v-permission="{ action: ['can view users'] }">
-    <n-space :vertical="true">
-      <n-input
-        type="text"
-        size="small"
-        v-model:value="searchParams.name"
-        @change="fetchList"
-        placeholder="Search by Name"
-      />
-      <div class="table-wrap">
-        <n-table :bordered="true" :single-line="false" size="small" :striped="true">
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Name</th>
-              <th>Picture</th>
-              <th>Email</th>
-              <th>Role</th>
-              <th>User Type</th>
-              <th>Permissions</th>
-              <th>Phone#</th>
-              <th>Shop</th>
-              <th>Shop Phone#</th>
-              <th>Status</th>
-              <th>Address</th>
-              <th>Created At</th>
-              <th>Updated At</th>
-              <th
-                class="text_center"
-                v-permission="{
-                  action: ['can view user update', 'can view user delete'],
-                }"
-              >
-                Actions
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-if="list.length === 0">
-              <td colspan="7" class="data_placeholder"> Record Not Exist </td>
-            </tr>
-            <tr v-else v-for="item in list" :key="item.id">
-              <td>{{ item?.id }}</td>
-              <td>{{ item?.profile?.first_name + ' ' + item?.profile?.last_name }}</td>
-              <td class="text-center">
-                <n-avatar round size="large" :src="`${imgUrl}${item?.profile.profile_picture}`" />
-              </td>
-              <td>{{ item?.email }}</td>
-              <td>
-                <n-space>
-                  <n-tag v-for="role in item.roles" :key="role.id" type="success" :bordered="false">
-                    {{ role?.name }}
-                  </n-tag>
-                </n-space>
-              </td>
-              <td v-if="item.user_type">{{ item.user_type }}</td>
-              <td>
-                <n-space v-for="permission in item.permissions" :key="permission.id">
-                  {{ permission?.name }}
-                </n-space>
-              </td>
-              <td>{{ item?.profile?.phone_number }}</td>
-              <td>{{ item?.shop?.shop_name }}</td>
-              <td>{{ item?.shop?.shop_phone }}</td>
-              <td>
-                <n-tag :bordered="false" type="info">
-                  {{ item.status }}
+  <DataTableLayout :loading="loading">
+    <template #tableHeader>
+      <div class="flex flex-col items-center space-y-2 sm:flex-row sm:justify-between sm:space-y-0">
+        <div class="flex flex-col items-center space-y-2 sm:flex-row sm:space-x-3 sm:space-y-0">
+          <div class="flex w-full items-center !space-x-2 sm:w-fit">
+            <NInput
+              v-model:value="searchParams.name"
+              class="sm:!w-[200px]"
+              clearable
+              placeholder="KeywordSearch"
+              @change="fetchList"
+            >
+              <template #prefix>
+                <NIcon :component="SearchOutlined" class="mr-1" />
+              </template>
+            </NInput>
+            <NButton type="primary" :size="isMobile ? 'small' : 'medium'" @click="fetchList">
+              Search
+            </NButton>
+          </div>
+          <NDatePicker
+            v-model:value="searchParams.daterange"
+            class="sm:!w-[250px]"
+            type="daterange"
+            clearable
+            input-readonly
+            @update:value="fetchList"
+          />
+        </div>
+        <div class="flex w-full items-center justify-between space-x-3 sm:justify-end">
+          <NButton
+            :size="isMobile ? 'small' : 'medium'"
+            @click="showModal = true"
+            v-permission="{ action: ['can view user create'] }"
+          >
+            Create
+          </NButton>
+        </div>
+      </div>
+    </template>
+
+    <template #tableContent>
+      <table class="table" v-permission="{ action: ['can view users'] }">
+        <thead class="head">
+          <tr>
+            <th class="sticky_el left-0 z-20">ID</th>
+            <th class="th">Name</th>
+            <th class="th">Picture</th>
+            <th class="th">Email</th>
+            <th class="th">Role</th>
+            <th class="th">User Type</th>
+            <th class="th">Permissions</th>
+            <th class="th">Phone#</th>
+            <th class="th">Shop</th>
+            <th class="th">Shop Phone#</th>
+            <th class="th">Status</th>
+            <th class="th">Address</th>
+            <th class="th">Created At</th>
+            <th class="th">Updated At</th>
+            <th
+              class="sticky_el right-0 z-20"
+              v-permission="{
+                action: ['can view user update', 'can view user delete'],
+              }"
+            >
+              Actions
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-if="list.length === 0">
+            <td colspan="15" class="data_placeholder"> Record Not Exist </td>
+          </tr>
+          <tr v-else v-for="item in list" :key="item.id" class="body_tr">
+            <td class="sticky_el left-0 z-10">{{ item?.id }}</td>
+            <td class="td">{{ item?.profile?.first_name + ' ' + item?.profile?.last_name }}</td>
+            <td class="td">
+              <n-avatar round size="large" :src="`${imgUrl}${item?.profile.profile_picture}`" />
+            </td>
+            <td class="td">{{ item?.email }}</td>
+            <td class="td">
+              <n-space>
+                <n-tag v-for="role in item.roles" :key="role.id" type="success" :bordered="false">
+                  {{ role?.name }}
                 </n-tag>
-              </td>
-              <td>{{
+              </n-space>
+            </td>
+            <td class="td" v-if="item.user_type">{{ item.user_type }}</td>
+            <td class="td">
+              <n-space v-for="permission in item.permissions" :key="permission.id">
+                {{ permission?.name }}
+              </n-space>
+            </td>
+            <td class="td">{{ item?.profile?.phone_number }}</td>
+            <td class="td">{{ item?.shop?.shop_name }}</td>
+            <td class="td">{{ item?.shop?.shop_phone }}</td>
+            <td class="td">
+              <n-tag :bordered="false" type="info">
+                {{ item.status }}
+              </n-tag>
+            </td>
+            <td class="td">
+              {{
                 item?.profile?.address +
                 ' ' +
                 item?.profile?.city +
@@ -76,33 +109,36 @@
                 item?.profile?.state +
                 ' ' +
                 item?.profile?.country
-              }}</td>
-              <td>{{ item.created_at }}</td>
-              <td>{{ item.updated_at }}</td>
-              <td
-                class="text-center"
-                v-permission="{
-                  action: ['can view user update', 'can view user delete'],
-                }"
+              }}
+            </td>
+            <td class="td">{{ item.created_at }}</td>
+            <td class="td">{{ item.updated_at }}</td>
+            <td
+              class="sticky_el right-0 z-10"
+              v-permission="{
+                action: ['can view user update', 'can view user delete'],
+              }"
+            >
+              <n-dropdown
+                @click="actionOperation(item)"
+                :onSelect="selectedAction"
+                trigger="click"
+                :options="filteredOptions"
               >
-                <n-dropdown
-                  @click="actionOperation(item)"
-                  :onSelect="selectedAction"
-                  trigger="click"
-                  :options="filteredOptions"
-                >
-                  <n-button size="small" :circle="true">
-                    <n-icon>
-                      <more-outlined />
-                    </n-icon>
-                  </n-button>
-                </n-dropdown>
-              </td>
-            </tr>
-          </tbody>
-        </n-table>
-      </div>
-      <n-space style="align-items: center; padding-top: 15px">
+                <n-button size="small" :circle="true">
+                  <n-icon>
+                    <more-outlined />
+                  </n-icon>
+                </n-button>
+              </n-dropdown>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </template>
+
+    <template #tableFooter>
+      <div class="flex flex-col items-center space-y-2 sm:flex-row sm:justify-end sm:space-y-0">
         <n-pagination
           v-model:page="page"
           v-model:page-size="pageSize"
@@ -112,51 +148,38 @@
           :show-quick-jumper="true"
           :show-size-picker="true"
         />
-      </n-space>
-      <n-button
-        type="primary"
-        size="large"
-        :circle="true"
-        style="position: fixed; bottom: 30px; right: 40px"
-        @click="showModal = true"
-        v-permission="{ action: ['can view user create'] }"
-      >
-        <template #icon>
-          <n-icon>
-            <plus-outlined />
-          </n-icon>
-        </template>
-      </n-button>
-      <n-modal style="width: 70%" v-model:show="showModal" preset="dialog">
-        <template #header>
-          <div>Create New User</div>
-        </template>
-        <n-space :vertical="true">
-          <add-user
-            @created="
-              getList();
-              showModal = false;
-            "
-          />
-        </n-space>
-      </n-modal>
+      </div>
+    </template>
 
-      <n-modal style="width: 70%" v-model:show="showEditModal" preset="dialog">
-        <template #header>
-          <div>Update User</div>
-        </template>
-        <n-space :vertical="true">
-          <edit-user
-            :id="selectedId"
-            @updated="
-              getList();
-              showEditModal = false;
-            "
-          />
-        </n-space>
-      </n-modal>
-    </n-space>
-  </n-card>
+    <n-modal style="width: 70%" v-model:show="showModal" preset="dialog">
+      <template #header>
+        <div>Create New User</div>
+      </template>
+      <n-space :vertical="true">
+        <add-user
+          @created="
+            getList();
+            showModal = false;
+          "
+        />
+      </n-space>
+    </n-modal>
+
+    <n-modal style="width: 70%" v-model:show="showEditModal" preset="dialog">
+      <template #header>
+        <div>Update User</div>
+      </template>
+      <n-space :vertical="true">
+        <edit-user
+          :id="selectedId"
+          @updated="
+            getList();
+            showEditModal = false;
+          "
+        />
+      </n-space>
+    </n-modal>
+  </DataTableLayout>
 </template>
 
 <script lang="ts" setup>
@@ -165,15 +188,18 @@
   import { usePagination } from '@src/hooks/pagination/usePagination';
   import { useLoading } from '@src/hooks/useLoading';
   import { useEnv } from '@src/hooks/useEnv';
+  import { useMobile } from '@src/hooks/useMediaQuery';
   import { ref, onMounted, h, computed } from 'vue';
   import type { Component } from 'vue';
   import { useDialog, useMessage } from 'naive-ui';
   import { NIcon, NPagination } from 'naive-ui';
-  import { MoreOutlined, EditOutlined, DeleteOutlined, PlusOutlined } from '@vicons/antd';
+  import { MoreOutlined, EditOutlined, DeleteOutlined, SearchOutlined } from '@vicons/antd';
+  import DataTableLayout from '@src/layouts/DataTableLayout/index.vue';
   import AddUser from '@src/components/users/AddUser.vue';
   import EditUser from '@src/components/users/EditUser.vue';
 
   const { imgUrl } = useEnv();
+  const isMobile = useMobile();
   const dialog = useDialog();
   const selectedOption: any = ref(null);
   const showModal = ref(false);
@@ -274,16 +300,27 @@
     getList(searchParams.value);
   };
 </script>
-<style lang="less" scoped>
-  .text_center {
-    text-align: center;
+
+<style lang="scss" scoped>
+  .table {
+    @apply w-full text-sm text-left text-gray-500 dark:text-gray-400;
   }
-  .table-wrap {
-    overflow-x: scroll;
+  .head {
+    @apply sticky top-0 text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 z-20;
   }
-  td {
-    white-space: nowrap;
+  .th {
+    @apply px-6 py-3 border-r border-b border-gray-200 dark:border-gray-800 text-center whitespace-nowrap;
   }
+  .body_tr {
+    @apply hover:bg-gray-50 dark:hover:bg-gray-600;
+  }
+  .td {
+    @apply px-3 border-r border-b border-gray-200 dark:border-gray-800 whitespace-nowrap;
+  }
+  .sticky_el {
+    @apply sticky bg-slate-100 dark:bg-gray-700 px-6 whitespace-nowrap text-center border border-gray-200 dark:border-gray-800;
+  }
+
   .data_placeholder {
     text-align: center;
     color: gray;

@@ -51,7 +51,7 @@
       </div>
 
       <NDropdown trigger="hover" :options="tabsOptions" @select="selectTabsOption">
-        <NIcon size="20" class="cursor-pointer" :component="MenuOutlined" />
+        <NIcon size="20" class="cursor-pointer" :component="DashboardFilled" />
       </NDropdown>
     </div>
   </main>
@@ -60,9 +60,8 @@
 <script setup lang="ts">
   import { reactive, ref } from 'vue';
   import type { Tab } from '@src/types/tab';
-  import { MenuOutlined } from '@vicons/antd';
+  import { DashboardFilled } from '@vicons/material';
   import { ArrowsLeft } from '@vicons/tabler';
-
   import type { ScrollDirection, TabsOptionKey } from './private';
   import { tabsOptions } from './private';
   import { useRoute, useRouter } from 'vue-router';

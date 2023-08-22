@@ -1,26 +1,59 @@
 <template>
-  <n-card :loading="loading" title="Shops" v-permission="{ action: ['can view shops'] }">
-    <n-space :vertical="true">
-      <n-input
-        type="text"
-        size="small"
-        v-model:value="searchParams.name"
-        @change="fetchList"
-        placeholder="Search by Name"
-      />
-      <n-table :bordered="true" :single-line="false" size="small" :striped="true">
-        <thead>
+  <DataTableLayout :loading="loading">
+    <template #tableHeader>
+      <div class="flex flex-col items-center space-y-2 sm:flex-row sm:justify-between sm:space-y-0">
+        <div class="flex flex-col items-center space-y-2 sm:flex-row sm:space-x-3 sm:space-y-0">
+          <div class="flex w-full items-center !space-x-2 sm:w-fit">
+            <NInput
+              v-model:value="searchParams.name"
+              class="sm:!w-[200px]"
+              clearable
+              placeholder="KeywordSearch"
+              @change="fetchList"
+            >
+              <template #prefix>
+                <NIcon :component="SearchOutlined" class="mr-1" />
+              </template>
+            </NInput>
+            <NButton type="primary" :size="isMobile ? 'small' : 'medium'" @click="fetchList">
+              Search
+            </NButton>
+          </div>
+          <NDatePicker
+            v-model:value="searchParams.daterange"
+            class="sm:!w-[250px]"
+            type="daterange"
+            clearable
+            input-readonly
+            @update:value="fetchList"
+          />
+        </div>
+        <div class="flex w-full items-center justify-between space-x-3 sm:justify-end">
+          <NButton
+            :size="isMobile ? 'small' : 'medium'"
+            @click="showModal = true"
+            v-permission="{ action: ['can view shop create'] }"
+          >
+            Create
+          </NButton>
+        </div>
+      </div>
+    </template>
+
+    <template #tableContent>
+      <table class="table">
+        <thead class="head">
           <tr>
-            <th>ID</th>
-            <th>Logo</th>
-            <th>Name</th>
-            <th>Phone#</th>
-            <th>Status</th>
-            <th>Address</th>
-            <th>Created At</th>
-            <th>Updated At</th>
+            <th class="sticky_el left-0 z-10">ID</th>
+            <th class="th">Logo</th>
+            <th class="th">Name</th>
+            <th class="th">Phone#</th>
+            <th class="th">Status</th>
+            <th class="th">Address</th>
+            <th class="th">Created At</th>
+            <th class="th">Updated At</th>
             <th
-              class="text_center"
+              class="sticky_el right-0 z-10"
               v-permission="{
                 action: ['can view shop update', 'can view shop delete'],
               }"
@@ -31,24 +64,27 @@
         </thead>
         <tbody>
           <tr v-if="list.length === 0">
-            <td colspan="4" class="data_placeholder"> Record Not Exist </td>
+            <td colspan="9" class="data_placeholder"> Record Not Exist </td>
           </tr>
-          <tr v-else v-for="item in list" :key="item.id">
-            <td>{{ item.id }}</td>
-            <td class="text-center">
+          <tr v-else v-for="item in list" :key="item.id" class="body_tr">
+            <td class="sticky_el left-0 z-10">
+              {{ item.id }}
+            </td>
+            <td class="text-center td">
               <n-avatar round size="large" :src="`${imgUrl}${item.shop_logo}`" />
             </td>
-            <td>{{ item.shop_name }}</td>
-            <td>{{ item.shop_phone }}</td>
-            <td>
+            <td class="td">{{ item.shop_name }}</td>
+            <td class="td">{{ item.shop_phone }}</td>
+            <td class="text-center td">
               <n-tag :bordered="false" type="info">{{ item.status }}</n-tag>
             </td>
-            <td>
+            <td class="td">
               {{ item.address + ' ' + item.city + ' ' + item?.state + ' ' + item.country }}
             </td>
-            <td>{{ item.created_at }}</td>
-            <td>{{ item.updated_at }}</td>
+            <td class="td">{{ item.created_at }}</td>
+            <td class="td">{{ item.updated_at }}</td>
             <td
+              class="sticky_el right-0 z-10"
               v-permission="{
                 action: ['can view shop update', 'can view shop delete'],
               }"
@@ -68,8 +104,11 @@
             </td>
           </tr>
         </tbody>
-      </n-table>
-      <n-space style="align-items: center; padding-top: 15px">
+      </table>
+    </template>
+
+    <template #tableFooter>
+      <div class="flex flex-col items-center space-y-2 sm:flex-row sm:justify-end sm:space-y-0">
         <n-pagination
           v-model:page="page"
           v-model:page-size="pageSize"
@@ -79,51 +118,38 @@
           :show-quick-jumper="true"
           :show-size-picker="true"
         />
-      </n-space>
-      <n-button
-        type="primary"
-        size="large"
-        :circle="true"
-        style="position: fixed; bottom: 30px; right: 40px"
-        @click="showModal = true"
-        v-permission="{ action: ['can view shop create'] }"
-      >
-        <template #icon>
-          <n-icon>
-            <plus-outlined />
-          </n-icon>
-        </template>
-      </n-button>
-      <n-modal style="width: 60%" v-model:show="showModal" preset="dialog">
-        <template #header>
-          <div>Create New Shop</div>
-        </template>
-        <n-space :vertical="true">
-          <add-shop
-            @created="
-              getList();
-              showModal = false;
-            "
-          />
-        </n-space>
-      </n-modal>
+      </div>
+    </template>
 
-      <n-modal style="width: 60%" v-model:show="showEditModal" preset="dialog">
-        <template #header>
-          <div>Update Shop</div>
-        </template>
-        <n-space :vertical="true">
-          <edit-shop
-            :id="selectedId"
-            @updated="
-              getList();
-              showEditModal = false;
-            "
-          />
-        </n-space>
-      </n-modal>
-    </n-space>
-  </n-card>
+    <n-modal style="width: 60%" v-model:show="showModal" preset="dialog">
+      <template #header>
+        <div>Create New Shop</div>
+      </template>
+      <n-space :vertical="true">
+        <add-shop
+          @created="
+            getList();
+            showModal = false;
+          "
+        />
+      </n-space>
+    </n-modal>
+
+    <n-modal style="width: 60%" v-model:show="showEditModal" preset="dialog">
+      <template #header>
+        <div>Update Shop</div>
+      </template>
+      <n-space :vertical="true">
+        <edit-shop
+          :id="selectedId"
+          @updated="
+            getList();
+            showEditModal = false;
+          "
+        />
+      </n-space>
+    </n-modal>
+  </DataTableLayout>
 </template>
 
 <script lang="ts" setup>
@@ -131,16 +157,19 @@
   import { usePermission } from '@src/utils/permission/usePermission';
   import { usePagination } from '@src/hooks/pagination/usePagination';
   import { useLoading } from '@src/hooks/useLoading';
+  import { useMobile } from '@src/hooks/useMediaQuery';
   import { useEnv } from '@src/hooks/useEnv';
   import { ref, onMounted, h, computed } from 'vue';
   import { useDialog, useMessage } from 'naive-ui';
   import type { Component } from 'vue';
   import { NIcon, NPagination } from 'naive-ui';
-  import { MoreOutlined, EditOutlined, DeleteOutlined, PlusOutlined } from '@vicons/antd';
+  import { MoreOutlined, EditOutlined, DeleteOutlined, SearchOutlined } from '@vicons/antd';
+  import DataTableLayout from '@src/layouts/DataTableLayout/index.vue';
   import AddShop from '@src/components/shop/AddShop.vue';
   import EditShop from '@src/components/shop/EditShop.vue';
 
   const { imgUrl } = useEnv();
+  const isMobile = useMobile();
   const dialog = useDialog();
   const selectedOption: any = ref(null);
   const showModal = ref(false);
@@ -241,9 +270,25 @@
     getList(searchParams.value);
   };
 </script>
-<style lang="less" scoped>
-  .text_center {
-    text-align: center;
+
+<style lang="scss" scoped>
+  .table {
+    @apply w-full text-sm text-left text-gray-500 dark:text-gray-400;
+  }
+  .head {
+    @apply sticky top-0 text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 z-20;
+  }
+  .th {
+    @apply px-6 py-3 border-r border-b border-gray-200 dark:border-gray-800 text-center whitespace-nowrap;
+  }
+  .body_tr {
+    @apply hover:bg-gray-50 dark:hover:bg-gray-600;
+  }
+  .td {
+    @apply px-3 border-r border-b border-gray-200 dark:border-gray-800 whitespace-nowrap;
+  }
+  .sticky_el {
+    @apply sticky bg-slate-100 dark:bg-gray-700 px-6 whitespace-nowrap text-center border border-gray-200 dark:border-gray-800;
   }
   .data_placeholder {
     text-align: center;

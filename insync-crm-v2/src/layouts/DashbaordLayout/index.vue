@@ -30,7 +30,6 @@
 <script setup lang="ts">
   import { ref, onBeforeMount } from 'vue';
   import { useRouter } from 'vue-router';
-  // import { AuthAPI } from '@src/api/auth';
   import GlobalLoading from '@src/components/GlobalLoading/index.vue';
   import Sidebar from '@src/layouts/components/Sidebar/index.vue';
   import Header from '@src/layouts/components/Header/index.vue';
@@ -38,7 +37,6 @@
   import Footer from '@src/layouts/components/Footer/index.vue';
   import { useUserStore } from '@src/store/modules/user';
   import { AuthUtils } from '@src/utils/auth';
-  // import { UserAPI } from '@src/api/user';
   import { AuthAPI } from '@src/api/auth';
 
   const userStore = useUserStore();
@@ -54,63 +52,16 @@
         userStore.setUser(result);
       }
       loading.value = false;
-      // sendSystemNotification();
     } else {
       userStore.clearUser();
       router.replace({
         path: '/login',
-        // query: {
-        //   redirect: route.fullPath,
-        // },
       });
       loading.value = false;
     }
   };
 
   onBeforeMount(() => checkLogin());
-
-  // import { useRoute } from 'vue-router';
-  // import bitOceanSrc from '@src/assets/images/bit_ocean.png';
-  // import { useEnv } from '@src/hooks/useEnv';
-  // import { BrowserUtils } from '@src/utils/browser';
-  // const { teamGitHubURL } = useEnv();
-  // const { openNewWindow } = BrowserUtils;
-  // const route = useRoute();
-  // const notification = useNotification();
-  // const sendSystemNotification = () => {
-  //   setTimeout(() => {
-  //     const n = notification.create({
-  //       title: () => t('Notification.System.Title'),
-  //       description: () => t('Notification.Team.From'),
-  //       avatar: () =>
-  //         h(NAvatar, {
-  //           size: 'small',
-  //           round: true,
-  //           src: bitOceanSrc,
-  //           alt: '',
-  //         }),
-  //       content: () => t('Notification.System.Content'),
-  //       duration: 5000,
-  //       keepAliveOnHover: true,
-  //       meta: TimeUtils.formatTime(Date.now()),
-  //       action: () =>
-  //         h(
-  //           NButton,
-  //           {
-  //             text: true,
-  //             type: 'success',
-  //             onClick: () => {
-  //               openNewWindow(repoGitHubURL);
-  //               n.destroy();
-  //             },
-  //           },
-  //           {
-  //             default: () => `${t('Common.Goto')} GitHub`,
-  //           }
-  //         ),
-  //     });
-  //   }, 800);
-  // };
 </script>
 
 <style scoped lang="scss">
