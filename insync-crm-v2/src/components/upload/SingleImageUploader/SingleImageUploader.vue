@@ -26,6 +26,7 @@
             :file-list-style="{ display: 'none' }"
             @before-upload="beforeUpload"
             @finish="finish"
+            class="text-center"
           >
             <div class="flex flex-row justify-center">
               <n-icon size="20" class="m-auto">
