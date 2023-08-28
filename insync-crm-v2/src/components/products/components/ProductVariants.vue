@@ -1,87 +1,151 @@
 <template>
   <div class="variant_container" :loading="loading">
-    <table class="table">
-      <thead class="head">
-        <tr>
-          <th class="sticky_el left-0 z-20">ID</th>
-          <th class="th">Variant Code</th>
-          <th class="th">Images</th>
-          <th class="th">Attribute Name</th>
-          <th class="th">Attribute Value</th>
-          <th class="th">Status</th>
-          <th class="th">Stock Status</th>
-          <th class="th">Quantity</th>
-          <th class="th">Price</th>
-          <th class="th">Regular Price</th>
-          <th class="th">Created At</th>
-          <th class="th">Updated At</th>
-          <th
-            class="sticky_el right-0 z-20"
-            v-permission="{
-              action: ['can view variant update', 'can view variant delete'],
+    <n-card title="Variant List">
+      <template #header-extra>
+        <NButton @click="handleVariantAdd()" v-permission="{ action: ['can view variant create'] }">
+          Create New
+        </NButton>
+      </template>
+      <n-row gutter="15">
+        <n-card v-if="list.length === 0" class="flex justify-center items-center italic mx-2">
+          Product Variants does not Exist.
+        </n-card>
+        <n-col :span="12" v-else v-for="item in list" :key="item.id">
+          <n-card
+            title="Variant ID"
+            :segmented="{
+              content: true,
+              action: true,
             }"
+            class="my-2"
           >
-            Actions
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-if="list.length === 0">
-          <td colspan="15" class="data_placeholder"> Record Not Exist </td>
-        </tr>
-        <tr v-else v-for="item in list" :key="item.id">
-          <td class="sticky_el left-0 z-10">{{ item.id }}</td>
-          <td class="td">{{ item.sku_id }}</td>
-          <td class="text-center td">
-            <n-avatar round size="large" :src="`${imgUrl}${item.images[0].images}`" />
-          </td>
-          <td class="td">{{ item.attributes.name }}</td>
-          <td class="td">{{ item.attribute_value }}</td>
-          <td class="td">
-            <n-tag :bordered="false" type="info">{{ item.status }}</n-tag>
-          </td>
-          <td class="td">
-            <n-tag :bordered="false" type="info">{{ item.stock_status }}</n-tag>
-          </td>
-          <td class="td">{{ item.stock_quantity }}</td>
-          <td class="td">{{ item.price }}</td>
-          <td class="td">{{ item.regular_price }}</td>
-          <td class="td">{{ item.created_at }}</td>
-          <td class="td">{{ item.updated_at }}</td>
-          <td
-            class="sticky_el right-0 z-10"
-            v-permission="{
-              action: ['can view variant update', 'can view variant delete'],
-            }"
-          >
-            <n-dropdown
-              @click="actionOperation(item)"
-              :onSelect="selectedAction"
-              trigger="click"
-              :options="filteredOptions"
-            >
-              <n-button size="small" :circle="true">
-                <n-icon>
-                  <more-outlined />
-                </n-icon>
-              </n-button>
-            </n-dropdown>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+            <template #header-extra> {{ item.id }} </template>
+            <div class="flex justify-between py-1">
+              <div>Variant Code</div>
+              <div>{{ item.sku_id }}</div>
+            </div>
+            <div class="flex justify-between py-1">
+              <div>Attribute Name</div>
+              <div>{{ item.attributes.name }}</div>
+            </div>
+            <div class="flex justify-between py-1">
+              <div>Attribute Value</div>
+              <div>{{ item.attribute_value }}</div>
+            </div>
+            <div class="flex justify-between py-1">
+              <div>Status</div>
+              <div>
+                <n-tag :bordered="false" type="info">{{ item.status }}</n-tag>
+              </div>
+            </div>
+            <div class="flex justify-between py-1">
+              <div>Stock Status</div>
+              <div>
+                <n-tag :bordered="false" type="info">{{ item.stock_status }}</n-tag>
+              </div>
+            </div>
+            <div class="flex justify-between py-1">
+              <div>Quantity</div>
+              <div> {{ item.stock_quantity }} </div>
+            </div>
+            <div class="flex justify-between py-1">
+              <div>Price</div>
+              <div> {{ item.price }} </div>
+            </div>
+            <div class="flex justify-between py-1">
+              <div>Regular Price</div>
+              <div> {{ item.regular_price }} </div>
+            </div>
+            <div class="flex justify-between py-1">
+              <div>Created At</div>
+              <div> {{ item.created_at }} </div>
+            </div>
+            <div class="flex justify-between py-1">
+              <div>Updated At</div>
+              <div> {{ item.updated_at }} </div>
+            </div>
+            <div class="mt-4">
+              <div>Image List:</div>
+              <div class="flex gap-3 flex-wrap">
+                <div v-for="img in item.images" :key="img.id" class="py-3">
+                  <n-avatar :size="100" :src="`${imgUrl}${img.images}`" />
+                </div>
+              </div>
+            </div>
+            <div class="flex justify-between items-center py-1">
+              <div>Actions</div>
+              <div class="flex gap-2">
+                <n-button
+                  secondary
+                  type="info"
+                  :render-icon="renderIcon(EditOutlined)"
+                  v-permission="{
+                    action: ['can view variant update'],
+                  }"
+                  @click="handleVariantUpdate(item.id)"
+                >
+                  Edit
+                </n-button>
+                <n-button
+                  secondary
+                  type="error"
+                  :render-icon="renderIcon(DeleteOutlined)"
+                  v-permission="{
+                    action: ['can view variant delete'],
+                  }"
+                  @click="confirmationDialog(item.id)"
+                >
+                  Delete
+                </n-button>
+              </div>
+            </div>
+          </n-card>
+        </n-col>
+      </n-row>
+    </n-card>
+
+    <n-modal style="width: 60%" v-model:show="showModal" preset="dialog">
+      <template #header>
+        <div>Create New Variant</div>
+      </template>
+      <n-space :vertical="true">
+        <add-variant
+          @created="
+            getVariantList();
+            showModal = false;
+          "
+        />
+      </n-space>
+    </n-modal>
+
+    <n-modal style="width: 60%" v-model:show="showEditModal" preset="dialog">
+      <template #header>
+        <div>Update Variant</div>
+      </template>
+      <n-space :vertical="true">
+        <edit-variant
+          :id="selectedId"
+          @updated="
+            getVariantList();
+            showEditModal = false;
+          "
+        />
+      </n-space>
+    </n-modal>
   </div>
 </template>
 
 <script lang="ts" setup>
-  import { ref, computed } from 'vue';
+  import { ref } from 'vue';
+  import { useRoute } from 'vue-router';
   import { useDialog, useMessage } from 'naive-ui';
-  import { MoreOutlined, EditOutlined, DeleteOutlined } from '@vicons/antd';
+  import { EditOutlined, DeleteOutlined } from '@vicons/antd';
   import { useEnv } from '@src/hooks/useEnv';
-  import { usePermission } from '@src/utils/permission/usePermission';
   import { RenderUtils } from '@src/utils/render';
   import { useLoading } from '@src/hooks/useLoading';
-  import { deleteRecordApi } from '@src/api/endpoints';
+  import { deleteRecordApi, getRecordApi } from '@src/api/endpoints';
+  import AddVariant from '@src/components/products/variants/AddVariant.vue';
+  import EditVariant from '@src/components/products/variants/EditVariant.vue';
 
   const props = defineProps<{
     variants: Record<string, any>;
@@ -89,37 +153,19 @@
 
   const { renderIcon } = RenderUtils;
   const { imgUrl } = useEnv();
+  const route = useRoute();
   const dialog = useDialog();
   const selectedId = ref();
-  const selectedOption: any = ref(null);
+  const showModal = ref(false);
   const showEditModal = ref(false);
   const message: any = useMessage();
-  const { hasPermission } = usePermission();
   const list: any = ref(props.variants);
   const [loading, loadingDispatcher] = useLoading(false);
 
   console.log('getVariantsByProduct ===>', list);
 
-  const moreOptions = ref([
-    {
-      label: 'Edit',
-      key: 'edit',
-      icon: renderIcon(EditOutlined),
-      permission: hasPermission(['can view variant update']),
-    },
-    {
-      label: 'Delete',
-      key: 'delete',
-      icon: renderIcon(DeleteOutlined),
-      permission: hasPermission(['can view variant delete']),
-    },
-  ]);
-
-  const filteredOptions = computed(() => {
-    return moreOptions.value.filter((option) => option.permission);
-  });
-
-  function confirmationDialog() {
+  function confirmationDialog(id: any) {
+    selectedId.value = id;
     dialog.error({
       title: 'Confirmation',
       content: () => 'Are you sure you want to delete?',
@@ -134,7 +180,7 @@
     deleteRecordApi(`/variants/${selectedId.value}`)
       .then((result: any) => {
         message.success(result.message);
-        // getList();
+        getVariantList();
         loadingDispatcher.loaded();
         dialog.destroyAll;
       })
@@ -144,46 +190,28 @@
         dialog.destroyAll;
       });
     selectedId.value = null;
-    selectedOption.value = null;
   }
 
-  const actionOperation = (item: any) => {
-    if (selectedOption.value === 'edit') {
-      showEditModal.value = true;
-      selectedId.value = item.id;
-      // router.push(`/variants/${item.id}`);
-    } else if (selectedOption.value === 'delete') {
-      selectedId.value = item.id;
-      confirmationDialog();
-    }
+  const handleVariantAdd = () => {
+    showModal.value = true;
+    // selectedId.value = id;
   };
 
-  const selectedAction = (key: any) => {
-    selectedOption.value = key;
+  const handleVariantUpdate = (id: any) => {
+    showEditModal.value = true;
+    selectedId.value = id;
+  };
+
+  const getVariantList = () => {
+    getRecordApi(`/variants/getVariantsByProduct/${route.params.id}`).then((result: any) => {
+      list.value = result.result;
+    });
   };
 </script>
 
 <style lang="scss" scoped>
-  .table {
-    @apply w-full text-sm text-left text-gray-500 dark:text-gray-400;
-  }
-  .head {
-    @apply sticky top-0 text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 z-20;
-  }
-  .th {
-    @apply px-6 py-3 border-r border-b border-gray-200 dark:border-gray-800 text-center whitespace-nowrap;
-  }
-  .body_tr {
-    @apply hover:bg-gray-50 dark:hover:bg-gray-600;
-  }
-  .td {
-    @apply px-3 py-2 border-r border-b border-gray-200 dark:border-gray-800 whitespace-nowrap;
-  }
-  .sticky_el {
-    @apply sticky bg-gray-50 dark:bg-gray-700 px-6 whitespace-nowrap text-center border border-gray-200 dark:border-gray-800;
-  }
   .variant_container {
-    @apply relative overflow-x-auto sm:rounded-lg border border-gray-200 dark:border-gray-800;
+    @apply relative p-2  border-x border-b border-gray-200 dark:border-gray-800;
   }
   .data_placeholder {
     text-align: center;

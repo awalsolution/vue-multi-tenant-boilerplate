@@ -67,14 +67,13 @@
 <script lang="ts" setup>
   import { ref } from 'vue';
   import { FormInst, useMessage } from 'naive-ui';
-  import { useRoute, useRouter } from 'vue-router';
+  import { useRoute } from 'vue-router';
   import { createRecordApi } from '@src/api/endpoints';
   import { MultiImageUploader } from '@src/components/upload';
   import { useEnv } from '@src/hooks/useEnv';
 
   const { uploadUrl } = useEnv();
 
-  const router = useRouter();
   const route = useRoute();
   const message: any = useMessage();
   const formRef = ref<FormInst | null>(null);
@@ -107,11 +106,9 @@
     e.preventDefault();
     formRef.value?.validate((errors) => {
       if (!errors) {
-        console.log('product object ==>', variants.value);
         createRecordApi(`/variants/${route.params.id}`, variants.value).then((result: any) => {
           message.success(result.message);
           emits('created', result);
-          router.replace('/variants');
         });
       } else {
         console.log(errors);

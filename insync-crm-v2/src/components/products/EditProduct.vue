@@ -6,6 +6,7 @@
         size="medium"
         v-model:currentValue="currentTab"
         @update:value="handleTabChange"
+        :pane-style="{ paddingTop: 0 }"
       >
         <n-tab-pane name="general" tab="General">
           <ProductGeneralInfo v-if="productDataLoaded" :product="product" />
