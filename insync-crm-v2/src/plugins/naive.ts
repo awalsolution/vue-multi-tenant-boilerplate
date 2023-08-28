@@ -71,6 +71,8 @@ import {
   NGradientText,
   NScrollbar,
   NH1,
+  NH2,
+  NH3,
   NFormItemGi,
 } from 'naive-ui';
 
@@ -78,6 +80,8 @@ import {
 const naive = create({
   components: [
     NH1,
+    NH2,
+    NH3,
     NFormItemGi,
     NEllipsis,
     NScrollbar,

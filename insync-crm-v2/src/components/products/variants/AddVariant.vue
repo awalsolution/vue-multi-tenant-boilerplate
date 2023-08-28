@@ -1,5 +1,5 @@
 <template>
-  <n-card title="Create New Variant">
+  <n-card>
     <n-form ref="formRef" :label-width="80" :model="variants" :rules="rules" size="small">
       <n-grid x-gap="10">
         <n-form-item-gi :span="12" label="Attribute" path="attribute_id">

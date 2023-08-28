@@ -1,108 +1,108 @@
 <template>
   <div class="variant_container" :loading="loading">
-    <n-card title="Variant List">
-      <template #header-extra>
-        <NButton @click="handleVariantAdd()" v-permission="{ action: ['can view variant create'] }">
-          Create New
-        </NButton>
-      </template>
-      <n-row gutter="15">
-        <n-card v-if="list.length === 0" class="flex justify-center items-center italic mx-2">
-          Product Variants does not Exist.
+    <div class="flex justify-between items-center">
+      <h3 class="text-lg">Variant List</h3>
+      <NButton @click="handleVariantAdd()" v-permission="{ action: ['can view variant create'] }">
+        Create New
+      </NButton>
+    </div>
+
+    <n-row gutter="15">
+      <n-card v-if="list.length === 0" class="flex justify-center items-center italic mx-2">
+        Product Variants does not Exist.
+      </n-card>
+      <n-col :span="12" v-else v-for="item in list" :key="item.id">
+        <n-card
+          title="Variant ID"
+          :segmented="{
+            content: true,
+            action: true,
+          }"
+          class="my-2"
+        >
+          <template #header-extra> {{ item.id }} </template>
+          <div class="flex justify-between py-1">
+            <div>Variant Code</div>
+            <div>{{ item.sku_id }}</div>
+          </div>
+          <div class="flex justify-between py-1">
+            <div>Attribute Name</div>
+            <div>{{ item.attributes.name }}</div>
+          </div>
+          <div class="flex justify-between py-1">
+            <div>Attribute Value</div>
+            <div>{{ item.attribute_value }}</div>
+          </div>
+          <div class="flex justify-between py-1">
+            <div>Status</div>
+            <div>
+              <n-tag :bordered="false" type="info">{{ item.status }}</n-tag>
+            </div>
+          </div>
+          <div class="flex justify-between py-1">
+            <div>Stock Status</div>
+            <div>
+              <n-tag :bordered="false" type="info">{{ item.stock_status }}</n-tag>
+            </div>
+          </div>
+          <div class="flex justify-between py-1">
+            <div>Quantity</div>
+            <div> {{ item.stock_quantity }} </div>
+          </div>
+          <div class="flex justify-between py-1">
+            <div>Price</div>
+            <div> {{ item.price }} </div>
+          </div>
+          <div class="flex justify-between py-1">
+            <div>Regular Price</div>
+            <div> {{ item.regular_price }} </div>
+          </div>
+          <div class="flex justify-between py-1">
+            <div>Created At</div>
+            <div> {{ item.created_at }} </div>
+          </div>
+          <div class="flex justify-between py-1">
+            <div>Updated At</div>
+            <div> {{ item.updated_at }} </div>
+          </div>
+          <div class="mt-4">
+            <div>Image List:</div>
+            <div class="flex gap-3 flex-wrap">
+              <div v-for="img in item.images" :key="img.id" class="py-3">
+                <n-avatar :size="100" :src="`${imgUrl}${img.images}`" />
+              </div>
+            </div>
+          </div>
+          <div class="flex justify-between items-center py-1">
+            <div>Actions</div>
+            <div class="flex gap-2">
+              <n-button
+                secondary
+                type="info"
+                :render-icon="renderIcon(EditOutlined)"
+                v-permission="{
+                  action: ['can view variant update'],
+                }"
+                @click="handleVariantUpdate(item.id)"
+              >
+                Edit
+              </n-button>
+              <n-button
+                secondary
+                type="error"
+                :render-icon="renderIcon(DeleteOutlined)"
+                v-permission="{
+                  action: ['can view variant delete'],
+                }"
+                @click="confirmationDialog(item.id)"
+              >
+                Delete
+              </n-button>
+            </div>
+          </div>
         </n-card>
-        <n-col :span="12" v-else v-for="item in list" :key="item.id">
-          <n-card
-            title="Variant ID"
-            :segmented="{
-              content: true,
-              action: true,
-            }"
-            class="my-2"
-          >
-            <template #header-extra> {{ item.id }} </template>
-            <div class="flex justify-between py-1">
-              <div>Variant Code</div>
-              <div>{{ item.sku_id }}</div>
-            </div>
-            <div class="flex justify-between py-1">
-              <div>Attribute Name</div>
-              <div>{{ item.attributes.name }}</div>
-            </div>
-            <div class="flex justify-between py-1">
-              <div>Attribute Value</div>
-              <div>{{ item.attribute_value }}</div>
-            </div>
-            <div class="flex justify-between py-1">
-              <div>Status</div>
-              <div>
-                <n-tag :bordered="false" type="info">{{ item.status }}</n-tag>
-              </div>
-            </div>
-            <div class="flex justify-between py-1">
-              <div>Stock Status</div>
-              <div>
-                <n-tag :bordered="false" type="info">{{ item.stock_status }}</n-tag>
-              </div>
-            </div>
-            <div class="flex justify-between py-1">
-              <div>Quantity</div>
-              <div> {{ item.stock_quantity }} </div>
-            </div>
-            <div class="flex justify-between py-1">
-              <div>Price</div>
-              <div> {{ item.price }} </div>
-            </div>
-            <div class="flex justify-between py-1">
-              <div>Regular Price</div>
-              <div> {{ item.regular_price }} </div>
-            </div>
-            <div class="flex justify-between py-1">
-              <div>Created At</div>
-              <div> {{ item.created_at }} </div>
-            </div>
-            <div class="flex justify-between py-1">
-              <div>Updated At</div>
-              <div> {{ item.updated_at }} </div>
-            </div>
-            <div class="mt-4">
-              <div>Image List:</div>
-              <div class="flex gap-3 flex-wrap">
-                <div v-for="img in item.images" :key="img.id" class="py-3">
-                  <n-avatar :size="100" :src="`${imgUrl}${img.images}`" />
-                </div>
-              </div>
-            </div>
-            <div class="flex justify-between items-center py-1">
-              <div>Actions</div>
-              <div class="flex gap-2">
-                <n-button
-                  secondary
-                  type="info"
-                  :render-icon="renderIcon(EditOutlined)"
-                  v-permission="{
-                    action: ['can view variant update'],
-                  }"
-                  @click="handleVariantUpdate(item.id)"
-                >
-                  Edit
-                </n-button>
-                <n-button
-                  secondary
-                  type="error"
-                  :render-icon="renderIcon(DeleteOutlined)"
-                  v-permission="{
-                    action: ['can view variant delete'],
-                  }"
-                  @click="confirmationDialog(item.id)"
-                >
-                  Delete
-                </n-button>
-              </div>
-            </div>
-          </n-card>
-        </n-col>
-      </n-row>
-    </n-card>
+      </n-col>
+    </n-row>
 
     <n-modal style="width: 60%" v-model:show="showModal" preset="dialog">
       <template #header>
