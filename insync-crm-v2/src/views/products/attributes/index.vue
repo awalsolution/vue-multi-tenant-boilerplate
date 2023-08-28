@@ -143,7 +143,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { deleteRecordApi, getRecordsApi } from '@src/api/endpoints';
+  import { deleteRecordApi } from '@src/api/endpoints';
   import { usePermission } from '@src/utils/permission/usePermission';
   import { usePagination } from '@src/hooks/pagination/usePagination';
   import { useLoading } from '@src/hooks/useLoading';
@@ -164,25 +164,14 @@
   const selectedId = ref();
   const { hasPermission } = usePermission();
   const message: any = useMessage();
-  const searchParams: any = ref({});
   const [loading, loadingDispatcher] = useLoading(false);
-  const page: any = ref(1);
-  const pageSize = ref(10);
-  const list: any = ref([]);
-  const meta: any = ref({});
-  const { pageSizes, itemCount }: any = usePagination(meta);
 
   // fetch all records
-  const getList = (params?: any) => {
-    getRecordsApi('/attributes', { ...params }).then((res: any) => {
-      list.value = res?.result?.data;
-      meta.value = res?.result?.meta;
-      console.log('record list => ', res.result);
-    });
-  };
-  // on component reload
+  const { getList, list, page, pageSizes, itemCount, pageSize, searchParams }: any =
+    usePagination('/attributes');
+
   onMounted(() => {
-    getList({ page: page.value, pageSize: pageSize.value });
+    getList();
   });
 
   const renderIcon = (icon: Component) => {
