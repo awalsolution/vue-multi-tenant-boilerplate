@@ -60,7 +60,7 @@
         </thead>
         <tbody>
           <tr v-if="list.length === 0">
-            <td colspan="2" class="data_placeholder"> Record Not Exist </td>
+            <td colspan="5" class="data_placeholder"> Record Not Exist </td>
           </tr>
           <tr v-else v-for="item in list" :key="item.id">
             <td class="sticky_el left-0 z-10">{{ item.id }}</td>
@@ -136,7 +136,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { deleteRecordApi, getRecordsApi } from '@src/api/endpoints';
+  import { deleteRecordApi } from '@src/api/endpoints';
   import { usePermission } from '@src/utils/permission/usePermission';
   import { usePagination } from '@src/hooks/pagination/usePagination';
   import { useLoading } from '@src/hooks/useLoading';
@@ -158,26 +158,9 @@
   const selectedId = ref();
   const { hasPermission } = usePermission();
   const message: any = useMessage();
-  const searchParams: any = ref({});
   const [loading, loadingDispatcher] = useLoading(false);
-  const page: any = ref(1);
-  const pageSize = ref(10);
-  const list: any = ref([]);
-  const meta: any = ref({});
-  const { pageSizes, itemCount }: any = usePagination(meta);
-
-  // fetch all records
-  const getList = (params?: any) => {
-    getRecordsApi('/permissions', { ...params }).then((res: any) => {
-      list.value = res?.result?.data;
-      meta.value = res?.result?.meta;
-      console.log('record list => ', res.result);
-    });
-  };
-
-  onMounted(() => {
-    getList({ page: page.value, pageSize: pageSize.value });
-  });
+  const { getList, list, page, pageSizes, itemCount, pageSize, searchParams }: any =
+    usePagination('/permissions');
 
   const renderIcon = (icon: Component) => {
     return () => {
@@ -250,6 +233,10 @@
   const fetchList = () => {
     getList(searchParams.value);
   };
+
+  onMounted(() => {
+    getList();
+  });
 </script>
 
 <style lang="scss" scoped>
