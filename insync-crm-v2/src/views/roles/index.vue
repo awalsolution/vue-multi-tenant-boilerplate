@@ -143,7 +143,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { deleteRecordApi, getRecordsApi } from '@src/api/endpoints';
+  import { deleteRecordApi } from '@src/api/endpoints';
   import { usePagination } from '@src/hooks/pagination/usePagination';
   import { useLoading } from '@src/hooks/useLoading';
   import { usePermission } from '@src/utils/permission/usePermission';
@@ -157,7 +157,6 @@
   import AddRole from '@src/components/Role/AddRole.vue';
   import EditRole from '@src/components/Role/EditRole.vue';
 
-  const searchParams: any = ref({});
   const isMobile = useMobile();
   const dialog = useDialog();
   const selectedOption: any = ref(null);
@@ -167,22 +166,13 @@
   const message: any = useMessage();
   const [loading, loadingDispatcher] = useLoading(false);
   const { hasPermission } = usePermission();
-  const page: any = ref(1);
-  const pageSize = ref(10);
-  const list: any = ref([]);
-  const meta: any = ref({});
-  const { pageSizes, itemCount }: any = usePagination(meta);
 
-  const getList = (params?: any) => {
-    getRecordsApi('/roles', { ...params }).then((res: any) => {
-      list.value = res?.result?.data;
-      meta.value = res?.result?.meta;
-      console.log('record list => ', res.result);
-    });
-  };
+  // fetch all records
+  const { getList, list, page, pageSizes, itemCount, pageSize, searchParams }: any =
+    usePagination('/roles');
 
   onMounted(() => {
-    getList({ page: page.value, pageSize: pageSize.value });
+    getList();
   });
 
   const renderIcon = (icon: Component) => {
