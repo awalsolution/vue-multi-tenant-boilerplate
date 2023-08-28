@@ -131,7 +131,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { deleteRecordApi, getRecordsApi } from '@src/api/endpoints';
+  import { deleteRecordApi } from '@src/api/endpoints';
   import { useRouter } from 'vue-router';
   import { ref, onMounted, h } from 'vue';
   import { useDialog, useMessage } from 'naive-ui';
@@ -157,25 +157,14 @@
   const selectedOption: any = ref(null);
   const selectedId = ref();
   const message: any = useMessage();
-  const searchParams: any = ref({});
   const [loading, loadingDispatcher] = useLoading(false);
-  const page: any = ref(1);
-  const pageSize = ref(10);
-  const list: any = ref([]);
-  const meta: any = ref({});
-  const { pageSizes, itemCount }: any = usePagination(meta);
 
   // fetch all records
-  const getList = (params?: any) => {
-    getRecordsApi('/products', { ...params }).then((res: any) => {
-      list.value = res?.result?.data;
-      meta.value = res?.result?.meta;
-      console.log('record list => ', res.result);
-    });
-  };
-  // on component reload
+  const { getList, list, page, pageSizes, itemCount, pageSize, searchParams }: any =
+    usePagination('/products');
+
   onMounted(() => {
-    getList({ page: page.value, pageSize: pageSize.value });
+    getList();
   });
 
   const renderIcon = (icon: Component) => {

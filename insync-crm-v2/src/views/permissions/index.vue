@@ -159,8 +159,13 @@
   const { hasPermission } = usePermission();
   const message: any = useMessage();
   const [loading, loadingDispatcher] = useLoading(false);
+
   const { getList, list, page, pageSizes, itemCount, pageSize, searchParams }: any =
     usePagination('/permissions');
+
+  onMounted(() => {
+    getList();
+  });
 
   const renderIcon = (icon: Component) => {
     return () => {
@@ -233,10 +238,6 @@
   const fetchList = () => {
     getList(searchParams.value);
   };
-
-  onMounted(() => {
-    getList();
-  });
 </script>
 
 <style lang="scss" scoped>
