@@ -20,6 +20,9 @@
           :tag="true"
         />
       </n-form-item-gi>
+      <n-form-item-gi :span="12" label="User Type" path="user_type">
+        <n-select v-model:value="formValue.user_type" size="small" :options="userType" />
+      </n-form-item-gi>
       <n-form-item-gi :span="12" label="Status" path="status">
         <n-select v-model:value="formValue.status" size="small" :options="status" />
       </n-form-item-gi>
@@ -77,6 +80,21 @@
     {
       label: 'disabled',
       value: 'disabled',
+    },
+  ]);
+
+  const userType = ref([
+    {
+      label: 'Vendor',
+      value: 'vendor',
+    },
+    {
+      label: 'Admin',
+      value: 'admin',
+    },
+    {
+      label: 'User',
+      value: 'user',
     },
   ]);
 

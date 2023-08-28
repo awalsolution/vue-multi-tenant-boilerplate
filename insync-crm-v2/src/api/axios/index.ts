@@ -11,7 +11,7 @@ import { router } from '@src/router';
 import type { PageModel } from '@src/types/request';
 
 import { axiosConfig } from './config';
-import { errorMessageMap, ResponseStatusCode } from './statusCode';
+import { ResponseStatusCode } from './statusCode';
 import { useThemeStore } from '@src/store/modules/theme';
 import { AuthUtils } from '@src/utils/auth';
 // import { useEnv } from '@src/hooks/useEnv';
@@ -50,7 +50,7 @@ class Request {
         const { response } = err;
         const { data, status } = response || {};
         if (response) {
-          Request.handleCode(status as number);
+          Request.handleCode(status as number, data as string);
         }
         if (!window.navigator.onLine) {
           router.replace('/404');
@@ -61,12 +61,12 @@ class Request {
     );
   }
 
-  static handleCode(code: number): void {
-    const errorMessage = errorMessageMap.get(code) || 'Unknown Error!';
+  static handleCode(code: number, msg: any): void {
+    // const errorMessage = errorMessageMap.get(code) || 'Unknown Error!';
     switch (code) {
       case ResponseStatusCode.UNAUTHORIZED:
         AuthUtils.clearToken();
-        message.error('Unauthorized');
+        message.error(msg.message);
         if (router.currentRoute.value.path !== '/login') {
           if (router.currentRoute.value.path !== '/') {
             router.replace({
@@ -81,22 +81,37 @@ class Request {
         }
         break;
       case ResponseStatusCode.FORBIDDEN:
-        message.error(errorMessage);
+        message.error(msg.message);
         break;
       case ResponseStatusCode.INTERNAL_SERVER_ERROR:
+        message.error(msg.message);
+        break;
       case ResponseStatusCode.BAD_GATEWAY:
+        message.error(msg.message);
+        break;
       case ResponseStatusCode.GATEWAY_TIMEOUT:
-        message.error('Internal Server Error');
+        message.error(msg.message);
         if (router.currentRoute.value.path !== '/login') {
-          router.replace('/error-pages/500');
+          router.replace('/error/500');
         }
         break;
       case ResponseStatusCode.BAD_REQUEST:
+        message.error(msg.message);
+        break;
       case ResponseStatusCode.NOT_FOUND:
+        message.error(msg.message);
+        break;
       case ResponseStatusCode.METHOD_NOT_ALLOWED:
+        message.error(msg.message);
+        break;
       case ResponseStatusCode.CONFLICT:
+        message.error(msg.message);
+        break;
       case ResponseStatusCode.TOO_MANY_REQUESTS:
+        message.error(msg.message);
+        break;
       default:
+        message.error(msg.message);
     }
   }
 

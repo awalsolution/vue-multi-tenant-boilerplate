@@ -19,7 +19,7 @@
         />
       </n-form-item-gi>
       <n-form-item-gi :span="12" label="User Type" path="user_type">
-        <n-select v-model:value="formValue.user_type" size="small" :options="options" />
+        <n-select v-model:value="formValue.user_type" size="small" :options="userType" />
       </n-form-item-gi>
       <n-form-item-gi :span="12" label="Status" path="status">
         <n-select v-model:value="formValue.status" size="small" :options="status" />
@@ -58,6 +58,7 @@
       }
     });
   };
+
   const status = ref([
     {
       label: 'active',
@@ -68,16 +69,22 @@
       value: 'disabled',
     },
   ]);
-  const options = ref([
+
+  const userType = ref([
     {
       label: 'Vendor',
       value: 'vendor',
+    },
+    {
+      label: 'Admin',
+      value: 'admin',
     },
     {
       label: 'User',
       value: 'user',
     },
   ]);
+
   const rules = ref({
     first_name: {
       required: true,
