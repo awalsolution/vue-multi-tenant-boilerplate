@@ -1,5 +1,5 @@
 <template>
-  <n-card>
+  <ContentLayout>
     <n-form ref="formRef" :label-width="80" :model="product" :rules="rules">
       <n-row :gutter="10">
         <n-col :span="18">
@@ -74,10 +74,11 @@
         </n-col>
       </n-row>
     </n-form>
-  </n-card>
+  </ContentLayout>
 </template>
 
 <script lang="ts" setup>
+  import ContentLayout from '@src/layouts/ContentLayout/index.vue';
   import { ref, unref } from 'vue';
   import { FormInst, useMessage } from 'naive-ui';
   import { useRouter } from 'vue-router';

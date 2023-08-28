@@ -1,145 +1,139 @@
 <template>
-  <n-card :loading="loading" title="Attributes" v-permission="{ action: ['can view attributes'] }">
-    <n-space :vertical="true">
-      <DataTableLayout :loading="loading" v-permission="{ action: ['can view shop'] }">
-        <template #tableHeader>
-          <div
-            class="flex flex-col items-center space-y-2 sm:flex-row sm:justify-between sm:space-y-0"
+  <DataTableLayout :loading="loading" v-permission="{ action: ['can view attributes'] }">
+    <template #tableHeader>
+      <div class="flex flex-col items-center space-y-2 sm:flex-row sm:justify-between sm:space-y-0">
+        <div class="flex flex-col items-center space-y-2 sm:flex-row sm:space-x-3 sm:space-y-0">
+          <div class="flex w-full items-center !space-x-2 sm:w-fit">
+            <NInput
+              v-model:value="searchParams.name"
+              class="sm:!w-[200px]"
+              clearable
+              placeholder="KeywordSearch"
+              @change="fetchList"
+            >
+              <template #prefix>
+                <NIcon :component="SearchOutlined" class="mr-1" />
+              </template>
+            </NInput>
+            <NButton type="primary" :size="isMobile ? 'small' : 'medium'" @click="fetchList">
+              Search
+            </NButton>
+          </div>
+          <NDatePicker
+            v-model:value="searchParams.daterange"
+            class="sm:!w-[250px]"
+            type="daterange"
+            clearable
+            input-readonly
+            @update:value="fetchList"
+          />
+        </div>
+        <div class="flex w-full items-center justify-between space-x-3 sm:justify-end">
+          <NButton
+            :size="isMobile ? 'small' : 'medium'"
+            @click="showModal = true"
+            v-permission="{ action: ['can view attribute create'] }"
           >
-            <div class="flex flex-col items-center space-y-2 sm:flex-row sm:space-x-3 sm:space-y-0">
-              <div class="flex w-full items-center !space-x-2 sm:w-fit">
-                <NInput
-                  v-model:value="searchParams.name"
-                  class="sm:!w-[200px]"
-                  clearable
-                  placeholder="KeywordSearch"
-                  @change="fetchList"
-                >
-                  <template #prefix>
-                    <NIcon :component="SearchOutlined" class="mr-1" />
-                  </template>
-                </NInput>
-                <NButton type="primary" :size="isMobile ? 'small' : 'medium'" @click="fetchList">
-                  Search
-                </NButton>
-              </div>
-              <NDatePicker
-                v-model:value="searchParams.daterange"
-                class="sm:!w-[250px]"
-                type="daterange"
-                clearable
-                input-readonly
-                @update:value="fetchList"
-              />
-            </div>
-            <div class="flex w-full items-center justify-between space-x-3 sm:justify-end">
-              <NButton
-                :size="isMobile ? 'small' : 'medium'"
-                @click="showModal = true"
-                v-permission="{ action: ['can view attribute create'] }"
+            Create
+          </NButton>
+        </div>
+      </div>
+    </template>
+
+    <template #tableContent>
+      <table class="table">
+        <thead class="head">
+          <tr>
+            <th class="sticky_el left-0 z-20">ID</th>
+            <th class="th">Attribute Name</th>
+            <th class="th">Created At</th>
+            <th class="th">Updated At</th>
+            <th
+              class="sticky_el right-0 z-20"
+              v-permission="{
+                action: ['can view attribute update', 'can view attribute delete'],
+              }"
+            >
+              Actions
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-if="list.length === 0">
+            <td colspan="5" class="data_placeholder"> Record is Empty </td>
+          </tr>
+          <tr v-else v-for="item in list" :key="item.id" class="body_tr">
+            <td class="sticky_el left-0 z-10">{{ item.id }}</td>
+            <td class="td">{{ item.name }}</td>
+            <td class="td">{{ item.created_at }}</td>
+            <td class="td">{{ item.updated_at }}</td>
+            <td
+              class="sticky_el right-0 z-10"
+              v-permission="{
+                action: ['can view attribute update', 'can view attribute delete'],
+              }"
+            >
+              <n-dropdown
+                @click="actionOperation(item)"
+                :onSelect="selectedAction"
+                trigger="click"
+                :options="filteredOptions"
               >
-                Create
-              </NButton>
-            </div>
-          </div>
-        </template>
+                <n-button size="small" :circle="true">
+                  <n-icon>
+                    <more-outlined />
+                  </n-icon>
+                </n-button>
+              </n-dropdown>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </template>
 
-        <template #tableContent>
-          <table class="table">
-            <thead class="head">
-              <tr>
-                <th class="sticky_el left-0 z-20">ID</th>
-                <th class="th">Attribute Name</th>
-                <th class="th">Created At</th>
-                <th class="th">Updated At</th>
-                <th
-                  class="sticky_el right-0 z-20"
-                  v-permission="{
-                    action: ['can view attribute update', 'can view attribute delete'],
-                  }"
-                >
-                  Actions
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-if="list.length === 0">
-                <td colspan="5" class="data_placeholder"> Record is Empty </td>
-              </tr>
-              <tr v-else v-for="item in list" :key="item.id" class="body_tr">
-                <td class="sticky_el left-0 z-10">{{ item.id }}</td>
-                <td class="td">{{ item.name }}</td>
-                <td class="td">{{ item.created_at }}</td>
-                <td class="td">{{ item.updated_at }}</td>
-                <td
-                  class="sticky_el right-0 z-10"
-                  v-permission="{
-                    action: ['can view attribute update', 'can view attribute delete'],
-                  }"
-                >
-                  <n-dropdown
-                    @click="actionOperation(item)"
-                    :onSelect="selectedAction"
-                    trigger="click"
-                    :options="filteredOptions"
-                  >
-                    <n-button size="small" :circle="true">
-                      <n-icon>
-                        <more-outlined />
-                      </n-icon>
-                    </n-button>
-                  </n-dropdown>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </template>
+    <template #tableFooter>
+      <div class="flex flex-col items-center space-y-2 sm:flex-row sm:justify-end sm:space-y-0">
+        <n-pagination
+          v-model:page="page"
+          v-model:page-size="pageSize"
+          :item-count="itemCount"
+          :page-sizes="pageSizes"
+          size="small"
+          :show-quick-jumper="true"
+          :show-size-picker="true"
+        />
+      </div>
+    </template>
 
-        <template #tableFooter>
-          <div class="flex flex-col items-center space-y-2 sm:flex-row sm:justify-end sm:space-y-0">
-            <n-pagination
-              v-model:page="page"
-              v-model:page-size="pageSize"
-              :item-count="itemCount"
-              :page-sizes="pageSizes"
-              size="small"
-              :show-quick-jumper="true"
-              :show-size-picker="true"
-            />
-          </div>
-        </template>
+    <n-modal v-model:show="showModal" preset="dialog">
+      <template #header>
+        <div>Create New Attribute</div>
+      </template>
+      <n-space :vertical="true">
+        <add-attribute
+          @created="
+            getList();
+            showModal = false;
+          "
+        />
+      </n-space>
+    </n-modal>
 
-        <n-modal v-model:show="showModal" preset="dialog">
-          <template #header>
-            <div>Create New Attribute</div>
-          </template>
-          <n-space :vertical="true">
-            <add-attribute
-              @created="
-                getList();
-                showModal = false;
-              "
-            />
-          </n-space>
-        </n-modal>
-
-        <n-modal v-model:show="showEditModal" preset="dialog">
-          <template #header>
-            <div>Update Attribute</div>
-          </template>
-          <n-space :vertical="true">
-            <edit-attribute
-              :id="selectedId"
-              @updated="
-                getList();
-                showEditModal = false;
-              "
-            />
-          </n-space>
-        </n-modal>
-      </DataTableLayout>
-    </n-space>
-  </n-card>
+    <n-modal v-model:show="showEditModal" preset="dialog">
+      <template #header>
+        <div>Update Attribute</div>
+      </template>
+      <n-space :vertical="true">
+        <edit-attribute
+          :id="selectedId"
+          @updated="
+            getList();
+            showEditModal = false;
+          "
+        />
+      </n-space>
+    </n-modal>
+  </DataTableLayout>
 </template>
 
 <script lang="ts" setup>
