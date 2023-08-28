@@ -236,9 +236,11 @@
       confirmationDialog();
     }
   };
+
   const selectedAction = (key: any) => {
     selectedOption.value = key;
   };
+
   const fetchList = () => {
     getList(searchParams.value);
   };
