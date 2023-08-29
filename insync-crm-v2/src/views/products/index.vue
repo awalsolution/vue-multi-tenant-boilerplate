@@ -137,13 +137,7 @@
   import { useDialog, useMessage } from 'naive-ui';
   import type { Component } from 'vue';
   import { NIcon, NPagination } from 'naive-ui';
-  import {
-    MoreOutlined,
-    EditOutlined,
-    DeleteOutlined,
-    PlusOutlined,
-    SearchOutlined,
-  } from '@vicons/antd';
+  import { MoreOutlined, EditOutlined, DeleteOutlined, SearchOutlined } from '@vicons/antd';
   import { useEnv } from '@src/hooks/useEnv';
   import { useLoading } from '@src/hooks/useLoading';
   import { usePagination } from '@src/hooks/pagination/usePagination';
@@ -176,11 +170,6 @@
   };
 
   const moreOptions = ref([
-    {
-      label: 'Add Variant',
-      key: 'product_variants_add',
-      icon: renderIcon(PlusOutlined),
-    },
     {
       label: 'Edit',
       key: 'edit',
@@ -222,9 +211,7 @@
   }
 
   const actionOperation = (item: any) => {
-    if (selectedOption.value === 'product_variants_add') {
-      router.push({ name: 'product_variants_add', params: { id: item.id } });
-    } else if (selectedOption.value === 'edit') {
+    if (selectedOption.value === 'edit') {
       router.push({ name: 'product_update', params: { id: item.id } });
     } else if (selectedOption.value === 'delete') {
       selectedId.value = item.id;

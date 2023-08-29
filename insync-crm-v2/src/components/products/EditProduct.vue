@@ -1,32 +1,31 @@
 <template>
   <ContentLayout>
-    <n-card title="Edit Product">
-      <n-tabs
-        type="card"
-        size="medium"
-        v-model:currentValue="currentTab"
-        @update:value="handleTabChange"
-        :pane-style="{ paddingTop: 0 }"
-      >
-        <n-tab-pane name="general" tab="General">
-          <ProductGeneralInfo v-if="productDataLoaded" :product="product" />
-        </n-tab-pane>
-        <n-tab-pane name="variants" tab="Variants">
-          <ProductVariants v-if="variantDataLoaded" :variants="variants" />
-        </n-tab-pane>
-      </n-tabs>
-    </n-card>
+    <n-tabs
+      type="card"
+      size="medium"
+      v-model:currentValue="currentTab"
+      @update:value="handleTabChange"
+      :pane-style="{ paddingTop: 0, overflow: 'scroll' }"
+      class="sticky top-0 h-full"
+    >
+      <n-tab-pane name="general" tab="General">
+        <ProductGeneralInfo v-if="productDataLoaded" :product="product" />
+      </n-tab-pane>
+      <n-tab-pane name="variants" tab="Variants">
+        <ProductVariants v-if="variantDataLoaded" :variants="variants" />
+      </n-tab-pane>
+    </n-tabs>
   </ContentLayout>
 </template>
 
 <script lang="ts" setup>
   import { ref } from 'vue';
   import { useRoute } from 'vue-router';
+  import { useMessage } from 'naive-ui';
   import { getRecordApi } from '@src/api/endpoints';
   import ContentLayout from '@src/layouts/ContentLayout/index.vue';
   import ProductGeneralInfo from '@src/components/products/components/ProductGeneralInfo.vue';
   import ProductVariants from '@src/components/products/components/ProductVariants.vue';
-  import { useMessage } from 'naive-ui';
 
   const route = useRoute();
   const product: any = ref({});
@@ -48,7 +47,7 @@
       getRecordApi(`/variants/getVariantsByProduct/${route.params.id}`).then((result: any) => {
         variants.value = result.result;
         variantDataLoaded.value = true;
-        message.info(result.message);
+        message.success(result.message);
       });
     }
   };

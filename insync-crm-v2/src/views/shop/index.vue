@@ -159,16 +159,17 @@
   import { useLoading } from '@src/hooks/useLoading';
   import { useMobile } from '@src/hooks/useMediaQuery';
   import { useEnv } from '@src/hooks/useEnv';
-  import { ref, onMounted, h, computed } from 'vue';
+  import { ref, onMounted, computed } from 'vue';
   import { useDialog, useMessage } from 'naive-ui';
-  import type { Component } from 'vue';
   import { NIcon, NPagination } from 'naive-ui';
   import { MoreOutlined, EditOutlined, DeleteOutlined, SearchOutlined } from '@vicons/antd';
   import DataTableLayout from '@src/layouts/DataTableLayout/index.vue';
   import AddShop from '@src/components/shop/AddShop.vue';
   import EditShop from '@src/components/shop/EditShop.vue';
+  import { RenderUtils } from '@src/utils/render';
 
   const { imgUrl } = useEnv();
+  const { renderIcon } = RenderUtils;
   const isMobile = useMobile();
   const dialog = useDialog();
   const selectedOption: any = ref(null);
@@ -186,14 +187,6 @@
   onMounted(() => {
     getList();
   });
-
-  const renderIcon = (icon: Component) => {
-    return () => {
-      return h(NIcon, null, {
-        default: () => h(icon),
-      });
-    };
-  };
 
   const moreOptions = ref([
     {
