@@ -1,6 +1,6 @@
 import type { BaseResponse } from '@src/types/request';
 import Request from '@src/api/axios';
-import type { UploadOptions, UploadResponse } from './types';
+import type { UploadOptions, UploadResponse } from '@src/api/upload/types';
 import { useEnv } from '@src/hooks/useEnv';
 
 const { uploadUrl } = useEnv();
@@ -13,9 +13,7 @@ export class UploadAPI {
   static uploadFile(data: any, options?: UploadOptions) {
     return Request.post<BaseResponse<UploadResponse>>(this.UPLOAD_API, data, {
       headers: this.headers,
-      onUploadProgress: options?.onUploadProgress
-        ? options.onUploadProgress
-        : () => {},
+      onUploadProgress: options?.onUploadProgress ? options.onUploadProgress : () => {},
     });
   }
 

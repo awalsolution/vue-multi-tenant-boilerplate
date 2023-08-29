@@ -11,7 +11,7 @@
 </template>
 
 <script setup lang="ts">
-import { Loading3QuartersOutlined } from '@vicons/antd';
-import { useEnv } from '@src/hooks/useEnv';
-const { appTitle } = useEnv();
+  import { Loading3QuartersOutlined } from '@vicons/antd';
+  import { useEnv } from '@src/hooks/useEnv';
+  const { appTitle } = useEnv();
 </script>

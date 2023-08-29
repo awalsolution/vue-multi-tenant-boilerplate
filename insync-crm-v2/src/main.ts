@@ -6,7 +6,7 @@ import App from '@src/App.vue';
 import { faviconLoader } from '@src/constants/faviconLoader';
 import { naiveUILoader } from '@src/constants/naiveUILoader';
 import { setupStore } from '@src/store';
-import { router, setupRouter } from '@src/router';
+import { setupRouter } from '@src/router';
 import { setupNaive, setupDirectives } from '@src/plugins';
 
 const app = createApp(App);
@@ -21,7 +21,5 @@ setupStore(app);
 setupDirectives(app);
 
 setupRouter(app);
-
-await router.isReady();
 
 app.mount('#app');

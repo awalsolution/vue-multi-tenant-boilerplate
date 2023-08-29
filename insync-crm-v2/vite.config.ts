@@ -29,5 +29,9 @@ export default defineConfig(({ mode }) => {
       open: true,
       port,
     },
+    build: {
+      target: 'es2015',
+      outDir: 'dist',
+    },
   };
 });

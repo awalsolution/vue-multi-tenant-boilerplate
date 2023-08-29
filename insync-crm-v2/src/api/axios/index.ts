@@ -10,8 +10,8 @@ import type {
 import { router } from '@src/router';
 import type { PageModel } from '@src/types/request';
 
-import { axiosConfig } from './config';
-import { ResponseStatusCode } from './statusCode';
+import { axiosConfig } from '@src/api/axios/config';
+import { ResponseStatusCode } from '@src/api/axios/statusCode';
 import { useThemeStore } from '@src/store/modules/theme';
 import { AuthUtils } from '@src/utils/auth';
 // import { useEnv } from '@src/hooks/useEnv';

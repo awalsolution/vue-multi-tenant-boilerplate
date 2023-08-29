@@ -3,7 +3,7 @@ import NProgress from 'nprogress';
 import { createRouter, createWebHistory } from 'vue-router';
 import { SiteUtils } from '@src/utils/site';
 import { processRouteTag } from '@src/router/tabs';
-import { routes } from './routes';
+import { routes } from '@src/router/routes';
 
 NProgress.configure({ showSpinner: false });
 
@@ -26,6 +26,7 @@ router.afterEach((to) => {
   NProgress.done();
 });
 
-export function setupRouter(app: App) {
+export async function setupRouter(app: App) {
   app.use(router);
+  await router.isReady();
 }

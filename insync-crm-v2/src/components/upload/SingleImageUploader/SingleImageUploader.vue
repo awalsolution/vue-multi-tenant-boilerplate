@@ -56,11 +56,11 @@
   import { defineComponent, toRefs, reactive, computed, watch } from 'vue';
   import { EyeOutlined, DeleteOutlined } from '@vicons/antd';
   import { CloudUpload } from '@vicons/tabler';
-  import { basicProps } from './props';
+  import { basicProps } from '@src/components/upload/SingleImageUploader/props';
   import { useMessage, useDialog } from 'naive-ui';
   import { useEnv } from '@src/hooks/useEnv';
-  import componentSetting from './componentSetting';
-  import { isString } from './utils';
+  import componentSetting from '@src/components/upload/SingleImageUploader/componentSetting';
+  import { isString } from '@src/components/upload/SingleImageUploader/utils';
 
   export default defineComponent({
     name: 'SingleImageUploader',
@@ -149,17 +149,40 @@
       }
 
       // upload end
-      function finish({ event: Event }: any) {
-        const res = eval('(' + Event.target.response + ')');
+      // function finish({ event: Event }: any) {
+      //   const res = eval('(' + Event.target.response + ')');
+      //   const infoField = componentSetting.upload.apiSetting.infoField;
+      //   const { code } = res;
+      //   const message = res.msg || res.message || 'upload failed';
+      //   const result = res[infoField];
+      //   //success
+      //   if (code === 200) {
+      //     state.originalImgList = result;
+      //     emit('uploadChange', state.originalImgList);
+      //   } else message.error(message);
+      // }
+
+      function finish({ event }: any) {
+        const response = event.target.response;
+        let res;
+        try {
+          res = JSON.parse(response);
+        } catch (error) {
+          console.error('Failed to parse JSON response:', error);
+          return;
+        }
+
         const infoField = componentSetting.upload.apiSetting.infoField;
         const { code } = res;
         const message = res.msg || res.message || 'upload failed';
         const result = res[infoField];
-        //success
+        // success
         if (code === 200) {
           state.originalImgList = result;
           emit('uploadChange', state.originalImgList);
-        } else message.error(message);
+        } else {
+          console.error(message);
+        }
       }
 
       return {

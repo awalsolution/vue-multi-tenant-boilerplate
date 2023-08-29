@@ -3,7 +3,7 @@ import type { User } from '@src/types/user';
 import { useEnv } from '@src/hooks/useEnv';
 
 import Request from '@src/api/axios';
-import type { ChangePasswordModel, CreateModel } from './types';
+import type { ChangePasswordModel, CreateModel } from '@src/api/user/types';
 
 const { apiPrefix } = useEnv();
 

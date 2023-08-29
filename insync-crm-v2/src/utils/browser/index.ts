@@ -1,4 +1,4 @@
-import type { ScrollOptions } from './private';
+import type { ScrollOptions } from '@src/utils/browser/private';
 
 export class BrowserUtils {
   static setClipBoardText(text: string): Promise<void> {
