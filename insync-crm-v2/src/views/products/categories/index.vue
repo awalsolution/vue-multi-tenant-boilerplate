@@ -66,8 +66,8 @@
           <tr v-else v-for="item in list" :key="item.id" class="body_tr">
             <td class="sticky_el left-0 z-10">{{ item.id }}</td>
             <td class="td">{{ item.name }}</td>
-            <td class="text-center td">
-              <n-avatar round size="large" :src="`${imgUrl}${item.image}`" />
+            <td class="text-center td pt-2">
+              <n-avatar :size="50" :src="`${imgUrl}${item.image}`" />
             </td>
             <td class="td">{{ item.created_at }}</td>
             <td class="td">{{ item.updated_at }}</td>
@@ -256,7 +256,7 @@
     @apply w-full text-sm text-left text-gray-500 dark:text-gray-400;
   }
   .head {
-    @apply sticky top-0 text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 z-20;
+    @apply sticky top-0 text-xs text-gray-700 bg-gray-50 dark:bg-gray-700 dark:text-gray-400 z-20;
   }
   .th {
     @apply px-6 py-3 border-r border-b border-gray-200 dark:border-gray-800 text-center whitespace-nowrap;
