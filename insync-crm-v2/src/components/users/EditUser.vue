@@ -51,8 +51,8 @@
     },
   });
   // fetch single user using id
-  getRecordApi(`/users/${props.id}`).then((result) => {
-    formValue.value = result.result;
+  getRecordApi(`/users/${props.id}`).then((res: any) => {
+    formValue.value = res.result;
     formValue.value.permissions = formValue.value.permissions.map((v: any) => v.id);
     formValue.value.roles = formValue.value.roles.map((v: any) => v.id);
   });
@@ -62,9 +62,9 @@
     formRef.value?.validate((errors) => {
       if (!errors) {
         console.log(formValue.value);
-        updateRecordApi(`/users/${formValue.value.id}`, formValue.value).then((result) => {
-          message.success(result.message);
-          emits('updated', result);
+        updateRecordApi(`/users/${formValue.value.id}`, formValue.value).then((res: any) => {
+          message.success(res.message);
+          emits('updated', res.result);
         });
       } else {
         console.log(errors);

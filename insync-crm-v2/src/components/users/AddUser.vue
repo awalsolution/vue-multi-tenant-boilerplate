@@ -48,9 +48,9 @@
     e.preventDefault();
     formRef.value?.validate((errors) => {
       if (!errors) {
-        createRecordApi('/users', formValue.value).then((result: any) => {
-          message.success(result.message);
-          emits('created', result.result);
+        createRecordApi('/users', formValue.value).then((res: any) => {
+          message.success(res.message);
+          emits('created', res.result);
         });
       } else {
         console.log(errors);

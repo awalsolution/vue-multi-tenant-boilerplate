@@ -32,10 +32,10 @@
     e.preventDefault();
     formRef.value?.validate((errors) => {
       if (!errors) {
-        createRecordApi('/permissions', formValue.value).then((result: any) => {
-          console.log(result);
-          message.success(result.message);
-          emits('created', result.result);
+        createRecordApi('/permissions', formValue.value).then((res: any) => {
+          console.log(res);
+          message.success(res.message);
+          emits('created', res.result);
         });
       } else {
         console.log(errors);

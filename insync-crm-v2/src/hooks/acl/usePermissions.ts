@@ -15,8 +15,8 @@ export function usePermissions(tag = false) {
     timer = setTimeout(() => {
       permissionsLoading.value = true;
       getRecordsApi('/permissions', { name: query, pageSize: 1000 })
-        .then((result: any) => {
-          filteredPermissions.value = result.result.data;
+        .then((res: any) => {
+          filteredPermissions.value = res.result.data;
           if (tag && query) {
             if (
               filteredPermissions.value.some((permission: any) => {

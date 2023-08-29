@@ -109,9 +109,9 @@
     formRef.value?.validate((errors) => {
       if (!errors) {
         loading.value = true;
-        createRecordApi(`/products`, product.value).then((result: any) => {
-          message.success(result.message);
-          emits('created', result);
+        createRecordApi(`/products`, product.value).then((res: any) => {
+          message.success(res.message);
+          emits('created', res.result);
           loading.value = false;
           router.replace('/product');
         });

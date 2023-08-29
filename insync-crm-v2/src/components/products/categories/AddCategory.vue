@@ -49,9 +49,9 @@
     e.preventDefault();
     formRef.value?.validate((errors) => {
       if (!errors) {
-        createRecordApi('/categories', formValue.value).then((result) => {
-          message.success(result.message);
-          emits('created', result.result);
+        createRecordApi('/categories', formValue.value).then((res: any) => {
+          message.success(res.message);
+          emits('created', res.result);
         });
       } else {
         console.log(errors);

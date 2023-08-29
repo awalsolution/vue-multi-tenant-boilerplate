@@ -26,7 +26,7 @@
     },
   });
   // get attribute for update
-  getRecordApi(`/attributes/${props.id}`).then((result: any) => (formValue.value = result.result));
+  getRecordApi(`/attributes/${props.id}`).then((res: any) => (formValue.value = res.result));
 
   const rules = ref({
     name: {
@@ -41,9 +41,9 @@
     formRef.value?.validate((errors) => {
       if (!errors) {
         const { name } = formValue.value;
-        updateRecordApi(`/attributes/${formValue.value.id}`, { name }).then((result) => {
-          message.success(result.message);
-          emits('updated', result);
+        updateRecordApi(`/attributes/${formValue.value.id}`, { name }).then((res: any) => {
+          message.success(res.message);
+          emits('updated', res.result);
         });
       } else {
         console.log(errors);

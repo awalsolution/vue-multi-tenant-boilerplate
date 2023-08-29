@@ -15,8 +15,8 @@ export function useCategory(tag = false) {
     timer = setTimeout(() => {
       categoriesLoading.value = true;
       getRecordsApi('/categories', { name: query, pageSize: 100 })
-        .then((result: any) => {
-          filteredCategories.value = result.result.data;
+        .then((res: any) => {
+          filteredCategories.value = res.result.data;
           if (tag && query) {
             if (!filteredCategories.value.some((role: any) => role.name === query)) {
               filteredCategories.value.unshift({ id: 0, name: query });

@@ -104,17 +104,17 @@
   });
 
   // fetch single variant using id
-  getRecordApi(`/variants/${props.id}`).then((result: any) => {
-    variants.value = result.result;
+  getRecordApi(`/variants/${props.id}`).then((res: any) => {
+    variants.value = res.result;
   });
 
   const handleValidateClick = (e: MouseEvent) => {
     e.preventDefault();
     formRef.value?.validate((errors) => {
       if (!errors) {
-        updateRecordApi(`/variants/${variants.value.id}`, variants.value).then((result: any) => {
-          message.success(result.message);
-          emits('updated', result);
+        updateRecordApi(`/variants/${variants.value.id}`, variants.value).then((res: any) => {
+          message.success(res.message);
+          emits('updated', res.result);
         });
       } else {
         console.log(errors);

@@ -26,7 +26,7 @@
     },
   });
   // get permission for update
-  getRecordApi(`/permissions/${props.id}`).then((result: any) => (formValue.value = result.result));
+  getRecordApi(`/permissions/${props.id}`).then((res: any) => (formValue.value = res.result));
 
   const rules = ref({
     name: {
@@ -40,12 +40,10 @@
     e.preventDefault();
     formRef.value?.validate((errors) => {
       if (!errors) {
-        updateRecordApi(`/permissions/${formValue.value.id}`, formValue.value).then(
-          (result: any) => {
-            message.success(result.message);
-            emits('updated', result);
-          }
-        );
+        updateRecordApi(`/permissions/${formValue.value.id}`, formValue.value).then((res: any) => {
+          message.success(res.message);
+          emits('updated', res.result);
+        });
       } else {
         console.log(errors);
         message.error('Invalid');

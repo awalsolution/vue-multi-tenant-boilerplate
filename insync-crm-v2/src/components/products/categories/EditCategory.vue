@@ -43,7 +43,7 @@
     },
   });
   // get category for update
-  getRecordApi(`/categories/${props.id}`).then((result: any) => (formValue.value = result.result));
+  getRecordApi(`/categories/${props.id}`).then((res: any) => (formValue.value = res.result));
 
   const rules = ref({
     name: {
@@ -58,9 +58,9 @@
     formRef.value?.validate((errors) => {
       if (!errors) {
         console.log(formValue.value);
-        updateRecordApi(`/categories/${formValue.value.id}`, formValue.value).then((result) => {
-          message.success(result.message);
-          emits('updated', result);
+        updateRecordApi(`/categories/${formValue.value.id}`, formValue.value).then((res: any) => {
+          message.success(res.message);
+          emits('updated', res.result);
         });
       } else {
         console.log(errors);

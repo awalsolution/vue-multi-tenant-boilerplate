@@ -15,8 +15,8 @@ export function useRoles(tag = false) {
     timer = setTimeout(() => {
       rolesLoading.value = true;
       getRecordsApi('/roles', { name: query, pageSize: 1000 })
-        .then((result: any) => {
-          filteredRoles.value = result.result.data;
+        .then((res: any) => {
+          filteredRoles.value = res.result.data;
           if (tag && query) {
             if (!filteredRoles.value.some((role: any) => role.name === query)) {
               filteredRoles.value.unshift({ id: 0, name: query });

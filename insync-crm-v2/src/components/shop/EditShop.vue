@@ -64,17 +64,17 @@
   };
 
   // fetch single Shop  using id
-  getRecordApi(`/shops/${props.id}`).then((result: any) => {
-    formValue.value = result.result;
+  getRecordApi(`/shops/${props.id}`).then((res: any) => {
+    formValue.value = res.result;
   });
 
   const handleValidateClick = (e: MouseEvent) => {
     e.preventDefault();
     formRef.value?.validate((errors) => {
       if (!errors) {
-        updateRecordApi(`/shops/${formValue.value.id}`, formValue.value).then((result: any) => {
-          message.success(result.message);
-          emits('updated', result);
+        updateRecordApi(`/shops/${formValue.value.id}`, formValue.value).then((res: any) => {
+          message.success(res.message);
+          emits('updated', res.result);
         });
       } else {
         console.log(errors);

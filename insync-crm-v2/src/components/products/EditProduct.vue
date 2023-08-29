@@ -37,17 +37,17 @@
   });
   const variantDataLoaded = ref(false);
 
-  getRecordApi(`/products/${route.params.id}`).then((result) => {
-    product.value = result.result;
+  getRecordApi(`/products/${route.params.id}`).then((res: any) => {
+    product.value = res.result;
     productDataLoaded.value = true;
   });
 
   const handleTabChange = (value: string) => {
     if (value === 'variants') {
-      getRecordApi(`/variants/getVariantsByProduct/${route.params.id}`).then((result: any) => {
-        variants.value = result.result;
+      getRecordApi(`/variants/getVariantsByProduct/${route.params.id}`).then((res: any) => {
+        variants.value = res.result;
         variantDataLoaded.value = true;
-        message.success(result.message);
+        message.success(res.message);
       });
     }
   };

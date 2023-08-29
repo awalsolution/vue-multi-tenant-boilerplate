@@ -14,11 +14,11 @@ export function usePagination(endpoint: any) {
       ...searchParams.value,
       page: page.value,
       pageSize: pageSize.value,
-    }).then((result: any) => {
-      list.value = result.result.data;
-      console.log('record list => ', result.result);
-      itemCount.value = result.result.meta.total;
-      if (result.result.meta.total === 0) {
+    }).then((res: any) => {
+      list.value = res.result.data;
+      console.log('record list => ', res.result);
+      itemCount.value = res.result.meta.total;
+      if (res.result.meta.total === 0) {
         emptyState.value = true;
       }
     });

@@ -35,9 +35,9 @@
     },
   });
   // fetch single Role  using id
-  getRecordApi(`/roles/${props.id}`).then((result: any) => {
-    console.log(result);
-    formValue.value = result.result;
+  getRecordApi(`/roles/${props.id}`).then((res: any) => {
+    console.log(res);
+    formValue.value = res.result;
     formValue.value.permissions = formValue.value.permissions.map((v: any) => v.id);
   });
   console.log(formValue);
@@ -53,9 +53,9 @@
     e.preventDefault();
     formRef.value?.validate((errors) => {
       if (!errors) {
-        updateRecordApi(`/roles/${formValue.value.id}`, formValue.value).then((result: any) => {
-          message.success(result.message);
-          emits('updated', result);
+        updateRecordApi(`/roles/${formValue.value.id}`, formValue.value).then((res: any) => {
+          message.success(res.message);
+          emits('updated', res.result);
         });
       } else {
         console.log(errors);

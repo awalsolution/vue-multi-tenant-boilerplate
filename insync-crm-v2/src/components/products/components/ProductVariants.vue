@@ -183,14 +183,14 @@
   function deleteOperation() {
     loadingDispatcher.loading();
     deleteRecordApi(`/variants/${selectedId.value}`)
-      .then((result: any) => {
-        message.success(result.message);
+      .then((res: any) => {
+        message.success(res.message);
         getVariantList();
         loadingDispatcher.loaded();
         dialog.destroyAll;
       })
-      .catch((result: any) => {
-        message.error(result.message);
+      .catch((res: any) => {
+        message.error(res.message);
         loadingDispatcher.loaded();
         dialog.destroyAll;
       });
@@ -213,8 +213,8 @@
   };
 
   const getVariantList = () => {
-    getRecordApi(`/variants/getVariantsByProduct/${route.params.id}`).then((result: any) => {
-      list.value = result.result;
+    getRecordApi(`/variants/getVariantsByProduct/${route.params.id}`).then((res: any) => {
+      list.value = res.result;
     });
   };
 </script>

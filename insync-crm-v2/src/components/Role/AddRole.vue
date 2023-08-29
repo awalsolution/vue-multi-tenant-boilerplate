@@ -41,9 +41,9 @@
     e.preventDefault();
     formRef.value?.validate((errors) => {
       if (!errors) {
-        createRecordApi('/roles', formValue.value).then((result: any) => {
-          message(result.message);
-          emits('created', result.result);
+        createRecordApi('/roles', formValue.value).then((res: any) => {
+          message(res.message);
+          emits('created', res.result);
         });
       } else {
         console.log(errors);

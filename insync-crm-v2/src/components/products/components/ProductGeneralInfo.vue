@@ -87,12 +87,10 @@
     generalInfoFormRef.value?.validate((errors) => {
       if (!errors) {
         loadingDispatcher.loading();
-        updateRecordApi(`/products/${generalInfo.value.id}`, generalInfo.value).then(
-          (result: any) => {
-            message.success(result.message);
-            loadingDispatcher.loaded();
-          }
-        );
+        updateRecordApi(`/products/${generalInfo.value.id}`, generalInfo.value).then((res: any) => {
+          message.success(res.message);
+          loadingDispatcher.loaded();
+        });
       } else {
         console.log(errors);
         message.error('Invalid');
