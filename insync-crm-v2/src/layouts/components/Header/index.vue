@@ -31,14 +31,14 @@
         GitHub
       </NTooltip>
 
-      <template v-if="false">
+      <!-- <template v-if="true">
         <NTooltip placement="bottom" trigger="hover">
           <template #trigger>
             <NIcon class="cursor-pointer" size="20" :component="NotificationsCircleOutline" />
           </template>
           Notification
         </NTooltip>
-      </template>
+      </template> -->
 
       <NTooltip placement="bottom" trigger="hover">
         <template #trigger>
@@ -52,23 +52,23 @@
         SwitchTheme
       </NTooltip>
 
-      <template v-if="false">
+      <!-- <template v-if="true">
         <NTooltip placement="bottom" trigger="hover">
           <template #trigger>
             <NIcon class="cursor-pointer" size="20" :component="SettingsOutline" />
           </template>
           Settings
         </NTooltip>
-      </template>
+      </template> -->
       <!-- :src="userStore.user.avatarUrl" -->
       <template v-if="userStore.hasData()">
-        <NDropdown trigger="hover" :options="userOptions" @select="selectUserOption">
-          <template v-if="userStore.user.avatarUrl">
+        <NDropdown trigger="click" :options="userOptions" @select="selectUserOption">
+          <template v-if="userStore.user.profile.profile_picture">
             <NAvatar
               class="cursor-pointer select-none shadow-md !transition-all hover:opacity-90 active:opacity-70"
               round
               size="small"
-              src="https://gw.alipayobjects.com/zos/antfincdn/aPkFc8Sj7n/method-draw-image.svg"
+              :src="`${imgUrl}${userStore.user.profile.profile_picture}`"
             />
           </template>
           <template v-else>
@@ -81,12 +81,19 @@
 </template>
 
 <script setup lang="ts">
+  import { h } from 'vue';
   import { useRouter } from 'vue-router';
-  import { useMessage } from 'naive-ui';
+  import { useMessage, NAvatar, NText } from 'naive-ui';
   import { BrandGithub, UserCircle } from '@vicons/tabler';
-  import { MenuFoldOutlined, MenuUnfoldOutlined } from '@vicons/antd';
   import {
-    NotificationsCircleOutline,
+    MenuFoldOutlined,
+    MenuUnfoldOutlined,
+    ProfileOutlined,
+    UnlockOutlined,
+    LogoutOutlined,
+  } from '@vicons/antd';
+  import {
+    // NotificationsCircleOutline,
     SunnyOutline,
     MoonOutline,
     SettingsOutline,
@@ -97,12 +104,12 @@
   import Breadcrumb from '@src/components/Breadcrumb/index.vue';
   import { useEnv } from '@src/hooks/useEnv';
   import { BrowserUtils } from '@src/utils/browser';
-  import type { UserOptionKey } from './private';
-  import { userOptions } from './private';
   import { AuthUtils } from '@src/utils/auth';
+  import { RenderUtils } from '@src/utils/render';
 
-  const { teamGitHubURL } = useEnv();
+  const { teamGitHubURL, imgUrl } = useEnv();
   const { openNewWindow } = BrowserUtils;
+  const { renderIcon } = RenderUtils;
 
   const themeStore = useThemeStore();
   const sidebarStore = useSidebarStore();
@@ -119,6 +126,8 @@
     });
   };
 
+  type UserOptionKey = 'logout' | 'profile' | 'change-password' | 'shop_setting';
+
   const selectUserOption = (key: UserOptionKey) => {
     switch (key) {
       case 'logout':
@@ -130,8 +139,72 @@
       case 'change-password':
         router.push('/change-password');
         break;
+      case 'shop_setting':
+        router.push({ name: 'user_shop' });
+        break;
       default:
         break;
     }
   };
+
+  const userOptions = [
+    {
+      key: 'header',
+      type: 'render',
+      render: renderCustomHeader,
+    },
+    {
+      key: 'header-divider',
+      type: 'divider',
+    },
+    {
+      label: () => 'Profile',
+      key: 'profile',
+      icon: renderIcon(ProfileOutlined),
+    },
+    {
+      label: () => 'Shop Setting',
+      key: 'shop_setting',
+      icon: renderIcon(SettingsOutline),
+    },
+    {
+      label: () => 'Change Password',
+      key: 'change-password',
+      icon: renderIcon(UnlockOutlined),
+    },
+    {
+      label: () => 'Logout',
+      key: 'logout',
+      icon: renderIcon(LogoutOutlined),
+    },
+  ];
+
+  function renderCustomHeader() {
+    return h(
+      'div',
+      {
+        style: 'display: flex; align-items: center; padding: 8px 12px;',
+      },
+      [
+        h(NAvatar, {
+          round: true,
+          style: 'margin-right: 12px;',
+          src: `${imgUrl}${userStore.user.profile.profile_picture}`,
+        }),
+        h('div', null, [
+          h('div', null, [
+            h(
+              NText,
+              { depth: 2 },
+              {
+                default: () =>
+                  `${userStore.user.profile.first_name + ' ' + userStore.user.profile.last_name}`,
+              }
+            ),
+          ]),
+          h('div', null, { style: 'font-size: 12px;', default: () => `${userStore.user.email}` }),
+        ]),
+      ]
+    );
+  }
 </script>

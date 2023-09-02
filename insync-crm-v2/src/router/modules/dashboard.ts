@@ -54,6 +54,15 @@ export const DashboardRoute: RouteRecordRaw = {
       component: () => import('@src/views/users/Profile.vue'),
     },
     {
+      path: 'system/user/shop-setting',
+      name: 'user_shop',
+      meta: {
+        title: 'Shop Setting',
+        icon: UserOutlined,
+      },
+      component: () => import('@src/views/users/UserShop.vue'),
+    },
+    {
       path: 'system/permissions',
       name: 'permissions',
       meta: {

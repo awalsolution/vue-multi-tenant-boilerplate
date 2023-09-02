@@ -20,7 +20,7 @@ export function usePermissions(tag = false) {
           if (tag && query) {
             if (
               filteredPermissions.value.some((permission: any) => {
-                console.log('ddd', permission);
+                // console.log('ddd', permission);
                 return permission.name === query;
               })
             ) {
