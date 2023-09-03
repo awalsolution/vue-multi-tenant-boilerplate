@@ -1,7 +1,7 @@
 import { BaseResponse, PageResponse } from '@src/types/request';
 import Request from '@src/api/axios';
 
-export const getRecordsApi = (endpoint: any, params: any) => {
+export const getRecordsApi = (endpoint: any, params?: any) => {
   return Request.get<PageResponse<any[]>>(endpoint, {
     ...params,
   });

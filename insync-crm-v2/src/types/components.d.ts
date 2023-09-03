@@ -36,6 +36,7 @@ declare module 'vue' {
     SingleCategorySelector: typeof import('./../components/products/categories/selector/SingleCategorySelector.vue')['default']
     SingleImageUploader: typeof import('./../components/upload/SingleImageUploader/SingleImageUploader.vue')['default']
     SingleRoleSelector: typeof import('./../components/Role/SingleRoleSelector.vue')['default']
+    SingleShopSelector: typeof import('./../components/shop/selector/SingleShopSelector.vue')['default']
     ThemeSwitchDevTool: typeof import('./../components/ThemeSwitchDevTool/index.vue')['default']
   }
 }
