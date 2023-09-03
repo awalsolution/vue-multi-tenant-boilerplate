@@ -20,7 +20,11 @@ export function usePermission() {
    * */
   function hasPermission(accesses: string[]): boolean {
     if (!accesses || !accesses.length) return true;
-    if (userStore.user.user_type === 'super admin') {
+    if (
+      userStore.user.roles.map((role: any) => {
+        role.name === 'super admin';
+      })
+    ) {
       return true;
     } else {
       // console.log('you do not permission to access this route');

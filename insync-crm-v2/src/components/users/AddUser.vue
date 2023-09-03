@@ -21,8 +21,22 @@
       <n-form-item-gi :span="12" label="Status" path="status">
         <n-select v-model:value="formValue.status" size="small" :options="status" />
       </n-form-item-gi>
-      <n-form-item-gi :span="12" label="User Type" path="user_type">
-        <n-select v-model:value="formValue.user_type" size="small" :options="userType" />
+      <n-form-item-gi :span="12" label="User Role" path="role_id">
+        <n-select
+          :filterable="true"
+          multiple
+          :tag="false"
+          placeholder="Select Role"
+          v-model:value="formValue.role_id"
+          clearable
+          @focus="getRolesOnFocus"
+          :remote="true"
+          :clear-filter-after-select="false"
+          label-field="name"
+          value-field="id"
+          :loading="roleLoading"
+          :options="roles"
+        />
       </n-form-item-gi>
       <n-form-item-gi :span="12" label="Shop Name" path="shop_id">
         <single-shop-selector
@@ -45,7 +59,9 @@
   import { ref } from 'vue';
   import { FormInst, useMessage } from 'naive-ui';
   import { createRecordApi } from '@src/api/endpoints';
+  import { filterRole } from '@src/filters/roles';
 
+  const { roles, roleLoading, getRolesOnFocus } = filterRole();
   const formRef = ref<FormInst | null>(null);
   const formValue: any = ref({});
   const message: any = useMessage();
@@ -75,21 +91,6 @@
     {
       label: 'disabled',
       value: 'disabled',
-    },
-  ]);
-
-  const userType = ref([
-    {
-      label: 'Vendor',
-      value: 'vendor',
-    },
-    {
-      label: 'Admin',
-      value: 'admin',
-    },
-    {
-      label: 'User',
-      value: 'user',
     },
   ]);
 

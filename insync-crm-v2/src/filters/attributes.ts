@@ -12,16 +12,16 @@ export function filterAttribute() {
       attributes.value = [];
     } else {
       attributeLoading.value = true;
-      const response = await getRecordsApi('/attributes', { name: query, pageSize: 1000 });
-      attributes.value = response.result;
+      const response: any = await getRecordsApi('/attributes', { name: query, pageSize: 1000 });
+      attributes.value = response.result.data;
       attributeLoading.value = false;
     }
   }
 
   async function getAttributes() {
     attributeLoading.value = true;
-    const response = await getRecordsApi('/attributes');
-    attributes.value = response.result;
+    const response: any = await getRecordsApi('/attributes');
+    attributes.value = response.result.data;
     attributeLoading.value = false;
   }
 

@@ -49,7 +49,7 @@
             <th class="th">Picture</th>
             <th class="th">Email</th>
             <th class="th">Role</th>
-            <th class="th">User Type</th>
+            <!-- <th class="th">User Type</th> -->
             <th class="th">Permissions</th>
             <th class="th">Phone#</th>
             <th class="th">Shop</th>
@@ -86,7 +86,7 @@
                 </n-tag>
               </n-space>
             </td>
-            <td class="td" v-if="item.user_type">{{ item.user_type }}</td>
+            <!-- <td class="td" v-if="item.user_type">{{ item.user_type }}</td> -->
             <td class="td">
               <n-space v-for="permission in item.permissions" :key="permission.id">
                 {{ permission?.name }}

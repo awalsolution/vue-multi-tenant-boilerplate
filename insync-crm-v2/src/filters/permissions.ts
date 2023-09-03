@@ -12,16 +12,16 @@ export function filterPermission() {
       permissions.value = [];
     } else {
       permissionLoading.value = true;
-      const response = await getRecordsApi('/permissions', { name: query, pageSize: 1000 });
-      permissions.value = response.result;
+      const response: any = await getRecordsApi('/permissions', { name: query, pageSize: 1000 });
+      permissions.value = response.result.data;
       permissionLoading.value = false;
     }
   }
 
   async function getPermissions() {
     permissionLoading.value = true;
-    const response = await getRecordsApi('/permissions');
-    permissions.value = response.result;
+    const response: any = await getRecordsApi('/permissions');
+    permissions.value = response.result.data;
     permissionLoading.value = false;
   }
 

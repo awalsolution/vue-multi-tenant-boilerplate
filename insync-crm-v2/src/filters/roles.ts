@@ -12,16 +12,16 @@ export function filterRole() {
       roles.value = [];
     } else {
       roleLoading.value = true;
-      const response = await getRecordsApi('/roles', { name: query, pageSize: 1000 });
-      roles.value = response.result;
+      const response: any = await getRecordsApi('/roles', { name: query, pageSize: 1000 });
+      roles.value = response.result.data;
       roleLoading.value = false;
     }
   }
 
   async function getRoles() {
     roleLoading.value = true;
-    const response = await getRecordsApi('/roles');
-    roles.value = response.result;
+    const response: any = await getRecordsApi('/roles');
+    roles.value = response.result.data;
     roleLoading.value = false;
   }
 

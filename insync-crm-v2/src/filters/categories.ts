@@ -12,16 +12,16 @@ export function filterCategory() {
       categories.value = [];
     } else {
       categoryLoading.value = true;
-      const response = await getRecordsApi('/categories', { name: query, pageSize: 1000 });
-      categories.value = response.result;
+      const response: any = await getRecordsApi('/categories', { name: query, pageSize: 1000 });
+      categories.value = response.result.data;
       categoryLoading.value = false;
     }
   }
 
   async function getCategories() {
     categoryLoading.value = true;
-    const response = await getRecordsApi('/categories');
-    categories.value = response.result;
+    const response: any = await getRecordsApi('/categories');
+    categories.value = response.result.data;
     categoryLoading.value = false;
   }
 

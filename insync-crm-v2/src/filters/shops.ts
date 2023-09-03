@@ -12,16 +12,16 @@ export function filterShop() {
       shops.value = [];
     } else {
       shopLoading.value = true;
-      const response = await getRecordsApi('/shops', { name: query, pageSize: 1000 });
-      shops.value = response.result;
+      const response: any = await getRecordsApi('/shops', { name: query, pageSize: 1000 });
+      shops.value = response.result.data;
       shopLoading.value = false;
     }
   }
 
   async function getShops() {
     shopLoading.value = true;
-    const response = await getRecordsApi('/shops');
-    shops.value = response.result;
+    const response: any = await getRecordsApi('/shops');
+    shops.value = response.result.data;
     shopLoading.value = false;
   }
 
