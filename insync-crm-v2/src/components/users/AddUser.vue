@@ -27,9 +27,10 @@
           multiple
           :tag="false"
           placeholder="Select Role"
-          v-model:value="formValue.role_id"
+          v-model:value="formValue.roles"
           clearable
           @focus="getRolesOnFocus"
+          @update:value="checkVendorRole"
           :remote="true"
           :clear-filter-after-select="false"
           label-field="name"
@@ -38,7 +39,7 @@
           :options="roles"
         />
       </n-form-item-gi>
-      <n-form-item-gi :span="12" label="Shop Name" path="shop_id">
+      <n-form-item-gi v-if="isVendor" :span="12" label="Shop Name" path="shop_id">
         <single-shop-selector
           v-model:value="formValue.shop_id"
           label-field="shop_name"
@@ -62,9 +63,26 @@
   import { filterRole } from '@src/filters/roles';
 
   const { roles, roleLoading, getRolesOnFocus } = filterRole();
+
   const formRef = ref<FormInst | null>(null);
   const formValue: any = ref({});
   const message: any = useMessage();
+  const isVendor: any = ref(false);
+
+  const checkVendorRole = () => {
+    const names = formValue.value.role_id
+      .map((val: any) => {
+        const found = roles.value.find((item: any) => item.id === val);
+        return found ? found.name : null;
+      })
+      .filter(Boolean);
+
+    if (names.includes('vendor')) {
+      isVendor.value = true;
+    } else {
+      isVendor.value = false;
+    }
+  };
 
   const emits = defineEmits(['created']);
 

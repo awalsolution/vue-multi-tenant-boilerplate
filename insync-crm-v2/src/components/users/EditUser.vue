@@ -4,14 +4,6 @@
       <n-form-item-gi :span="12" label="Email" path="email">
         <n-input v-model:value="formValue.email" placeholder="Enter Email" />
       </n-form-item-gi>
-      <n-form-item-gi :span="12" label="Roles" path="roles">
-        <role-selector
-          v-model:value="formValue.roles"
-          label-field="name"
-          value-field="id"
-          :tag="true"
-        />
-      </n-form-item-gi>
       <n-form-item-gi :span="12" label="Permissions" path="permissions">
         <permission-selector
           v-model:value="formValue.permissions"
@@ -29,7 +21,7 @@
           multiple
           :tag="false"
           placeholder="Select Role"
-          v-model:value="formValue.role_id"
+          v-model:value="formValue.roles"
           clearable
           @focus="getRolesOnFocus"
           :remote="true"
@@ -38,14 +30,6 @@
           value-field="id"
           :loading="roleLoading"
           :options="roles"
-        />
-      </n-form-item-gi>
-      <n-form-item-gi :span="12" label="Shop Name" path="shop_id">
-        <single-shop-selector
-          v-model:value="formValue.shop_id"
-          label-field="shop_name"
-          value-field="id"
-          :tag="false"
         />
       </n-form-item-gi>
     </n-grid>
@@ -63,7 +47,7 @@
   import { getRecordApi, updateRecordApi } from '@src/api/endpoints';
   import { filterRole } from '@src/filters/roles';
 
-  const { roles, roleLoading, getRolesOnFocus } = filterRole();
+  const { roles, roleLoading, getRoles, getRolesOnFocus } = filterRole();
   const formRef = ref<FormInst | null>(null);
   const formValue: any = ref({});
   const message: any = useMessage();
@@ -79,6 +63,7 @@
     formValue.value = res.result;
     formValue.value.permissions = formValue.value.permissions.map((v: any) => v.id);
     formValue.value.roles = formValue.value.roles.map((v: any) => v.id);
+    getRoles();
   });
 
   const handleValidateClick = (e: MouseEvent) => {
