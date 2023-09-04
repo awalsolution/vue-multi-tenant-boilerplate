@@ -17,6 +17,7 @@ declare module 'vue' {
     AddUser: typeof import('./../components/users/AddUser.vue')['default']
     AddVariant: typeof import('./../components/products/variants/AddVariant.vue')['default']
     Breadcrumb: typeof import('./../components/Breadcrumb/index.vue')['default']
+    DashboardPermission: typeof import('./../components/permission/components/DashboardPermission.vue')['default']
     EditAttribute: typeof import('./../components/products/attributes/EditAttribute.vue')['default']
     EditCategory: typeof import('./../components/products/categories/EditCategory.vue')['default']
     EditMenu: typeof import('./../components/menu/EditMenu.vue')['default']

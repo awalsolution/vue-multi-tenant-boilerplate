@@ -20,7 +20,7 @@ export function filterPermission() {
 
   async function getPermissions() {
     permissionLoading.value = true;
-    const response: any = await getRecordsApi('/permissions');
+    const response: any = await getRecordsApi('/permissions', { pageSize: 1000 });
     permissions.value = response.result.data;
     permissionLoading.value = false;
   }

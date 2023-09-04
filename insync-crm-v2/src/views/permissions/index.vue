@@ -108,6 +108,7 @@
         />
       </div>
     </template>
+
     <n-modal v-model:show="showModal" preset="dialog">
       <template #header>
         <div>Create New Permission</div>
@@ -149,9 +150,11 @@
   import { useDialog, useMessage } from 'naive-ui';
   import { NIcon, NPagination } from 'naive-ui';
   import { MoreOutlined, EditOutlined, DeleteOutlined, SearchOutlined } from '@vicons/antd';
-  import AddPermission from '@src/components/Permission/AddPermission.vue';
-  import EditPermission from '@src/components/Permission/EditPermission.vue';
+  import AddPermission from '@src/components/permission/AddPermission.vue';
+  import EditPermission from '@src/components/permission/EditPermission.vue';
   import DataTableLayout from '@src/layouts/DataTableLayout/index.vue';
+  // import ContentLayout from '@src/layouts/ContentLayout/index.vue';
+  // import DashboardPermission from '@src/components/permission/components/DashboardPermission.vue';
   import { useMobile } from '@src/hooks/useMediaQuery';
 
   const dialog = useDialog();
@@ -163,6 +166,8 @@
   const { hasPermission } = usePermission();
   const message: any = useMessage();
   const [loading, loadingDispatcher] = useLoading(false);
+  // const dashbaordPermission: any = ref([]);
+  // const permissionDataLoaded: any = ref(false);
 
   const { getList, list, page, pageSizes, itemCount, pageSize, searchParams }: any =
     usePagination('/permissions');
