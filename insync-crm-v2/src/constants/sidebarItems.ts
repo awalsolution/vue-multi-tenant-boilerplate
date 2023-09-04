@@ -47,6 +47,11 @@ export const menuOptions: MenuOption[] = [
         icon: renderMenuIcon(UnlockOutlined),
         permissions: ['can view roles'],
       },
+      {
+        label: renderMenuLabel('Menus'),
+        key: 'menus',
+        icon: renderMenuIcon(DashboardOutlined),
+      },
     ],
   },
   {

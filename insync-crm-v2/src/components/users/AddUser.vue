@@ -63,7 +63,6 @@
   import { filterRole } from '@src/filters/roles';
 
   const { roles, roleLoading, getRolesOnFocus } = filterRole();
-
   const formRef = ref<FormInst | null>(null);
   const formValue: any = ref({});
   const message: any = useMessage();

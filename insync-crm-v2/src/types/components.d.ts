@@ -9,6 +9,7 @@ declare module 'vue' {
   export interface GlobalComponents {
     AddAttribute: typeof import('./../components/products/attributes/AddAttribute.vue')['default']
     AddCategory: typeof import('./../components/products/categories/AddCategory.vue')['default']
+    AddMenu: typeof import('./../components/menu/AddMenu.vue')['default']
     AddPermission: typeof import('./../components/Permission/AddPermission.vue')['default']
     AddProduct: typeof import('./../components/products/AddProduct.vue')['default']
     AddRole: typeof import('./../components/Role/AddRole.vue')['default']
@@ -18,6 +19,7 @@ declare module 'vue' {
     Breadcrumb: typeof import('./../components/Breadcrumb/index.vue')['default']
     EditAttribute: typeof import('./../components/products/attributes/EditAttribute.vue')['default']
     EditCategory: typeof import('./../components/products/categories/EditCategory.vue')['default']
+    EditMenu: typeof import('./../components/menu/EditMenu.vue')['default']
     EditPermission: typeof import('./../components/Permission/EditPermission.vue')['default']
     EditProduct: typeof import('./../components/products/EditProduct.vue')['default']
     EditRole: typeof import('./../components/Role/EditRole.vue')['default']
