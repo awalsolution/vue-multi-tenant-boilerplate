@@ -12,7 +12,7 @@ export function filterCategory() {
       categories.value = [];
     } else {
       categoryLoading.value = true;
-      const response: any = await getRecordsApi('/categories', { name: query, pageSize: 1000 });
+      const response: any = await getRecordsApi('/categories', { name: query });
       categories.value = response.result.data;
       categoryLoading.value = false;
     }

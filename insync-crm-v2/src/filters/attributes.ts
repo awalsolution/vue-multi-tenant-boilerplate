@@ -12,7 +12,7 @@ export function filterAttribute() {
       attributes.value = [];
     } else {
       attributeLoading.value = true;
-      const response: any = await getRecordsApi('/attributes', { name: query, pageSize: 1000 });
+      const response: any = await getRecordsApi('/attributes', { name: query });
       attributes.value = response.result.data;
       attributeLoading.value = false;
     }

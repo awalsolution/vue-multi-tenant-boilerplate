@@ -12,7 +12,7 @@ export function filterShop() {
       shops.value = [];
     } else {
       shopLoading.value = true;
-      const response: any = await getRecordsApi('/shops', { name: query, pageSize: 1000 });
+      const response: any = await getRecordsApi('/shops', { name: query });
       shops.value = response.result.data;
       shopLoading.value = false;
     }

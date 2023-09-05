@@ -50,7 +50,9 @@
       </n-row>
       <n-space justify="end">
         <n-form-item :theme-overrides="{ labelHeightSmall: '0', feedbackHeightSmall: '0' }">
-          <n-button type="success" @click="handleValidateClick"> Update</n-button>
+          <n-button secondary type="info" size="medium" @click="handleValidateClick">
+            Update</n-button
+          >
         </n-form-item>
       </n-space>
     </n-space>

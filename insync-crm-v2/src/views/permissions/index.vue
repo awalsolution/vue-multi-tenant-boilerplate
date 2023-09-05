@@ -45,6 +45,7 @@
         <thead class="head">
           <tr>
             <th class="sticky_el left-0 z-20">ID</th>
+            <th class="th">Menu Name</th>
             <th class="th">Permission Name</th>
             <th class="th">Permission Type</th>
             <th class="th">Created At</th>
@@ -65,6 +66,7 @@
           </tr>
           <tr v-else v-for="item in list" :key="item.id">
             <td class="sticky_el left-0 z-10">{{ item.id }}</td>
+            <td class="td">{{ item.menus.menu_name }}</td>
             <td class="td">{{ item.name }}</td>
             <td class="text-center td">
               <n-tag :bordered="false" type="info">{{ item.type }}</n-tag>

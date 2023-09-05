@@ -12,7 +12,7 @@ export function filterRole() {
       roles.value = [];
     } else {
       roleLoading.value = true;
-      const response: any = await getRecordsApi('/roles', { name: query, pageSize: 1000 });
+      const response: any = await getRecordsApi('/roles', { name: query });
       roles.value = response.result.data;
       roleLoading.value = false;
     }

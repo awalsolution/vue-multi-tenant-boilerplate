@@ -12,7 +12,7 @@ export function filterPermission() {
       permissions.value = [];
     } else {
       permissionLoading.value = true;
-      const response: any = await getRecordsApi('/permissions', { name: query, pageSize: 1000 });
+      const response: any = await getRecordsApi('/permissions', { name: query });
       permissions.value = response.result.data;
       permissionLoading.value = false;
     }
@@ -20,7 +20,7 @@ export function filterPermission() {
 
   async function getPermissions() {
     permissionLoading.value = true;
-    const response: any = await getRecordsApi('/permissions', { pageSize: 1000 });
+    const response: any = await getRecordsApi('/permissions');
     permissions.value = response.result.data;
     permissionLoading.value = false;
   }

@@ -8,15 +8,15 @@ export function usePagination(endpoint: any) {
   const emptyState = ref(false);
   const itemCount = ref(0);
   const pageSizes = ref([10, 20, 30, 40, 50, 100]);
-  const pageSize = ref(10);
+  const pageSize = ref(20);
   const getList = () => {
     getRecordsApi(endpoint, {
       ...searchParams.value,
       page: page.value,
       pageSize: pageSize.value,
     }).then((res: any) => {
-      list.value = res.result.data;
       console.log('record list => ', res.result);
+      list.value = res.result.data;
       itemCount.value = res.result.meta.total;
       if (res.result.meta.total === 0) {
         emptyState.value = true;

@@ -12,16 +12,16 @@ export function filterMenu() {
       menus.value = [];
     } else {
       menuLoading.value = true;
-      const response: any = await getRecordsApi('/menus/parent', { name: query, pageSize: 1000 });
-      menus.value = response.result.data;
+      const response: any = await getRecordsApi('/menus', { name: query });
+      menus.value = response.result;
       menuLoading.value = false;
     }
   }
 
   async function getMenus() {
     menuLoading.value = true;
-    const response: any = await getRecordsApi('/menus/parent');
-    menus.value = response.result.data;
+    const response: any = await getRecordsApi('/menus');
+    menus.value = response.result;
     menuLoading.value = false;
   }
 

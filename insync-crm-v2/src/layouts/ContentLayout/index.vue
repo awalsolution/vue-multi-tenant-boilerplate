@@ -8,10 +8,11 @@
         flex: '1 1 auto',
         flexDirection: 'column',
         padding: '16px',
-        overflow: 'scroll',
+        height: '100%',
       }"
     >
-      <!-- #efeff5 -->
+      <slot name="contentHeader"></slot>
+
       <slot></slot>
     </NCard>
   </main>

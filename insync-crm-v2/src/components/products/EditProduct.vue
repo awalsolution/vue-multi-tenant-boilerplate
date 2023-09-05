@@ -5,7 +5,7 @@
       size="medium"
       v-model:currentValue="currentTab"
       @update:value="handleTabChange"
-      :pane-style="{ paddingTop: 0, overflow: 'scroll' }"
+      pane-class="overflow-scroll"
       class="sticky top-0 h-full"
     >
       <n-tab-pane name="general" tab="General">

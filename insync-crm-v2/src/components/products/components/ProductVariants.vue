@@ -3,6 +3,8 @@
     <div class="flex justify-between items-center p-3 sticky top-0">
       <h3 class="text-lg">Variant List</h3>
       <NButton
+        secondary
+        type="info"
         :size="isMobile ? 'small' : 'medium'"
         @click="showModal = true"
         v-permission="{ action: ['can view variant create'] }"
