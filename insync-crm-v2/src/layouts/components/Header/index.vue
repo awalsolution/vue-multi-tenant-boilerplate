@@ -8,7 +8,9 @@
           <NIcon
             class="cursor-pointer"
             size="20"
-            :component="sidebarStore.isDisplay ? MenuFoldOutlined : MenuUnfoldOutlined"
+            :component="
+              sidebarStore.isDisplay ? MenuFoldOutlined : MenuUnfoldOutlined
+            "
             @click="sidebarStore.toggleSidebarDisplay"
           />
         </template>
@@ -45,8 +47,14 @@
           <NIcon
             class="cursor-pointer"
             size="20"
-            :component="themeStore.themeMode === 'light' ? SunnyOutline : MoonOutline"
-            @click="themeStore.changeThemeMode(themeStore.themeMode === 'light' ? 'dark' : 'light')"
+            :component="
+              themeStore.themeMode === 'light' ? SunnyOutline : MoonOutline
+            "
+            @click="
+              themeStore.changeThemeMode(
+                themeStore.themeMode === 'light' ? 'dark' : 'light'
+              )
+            "
           />
         </template>
         SwitchTheme
@@ -62,7 +70,11 @@
       </template> -->
       <!-- :src="userStore.user.avatarUrl" -->
       <template v-if="userStore.hasData()">
-        <NDropdown trigger="click" :options="userOptions" @select="selectUserOption">
+        <NDropdown
+          trigger="click"
+          :options="userOptions"
+          @select="selectUserOption"
+        >
           <template v-if="userStore.user.profile.profile_picture">
             <NAvatar
               class="cursor-pointer select-none shadow-md !transition-all hover:opacity-90 active:opacity-70"
@@ -81,130 +93,137 @@
 </template>
 
 <script setup lang="ts">
-  import { h } from 'vue';
-  import { useRouter } from 'vue-router';
-  import { useMessage, NAvatar, NText } from 'naive-ui';
-  import { BrandGithub, UserCircle } from '@vicons/tabler';
-  import {
-    MenuFoldOutlined,
-    MenuUnfoldOutlined,
-    ProfileOutlined,
-    UnlockOutlined,
-    LogoutOutlined,
-  } from '@vicons/antd';
-  import {
-    // NotificationsCircleOutline,
-    SunnyOutline,
-    MoonOutline,
-    SettingsOutline,
-  } from '@vicons/ionicons5';
-  import { useThemeStore } from '@src/store/modules/theme';
-  import { useSidebarStore } from '@src/store/modules/sidebar';
-  import { useUserStore } from '@src/store/modules/user';
-  import Breadcrumb from '@src/components/Breadcrumb/index.vue';
-  import { useEnv } from '@src/hooks/useEnv';
-  import { BrowserUtils } from '@src/utils/browser';
-  import { AuthUtils } from '@src/utils/auth';
-  import { RenderUtils } from '@src/utils/render';
+import { h } from 'vue';
+import { useRouter } from 'vue-router';
+import { useMessage, NAvatar, NText } from 'naive-ui';
+import { BrandGithub, UserCircle } from '@vicons/tabler';
+import {
+  MenuFoldOutlined,
+  MenuUnfoldOutlined,
+  ProfileOutlined,
+  UnlockOutlined,
+  LogoutOutlined,
+} from '@vicons/antd';
+import {
+  // NotificationsCircleOutline,
+  SunnyOutline,
+  MoonOutline,
+  SettingsOutline,
+} from '@vicons/ionicons5';
+import { useThemeStore } from '@src/store/modules/theme';
+import { useSidebarStore } from '@src/store/modules/sidebar';
+import { useUserStore } from '@src/store/modules/user';
+import Breadcrumb from '@src/components/Breadcrumb/index.vue';
+import { useEnv } from '@src/hooks/useEnv';
+import { BrowserUtils } from '@src/utils/browser';
+import { AuthUtils } from '@src/utils/auth';
+import { RenderUtils } from '@src/utils/render';
 
-  const { teamGitHubURL, imgUrl } = useEnv();
-  const { openNewWindow } = BrowserUtils;
-  const { renderIcon } = RenderUtils;
+const { teamGitHubURL, imgUrl } = useEnv();
+const { openNewWindow } = BrowserUtils;
+const { renderIcon } = RenderUtils;
 
-  const themeStore = useThemeStore();
-  const sidebarStore = useSidebarStore();
-  const userStore = useUserStore();
-  const router = useRouter();
-  const message = useMessage();
-  // const { isFullscreen, toggle: toggleFullscreen } = useFullscreen();
+const themeStore = useThemeStore();
+const sidebarStore = useSidebarStore();
+const userStore = useUserStore();
+const router = useRouter();
+const message = useMessage();
+// const { isFullscreen, toggle: toggleFullscreen } = useFullscreen();
 
-  const logout = async () => {
-    return await router.replace('/login').then(() => {
-      message.success('Logout Successfully');
-      userStore.clearUser();
-      AuthUtils.clearToken();
-    });
-  };
+const logout = async () => {
+  return await router.replace('/login').then(() => {
+    message.success('Logout Successfully');
+    userStore.clearUser();
+    AuthUtils.clearToken();
+  });
+};
 
-  type UserOptionKey = 'logout' | 'profile' | 'change-password' | 'shop_setting';
+type UserOptionKey = 'logout' | 'profile' | 'change-password' | 'shop_setting';
 
-  const selectUserOption = (key: UserOptionKey) => {
-    switch (key) {
-      case 'logout':
-        logout();
-        break;
-      case 'profile':
-        router.push({ name: 'user_profile' });
-        break;
-      case 'change-password':
-        router.push('/change-password');
-        break;
-      case 'shop_setting':
-        router.push({ name: 'user_shop' });
-        break;
-      default:
-        break;
-    }
-  };
-
-  const userOptions = [
-    {
-      key: 'header',
-      type: 'render',
-      render: renderCustomHeader,
-    },
-    {
-      key: 'header-divider',
-      type: 'divider',
-    },
-    {
-      label: () => 'Profile',
-      key: 'profile',
-      icon: renderIcon(ProfileOutlined),
-    },
-    {
-      label: () => 'Shop Setting',
-      key: 'shop_setting',
-      icon: renderIcon(SettingsOutline),
-    },
-    {
-      label: () => 'Change Password',
-      key: 'change-password',
-      icon: renderIcon(UnlockOutlined),
-    },
-    {
-      label: () => 'Logout',
-      key: 'logout',
-      icon: renderIcon(LogoutOutlined),
-    },
-  ];
-
-  function renderCustomHeader() {
-    return h(
-      'div',
-      {
-        style: 'display: flex; align-items: center; padding: 8px 12px;',
-      },
-      [
-        h(NAvatar, {
-          round: true,
-          style: 'margin-right: 12px;',
-          src: `${imgUrl}${userStore.user.profile.profile_picture}`,
-        }),
-        h('div', null, [
-          h('div', null, [
-            h(
-              NText,
-              { depth: 2 },
-              {
-                default: () =>
-                  `${userStore.user.profile.first_name + ' ' + userStore.user.profile.last_name}`,
-              }
-            ),
-          ]),
-          h('div', null, { style: 'font-size: 12px;', default: () => `${userStore.user.email}` }),
-        ]),
-      ]
-    );
+const selectUserOption = (key: UserOptionKey) => {
+  switch (key) {
+    case 'logout':
+      logout();
+      break;
+    case 'profile':
+      router.push({ name: 'user_profile' });
+      break;
+    case 'change-password':
+      router.push('/change-password');
+      break;
+    case 'shop_setting':
+      router.push({ name: 'user_shop' });
+      break;
+    default:
+      break;
   }
+};
+
+const userOptions = [
+  {
+    key: 'header',
+    type: 'render',
+    render: renderCustomHeader,
+  },
+  {
+    key: 'header-divider',
+    type: 'divider',
+  },
+  {
+    label: () => 'Profile',
+    key: 'profile',
+    icon: renderIcon(ProfileOutlined),
+  },
+  {
+    label: () => 'Shop Setting',
+    key: 'shop_setting',
+    icon: renderIcon(SettingsOutline),
+  },
+  {
+    label: () => 'Change Password',
+    key: 'change-password',
+    icon: renderIcon(UnlockOutlined),
+  },
+  {
+    label: () => 'Logout',
+    key: 'logout',
+    icon: renderIcon(LogoutOutlined),
+  },
+];
+
+function renderCustomHeader() {
+  return h(
+    'div',
+    {
+      style: 'display: flex; align-items: center; padding: 8px 12px;',
+    },
+    [
+      h(NAvatar, {
+        round: true,
+        style: 'margin-right: 12px;',
+        src: `${imgUrl}${userStore.user.profile.profile_picture}`,
+      }),
+      h('div', null, [
+        h('div', null, [
+          h(
+            NText,
+            { depth: 2 },
+            {
+              default: () =>
+                `${
+                  userStore.user.profile.first_name +
+                  ' ' +
+                  userStore.user.profile.last_name
+                }`,
+            }
+          ),
+        ]),
+        h('div', null, {
+          style: 'font-size: 12px;',
+          default: () => `${userStore.user.email}`,
+        }),
+      ]),
+    ]
+  );
+}
 </script>

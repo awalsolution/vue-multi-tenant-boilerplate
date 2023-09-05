@@ -17,59 +17,60 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent, ref } from 'vue';
-  import { useCategory } from '@src/hooks/useCategory';
+import { defineComponent, ref } from 'vue';
+import { useCategory } from '@src/hooks/useCategory';
 
-  export default defineComponent({
-    props: {
-      modelValue: {
-        type: [String, Array, Object, Number, Boolean],
-      },
-      labelField: {
-        type: String,
-        default: 'name',
-      },
-      placeholder: {
-        type: String,
-        default: 'Search Categories',
-      },
-      clearable: {
-        type: Boolean,
-        default: true,
-      },
-      multiple: {
-        type: Boolean,
-        default: true,
-      },
-      tag: {
-        type: Boolean,
-        default: false,
-      },
-      valueField: {
-        type: String,
-        default: 'id',
-      },
+export default defineComponent({
+  props: {
+    modelValue: {
+      type: [String, Array, Object, Number, Boolean],
     },
-    emits: ['update:modelValue'],
-    setup(props) {
-      const { filterCategories, filteredCategories, categoriesLoading } = useCategory(props.tag);
-      const selectValue = ref(null);
-      return {
-        filterCategories,
-        filteredCategories,
-        categoriesLoading,
-        selectValue,
-      };
+    labelField: {
+      type: String,
+      default: 'name',
     },
-    watch: {
-      modelValue: function (value) {
-        this.selectValue = value;
-      },
+    placeholder: {
+      type: String,
+      default: 'Search Categories',
     },
-    methods: {
-      onChangeValue(value: any) {
-        this.$emit('update:modelValue', value);
-      },
+    clearable: {
+      type: Boolean,
+      default: true,
     },
-  });
+    multiple: {
+      type: Boolean,
+      default: true,
+    },
+    tag: {
+      type: Boolean,
+      default: false,
+    },
+    valueField: {
+      type: String,
+      default: 'id',
+    },
+  },
+  emits: ['update:modelValue'],
+  setup(props) {
+    const { filterCategories, filteredCategories, categoriesLoading } =
+      useCategory(props.tag);
+    const selectValue = ref(null);
+    return {
+      filterCategories,
+      filteredCategories,
+      categoriesLoading,
+      selectValue,
+    };
+  },
+  watch: {
+    modelValue: function (value) {
+      this.selectValue = value;
+    },
+  },
+  methods: {
+    onChangeValue(value: any) {
+      this.$emit('update:modelValue', value);
+    },
+  },
+});
 </script>

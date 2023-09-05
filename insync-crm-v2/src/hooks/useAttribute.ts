@@ -18,7 +18,9 @@ export function useAttribute(tag = false) {
         .then((res: any) => {
           filteredAttributes.value = res.result.data;
           if (tag && query) {
-            if (!filteredAttributes.value.some((role: any) => role.name === query)) {
+            if (
+              !filteredAttributes.value.some((role: any) => role.name === query)
+            ) {
               filteredAttributes.value.unshift({ id: 0, name: query });
             }
           }

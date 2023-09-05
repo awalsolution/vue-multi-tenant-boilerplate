@@ -85,7 +85,8 @@ export const DashboardRoute: RouteRecordRaw = {
         title: 'Assign Permissions',
         icon: UnlockOutlined,
       },
-      component: () => import('@src/components/permission/AssignPermissions.vue'),
+      component: () =>
+        import('@src/components/permission/AssignPermissions.vue'),
     },
     {
       path: 'system/menus',

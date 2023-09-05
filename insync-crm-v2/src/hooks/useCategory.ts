@@ -18,7 +18,9 @@ export function useCategory(tag = false) {
         .then((res: any) => {
           filteredCategories.value = res.result.data;
           if (tag && query) {
-            if (!filteredCategories.value.some((role: any) => role.name === query)) {
+            if (
+              !filteredCategories.value.some((role: any) => role.name === query)
+            ) {
               filteredCategories.value.unshift({ id: 0, name: query });
             }
           }

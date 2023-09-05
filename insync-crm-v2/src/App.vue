@@ -27,24 +27,24 @@
 </template>
 
 <script setup lang="ts">
-  import { useThemeStore } from '@src/store/modules/theme';
+import { useThemeStore } from '@src/store/modules/theme';
 
-  const themeStore = useThemeStore();
+const themeStore = useThemeStore();
 </script>
 
 <style scoped lang="scss">
-  .router-enter-active,
-  .router-leave-active {
-    transition: opacity 0.3s ease;
-  }
-  .router-enter-from,
-  .router-leave-to {
-    opacity: 0;
-  }
+.router-enter-active,
+.router-leave-active {
+  transition: opacity 0.3s ease;
+}
+.router-enter-from,
+.router-leave-to {
+  opacity: 0;
+}
 
-  @media print {
-    .display-content {
-      display: none;
-    }
+@media print {
+  .display-content {
+    display: none;
   }
+}
 </style>

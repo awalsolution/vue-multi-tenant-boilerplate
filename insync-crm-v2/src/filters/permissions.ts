@@ -12,7 +12,9 @@ export function filterPermission() {
       permissions.value = [];
     } else {
       permissionLoading.value = true;
-      const response: any = await getRecordsApi('/permissions', { name: query });
+      const response: any = await getRecordsApi('/permissions', {
+        name: query,
+      });
       permissions.value = response.result.data;
       permissionLoading.value = false;
     }

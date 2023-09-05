@@ -18,7 +18,8 @@ export class ThemeUtils {
   static getDefaultThemeMode(): Theme {
     if (
       this.getTheme() === 'dark' ||
-      (!this.getTheme() && window.matchMedia('(prefers-color-scheme: dark)').matches)
+      (!this.getTheme() &&
+        window.matchMedia('(prefers-color-scheme: dark)').matches)
     ) {
       return 'dark';
     }

@@ -43,10 +43,10 @@
 </template>
 
 <style scoped lang="scss">
-  :deep(.n-data-table) {
-    flex-grow: 1 !important;
-  }
-  .table_content_container {
-    @apply relative overflow-x-auto sm:rounded-lg border border-gray-200 dark:border-gray-800;
-  }
+:deep(.n-data-table) {
+  flex-grow: 1 !important;
+}
+.table_content_container {
+  @apply relative overflow-x-auto sm:rounded-lg border border-gray-200 dark:border-gray-800;
+}
 </style>

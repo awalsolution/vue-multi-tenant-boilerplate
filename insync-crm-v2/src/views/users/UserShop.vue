@@ -38,30 +38,53 @@
               </n-col>
               <n-col :span="8">
                 <n-form-item label="Address" path="address">
-                  <n-input v-model:value="shopData.address" placeholder="Enter Address" disabled />
+                  <n-input
+                    v-model:value="shopData.address"
+                    placeholder="Enter Address"
+                    disabled
+                  />
                 </n-form-item>
               </n-col>
               <n-col :span="8">
                 <n-form-item label="City" path="city">
-                  <n-input v-model:value="shopData.city" placeholder="Enter City" disabled />
+                  <n-input
+                    v-model:value="shopData.city"
+                    placeholder="Enter City"
+                    disabled
+                  />
                 </n-form-item>
               </n-col>
               <n-col :span="8">
                 <n-form-item label="State" path="state">
-                  <n-input v-model:value="shopData.state" placeholder="Enter State" disabled />
+                  <n-input
+                    v-model:value="shopData.state"
+                    placeholder="Enter State"
+                    disabled
+                  />
                 </n-form-item>
               </n-col>
               <n-col :span="8">
                 <n-form-item label="Country" path="country">
-                  <n-input v-model:value="shopData.country" placeholder="Enter Country" disabled />
+                  <n-input
+                    v-model:value="shopData.country"
+                    placeholder="Enter Country"
+                    disabled
+                  />
                 </n-form-item>
               </n-col>
             </n-row>
           </n-card>
         </n-space>
         <n-space justify="end">
-          <n-form-item :theme-overrides="{ labelHeightSmall: '0', feedbackHeightSmall: '0' }">
-            <n-button type="success" @click="handleValidateClick"> Edit Shop</n-button>
+          <n-form-item
+            :theme-overrides="{
+              labelHeightSmall: '0',
+              feedbackHeightSmall: '0',
+            }"
+          >
+            <n-button type="success" @click="handleValidateClick">
+              Edit Shop</n-button
+            >
           </n-form-item>
         </n-space>
       </n-col>
@@ -79,36 +102,36 @@
 </template>
 
 <script lang="ts" setup>
-  import { onMounted, ref } from 'vue';
-  import { useUserStore } from '@src/store/modules/user';
-  import { useEnv } from '@src/hooks/useEnv';
-  import EditShop from '@src/views/users/EditShop.vue';
+import { onMounted, ref } from 'vue';
+import { useUserStore } from '@src/store/modules/user';
+import { useEnv } from '@src/hooks/useEnv';
+import EditShop from '@src/views/users/EditShop.vue';
 
-  const { imgUrl } = useEnv();
-  const userStore = useUserStore();
-  const showEditModal = ref(false);
-  const shopData: any = ref({});
+const { imgUrl } = useEnv();
+const userStore = useUserStore();
+const showEditModal = ref(false);
+const shopData: any = ref({});
 
-  const handleValidateClick = (e: MouseEvent) => {
-    e.preventDefault();
-    showEditModal.value = true;
-  };
+const handleValidateClick = (e: MouseEvent) => {
+  e.preventDefault();
+  showEditModal.value = true;
+};
 
-  console.log(shopData);
+console.log(shopData);
 
-  onMounted(() => {
-    shopData.value = userStore.user.shop;
-  });
+onMounted(() => {
+  shopData.value = userStore.user.shop;
+});
 
-  const status = ref([
-    {
-      label: 'active',
-      value: 'active',
-    },
-    {
-      label: 'disabled',
-      value: 'disabled',
-    },
-  ]);
+const status = ref([
+  {
+    label: 'active',
+    value: 'active',
+  },
+  {
+    label: 'disabled',
+    value: 'disabled',
+  },
+]);
 </script>
-<style lang="less" scoped></style>
+<style lang="scss" scoped></style>

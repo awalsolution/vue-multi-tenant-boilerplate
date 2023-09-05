@@ -12,7 +12,9 @@ export function usefilterRole() {
       roles.value = [];
     } else {
       roleLoading.value = true;
-      const response: any = await getRecordsApi('/roles/filter', { name: query });
+      const response: any = await getRecordsApi('/roles', {
+        name: query,
+      });
       roles.value = response.result.data;
       roleLoading.value = false;
     }
@@ -20,8 +22,9 @@ export function usefilterRole() {
 
   async function getRoles() {
     roleLoading.value = true;
-    const response: any = await getRecordsApi('/roles/filter');
-    roles.value = response.result.data;
+    const response: any = await getRecordsApi('/roles');
+    console.log('res', response);
+    roles.value = response.result;
     roleLoading.value = false;
   }
 

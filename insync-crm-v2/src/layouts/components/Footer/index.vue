@@ -17,10 +17,10 @@
 </template>
 
 <script setup lang="ts">
-  import { useEnv } from '@src/hooks/useEnv';
-  import { BrowserUtils } from '@src/utils/browser';
+import { useEnv } from '@src/hooks/useEnv';
+import { BrowserUtils } from '@src/utils/browser';
 
-  const { appTitle, version, teamName, teamGitHubURL } = useEnv();
+const { appTitle, version, teamName, teamGitHubURL } = useEnv();
 
-  const { openNewWindow } = BrowserUtils;
+const { openNewWindow } = BrowserUtils;
 </script>

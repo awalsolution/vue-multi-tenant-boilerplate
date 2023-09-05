@@ -31,7 +31,7 @@ export default defineConfig(({ mode }) => {
     },
     build: {
       target: 'es2015',
-      outDir: 'build',
+      outDir: 'dist',
     },
   };
 });

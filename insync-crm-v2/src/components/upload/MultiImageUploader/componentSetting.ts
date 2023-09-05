@@ -26,6 +26,12 @@ export default {
     //Maximum upload image size
     maxSize: 2,
     //Image upload type
-    fileType: ['image/png', 'image/jpg', 'image/jpeg', 'image/gif', 'image/svg+xml'],
+    fileType: [
+      'image/png',
+      'image/jpg',
+      'image/jpeg',
+      'image/gif',
+      'image/svg+xml',
+    ],
   },
 };

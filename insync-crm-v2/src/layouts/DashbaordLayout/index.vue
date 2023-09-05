@@ -28,53 +28,53 @@
 </template>
 
 <script setup lang="ts">
-  import { ref, onBeforeMount } from 'vue';
-  import { useRouter } from 'vue-router';
-  import GlobalLoading from '@src/components/GlobalLoading/index.vue';
-  import Sidebar from '@src/layouts/components/Sidebar/index.vue';
-  import Header from '@src/layouts/components/Header/index.vue';
-  import Tabs from '@src/layouts/components/Tabs/index.vue';
-  import Footer from '@src/layouts/components/Footer/index.vue';
-  import { useUserStore } from '@src/store/modules/user';
-  import { AuthUtils } from '@src/utils/auth';
-  import { AuthAPI } from '@src/api/auth';
+import { ref, onBeforeMount } from 'vue';
+import { useRouter } from 'vue-router';
+import GlobalLoading from '@src/components/GlobalLoading/index.vue';
+import Sidebar from '@src/layouts/components/Sidebar/index.vue';
+import Header from '@src/layouts/components/Header/index.vue';
+import Tabs from '@src/layouts/components/Tabs/index.vue';
+import Footer from '@src/layouts/components/Footer/index.vue';
+import { useUserStore } from '@src/store/modules/user';
+import { AuthUtils } from '@src/utils/auth';
+import { AuthAPI } from '@src/api/auth';
 
-  const userStore = useUserStore();
-  const router = useRouter();
+const userStore = useUserStore();
+const router = useRouter();
 
-  const loading = ref(true);
+const loading = ref(true);
 
-  const checkLogin = async () => {
-    console.log('Token are in local storage ===>', AuthUtils.isAuthenticated());
-    if (AuthUtils.isAuthenticated()) {
-      if (!userStore.hasData()) {
-        const { result }: any = (await AuthAPI.getUserInfoApi()) || {};
-        userStore.setUser(result);
-      }
-      loading.value = false;
-    } else {
-      userStore.clearUser();
-      router.replace({
-        path: '/login',
-      });
-      loading.value = false;
+const checkLogin = async () => {
+  console.log('Token are in local storage ===>', AuthUtils.isAuthenticated());
+  if (AuthUtils.isAuthenticated()) {
+    if (!userStore.hasData()) {
+      const { result }: any = (await AuthAPI.getUserInfoApi()) || {};
+      userStore.setUser(result);
     }
-  };
+    loading.value = false;
+  } else {
+    userStore.clearUser();
+    router.replace({
+      path: '/login',
+    });
+    loading.value = false;
+  }
+};
 
-  onBeforeMount(() => checkLogin());
+onBeforeMount(() => checkLogin());
 </script>
 
 <style scoped lang="scss">
-  .slide-fade-enter-active {
-    transition: all 0.3s ease-out;
-  }
-  .slide-fade-leave-active {
-    transition: all 0.5s cubic-bezier(1, 0.5, 0.8, 1);
-  }
+.slide-fade-enter-active {
+  transition: all 0.3s ease-out;
+}
+.slide-fade-leave-active {
+  transition: all 0.5s cubic-bezier(1, 0.5, 0.8, 1);
+}
 
-  .slide-fade-enter-from,
-  .slide-fade-leave-to {
-    transform: translateX(20px);
-    opacity: 0;
-  }
+.slide-fade-enter-from,
+.slide-fade-leave-to {
+  transform: translateX(20px);
+  opacity: 0;
+}
 </style>

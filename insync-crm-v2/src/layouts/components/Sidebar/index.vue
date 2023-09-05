@@ -1,10 +1,19 @@
 <template>
   <div
     class="bg-default-light dark:bg-default-dark absolute inset-y-0 left-0 z-[100] h-full border-r border-gray-300 shadow-sm transition-[width] dark:border-gray-800 sm:static"
-    :class="[sidebarStore.isDisplay ? (sidebarStore.isCollapse ? 'w-16' : 'w-56') : 'w-0']"
+    :class="[
+      sidebarStore.isDisplay
+        ? sidebarStore.isCollapse
+          ? 'w-16'
+          : 'w-56'
+        : 'w-0',
+    ]"
   >
     <!-- Header -->
-    <div class="flex h-14 w-full select-none items-center justify-center" @click="router.push('/')">
+    <div
+      class="flex h-14 w-full select-none items-center justify-center"
+      @click="router.push('/')"
+    >
       <img
         class="animate-pulse cursor-pointer select-none"
         width="36"
@@ -72,107 +81,107 @@
 </template>
 
 <script setup lang="ts">
-  import { ref, watch } from 'vue';
-  import { MenuFoldOutlined } from '@vicons/antd';
-  import { MenuInst, useMessage } from 'naive-ui';
-  import { useRoute, useRouter } from 'vue-router';
-  import { menuOptions } from '@src/constants/sidebarItems';
-  import { useSidebarStore } from '@src/store/modules/sidebar';
-  import { useEnv } from '@src/hooks/useEnv';
-  import { usePermission } from '@src/utils/permission/usePermission';
+import { ref, watch } from 'vue';
+import { MenuFoldOutlined } from '@vicons/antd';
+import { MenuInst, useMessage } from 'naive-ui';
+import { useRoute, useRouter } from 'vue-router';
+import { menuOptions } from '@src/constants/sidebarItems';
+import { useSidebarStore } from '@src/store/modules/sidebar';
+import { useEnv } from '@src/hooks/useEnv';
+import { usePermission } from '@src/utils/permission/usePermission';
 
-  const route = useRoute();
-  const router = useRouter();
-  const { hasPermission } = usePermission();
+const route = useRoute();
+const router = useRouter();
+const { hasPermission } = usePermission();
 
-  const { appTitle } = useEnv();
-  const message: any = useMessage();
-  const sidebarStore = useSidebarStore();
-  const menuInstRef = ref<MenuInst | null>(null);
+const { appTitle } = useEnv();
+const message: any = useMessage();
+const sidebarStore = useSidebarStore();
+const menuInstRef = ref<MenuInst | null>(null);
 
-  function filterMenuOptions(menuOptions: any): any {
-    return menuOptions.filter((option: any) => {
-      if (hasPermission(option.permissions)) {
-        if (option.children && option.children.length > 0) {
-          option.children = filterMenuOptions(option.children); // Recursively filter children
-        }
-        return true;
+function filterMenuOptions(menuOptions: any): any {
+  return menuOptions.filter((option: any) => {
+    if (hasPermission(option.permissions)) {
+      if (option.children && option.children.length > 0) {
+        option.children = filterMenuOptions(option.children); // Recursively filter children
       }
-      return false;
-    });
-  }
-
-  const menuData = ref(filterMenuOptions(menuOptions));
-
-  const selectedKey = ref();
-  const accordion = ref(false);
-
-  const handleChangeRouter = () => {
-    selectedKey.value = route.name;
-    menuInstRef.value?.showOption(route.name as string);
-    // console.log('handle change with selected key', menuInstRef);
-  };
-
-  // const handleChangeMenu = (key: string, item: MenuOption) => {
-  //   // console.log('item ==>', item);
-  //   if (item.children) {
-  //     return;
-  //   }
-  //   // console.log('route key', key);
-  //   router.push({ name: key });
-  // };
-
-  // const handleChangeMenu = (key: string, item: any) => {
-  //   if (item.children || hasPermission(item.permissions)) {
-  //     router.push({ name: key });
-  //   } else {
-  //     // Handle no permission case (e.g., show an error message)
-  //     console.log('User does not have permission for this menu item.');
-  //   }
-  // };
-
-  const handleChangeMenu = (key: string, item: any) => {
-    if (!item) {
-      return;
+      return true;
     }
-    if (hasPermission(item.permissions)) {
-      if (item.children) {
-        const hasPermissionForChildren = item.children.every((childItem: any) =>
-          hasPermission(childItem.permissions)
-        );
+    return false;
+  });
+}
 
-        if (hasPermissionForChildren) {
-          router.push({ name: key });
-        } else {
-          message.error('User does not have permission for child Route.');
-        }
-      } else {
+const menuData = ref(filterMenuOptions(menuOptions));
+
+const selectedKey = ref();
+const accordion = ref(false);
+
+const handleChangeRouter = () => {
+  selectedKey.value = route.name;
+  menuInstRef.value?.showOption(route.name as string);
+  // console.log('handle change with selected key', menuInstRef);
+};
+
+// const handleChangeMenu = (key: string, item: MenuOption) => {
+//   // console.log('item ==>', item);
+//   if (item.children) {
+//     return;
+//   }
+//   // console.log('route key', key);
+//   router.push({ name: key });
+// };
+
+// const handleChangeMenu = (key: string, item: any) => {
+//   if (item.children || hasPermission(item.permissions)) {
+//     router.push({ name: key });
+//   } else {
+//     // Handle no permission case (e.g., show an error message)
+//     console.log('User does not have permission for this menu item.');
+//   }
+// };
+
+const handleChangeMenu = (key: string, item: any) => {
+  if (!item) {
+    return;
+  }
+  if (hasPermission(item.permissions)) {
+    if (item.children) {
+      const hasPermissionForChildren = item.children.every((childItem: any) =>
+        hasPermission(childItem.permissions)
+      );
+
+      if (hasPermissionForChildren) {
         router.push({ name: key });
+      } else {
+        message.error('User does not have permission for child Route.');
       }
     } else {
-      message.error('User does not have permission for this Route.');
+      router.push({ name: key });
     }
-  };
+  } else {
+    message.error('User does not have permission for this Route.');
+  }
+};
 
-  watch(
-    () => route.name,
-    () => handleChangeRouter(),
-    { immediate: true }
-  );
+watch(
+  () => route.name,
+  () => handleChangeRouter(),
+  { immediate: true }
+);
 </script>
 
 <style scoped lang="scss">
-  .icon-animation {
-    transition: all 0.3s ease-in-out;
-  }
+.icon-animation {
+  transition: all 0.3s ease-in-out;
+}
 
-  .hover-container:hover .icon-animation {
-    transform: scale(1.2);
-    opacity: 0.9;
-  }
+.hover-container:hover .icon-animation {
+  transform: scale(1.2);
+  opacity: 0.9;
+}
 
-  .hover-container:active .icon-animation {
-    transform: scale(1);
-    opacity: 0.75;
-  }
+.hover-container:active .icon-animation {
+  transform: scale(1);
+  opacity: 0.75;
+}
 </style>

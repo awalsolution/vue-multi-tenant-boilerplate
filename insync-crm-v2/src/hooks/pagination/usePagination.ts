@@ -27,5 +27,14 @@ export function usePagination(endpoint: any) {
     page.value = value[1] !== oldValue[1] ? 1 : page.value;
     getList();
   });
-  return { getList, emptyState, list, page, pageSizes, itemCount, pageSize, searchParams };
+  return {
+    getList,
+    emptyState,
+    list,
+    page,
+    pageSizes,
+    itemCount,
+    pageSize,
+    searchParams,
+  };
 }

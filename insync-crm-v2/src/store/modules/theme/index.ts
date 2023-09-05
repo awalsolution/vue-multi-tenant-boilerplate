@@ -9,7 +9,9 @@ import { ThemeUtils } from '@src/utils/theme';
 export const useThemeStore = defineStore('theme', () => {
   const themeMode = ref<Theme>(ThemeUtils.getDefaultThemeMode());
 
-  const theme = computed(() => (themeMode.value === 'light' ? lightTheme : darkTheme));
+  const theme = computed(() =>
+    themeMode.value === 'light' ? lightTheme : darkTheme
+  );
 
   const themeOverrides = computed(() =>
     themeMode.value === 'light' ? lightThemeOverrides : darkThemeOverrides

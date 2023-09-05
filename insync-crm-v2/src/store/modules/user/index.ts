@@ -13,10 +13,13 @@ export const useUserStore = defineStore('user', () => {
     let rolePermissions: string[] = [];
     if (data?.roles) {
       for (const role of data.roles) {
-        rolePermissions = [...role.permissions.map((permission: any) => permission.name)];
+        rolePermissions = [
+          ...role.permissions.map((permission: any) => permission.name),
+        ];
       }
     }
-    const userPermissions = data?.permissions.map((permission: any) => permission.name) || [];
+    const userPermissions =
+      data?.permissions.map((permission: any) => permission.name) || [];
     permissions.value = [...userPermissions, ...rolePermissions];
   };
 
@@ -25,10 +28,13 @@ export const useUserStore = defineStore('user', () => {
     let rolePermissions: string[] = [];
     if (data?.roles) {
       for (const role of data.roles) {
-        rolePermissions = [...role.permissions.map((permission: any) => permission.name)];
+        rolePermissions = [
+          ...role.permissions.map((permission: any) => permission.name),
+        ];
       }
     }
-    const userPermissions = data?.permissions.map((permission: any) => permission.name) || [];
+    const userPermissions =
+      data?.permissions.map((permission: any) => permission.name) || [];
     permissions.value = [...userPermissions, ...rolePermissions];
   };
 
