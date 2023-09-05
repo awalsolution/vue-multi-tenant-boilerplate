@@ -8,28 +8,19 @@
               v-model:value="searchParams.name"
               class="sm:!w-[200px]"
               clearable
-              placeholder="KeywordSearch"
-              @change="fetchList"
+              placeholder="Search by Name"
+              @keyup="fetchList"
             >
               <template #prefix>
                 <NIcon :component="SearchOutlined" class="mr-1" />
               </template>
             </NInput>
-            <NButton type="primary" :size="isMobile ? 'small' : 'medium'" @click="fetchList">
-              Search
-            </NButton>
           </div>
-          <NDatePicker
-            v-model:value="searchParams.daterange"
-            class="sm:!w-[250px]"
-            type="daterange"
-            clearable
-            input-readonly
-            @update:value="fetchList"
-          />
         </div>
         <div class="flex w-full items-center justify-between space-x-3 sm:justify-end">
           <NButton
+            secondary
+            type="info"
             :size="isMobile ? 'small' : 'medium'"
             @click="showModal = true"
             v-permission="{ action: ['can view shop create'] }"
@@ -45,12 +36,7 @@
         <thead class="head">
           <tr>
             <th class="sticky_el left-0 z-20">ID</th>
-            <th class="th">Route Name</th>
-            <th class="th">Parent ID</th>
-            <th class="th">Parent</th>
-            <th class="th">Menu URL</th>
             <th class="th">Menu Name</th>
-            <th class="th">Status</th>
             <th class="th">Created At</th>
             <th class="th">Updated At</th>
             <th class="sticky_el right-0 z-20"> Actions </th>
@@ -64,29 +50,7 @@
             <td class="sticky_el left-0 z-10">
               {{ item.id }}
             </td>
-            <td class="td">{{ item.route_name }}</td>
-            <td class="td">{{ item.parent_id }}</td>
-            <td class="td py-1">
-              <n-tag v-if="item.is_parent === 1" type="success"> Parent </n-tag>
-              <n-tag v-else type="info"> Child </n-tag>
-            </td>
-            <td class="td">{{ item.menu_url }}</td>
             <td class="td">{{ item.menu_name }}</td>
-            <td class="text-center td">
-              <n-tag v-if="item.status === 'active'" type="success">
-                {{ item.status }}
-                <template #icon>
-                  <n-icon :component="Checkbox" />
-                </template>
-              </n-tag>
-              <n-tag v-else type="error">
-                {{ item.status }}
-                <template #icon>
-                  <n-icon :component="Warning20Regular" />
-                </template>
-              </n-tag>
-              <!-- <n-tag :bordered="false" type="info">{{ item.status }}</n-tag> -->
-            </td>
             <td class="td">{{ item.created_at }}</td>
             <td class="td">{{ item.updated_at }}</td>
             <td class="sticky_el right-0 z-10">
@@ -163,8 +127,6 @@
   import { useDialog, useMessage } from 'naive-ui';
   import { NIcon, NPagination } from 'naive-ui';
   import { MoreOutlined, EditOutlined, DeleteOutlined, SearchOutlined } from '@vicons/antd';
-  import { Checkbox } from '@vicons/tabler';
-  import { Warning20Regular } from '@vicons/fluent';
   import DataTableLayout from '@src/layouts/DataTableLayout/index.vue';
   import AddMenu from '@src/components/menu/AddMenu.vue';
   import EditMenu from '@src/components/menu/EditMenu.vue';

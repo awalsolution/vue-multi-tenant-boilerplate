@@ -1,12 +1,27 @@
 <template>
   <ContentLayout>
+    <template #contentHeader>
+      <NCard embedded class="mb-2 px-3 py-2" :content-style="{ padding: 0 }">
+        <div class="flex flex-col items-center sm:flex-row sm:justify-between">
+          <h3 class="text-lg">Edit Product</h3>
+          <NButton
+            secondary
+            type="info"
+            size="medium"
+            @click="router.push({ name: 'product_list' })"
+          >
+            Back to Product
+          </NButton>
+        </div>
+      </NCard>
+    </template>
     <n-tabs
       type="card"
       size="medium"
       v-model:currentValue="currentTab"
       @update:value="handleTabChange"
-      pane-class="overflow-scroll"
-      class="sticky top-0 h-full"
+      pane-class="border-x border-b overflow-scroll h-full"
+      class="sticky top-0 h-full overflow-scroll"
     >
       <n-tab-pane name="general" tab="General">
         <ProductGeneralInfo v-if="productDataLoaded" :product="product" />
@@ -20,7 +35,7 @@
 
 <script lang="ts" setup>
   import { ref } from 'vue';
-  import { useRoute } from 'vue-router';
+  import { useRoute, useRouter } from 'vue-router';
   import { useMessage } from 'naive-ui';
   import { getRecordApi } from '@src/api/endpoints';
   import ContentLayout from '@src/layouts/ContentLayout/index.vue';
@@ -28,6 +43,7 @@
   import ProductVariants from '@src/components/products/components/ProductVariants.vue';
 
   const route = useRoute();
+  const router = useRouter();
   const product: any = ref({});
   const productDataLoaded = ref(false);
   const message: any = useMessage();

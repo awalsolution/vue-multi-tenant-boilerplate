@@ -223,7 +223,7 @@
 
 <style lang="scss" scoped>
   .variant_container {
-    @apply relative overflow-x-auto sm:rounded-lg border border-gray-200 dark:border-gray-800;
+    @apply relative overflow-x-auto sm:rounded-lg;
   }
   .table {
     @apply w-full text-sm text-left text-gray-500 dark:text-gray-400;

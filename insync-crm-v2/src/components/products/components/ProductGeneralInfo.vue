@@ -1,6 +1,6 @@
 <template>
   <n-form ref="generalInfoFormRef" :model="generalInfo" size="small" :loading="loading">
-    <n-space :vertical="true" class="p-3 border-x border-b">
+    <n-space :vertical="true" class="p-3">
       <n-row :gutter="10">
         <n-col :span="6">
           <n-form-item label="Product Title" path="title">
