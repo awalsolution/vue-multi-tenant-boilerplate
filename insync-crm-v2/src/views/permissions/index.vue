@@ -6,30 +6,21 @@
           <div class="flex w-full items-center !space-x-2 sm:w-fit">
             <NInput
               v-model:value="searchParams.name"
-              class="sm:!w-[200px]"
+              class="sm:!w-[250px]"
               clearable
-              placeholder="KeywordSearch"
-              @change="fetchList"
+              placeholder="Search by Permission Name"
+              @keyup="fetchList"
             >
               <template #prefix>
                 <NIcon :component="SearchOutlined" class="mr-1" />
               </template>
             </NInput>
-            <NButton type="primary" :size="isMobile ? 'small' : 'medium'" @click="fetchList">
-              Search
-            </NButton>
           </div>
-          <NDatePicker
-            v-model:value="searchParams.daterange"
-            class="sm:!w-[250px]"
-            type="daterange"
-            clearable
-            input-readonly
-            @update:value="fetchList"
-          />
         </div>
         <div class="flex w-full items-center justify-between space-x-3 sm:justify-end">
           <NButton
+            secondary
+            type="info"
             :size="isMobile ? 'small' : 'medium'"
             @click="showModal = true"
             v-permission="{ action: ['can view permission create'] }"
@@ -62,7 +53,7 @@
         </thead>
         <tbody>
           <tr v-if="list.length === 0">
-            <td colspan="5" class="data_placeholder"> Record Not Exist </td>
+            <td colspan="7" class="data_placeholder"> Record Not Exist </td>
           </tr>
           <tr v-else v-for="item in list" :key="item.id">
             <td class="sticky_el left-0 z-10">{{ item.id }}</td>
@@ -155,8 +146,6 @@
   import AddPermission from '@src/components/permission/AddPermission.vue';
   import EditPermission from '@src/components/permission/EditPermission.vue';
   import DataTableLayout from '@src/layouts/DataTableLayout/index.vue';
-  // import ContentLayout from '@src/layouts/ContentLayout/index.vue';
-  // import DashboardPermission from '@src/components/permission/components/DashboardPermission.vue';
   import { useMobile } from '@src/hooks/useMediaQuery';
 
   const dialog = useDialog();
@@ -168,8 +157,6 @@
   const { hasPermission } = usePermission();
   const message: any = useMessage();
   const [loading, loadingDispatcher] = useLoading(false);
-  // const dashbaordPermission: any = ref([]);
-  // const permissionDataLoaded: any = ref(false);
 
   const { getList, list, page, pageSizes, itemCount, pageSize, searchParams }: any =
     usePagination('/permissions');
