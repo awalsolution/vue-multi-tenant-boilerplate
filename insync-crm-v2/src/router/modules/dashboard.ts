@@ -83,6 +83,15 @@ export const DashboardRoute: RouteRecordRaw = {
       component: () => import('@src/views/roles/index.vue'),
     },
     {
+      path: '/dashboard/system/assing-permission/:id',
+      name: 'assing-permission',
+      meta: {
+        title: 'Assign Permissions',
+        icon: UnlockOutlined,
+      },
+      component: () => import('@src/components/users/AssignPermissions.vue'),
+    },
+    {
       path: 'system/menus',
       name: 'menus',
       meta: {

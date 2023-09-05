@@ -190,6 +190,7 @@
   import { useEnv } from '@src/hooks/useEnv';
   import { useMobile } from '@src/hooks/useMediaQuery';
   import { ref, onMounted, h, computed } from 'vue';
+  import { useRouter } from 'vue-router';
   import type { Component } from 'vue';
   import { useDialog, useMessage } from 'naive-ui';
   import { NIcon, NPagination } from 'naive-ui';
@@ -199,6 +200,7 @@
   import EditUser from '@src/components/users/EditUser.vue';
 
   const { imgUrl } = useEnv();
+  const router = useRouter();
   const isMobile = useMobile();
   const dialog = useDialog();
   const selectedOption: any = ref(null);
@@ -226,6 +228,12 @@
   };
 
   const moreOptions = ref([
+    {
+      label: 'Assign Permission',
+      key: 'assign_permission',
+      icon: renderIcon(EditOutlined),
+      permission: hasPermission(['can view user update']),
+    },
     {
       label: 'Edit',
       key: 'edit',
@@ -273,7 +281,10 @@
   }
 
   const actionOperation = (item: any) => {
-    if (selectedOption.value === 'edit') {
+    if (selectedOption.value === 'assign_permission') {
+      // selectedId.value = item.id;
+      router.push(`/dashboard/system/assing-permission/${item.id}`);
+    } else if (selectedOption.value === 'edit') {
       showEditModal.value = true;
       selectedId.value = item.id;
       // router.push(`/roles/${item.id}`);

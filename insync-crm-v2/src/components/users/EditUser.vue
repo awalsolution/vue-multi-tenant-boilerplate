@@ -5,11 +5,21 @@
         <n-input v-model:value="formValue.email" placeholder="Enter Email" />
       </n-form-item-gi>
       <n-form-item-gi :span="12" label="Permissions" path="permissions">
-        <permission-selector
+        <n-select
+          :filterable="true"
+          multiple
+          :tag="false"
+          placeholder="Select Permissions"
           v-model:value="formValue.permissions"
+          clearable
+          @focus="getPermissionsOnFocus"
+          @search="findPermission"
+          :remote="true"
+          :clear-filter-after-select="false"
           label-field="name"
           value-field="id"
-          :tag="true"
+          :loading="permissionLoading"
+          :options="permissions"
         />
       </n-form-item-gi>
       <n-form-item-gi :span="12" label="Status" path="status">
@@ -46,7 +56,10 @@
   import { FormInst, useMessage } from 'naive-ui';
   import { getRecordApi, updateRecordApi } from '@src/api/endpoints';
   import { filterRole } from '@src/filters/roles';
+  import { filterPermission } from '@src/filters/permissions';
 
+  const { permissions, permissionLoading, getPermissionsOnFocus, findPermission, getPermissions } =
+    filterPermission();
   const { roles, roleLoading, getRoles, getRolesOnFocus } = filterRole();
   const formRef = ref<FormInst | null>(null);
   const formValue: any = ref({});
@@ -64,6 +77,7 @@
     formValue.value.permissions = formValue.value.permissions.map((v: any) => v.id);
     formValue.value.roles = formValue.value.roles.map((v: any) => v.id);
     getRoles();
+    getPermissions();
   });
 
   const handleValidateClick = (e: MouseEvent) => {
