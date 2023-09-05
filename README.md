@@ -7,13 +7,10 @@
 
 ==> Branch Name: main
 
-==> Domain Name: main.insync-crm.com
-
 2. Development
 
 ==> Branch Name: develop
 
-==> Domain Name: develop.insync-crm.com
 ```
 
 ## Install
@@ -21,32 +18,26 @@
 ```
 git clone https://github.com/abendsoft/insync-crm.git
 cd insync-crm
-yarn install
+npm install
 ```
 
 ## Start development
 
 ```
-yarn dev
+npm run dev
 ```
 
 ## Build for production
 
 ```
-yarn build
-```
-
-## Run build for production
-
-```
-yarn start
+npm run build
 ```
 
 ## Resources
 
 ### Languages & tools
 
-- [Yarn](https://yarnpkg.com/)
+- [npm](https://www.npmjs.com/)
 
 - [Typescript](https://www.typescriptlang.org/)
 
