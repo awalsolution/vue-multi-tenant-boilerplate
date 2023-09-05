@@ -2,17 +2,17 @@ import { ref } from 'vue';
 import { getRecordsApi } from '@src/api/endpoints';
 import { isEmpty } from 'lodash';
 
-export function filterRole() {
+export function usefilterRole() {
   const roles: any = ref([]);
   const roleLoading = ref(false);
   const rolesInitialized = ref(false);
 
-  async function findRole(query: any) {
+  async function getByRoleParams(query: any) {
     if (isEmpty(query)) {
       roles.value = [];
     } else {
       roleLoading.value = true;
-      const response: any = await getRecordsApi('/roles', { name: query });
+      const response: any = await getRecordsApi('/roles/filter', { name: query });
       roles.value = response.result.data;
       roleLoading.value = false;
     }
@@ -20,7 +20,7 @@ export function filterRole() {
 
   async function getRoles() {
     roleLoading.value = true;
-    const response: any = await getRecordsApi('/roles');
+    const response: any = await getRecordsApi('/roles/filter');
     roles.value = response.result.data;
     roleLoading.value = false;
   }
@@ -36,7 +36,7 @@ export function filterRole() {
     roles,
     roleLoading,
     rolesInitialized,
-    findRole,
+    getByRoleParams,
     getRoles,
     getRolesOnFocus,
   };

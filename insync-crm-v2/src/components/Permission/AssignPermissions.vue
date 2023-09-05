@@ -42,10 +42,19 @@
   const userData = ref({});
   const message: any = useMessage();
   const selectedPermissions = ref([]);
+  const fetchEndpoint: any = ref();
+  const updateEndpoint: any = ref();
 
   onMounted(() => {
     getMenus();
-    getRecordApi(`/users/${route.params.id}`).then((res: any) => {
+    if (route.query.roleId) {
+      fetchEndpoint.value = `/roles/${route.query.roleId}`;
+      updateEndpoint.value = '/roles/assign-permission/' + route.query.roleId;
+    } else if (route.query.userId) {
+      fetchEndpoint.value = `/users/${route.query.userId}`;
+      updateEndpoint.value = '/users/assign-permission/' + route.query.userId;
+    }
+    getRecordApi(fetchEndpoint.value).then((res: any) => {
       userData.value = res.result;
       selectedPermissions.value = res.result.permissions.map((item: any) => {
         return item.id;
@@ -55,7 +64,7 @@
   });
 
   const handleAssignPermissions = () => {
-    updateRecordApi(`/users/assign-permission/${route.params.id}`, {
+    updateRecordApi(updateEndpoint.value, {
       permissions: selectedPermissions.value,
     }).then((res: any) => {
       message.success(res.message);

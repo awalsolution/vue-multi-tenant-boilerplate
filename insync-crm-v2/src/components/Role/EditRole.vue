@@ -1,25 +1,7 @@
 <template>
   <n-form ref="formRef" :label-width="80" :model="formValue" :rules="rules" size="small">
-    <n-form-item style="padding-top: 24px" label="Name" path="name">
+    <n-form-item label="Name" path="name">
       <n-input v-model:value="formValue.name" placeholder="Edit Name" />
-    </n-form-item>
-    <n-form-item label="Permissions" path="permissions">
-      <n-select
-        :filterable="true"
-        multiple
-        :tag="false"
-        placeholder="Select Permissions"
-        v-model:value="formValue.permissions"
-        clearable
-        @focus="getPermissionsOnFocus"
-        @search="findPermission"
-        :remote="true"
-        :clear-filter-after-select="false"
-        label-field="name"
-        value-field="id"
-        :loading="permissionLoading"
-        :options="permissions"
-      />
     </n-form-item>
     <n-space justify="end">
       <n-form-item :theme-overrides="{ labelHeightSmall: '0', feedbackHeightSmall: '0' }">
@@ -33,10 +15,7 @@
   import { ref } from 'vue';
   import { FormInst, useMessage } from 'naive-ui';
   import { getRecordApi, updateRecordApi } from '@src/api/endpoints';
-  import { filterPermission } from '@src/filters/permissions';
 
-  const { permissions, permissionLoading, getPermissionsOnFocus, findPermission, getPermissions } =
-    filterPermission();
   const formValue: any = ref({});
   const formRef = ref<FormInst | null>(null);
   const message: any = useMessage();
@@ -49,10 +28,7 @@
   });
   // fetch single Role  using id
   getRecordApi(`/roles/${props.id}`).then((res: any) => {
-    console.log(res);
     formValue.value = res.result;
-    formValue.value.permissions = formValue.value.permissions.map((v: any) => v.id);
-    getPermissions();
   });
   console.log(formValue);
   const rules = ref({

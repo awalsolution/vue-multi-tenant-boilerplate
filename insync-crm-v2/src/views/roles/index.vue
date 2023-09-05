@@ -8,28 +8,19 @@
               v-model:value="searchParams.name"
               class="sm:!w-[200px]"
               clearable
-              placeholder="KeywordSearch"
-              @change="fetchList"
+              placeholder="Search by Name"
+              @keyup="fetchList"
             >
               <template #prefix>
                 <NIcon :component="SearchOutlined" class="mr-1" />
               </template>
             </NInput>
-            <NButton type="primary" :size="isMobile ? 'small' : 'medium'" @click="fetchList">
-              Search
-            </NButton>
           </div>
-          <NDatePicker
-            v-model:value="searchParams.daterange"
-            class="sm:!w-[250px]"
-            type="daterange"
-            clearable
-            input-readonly
-            @update:value="fetchList"
-          />
         </div>
         <div class="flex w-full items-center justify-between space-x-3 sm:justify-end">
           <NButton
+            secondary
+            type="info"
             :size="isMobile ? 'small' : 'medium'"
             @click="showModal = true"
             v-permission="{ action: ['can view role create'] }"
@@ -46,7 +37,6 @@
           <tr>
             <th class="sticky_el left-0 z-10">ID</th>
             <th class="th">Name</th>
-            <th class="th">Permissions</th>
             <th class="th">Created At</th>
             <th class="th">Updated At</th>
             <th
@@ -66,11 +56,6 @@
           <tr v-else v-for="item in list" :key="item.id" class="body_tr">
             <td class="sticky_el left-0 z-10">{{ item.id }}</td>
             <td v-if="item.name" class="td">{{ item.name }}</td>
-            <td v-if="item.permissions" class="td">
-              <n-space v-for="permission in item.permissions" :key="permission.id">
-                {{ permission?.name }}
-              </n-space>
-            </td>
             <td class="td">{{ item.created_at }}</td>
             <td class="td">{{ item.updated_at }}</td>
             <td
@@ -148,17 +133,20 @@
   import { useLoading } from '@src/hooks/useLoading';
   import { usePermission } from '@src/utils/permission/usePermission';
   import { useMobile } from '@src/hooks/useMediaQuery';
-  import { ref, onMounted, h, computed } from 'vue';
+  import { ref, onMounted, computed } from 'vue';
   import { useDialog, useMessage } from 'naive-ui';
-  import type { Component } from 'vue';
+  import { useRouter } from 'vue-router';
   import { NIcon, NPagination } from 'naive-ui';
   import { MoreOutlined, EditOutlined, DeleteOutlined, SearchOutlined } from '@vicons/antd';
   import DataTableLayout from '@src/layouts/DataTableLayout/index.vue';
   import AddRole from '@src/components/Role/AddRole.vue';
   import EditRole from '@src/components/Role/EditRole.vue';
+  import { RenderUtils } from '@src/utils/render';
 
+  const { renderIcon } = RenderUtils;
   const isMobile = useMobile();
   const dialog = useDialog();
+  const router = useRouter();
   const selectedOption: any = ref(null);
   const showModal = ref(false);
   const showEditModal = ref(false);
@@ -175,15 +163,13 @@
     getList();
   });
 
-  const renderIcon = (icon: Component) => {
-    return () => {
-      return h(NIcon, null, {
-        default: () => h(icon),
-      });
-    };
-  };
-
   const moreOptions = ref([
+    {
+      label: 'Assign Permission',
+      key: 'assign_permission',
+      icon: renderIcon(EditOutlined),
+      permission: hasPermission(['can view role update']),
+    },
     {
       label: 'Edit',
       key: 'edit',
@@ -231,10 +217,11 @@
   }
 
   const actionOperation = (item: any) => {
-    if (selectedOption.value === 'edit') {
+    if (selectedOption.value === 'assign_permission') {
+      router.push({ name: 'assing-permission', query: { roleId: item.id } });
+    } else if (selectedOption.value === 'edit') {
       showEditModal.value = true;
       selectedId.value = item.id;
-      // router.push(`/roles/${item.id}`);
     } else if (selectedOption.value === 'delete') {
       selectedId.value = item.id;
       confirmationDialog();

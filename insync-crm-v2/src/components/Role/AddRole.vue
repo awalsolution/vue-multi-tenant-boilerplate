@@ -3,24 +3,6 @@
     <n-form-item style="padding-top: 24px" label="Name" path="name">
       <n-input v-model:value="formValue.name" placeholder="Enter Name" />
     </n-form-item>
-    <n-form-item label="Permissions" path="permissions">
-      <n-select
-        :filterable="true"
-        multiple
-        :tag="false"
-        placeholder="Select Permissions"
-        v-model:value="formValue.permissions"
-        clearable
-        @focus="getPermissionsOnFocus"
-        @search="findPermission"
-        :remote="true"
-        :clear-filter-after-select="false"
-        label-field="name"
-        value-field="id"
-        :loading="permissionLoading"
-        :options="permissions"
-      />
-    </n-form-item>
     <n-space justify="end">
       <n-form-item :theme-overrides="{ labelHeightSmall: '0', feedbackHeightSmall: '0' }">
         <n-button type="success" @click="handleValidateClick"> Create</n-button>
@@ -33,10 +15,7 @@
   import { ref } from 'vue';
   import { FormInst, useMessage } from 'naive-ui';
   import { createRecordApi } from '@src/api/endpoints';
-  import { filterPermission } from '@src/filters/permissions';
 
-  const { permissions, permissionLoading, getPermissionsOnFocus, findPermission } =
-    filterPermission();
   const formValue: any = ref({});
   const formRef = ref<FormInst | null>(null);
   const emits = defineEmits(['created']);

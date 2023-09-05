@@ -189,17 +189,18 @@
   import { useLoading } from '@src/hooks/useLoading';
   import { useEnv } from '@src/hooks/useEnv';
   import { useMobile } from '@src/hooks/useMediaQuery';
-  import { ref, onMounted, h, computed } from 'vue';
+  import { ref, onMounted, computed } from 'vue';
   import { useRouter } from 'vue-router';
-  import type { Component } from 'vue';
   import { useDialog, useMessage } from 'naive-ui';
   import { NIcon, NPagination } from 'naive-ui';
   import { MoreOutlined, EditOutlined, DeleteOutlined, SearchOutlined } from '@vicons/antd';
   import DataTableLayout from '@src/layouts/DataTableLayout/index.vue';
   import AddUser from '@src/components/users/AddUser.vue';
   import EditUser from '@src/components/users/EditUser.vue';
+  import { RenderUtils } from '@src/utils/render';
 
   const { imgUrl } = useEnv();
+  const { renderIcon } = RenderUtils;
   const router = useRouter();
   const isMobile = useMobile();
   const dialog = useDialog();
@@ -218,14 +219,6 @@
   onMounted(() => {
     getList();
   });
-
-  const renderIcon = (icon: Component) => {
-    return () => {
-      return h(NIcon, null, {
-        default: () => h(icon),
-      });
-    };
-  };
 
   const moreOptions = ref([
     {
@@ -283,7 +276,8 @@
   const actionOperation = (item: any) => {
     if (selectedOption.value === 'assign_permission') {
       // selectedId.value = item.id;
-      router.push(`/dashboard/system/assing-permission/${item.id}`);
+      // router.push(`/dashboard/system/assing-permission/${item.id}`);
+      router.push({ name: 'assing-permission', query: { userId: item.id } });
     } else if (selectedOption.value === 'edit') {
       showEditModal.value = true;
       selectedId.value = item.id;

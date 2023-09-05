@@ -16,7 +16,7 @@ declare module 'vue' {
     AddShop: typeof import('./../components/shop/AddShop.vue')['default']
     AddUser: typeof import('./../components/users/AddUser.vue')['default']
     AddVariant: typeof import('./../components/products/variants/AddVariant.vue')['default']
-    AssignPermissions: typeof import('./../components/users/AssignPermissions.vue')['default']
+    AssignPermissions: typeof import('./../components/permission/AssignPermissions.vue')['default']
     Breadcrumb: typeof import('./../components/Breadcrumb/index.vue')['default']
     DashboardPermission: typeof import('./../components/permission/components/DashboardPermission.vue')['default']
     EditAttribute: typeof import('./../components/products/attributes/EditAttribute.vue')['default']
