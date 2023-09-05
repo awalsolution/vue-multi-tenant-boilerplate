@@ -8,28 +8,19 @@
               v-model:value="searchParams.name"
               class="sm:!w-[200px]"
               clearable
-              placeholder="KeywordSearch"
-              @change="fetchList"
+              placeholder="Search by Name"
+              @keyup="fetchList"
             >
               <template #prefix>
                 <NIcon :component="SearchOutlined" class="mr-1" />
               </template>
             </NInput>
-            <NButton type="primary" :size="isMobile ? 'small' : 'medium'" @click="fetchList">
-              Search
-            </NButton>
           </div>
-          <NDatePicker
-            v-model:value="searchParams.daterange"
-            class="sm:!w-[250px]"
-            type="daterange"
-            clearable
-            input-readonly
-            @update:value="fetchList"
-          />
         </div>
         <div class="flex w-full items-center justify-between space-x-3 sm:justify-end">
           <NButton
+            secondary
+            type="info"
             :size="isMobile ? 'small' : 'medium'"
             @click="showModal = true"
             v-permission="{ action: ['can view category create'] }"
