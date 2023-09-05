@@ -24,22 +24,6 @@ export function getUsersApi(params: any) {
 }
 
 /**
- * @description: update user status
- */
-export function updateUserStatusApi(id: number, params: any) {
-  return http.request<BasicResponseModel>(
-    {
-      url: `/users/status/${id}`,
-      method: 'PUT',
-      params,
-    },
-    {
-      isTransformResponse: false,
-    }
-  );
-}
-
-/**
  * @description: update user profile
  */
 export function profileUpdateApi(id: number, params: any) {
@@ -54,9 +38,3 @@ export function profileUpdateApi(id: number, params: any) {
     }
   );
 }
-
-// export function imageUpload(params: any) {
-//   const res = http.uploadFile<BasicResponseModel>({ url: '/upload' }, { file: params });
-//   console.log(res);
-//   // return;
-// }

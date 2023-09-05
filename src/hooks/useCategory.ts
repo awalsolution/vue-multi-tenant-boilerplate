@@ -1,5 +1,5 @@
 import { ref } from 'vue';
-import { getCategoriesListApi } from '@/api/products/categories/categories';
+import { getCategoriesApi } from '@/api/products/categories/categories';
 
 /**
  * @description Paginated Data
@@ -14,7 +14,7 @@ export function useCategory(tag = false) {
     }
     timer = setTimeout(() => {
       categoriesLoading.value = true;
-      getCategoriesListApi({ name: query, pageSize: 1000 })
+      getCategoriesApi({ name: query, pageSize: 1000 })
         .then((result: any) => {
           filteredCategories.value = result.data;
           if (tag && query) {

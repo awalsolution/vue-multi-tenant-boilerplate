@@ -13,15 +13,6 @@ export interface BasicPageParams {
 }
 
 /**
- * @description: Get Record list
- */
-export async function getRecordListApi(endpoint: string) {
-  return await http.request({
-    url: endpoint,
-    method: 'get',
-  });
-}
-/**
  * @description: Get single Record
  */
 export function getRecordApi(endpoint: string) {

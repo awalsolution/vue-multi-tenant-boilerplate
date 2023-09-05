@@ -1,5 +1,5 @@
 <template>
-  <n-card title="Profile" v-permission="{ action: ['can view profile'] }">
+  <n-card title="Profile" v-permission="{ action: ['can view customer profile'] }">
     <n-form ref="formRef" :label-width="80" :model="profileData" size="small">
       <n-grid x-gap="10">
         <n-form-item-gi :span="12" label="First Name" path="first_name">

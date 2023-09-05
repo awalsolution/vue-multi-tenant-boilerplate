@@ -1,6 +1,5 @@
-<!-- eslint-disable vue/v-on-event-hyphenation -->
 <template>
-  <n-card title="Profile" v-permission="{ action: ['can view profile'] }">
+  <n-card title="Profile" v-permission="{ action: ['can view user profile'] }">
     <n-row>
       <n-col :span="8" class="text-center">
         <n-avatar round :size="200" :src="`${imgUrl}${profileData.profile_picture}`" />

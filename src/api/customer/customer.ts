@@ -22,3 +22,19 @@ export function getCustomersApi(params: any) {
     params,
   });
 }
+
+/**
+ * @description: update customer profile
+ */
+export function profileUpdateApi(id: number, params: any) {
+  return http.request<BasicResponseModel>(
+    {
+      url: `/customers/profile/${id}`,
+      method: 'PUT',
+      params,
+    },
+    {
+      isTransformResponse: false,
+    }
+  );
+}
