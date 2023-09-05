@@ -4,24 +4,6 @@
       <n-form-item-gi :span="12" label="Email" path="email">
         <n-input v-model:value="formValue.email" placeholder="Enter Email" />
       </n-form-item-gi>
-      <n-form-item-gi :span="12" label="Permissions" path="permissions">
-        <n-select
-          :filterable="true"
-          multiple
-          :tag="false"
-          placeholder="Select Permissions"
-          v-model:value="formValue.permissions"
-          clearable
-          @focus="getPermissionsOnFocus"
-          @search="findPermission"
-          :remote="true"
-          :clear-filter-after-select="false"
-          label-field="name"
-          value-field="id"
-          :loading="permissionLoading"
-          :options="permissions"
-        />
-      </n-form-item-gi>
       <n-form-item-gi :span="12" label="Status" path="status">
         <n-select v-model:value="formValue.status" size="small" :options="status" />
       </n-form-item-gi>
@@ -55,12 +37,9 @@
   import { ref } from 'vue';
   import { FormInst, useMessage } from 'naive-ui';
   import { getRecordApi, updateRecordApi } from '@src/api/endpoints';
-  import { filterRole } from '@src/filters/roles';
-  import { filterPermission } from '@src/filters/permissions';
+  import { usefilterRole } from '@src/filters/roles';
 
-  const { permissions, permissionLoading, getPermissionsOnFocus, findPermission, getPermissions } =
-    filterPermission();
-  const { roles, roleLoading, getRoles, getRolesOnFocus } = filterRole();
+  const { roles, roleLoading, getRoles, getRolesOnFocus } = usefilterRole();
   const formRef = ref<FormInst | null>(null);
   const formValue: any = ref({});
   const message: any = useMessage();
@@ -74,10 +53,8 @@
   // fetch single user using id
   getRecordApi(`/users/${props.id}`).then((res: any) => {
     formValue.value = res.result;
-    formValue.value.permissions = formValue.value.permissions.map((v: any) => v.id);
     formValue.value.roles = formValue.value.roles.map((v: any) => v.id);
     getRoles();
-    getPermissions();
   });
 
   const handleValidateClick = (e: MouseEvent) => {
@@ -95,6 +72,7 @@
       }
     });
   };
+
   const status = ref([
     {
       label: 'active',

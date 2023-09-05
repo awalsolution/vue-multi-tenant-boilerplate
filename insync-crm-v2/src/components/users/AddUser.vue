@@ -60,9 +60,9 @@
   import { ref } from 'vue';
   import { FormInst, useMessage } from 'naive-ui';
   import { createRecordApi } from '@src/api/endpoints';
-  import { filterRole } from '@src/filters/roles';
+  import { usefilterRole } from '@src/filters/roles';
 
-  const { roles, roleLoading, getRolesOnFocus } = filterRole();
+  const { roles, roleLoading, getRolesOnFocus } = usefilterRole();
   const formRef = ref<FormInst | null>(null);
   const formValue: any = ref({});
   const message: any = useMessage();

@@ -8,28 +8,19 @@
               v-model:value="searchParams.name"
               class="sm:!w-[200px]"
               clearable
-              placeholder="KeywordSearch"
-              @change="fetchList"
+              placeholder="Search by Email"
+              @keyup="fetchList"
             >
               <template #prefix>
                 <NIcon :component="SearchOutlined" class="mr-1" />
               </template>
             </NInput>
-            <NButton type="primary" :size="isMobile ? 'small' : 'medium'" @click="fetchList">
-              Search
-            </NButton>
           </div>
-          <NDatePicker
-            v-model:value="searchParams.daterange"
-            class="sm:!w-[250px]"
-            type="daterange"
-            clearable
-            input-readonly
-            @update:value="fetchList"
-          />
         </div>
         <div class="flex w-full items-center justify-between space-x-3 sm:justify-end">
           <NButton
+            secondary
+            type="info"
             :size="isMobile ? 'small' : 'medium'"
             @click="showModal = true"
             v-permission="{ action: ['can view user create'] }"
@@ -49,8 +40,6 @@
             <th class="th">Picture</th>
             <th class="th">Email</th>
             <th class="th">Role</th>
-            <!-- <th class="th">User Type</th> -->
-            <th class="th">Permissions</th>
             <th class="th">Phone#</th>
             <th class="th">Shop</th>
             <th class="th">Shop Phone#</th>
@@ -84,12 +73,6 @@
                 <n-tag v-for="role in item.roles" :key="role.id" type="success" :bordered="false">
                   {{ role?.name }}
                 </n-tag>
-              </n-space>
-            </td>
-            <!-- <td class="td" v-if="item.user_type">{{ item.user_type }}</td> -->
-            <td class="td">
-              <n-space v-for="permission in item.permissions" :key="permission.id">
-                {{ permission?.name }}
               </n-space>
             </td>
             <td class="td">{{ item?.profile?.phone_number }}</td>
@@ -275,13 +258,10 @@
 
   const actionOperation = (item: any) => {
     if (selectedOption.value === 'assign_permission') {
-      // selectedId.value = item.id;
-      // router.push(`/dashboard/system/assing-permission/${item.id}`);
       router.push({ name: 'assing-permission', query: { userId: item.id } });
     } else if (selectedOption.value === 'edit') {
       showEditModal.value = true;
       selectedId.value = item.id;
-      // router.push(`/roles/${item.id}`);
     } else if (selectedOption.value === 'delete') {
       selectedId.value = item.id;
       confirmationDialog();
