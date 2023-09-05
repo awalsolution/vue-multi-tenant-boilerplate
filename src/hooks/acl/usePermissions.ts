@@ -1,5 +1,5 @@
 import { ref } from 'vue';
-import { getPermissionsApi } from '@/api/permission/permission';
+import { getRecordsApi } from '@src/api/endpoints';
 
 /**
  * @description Paginated Data
@@ -14,11 +14,16 @@ export function usePermissions(tag = false) {
     }
     timer = setTimeout(() => {
       permissionsLoading.value = true;
-      getPermissionsApi({ name: query, pageSize: 1000 })
-        .then((result) => {
-          filteredPermissions.value = result.data;
+      getRecordsApi('/permissions', { name: query, pageSize: 1000 })
+        .then((res: any) => {
+          filteredPermissions.value = res.result.data;
           if (tag && query) {
-            if (!filteredPermissions.value.some((permission: any) => permission.name === query)) {
+            if (
+              filteredPermissions.value.some((permission: any) => {
+                // console.log('ddd', permission);
+                return permission.name === query;
+              })
+            ) {
               filteredPermissions.value.unshift({ id: 0, name: query });
             }
           }

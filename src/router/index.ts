@@ -1,73 +1,32 @@
 import { App } from 'vue';
-import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
-import { RedirectRoute } from '@/router/base';
-import { PageEnum } from '@/enums/pageEnum';
-import { createRouterGuards } from './guards';
-import type { IModuleType } from './types';
+import NProgress from 'nprogress';
+import { createRouter, createWebHistory } from 'vue-router';
+import { SiteUtils } from '@src/utils/site';
+import { processRouteTag } from '@src/router/tabs';
+import { routes } from '@src/router/routes';
 
-const modules = import.meta.glob<IModuleType>('./modules/**/*.ts', { eager: true });
+NProgress.configure({ showSpinner: false });
 
-const routeModuleList: RouteRecordRaw[] = Object.keys(modules).reduce((list, key) => {
-  const mod = modules[key].default ?? {};
-  const modList = Array.isArray(mod) ? [...mod] : [mod];
-  return [...list, ...modList];
-}, []);
-
-function sortRoute(a: any, b: any) {
-  return (a.meta?.sort ?? 0) - (b.meta?.sort ?? 0);
-}
-
-routeModuleList.sort(sortRoute);
-
-export const RootRoute: RouteRecordRaw = {
-  path: '/',
-  name: 'Root',
-  redirect: PageEnum.BASE_HOME,
-  meta: {
-    title: 'Root',
-  },
-};
-
-export const LoginRoute: RouteRecordRaw = {
-  path: '/login',
-  name: 'Login',
-  component: () => import('@/views/login/index.vue'),
-  meta: {
-    title: 'Login',
-  },
-};
-
-export const RegisterRoute: RouteRecordRaw = {
-  path: '/register',
-  name: 'Register',
-  meta: {
-    title: 'Register',
-  },
-  component: () => import('@/views/register/index.vue'),
-};
-
-// Authentication required
-export const asyncRoutes = [...routeModuleList];
-
-//Ordinary routing does not require authentication permissions
-export const constantRouter: RouteRecordRaw[] = [
-  LoginRoute,
-  RegisterRoute,
-  RootRoute,
-  RedirectRoute,
-];
-
-const router = createRouter({
+export const router = createRouter({
   history: createWebHistory(),
-  routes: constantRouter,
-  strict: true,
+  routes,
   scrollBehavior: () => ({ left: 0, top: 0 }),
 });
 
-export function setupRouter(app: App) {
-  app.use(router);
-  // Create route guards
-  createRouterGuards(router);
-}
+router.beforeEach((to, from, next) => {
+  if (to.path !== from.path) {
+    NProgress.start();
+  }
+  next();
+});
 
-export default router;
+router.afterEach((to) => {
+  SiteUtils.setDocumentTitle(to.meta.title);
+  processRouteTag(to);
+  NProgress.done();
+});
+
+export async function setupRouter(app: App) {
+  app.use(router);
+  await router.isReady();
+}

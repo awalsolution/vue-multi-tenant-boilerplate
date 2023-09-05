@@ -1,5 +1,5 @@
 import { ref } from 'vue';
-import { getCategoriesApi } from '@/api/products/categories/categories';
+import { getRecordsApi } from '@src/api/endpoints';
 
 /**
  * @description Paginated Data
@@ -14,11 +14,13 @@ export function useCategory(tag = false) {
     }
     timer = setTimeout(() => {
       categoriesLoading.value = true;
-      getCategoriesApi({ name: query, pageSize: 1000 })
-        .then((result: any) => {
-          filteredCategories.value = result.data;
+      getRecordsApi('/categories', { name: query, pageSize: 100 })
+        .then((res: any) => {
+          filteredCategories.value = res.result.data;
           if (tag && query) {
-            if (!filteredCategories.value.some((role: any) => role.name === query)) {
+            if (
+              !filteredCategories.value.some((role: any) => role.name === query)
+            ) {
               filteredCategories.value.unshift({ id: 0, name: query });
             }
           }

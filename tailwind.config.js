@@ -1,23 +1,24 @@
+const DEFAULT_FONTS = 'system-ui, -apple-system, Roboto, Helvetica Neue, Arial';
+
+/** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: ['./index.html', './src/**/*.{vue,ts,tsx}'],
+  content: ['./index.html', './src/**/*.{js,ts,jsx,tsx,vue}'],
   theme: {
     extend: {
-      zIndex: {
-        '-1': '-1',
+      fontFamily: {
+        default: [DEFAULT_FONTS],
       },
-      colors: {
-        primary: {
-          DEFAULT: '#0960bd',
-          // dark: primaryColorDark,
-        },
+      textColor: {
+        muted: '#999999',
       },
-      screens: {
-        sm: '576px',
-        md: '768px',
-        lg: '992px',
-        xl: '1200px',
-        '2xl': '1600px',
+      backgroundColor: {
+        'layout-light': '#F5F6F7',
+        'layout-dark': '#0F0F0F',
+        'default-light': '#FEFEFE',
+        'default-dark': '#36393F',
       },
     },
   },
+  plugins: [],
+  darkMode: ['class', '[data-theme="dark"]'],
 };

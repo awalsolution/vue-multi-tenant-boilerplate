@@ -1,47 +1,50 @@
 <template>
-  <NConfigProvider
-    :locale="enUS"
-    :theme="getDarkTheme"
-    :theme-overrides="getThemeOverrides"
-    :date-locale="dateEnUS"
-  >
-    <AppProvider>
-      <RouterView />
-    </AppProvider>
-  </NConfigProvider>
+  <div class="display-content bg-layout-light dark:bg-layout-dark">
+    <NConfigProvider
+      :theme="themeStore.theme"
+      :theme-overrides="themeStore.themeOverrides"
+      abstract
+      inline-theme-disabled
+    >
+      <NLoadingBarProvider>
+        <n-dialog-provider>
+          <NNotificationProvider>
+            <NMessageProvider>
+              <RouterView v-slot="{ Component }">
+                <template v-if="Component">
+                  <Transition name="router" mode="out-in">
+                    <component :is="Component" class="text-base" />
+                  </Transition>
+                </template>
+              </RouterView>
+            </NMessageProvider>
+          </NNotificationProvider>
+        </n-dialog-provider>
+      </NLoadingBarProvider>
+      <NGlobalStyle />
+    </NConfigProvider>
+  </div>
 </template>
 
-<script lang="ts" setup>
-  import { computed } from 'vue';
-  import { enUS, dateEnUS, darkTheme } from 'naive-ui';
-  import { AppProvider } from '@/components/Application';
-  import { useDesignSettingStore } from '@/store/modules/designSetting';
-  import { lighten } from '@/utils/index';
+<script setup lang="ts">
+import { useThemeStore } from '@src/store/modules/theme';
 
-  const designStore = useDesignSettingStore();
-
-  /**
-   * @type import('naive-ui').GlobalThemeOverrides
-   */
-  const getThemeOverrides = computed(() => {
-    const appTheme = designStore.appTheme;
-    const lightenStr = lighten(designStore.appTheme, 6);
-    return {
-      common: {
-        primaryColor: appTheme,
-        primaryColorHover: lightenStr,
-        primaryColorPressed: lightenStr,
-        primaryColorSuppl: appTheme,
-      },
-      LoadingBar: {
-        colorLoading: appTheme,
-      },
-    };
-  });
-
-  const getDarkTheme = computed(() => (designStore.darkTheme ? darkTheme : undefined));
+const themeStore = useThemeStore();
 </script>
 
-<style lang="less">
-  @import 'styles/index.less';
+<style scoped lang="scss">
+.router-enter-active,
+.router-leave-active {
+  transition: opacity 0.3s ease;
+}
+.router-enter-from,
+.router-leave-to {
+  opacity: 0;
+}
+
+@media print {
+  .display-content {
+    display: none;
+  }
+}
 </style>

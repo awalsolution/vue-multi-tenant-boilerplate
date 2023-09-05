@@ -1,178 +1,161 @@
 <template>
-  <div class="view-account">
-    <div class="view-account-header"></div>
-    <div class="view-account-container">
-      <!-- <div class="view-account-top"> -->
-      <div class="view-account-top-logo">
-        <!-- <img :src="websiteConfig.loginImage" alt="" /> -->
-        <n-h1>InSync CRM Login with Credentials</n-h1>
-      </div>
-      <div class="view-account-form">
-        <n-form
-          ref="formRef"
-          label-placement="left"
-          size="large"
-          :model="formInline"
-          :rules="rules"
+  <div class="login_container flex items-center justify-center h-full">
+    <n-form
+      ref="formRef"
+      label-placement="left"
+      size="large"
+      :model="formData"
+      :rules="rules"
+    >
+      <n-form-item path="email">
+        <n-input v-model:value="formData.email" placeholder="Enter Email">
+          <template #prefix>
+            <n-icon size="18" color="#808695">
+              <PersonOutline />
+            </n-icon>
+          </template>
+        </n-input>
+      </n-form-item>
+      <n-form-item path="password">
+        <n-input
+          v-model:value="formData.password"
+          type="password"
+          showPasswordOn="click"
+          placeholder="Enter Password"
         >
-          <n-form-item path="email">
-            <n-input v-model:value="formInline.email" placeholder="Enter Email">
-              <template #prefix>
-                <n-icon size="18" color="#808695">
-                  <PersonOutline />
-                </n-icon>
-              </template>
-            </n-input>
-          </n-form-item>
-          <n-form-item path="password">
-            <n-input
-              v-model:value="formInline.password"
-              type="password"
-              showPasswordOn="click"
-              placeholder="Enter Password"
-            >
-              <template #prefix>
-                <n-icon size="18" color="#808695">
-                  <LockClosedOutline />
-                </n-icon>
-              </template>
-            </n-input>
-          </n-form-item>
-          <n-form-item>
-            <n-button type="primary" @click="handleSubmit" size="large" :loading="loading" block>
-              Login
-            </n-button>
-          </n-form-item>
-        </n-form>
-      </div>
-      <div>Don't have an Account! <router-link to="/register">Register</router-link></div>
-    </div>
+          <template #prefix>
+            <n-icon size="18" color="#808695">
+              <LockClosedOutline />
+            </n-icon>
+          </template>
+        </n-input>
+      </n-form-item>
+      <n-form-item>
+        <n-button
+          type="primary"
+          @click="handleSubmit"
+          size="large"
+          :loading="loading"
+          block
+        >
+          Login
+        </n-button>
+      </n-form-item>
+    </n-form>
   </div>
 </template>
 
 <script lang="ts" setup>
-  import { reactive, ref } from 'vue';
-  import { useRoute, useRouter } from 'vue-router';
-  import { useUserStore } from '@/store/modules/user';
-  import { useMessage } from 'naive-ui';
-  import { ResultEnum } from '@/enums/httpEnum';
-  import { PersonOutline, LockClosedOutline } from '@vicons/ionicons5';
-  import { PageEnum } from '@/enums/pageEnum';
-  // import { websiteConfig } from '@/config/website.config';
-  interface FormState {
-    email: string;
-    password: string;
+import { onMounted, reactive, ref, computed } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
+import { FormValidationError, useMessage } from 'naive-ui';
+import { PersonOutline, LockClosedOutline } from '@vicons/ionicons5';
+import { useUserStore } from '@src/store/modules/user';
+import { AuthUtils } from '@src/utils/auth';
+import { useLoading } from '@src/hooks/useLoading';
+import { AuthAPI } from '@src/api/auth';
+import { RememberedAccountData } from '@src/views/login/types';
+
+const formRef = ref();
+const rememberPassword = ref(false);
+const message = useMessage();
+const userStore = useUserStore();
+const router = useRouter();
+const route = useRoute();
+const [loading, loadingDispatcher] = useLoading(false);
+
+const formData = reactive({
+  email: 'iqbal@gmail.com',
+  password: '123456',
+});
+
+const redirectUrl = computed(() => route.query.redirect as string);
+
+const handleSubmit = async () => {
+  try {
+    await formRef.value!.validate();
+  } catch (errors) {
+    const errorMessage = (errors as FormValidationError[])[0][0].message;
+    if (errorMessage) {
+      message.error(errorMessage);
+    }
+    return;
   }
 
-  const formRef = ref();
-  const message = useMessage();
-  const loading = ref(false);
-  // const autoLogin = ref(true);
-  const LOGIN_NAME = PageEnum.BASE_LOGIN_NAME;
+  if (loading.value) {
+    return;
+  }
 
-  const formInline = reactive({
-    email: 'iqbal@gmail.com',
-    password: '123456',
-    // isCaptcha: true,
-  });
+  loadingDispatcher.loading();
 
-  const rules = {
-    email: { required: true, message: 'Please Enter User Email', trigger: 'blur' },
-    password: { required: true, message: 'Please Enter Password', trigger: 'blur' },
-  };
-
-  const userStore = useUserStore();
-
-  const router = useRouter();
-  const route = useRoute();
-
-  const handleSubmit = (e: any) => {
-    e.preventDefault();
-    formRef.value.validate(async (errors: any) => {
-      if (!errors) {
-        const { email, password } = formInline;
-        message.loading('logging in...');
-        loading.value = true;
-
-        const params: FormState = {
-          email,
-          password,
-        };
-
-        try {
-          const { code, message: msg } = await userStore.login(params);
-          message.destroyAll();
-          if (code == ResultEnum.SUCCESS) {
-            const toPath = decodeURIComponent((route.query?.redirect || '/') as string);
-            message.success('Log in successfully, about to enter the system');
-            if (route.name === LOGIN_NAME) {
-              router.replace('/');
-            } else router.replace(toPath);
-          } else {
-            message.info(msg || 'Login failed');
-          }
-        } finally {
-          loading.value = false;
-        }
-      } else {
-        message.error('Please fill in the complete information and verify the verification code');
+  AuthAPI.loginApi(formData)
+    .then((res: any) => {
+      console.log(res);
+      loadingDispatcher.loaded();
+      const { token, user } = res.result || {};
+      AuthUtils.setToken(token);
+      userStore.setUser(user);
+      if (res.message) {
+        message.success(res.message);
       }
+      if (rememberPassword.value) {
+        AuthUtils.setRememberedAccount(JSON.stringify(formData));
+      } else {
+        AuthUtils.clearRememberedAccount();
+      }
+
+      if (redirectUrl.value) {
+        router.replace(redirectUrl.value);
+      } else {
+        router.replace('/');
+      }
+    })
+    .catch((err) => {
+      if (err.message) {
+        message.error(err.message);
+      }
+      loadingDispatcher.loaded();
+      formData.password = '';
     });
-  };
+};
+
+onMounted(() => {
+  const localStorageData = AuthUtils.getRememberedAccount();
+  if (localStorageData) {
+    try {
+      const { email, password } = JSON.parse(
+        localStorageData
+      ) as RememberedAccountData;
+      formData.email = email;
+      formData.password = password;
+      rememberPassword.value = true;
+    } catch {
+      message.error('Some thing went wrong try again');
+    }
+  }
+});
+
+const rules = {
+  email: {
+    required: true,
+    message: 'Please Enter User Email',
+    trigger: 'blur',
+  },
+  password: {
+    required: true,
+    message: 'Please Enter Password',
+    trigger: 'blur',
+  },
+};
 </script>
 
-<style lang="less" scoped>
-  .view-account {
-    display: flex;
-    flex-direction: column;
-    height: 100vh;
-    overflow: auto;
-
-    &-container {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      height: 100%;
-    }
-
-    &-form {
-      width: 30%;
-    }
-
-    &-top {
-      padding: 32px 0;
-      text-align: center;
-
-      &-desc {
-        font-size: 14px;
-        color: #808695;
-      }
-    }
-
-    &-other {
-      width: 100%;
-    }
-
-    .default-color {
-      color: #515a6e;
-
-      .ant-checkbox-wrapper {
-        color: #515a6e;
-      }
-    }
+<style lang="scss" scoped>
+@media (min-width: 768px) {
+  .login_container {
+    background-image: url('../../assets/images/auth/login.svg');
+    background-repeat: no-repeat;
+    background-position: 50%;
+    background-size: 100%;
   }
-
-  @media (min-width: 768px) {
-    .view-account {
-      background-image: url('../../assets/images/login.svg');
-      background-repeat: no-repeat;
-      background-position: 50%;
-      background-size: 100%;
-    }
-
-    .page-account-container {
-      padding: 32px 0 24px 0;
-    }
-  }
+}
 </style>

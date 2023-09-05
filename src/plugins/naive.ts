@@ -1,6 +1,8 @@
 import type { App } from 'vue';
 import {
   create,
+  NGlobalStyle,
+  NEllipsis,
   NMessageProvider,
   NDialogProvider,
   NConfigProvider,
@@ -66,11 +68,25 @@ import {
   NTimePicker,
   NBackTop,
   NSkeleton,
+  NGradientText,
+  NScrollbar,
+  NH1,
+  NH2,
+  NH3,
+  NFormItemGi,
 } from 'naive-ui';
 
 // https://www.naiveui.com/en-US/os-theme/docs/import-on-demand
 const naive = create({
   components: [
+    NH1,
+    NH2,
+    NH3,
+    NFormItemGi,
+    NEllipsis,
+    NScrollbar,
+    NGradientText,
+    NGlobalStyle,
     NMessageProvider,
     NDialogProvider,
     NConfigProvider,

@@ -1,54 +1,58 @@
 <template>
-  <n-form ref="formRef" :label-width="80" :model="formValue" :rules="rules" size="small">
+  <n-form
+    ref="formRef"
+    :label-width="80"
+    :model="formValue"
+    :rules="rules"
+    size="small"
+  >
     <n-form-item style="padding-top: 24px" label="Name" path="name">
       <n-input v-model:value="formValue.name" placeholder="Enter Name" />
     </n-form-item>
-    <n-form-item label="Permissions" path="permissions">
-      <permission-selector
-        v-model:value="formValue.permissions"
-        label-field="name"
-        value-field="id"
-        :tag="true"
-      />
-    </n-form-item>
     <n-space justify="end">
-      <n-form-item :theme-overrides="{ labelHeightSmall: '0', feedbackHeightSmall: '0' }">
-        <n-button type="success" @click="handleValidateClick"> Create</n-button>
+      <n-form-item
+        :theme-overrides="{ labelHeightSmall: '0', feedbackHeightSmall: '0' }"
+      >
+        <n-button secondary type="info" @click="handleValidateClick">
+          Create
+        </n-button>
       </n-form-item>
     </n-space>
   </n-form>
 </template>
 
 <script lang="ts" setup>
-  import { ref } from 'vue';
-  import { FormInst } from 'naive-ui';
-  import { createRecordApi } from '@/api';
+import { ref } from 'vue';
+import { FormInst, useMessage } from 'naive-ui';
+import { createRecordApi } from '@src/api/endpoints';
 
-  const formValue: any = ref({});
-  const formRef = ref<FormInst | null>(null);
-  const emits = defineEmits(['created']);
-  const rules = ref({
-    name: {
-      required: true,
-      message: 'Please Enter Name',
-      trigger: 'blur',
-    },
+const formValue: any = ref({});
+const formRef = ref<FormInst | null>(null);
+const emits = defineEmits(['created']);
+const message: any = useMessage();
+
+const rules = ref({
+  name: {
+    required: true,
+    message: 'Please Enter Name',
+    trigger: 'blur',
+  },
+});
+
+const handleValidateClick = (e: MouseEvent) => {
+  e.preventDefault();
+  formRef.value?.validate((errors) => {
+    if (!errors) {
+      createRecordApi('/roles', formValue.value).then((res: any) => {
+        message(res.message);
+        emits('created', res.result);
+      });
+    } else {
+      console.log(errors);
+      message.error('Please fill out required fields');
+    }
   });
-
-  const handleValidateClick = (e: MouseEvent) => {
-    e.preventDefault();
-    formRef.value?.validate((errors) => {
-      if (!errors) {
-        createRecordApi('/roles', formValue.value).then((result: any) => {
-          window['$message'].success(result.message);
-          emits('created', result.result);
-        });
-      } else {
-        console.log(errors);
-        window['$message'].error('Please fill out required fields');
-      }
-    });
-  };
+};
 </script>
 
-<style lang="less" scoped></style>
+<style lang="scss" scoped></style>

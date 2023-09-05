@@ -1,5 +1,5 @@
 import { ref } from 'vue';
-import { getAttributeListApi } from '@/api/products/attributes/attribute';
+import { getRecordsApi } from '@src/api/endpoints';
 
 /**
  * @description Paginated Data
@@ -14,11 +14,13 @@ export function useAttribute(tag = false) {
     }
     timer = setTimeout(() => {
       attributesLoading.value = true;
-      getAttributeListApi({ name: query, pageSize: 1000 })
-        .then((result) => {
-          filteredAttributes.value = result.data;
+      getRecordsApi('/attributes', { name: query, pageSize: 100 })
+        .then((res: any) => {
+          filteredAttributes.value = res.result.data;
           if (tag && query) {
-            if (!filteredAttributes.value.some((role: any) => role.name === query)) {
+            if (
+              !filteredAttributes.value.some((role: any) => role.name === query)
+            ) {
               filteredAttributes.value.unshift({ id: 0, name: query });
             }
           }

@@ -1,8 +1,12 @@
 <template>
-  <n-card title="Profile" v-permission="{ action: ['can view user profile'] }">
+  <n-card title="Profile">
     <n-row>
       <n-col :span="8" class="text-center">
-        <n-avatar round :size="200" :src="`${imgUrl}${profileData.profile_picture}`" />
+        <n-avatar
+          round
+          :size="200"
+          :src="`${imgUrl}${profileData.profile_picture}`"
+        />
       </n-col>
       <n-col :span="16">
         <n-space style="display: block" vertical>
@@ -46,12 +50,20 @@
               </n-col>
               <n-col :span="8">
                 <n-form-item label="City" path="city">
-                  <n-input v-model:value="profileData.city" placeholder="Enter City" disabled />
+                  <n-input
+                    v-model:value="profileData.city"
+                    placeholder="Enter City"
+                    disabled
+                  />
                 </n-form-item>
               </n-col>
               <n-col :span="8">
                 <n-form-item label="State" path="state">
-                  <n-input v-model:value="profileData.state" placeholder="Enter State" disabled />
+                  <n-input
+                    v-model:value="profileData.state"
+                    placeholder="Enter State"
+                    disabled
+                  />
                 </n-form-item>
               </n-col>
               <n-col :span="8">
@@ -67,12 +79,20 @@
           </n-card>
         </n-space>
         <n-space justify="end">
-          <n-form-item :theme-overrides="{ feedbackHeightSmall: '0' }">
-            <n-button type="success" @click="handleValidateClick"> Edit Profile</n-button>
+          <n-form-item
+            :theme-overrides="{
+              labelHeightSmall: '0',
+              feedbackHeightSmall: '0',
+            }"
+          >
+            <n-button type="success" @click="handleValidateClick">
+              Edit Profile</n-button
+            >
           </n-form-item>
         </n-space>
       </n-col>
     </n-row>
+
     <n-modal style="width: 70%" v-model:show="showEditModal" preset="dialog">
       <template #header>
         <div>Edit Profile</div>
@@ -85,24 +105,23 @@
 </template>
 
 <script lang="ts" setup>
-  import { onMounted, ref } from 'vue';
-  import { useUserStore } from '@/store/modules/user';
-  import EditProfile from '@/views/users/EditProfile.vue';
-  import { useGlobSetting } from '@/hooks/setting';
+import { onMounted, ref } from 'vue';
+import { useUserStore } from '@src/store/modules/user';
+import { useEnv } from '@src/hooks/useEnv';
+import EditProfile from '@src/views/users/EditProfile.vue';
 
-  const globSetting = useGlobSetting();
-  const { imgUrl } = globSetting;
-  const profileData: any = ref({});
-  const userStore = useUserStore();
-  const showEditModal = ref(false);
+const { imgUrl } = useEnv();
+const userStore = useUserStore();
+const showEditModal = ref(false);
+const profileData: any = ref({});
 
-  const handleValidateClick = (e: MouseEvent) => {
-    e.preventDefault();
-    showEditModal.value = true;
-  };
-
-  onMounted(() => {
-    profileData.value = userStore.info.profile;
-  });
+const handleValidateClick = (e: MouseEvent) => {
+  e.preventDefault();
+  showEditModal.value = true;
+};
+console.log(profileData);
+onMounted(() => {
+  profileData.value = userStore.user.profile;
+});
 </script>
-<style lang="less" scoped></style>
+<style lang="scss" scoped></style>

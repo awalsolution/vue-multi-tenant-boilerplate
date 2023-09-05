@@ -1,5 +1,5 @@
 import { ref } from 'vue';
-import { getRolesApi } from '@/api/role/role';
+import { getRecordsApi } from '@src/api/endpoints';
 
 /**
  * @description Paginated Data
@@ -14,9 +14,9 @@ export function useRoles(tag = false) {
     }
     timer = setTimeout(() => {
       rolesLoading.value = true;
-      getRolesApi({ name: query, pageSize: 1000 })
-        .then((result) => {
-          filteredRoles.value = result.data;
+      getRecordsApi('/roles', { name: query, pageSize: 1000 })
+        .then((res: any) => {
+          filteredRoles.value = res.result.data;
           if (tag && query) {
             if (!filteredRoles.value.some((role: any) => role.name === query)) {
               filteredRoles.value.unshift({ id: 0, name: query });
