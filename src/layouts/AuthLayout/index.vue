@@ -31,21 +31,21 @@
 import { onBeforeMount } from 'vue';
 import { useRouter } from 'vue-router';
 import { useEnv } from '@src/hooks/useEnv';
-import { useUserStore } from '@src/store/modules/user';
+import { useUsersStore } from '@src/store/modules/users';
 import { AuthUtils } from '@src/utils/auth';
 import ThemeSwitchDevTool from '@src/components/ThemeSwitchDevTool/index.vue';
 
 const { version, appTitle } = useEnv();
 
-const userStore = useUserStore();
+const usersStore = useUsersStore();
 const router = useRouter();
 
 const checkLogin = () => {
   if (AuthUtils.isAuthenticated()) {
     router.replace('/');
   } else {
-    console.log('check login on auth layout component');
-    userStore.clearUser();
+    console.log('check login on authlayout component');
+    usersStore.clearCurrentUser();
   }
 };
 

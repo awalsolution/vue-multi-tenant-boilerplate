@@ -1,6 +1,5 @@
 export interface User {
   id?: number;
-  username?: string;
   email?: string;
   phoneNumber?: string;
   name?: string;
@@ -20,7 +19,7 @@ export interface User {
   enabled?: boolean;
   createdAt?: string;
   roles?: string[];
-  authTypes?: string[];
+  permissions?: string[];
 }
 
 export type Gender = 0 | 1;

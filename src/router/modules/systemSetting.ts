@@ -37,6 +37,27 @@ export const routes: RouteRecordRaw = {
       component: () => import('@src/views/users/Profile.vue'),
     },
     {
+      path: 'shop',
+      name: `${routeName}_shop`,
+      meta: {
+        title: 'Shop',
+        permissions: ['can view profile'],
+        hidden: true,
+      },
+      component: () => import('@src/views/users/UserShop.vue'),
+    },
+    {
+      path: 'assing-permission',
+      name: `${routeName}_assing_permission`,
+      meta: {
+        title: 'Assing Permission',
+        permissions: ['can view profile'],
+        hidden: true,
+      },
+      component: () =>
+        import('@src/components/permission/AssignPermissions.vue'),
+    },
+    {
       path: 'role',
       name: `${routeName}_role`,
       meta: {

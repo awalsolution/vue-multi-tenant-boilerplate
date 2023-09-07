@@ -35,25 +35,25 @@ import Sidebar from '@src/layouts/components/Sidebar/index.vue';
 import Header from '@src/layouts/components/Header/index.vue';
 import Tabs from '@src/layouts/components/Tabs/index.vue';
 import Footer from '@src/layouts/components/Footer/index.vue';
-import { useUserStore } from '@src/store/modules/user';
+import { useUsersStore } from '@src/store/modules/users';
 import { AuthUtils } from '@src/utils/auth';
-import { AuthAPI } from '@src/api/auth';
+import { useMessage } from 'naive-ui';
 
-const userStore = useUserStore();
+const usersStore = useUsersStore();
 const router = useRouter();
+const message: any = useMessage();
 
 const loading = ref(true);
-
 const checkLogin = async () => {
   console.log('Token are in local storage ===>', AuthUtils.isAuthenticated());
   if (AuthUtils.isAuthenticated()) {
-    if (!userStore.hasData()) {
-      const { result }: any = (await AuthAPI.getUserInfoApi()) || {};
-      userStore.setUser(result);
+    if (!usersStore.getCurrentUser.id) {
+      const res: any = (await usersStore.getUserInfo()) || {};
+      message.success(res.message);
     }
     loading.value = false;
   } else {
-    userStore.clearUser();
+    usersStore.clearCurrentUser();
     router.replace({
       path: '/login',
     });

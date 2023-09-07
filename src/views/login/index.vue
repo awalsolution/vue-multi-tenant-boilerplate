@@ -50,16 +50,18 @@ import { onMounted, reactive, ref, computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { FormValidationError, useMessage } from 'naive-ui';
 import { PersonOutline, LockClosedOutline } from '@vicons/ionicons5';
-import { useUserStore } from '@src/store/modules/user';
+// import { useUserStore } from '@src/store/modules/user';
+import { useUsersStore } from '@src/store/modules/users';
 import { AuthUtils } from '@src/utils/auth';
 import { useLoading } from '@src/hooks/useLoading';
-import { AuthAPI } from '@src/api/auth';
+// import { AuthAPI } from '@src/api/auth';
 import { RememberedAccountData } from '@src/views/login/types';
 
 const formRef = ref();
 const rememberPassword = ref(false);
 const message = useMessage();
-const userStore = useUserStore();
+// const userStore = useUserStore();
+const usersStore = useUsersStore();
 const router = useRouter();
 const route = useRoute();
 const [loading, loadingDispatcher] = useLoading(false);
@@ -88,13 +90,15 @@ const handleSubmit = async () => {
 
   loadingDispatcher.loading();
 
-  AuthAPI.loginApi(formData)
+  console.log('usersStore =>', usersStore);
+
+  usersStore
+    .login(formData)
     .then((res: any) => {
-      console.log(res);
+      // console.log(res);
       loadingDispatcher.loaded();
-      const { token, user } = res.result || {};
+      const { token } = res.result || {};
       AuthUtils.setToken(token);
-      userStore.setUser(user);
       if (res.message) {
         message.success(res.message);
       }

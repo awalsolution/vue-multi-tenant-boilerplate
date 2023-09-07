@@ -2,7 +2,7 @@ import { ref } from 'vue';
 import { getRecordsApi } from '@src/api/endpoints';
 import { isEmpty } from 'lodash';
 
-export function filterMenu() {
+export function usefilterMenu() {
   const menus: any = ref([]);
   const menuLoading = ref(false);
   const menusInitialized = ref(false);
@@ -28,10 +28,10 @@ export function filterMenu() {
   async function getMenusOnFocus() {
     if (!menusInitialized.value) {
       await getMenus();
+      console.log('menus list =>', menus);
       menusInitialized.value = true;
     }
   }
-
   return {
     menus,
     menuLoading,
