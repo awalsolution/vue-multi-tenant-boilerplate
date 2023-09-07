@@ -18,7 +18,7 @@
     <n-tabs
       type="card"
       size="medium"
-      default-value="Dashbaord"
+      default-value="Dashboard"
       pane-class="border-x border-b overflow-scroll h-full"
       class="sticky top-0 h-full overflow-scroll"
     >

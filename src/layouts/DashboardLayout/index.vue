@@ -59,6 +59,7 @@ const checkLogin = async () => {
     });
     loading.value = false;
   }
+  loading.value = false;
 };
 
 onBeforeMount(() => checkLogin());

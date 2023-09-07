@@ -28,6 +28,7 @@
 
 <script setup lang="ts">
 import { useThemeStore } from '@src/store/modules/theme';
+import { NGlobalStyle } from 'naive-ui';
 
 const themeStore = useThemeStore();
 </script>

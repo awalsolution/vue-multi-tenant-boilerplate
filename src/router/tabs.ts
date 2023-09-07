@@ -6,7 +6,6 @@ export const processRouteTag = (to: RouteLocationNormalized) => {
   if (to.meta?.dismissTab) {
     return;
   }
-
   const tagStore = useTabStore();
   tagStore.addTab({
     href: to.path,

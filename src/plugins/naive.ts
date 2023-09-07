@@ -1,7 +1,6 @@
 import type { App } from 'vue';
 import {
   create,
-  NGlobalStyle,
   NEllipsis,
   NMessageProvider,
   NDialogProvider,
@@ -86,7 +85,6 @@ const naive = create({
     NEllipsis,
     NScrollbar,
     NGradientText,
-    NGlobalStyle,
     NMessageProvider,
     NDialogProvider,
     NConfigProvider,

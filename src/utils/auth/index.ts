@@ -3,7 +3,7 @@ export class AuthUtils {
 
   static LOCAL_STORAGE_REMEMBERED_ACCOUNT = 'user_password';
 
-  static getToken() {
+  static getToken(): any {
     return localStorage.getItem(this.LOCAL_STORAGE_TOKEN);
   }
 
