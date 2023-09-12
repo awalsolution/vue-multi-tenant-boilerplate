@@ -30,16 +30,17 @@
 <script setup lang="ts">
 import { ref, onBeforeMount } from 'vue';
 import { useRouter } from 'vue-router';
+import { useMessage } from 'naive-ui';
 import GlobalLoading from '@src/components/GlobalLoading/index.vue';
 import Sidebar from '@src/layouts/components/Sidebar/index.vue';
 import Header from '@src/layouts/components/Header/index.vue';
 import Tabs from '@src/layouts/components/Tabs/index.vue';
 import Footer from '@src/layouts/components/Footer/index.vue';
-import { useUsersStore } from '@src/store/modules/users';
+import { useUserStore } from '@src/store/modules/user';
 import { AuthUtils } from '@src/utils/auth';
-import { useMessage } from 'naive-ui';
+import { AuthAPI } from '@src/api/auth';
 
-const usersStore = useUsersStore();
+const userStore = useUserStore();
 const router = useRouter();
 const message: any = useMessage();
 
@@ -47,13 +48,14 @@ const loading = ref(true);
 const checkLogin = async () => {
   console.log('Token are in local storage ===>', AuthUtils.isAuthenticated());
   if (AuthUtils.isAuthenticated()) {
-    if (!usersStore.getCurrentUser.id) {
-      const res: any = (await usersStore.getUserInfo()) || {};
-      message.success(res.message);
+    if (!userStore.hasData()) {
+      const { result }: any = (await AuthAPI.getUserInfoApi()) || {};
+      userStore.setCurrentUser(result);
+      message.success('Current User Authenticated Successfully!');
     }
     loading.value = false;
   } else {
-    usersStore.clearCurrentUser();
+    userStore.clearCurrentUser();
     router.replace({
       path: '/login',
     });

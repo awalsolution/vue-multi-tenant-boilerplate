@@ -31,13 +31,13 @@
 import { onBeforeMount } from 'vue';
 import { useRouter } from 'vue-router';
 import { useEnv } from '@src/hooks/useEnv';
-import { useUsersStore } from '@src/store/modules/users';
+import { useUserStore } from '@src/store/modules/user';
 import { AuthUtils } from '@src/utils/auth';
 import ThemeSwitchDevTool from '@src/components/ThemeSwitchDevTool/index.vue';
 
 const { version, appTitle } = useEnv();
 
-const usersStore = useUsersStore();
+const usersStore = useUserStore();
 const router = useRouter();
 
 const checkLogin = () => {

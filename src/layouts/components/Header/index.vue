@@ -69,18 +69,18 @@
         </NTooltip>
       </template> -->
       <!-- :src="userStore.user.avatarUrl" -->
-      <template v-if="usersStore.hasData">
+      <template v-if="userStore.hasData()">
         <NDropdown
           trigger="click"
           :options="userOptions"
           @select="selectUserOption"
         >
-          <template v-if="usersStore.getCurrentUser.profile.profile_picture">
+          <template v-if="userStore.currentUser.profile.profile_picture">
             <NAvatar
               class="cursor-pointer select-none shadow-md !transition-all hover:opacity-90 active:opacity-70"
               round
               size="small"
-              :src="`${imgUrl}${usersStore.getCurrentUser.profile.profile_picture}`"
+              :src="`${imgUrl}${userStore.currentUser.profile.profile_picture}`"
             />
           </template>
           <template v-else>
@@ -112,7 +112,7 @@ import {
 } from '@vicons/ionicons5';
 import { useThemeStore } from '@src/store/modules/theme';
 import { useSidebarStore } from '@src/store/modules/sidebar';
-import { useUsersStore } from '@src/store/modules/users';
+import { useUserStore } from '@src/store/modules/user';
 import Breadcrumb from '@src/components/Breadcrumb/index.vue';
 import { useEnv } from '@src/hooks/useEnv';
 import { BrowserUtils } from '@src/utils/browser';
@@ -124,14 +124,14 @@ const { renderIcon } = RenderUtils;
 
 const themeStore = useThemeStore();
 const sidebarStore = useSidebarStore();
-const usersStore = useUsersStore();
+const userStore = useUserStore();
 const router = useRouter();
 const message = useMessage();
 // const { isFullscreen, toggle: toggleFullscreen } = useFullscreen();
 
 const logout = async () => {
   return await router.replace('/login').then(async () => {
-    const res = await usersStore.logout();
+    const res = userStore.logout();
     message.success(res.message);
   });
 };
@@ -199,7 +199,7 @@ function renderCustomHeader() {
       h(NAvatar, {
         round: true,
         style: 'margin-right: 12px;',
-        src: `${imgUrl}${usersStore.getCurrentUser.profile.profile_picture}`,
+        src: `${imgUrl}${userStore.currentUser.profile.profile_picture}`,
       }),
       h('div', null, [
         h('div', null, [
@@ -209,16 +209,16 @@ function renderCustomHeader() {
             {
               default: () =>
                 `${
-                  usersStore.getCurrentUser.profile.first_name +
+                  userStore.currentUser.profile.first_name +
                   ' ' +
-                  usersStore.getCurrentUser.profile.last_name
+                  userStore.currentUser.profile.last_name
                 }`,
             }
           ),
         ]),
         h('div', null, {
           style: 'font-size: 12px;',
-          default: () => `${usersStore.getCurrentUser.email}`,
+          default: () => `${userStore.currentUser.email}`,
         }),
       ]),
     ]

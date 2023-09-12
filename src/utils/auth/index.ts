@@ -35,3 +35,21 @@ export class AuthUtils {
     localStorage.removeItem(this.LOCAL_STORAGE_REMEMBERED_ACCOUNT);
   }
 }
+
+const TOKEN = 'access_token';
+
+export const getToken = () => {
+  return localStorage.getItem(TOKEN);
+};
+
+export const setToken = (token: string) => {
+  localStorage.setItem(TOKEN, token);
+};
+
+export const clearToken = () => {
+  localStorage.removeItem(TOKEN);
+};
+
+export const isAuthenticated = (): boolean => {
+  return !!localStorage.getItem(TOKEN);
+};

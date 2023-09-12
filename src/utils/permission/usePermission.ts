@@ -1,5 +1,4 @@
 import { useUserStore } from '@src/store/modules/user';
-import {} from '@src/store/modules/users';
 
 export function usePermission() {
   const userStore = useUserStore();
@@ -22,7 +21,7 @@ export function usePermission() {
   function hasPermission(accesses: string[]): boolean {
     if (!accesses || !accesses.length) return true;
     if (
-      userStore.user.roles.map((role: any) => {
+      userStore.currentUser.roles.map((role: any) => {
         role.name === 'super admin';
       })
     ) {
