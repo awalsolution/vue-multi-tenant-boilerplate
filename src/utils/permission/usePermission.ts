@@ -21,7 +21,7 @@ export function usePermission() {
   function hasPermission(accesses: string[]): boolean {
     if (!accesses || !accesses.length) return true;
     if (
-      userStore.user.roles.map((role: any) => {
+      userStore.currentUser.roles.map((role: any) => {
         role.name === 'super admin';
       })
     ) {

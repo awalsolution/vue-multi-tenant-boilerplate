@@ -42,13 +42,16 @@
           ref="menuInstRef"
           :collapsed-icon-size="20"
           :collapsed="sidebarStore.isCollapse"
-          :options="menuData"
+          :value="defaultPath"
+          :options="menuOptions"
+          :default-value="defaultPath"
+          :expanded-keys="defaultExpandKeys"
           :collapsed-width="64"
           :root-indent="18"
           :indent="26"
-          :value="selectedKey"
-          :accordion="accordion"
-          @update:value="handleChangeMenu"
+          accordion
+          @update:value="onMenuClick"
+          @update:expanded-keys="onMenuExpandedKeysClick"
         />
       </NScrollbar>
     </div>
@@ -81,93 +84,70 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from 'vue';
+import { onMounted, ref, watch, shallowReactive } from 'vue';
 import { MenuFoldOutlined } from '@vicons/antd';
-import { MenuInst, useMessage } from 'naive-ui';
-import { useRoute, useRouter } from 'vue-router';
-import { menuOptions } from '@src/constants/sidebarItems';
+import { MenuInst, MenuOption } from 'naive-ui';
+import { useRoute, useRouter, RouteRecordNormalized } from 'vue-router';
 import { useSidebarStore } from '@src/store/modules/sidebar';
 import { useEnv } from '@src/hooks/useEnv';
 import { usePermission } from '@src/utils/permission/usePermission';
+import { isExternal } from '@src/utils/common/is';
+import { asyncRoutes } from '@src/router';
+import { transfromMenu } from '@src/utils/router/transformMenu';
 
-const route = useRoute();
 const router = useRouter();
-const { hasPermission } = usePermission();
-
 const { appTitle } = useEnv();
-const message: any = useMessage();
+const { hasPermission } = usePermission();
 const sidebarStore = useSidebarStore();
 const menuInstRef = ref<MenuInst | null>(null);
+const menuOptions = shallowReactive([] as Array<MenuOption>);
+const defaultPath = ref('');
+const defaultExpandKeys = ref<Array<string>>([]);
+const currentRoute = useRoute();
+defaultPath.value = currentRoute.fullPath;
+handleExpandPath();
 
-function filterMenuOptions(menuOptions: any): any {
-  return menuOptions.filter((option: any) => {
-    if (hasPermission(option.permissions)) {
-      if (option.children && option.children.length > 0) {
-        option.children = filterMenuOptions(option.children); // Recursively filter children
-      }
-      return true;
-    }
-    return false;
-  });
+function handleMenu(routes?: Array<RouteRecordNormalized>) {
+  menuOptions.length = 0;
+  const tempMenus = transfromMenu(routes || []);
+  menuOptions.push(...tempMenus);
 }
 
-const menuData = ref(filterMenuOptions(menuOptions));
-
-const selectedKey = ref();
-const accordion = ref(false);
-
-const handleChangeRouter = () => {
-  selectedKey.value = route.name;
-  menuInstRef.value?.showOption(route.name as string);
-  // console.log('handle change with selected key', menuInstRef);
-};
-
-// const handleChangeMenu = (key: string, item: MenuOption) => {
-//   // console.log('item ==>', item);
-//   if (item.children) {
-//     return;
-//   }
-//   // console.log('route key', key);
-//   router.push({ name: key });
-// };
-
-// const handleChangeMenu = (key: string, item: any) => {
-//   if (item.children || hasPermission(item.permissions)) {
-//     router.push({ name: key });
-//   } else {
-//     // Handle no permission case (e.g., show an error message)
-//     console.log('User does not have permission for this menu item.');
-//   }
-// };
-
-const handleChangeMenu = (key: string, item: any) => {
-  if (!item) {
-    return;
-  }
-  if (hasPermission(item.permissions)) {
-    if (item.children) {
-      const hasPermissionForChildren = item.children.every((childItem: any) =>
-        hasPermission(childItem.permissions)
-      );
-
-      if (hasPermissionForChildren) {
-        router.push({ name: key });
+function handleExpandPath() {
+  const keys = defaultPath.value.split('/');
+  const results = keys
+    .filter((it) => !!it)
+    .reduce((pre, cur) => {
+      const lastItem = pre[pre.length - 1];
+      if (!lastItem) {
+        pre.push('/' + cur);
       } else {
-        message.error('User does not have permission for child Route.');
+        pre.push(lastItem + '/' + cur);
       }
-    } else {
-      router.push({ name: key });
-    }
-  } else {
-    message.error('User does not have permission for this Route.');
-  }
-};
-
+      return pre;
+    }, [] as string[]);
+  defaultExpandKeys.value = Array.from(
+    new Set([...defaultExpandKeys.value, ...results])
+  );
+}
+function onMenuClick(key: string, item: any) {
+  if (isExternal(key)) return;
+  router.push({ name: item.name });
+}
+function onMenuExpandedKeysClick(keys: string[]) {
+  defaultExpandKeys.value = keys;
+}
 watch(
-  () => route.name,
-  () => handleChangeRouter(),
-  { immediate: true }
+  () => currentRoute.fullPath,
+  (newVal) => {
+    defaultPath.value = newVal;
+    handleExpandPath();
+  }
 );
+
+onMounted(() => {
+  handleMenu(asyncRoutes);
+});
 </script>
 
 <style scoped lang="scss">

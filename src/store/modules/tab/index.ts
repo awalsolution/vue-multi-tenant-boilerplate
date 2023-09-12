@@ -2,7 +2,7 @@ import { defineStore } from 'pinia';
 import type { Tab } from '@src/types/tab';
 import { ref } from 'vue';
 
-export const useTabStore = defineStore('tab', () => {
+export const useTabStore = defineStore('app-tab', () => {
   const tabs = ref<Tab[]>([]);
 
   const addTab = (tab: Tab) => {

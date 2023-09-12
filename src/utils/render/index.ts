@@ -33,3 +33,19 @@ export class RenderUtils {
       );
   }
 }
+
+export const renderIcon = (icon: any, size = 16, options?: any) => {
+  if (icon !== undefined) {
+    return () =>
+      h(
+        NIcon,
+        {
+          size,
+          ...options,
+        },
+        {
+          default: () => h(icon),
+        }
+      );
+  }
+};

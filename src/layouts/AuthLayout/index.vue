@@ -37,15 +37,15 @@ import ThemeSwitchDevTool from '@src/components/ThemeSwitchDevTool/index.vue';
 
 const { version, appTitle } = useEnv();
 
-const userStore = useUserStore();
+const usersStore = useUserStore();
 const router = useRouter();
 
 const checkLogin = () => {
   if (AuthUtils.isAuthenticated()) {
     router.replace('/');
   } else {
-    console.log('check login on auth layout component');
-    userStore.clearUser();
+    console.log('check login on authlayout component');
+    usersStore.clearCurrentUser();
   }
 };
 

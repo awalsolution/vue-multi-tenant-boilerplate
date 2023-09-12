@@ -288,7 +288,10 @@ function deleteOperation() {
 
 const actionOperation = (item: any) => {
   if (selectedOption.value === 'assign_permission') {
-    router.push({ name: 'assing-permission', query: { userId: item.id } });
+    router.push({
+      name: 'system_assing_permission',
+      query: { userId: item.id },
+    });
   } else if (selectedOption.value === 'edit') {
     showEditModal.value = true;
     selectedId.value = item.id;

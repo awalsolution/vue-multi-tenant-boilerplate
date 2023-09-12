@@ -2,7 +2,7 @@ import { defineStore } from 'pinia';
 import { ref } from 'vue';
 import { BrowserUtils } from '@src/utils/browser';
 
-export const useSidebarStore = defineStore('sidebar', () => {
+export const useSidebarStore = defineStore('app-sidebar', () => {
   const isCollapse = ref(false);
 
   const isDisplay = ref(!BrowserUtils.isMobileDevice());

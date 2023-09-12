@@ -30,6 +30,7 @@
 <script setup lang="ts">
 import { ref, onBeforeMount } from 'vue';
 import { useRouter } from 'vue-router';
+import { useMessage } from 'naive-ui';
 import GlobalLoading from '@src/components/GlobalLoading/index.vue';
 import Sidebar from '@src/layouts/components/Sidebar/index.vue';
 import Header from '@src/layouts/components/Header/index.vue';
@@ -41,24 +42,26 @@ import { AuthAPI } from '@src/api/auth';
 
 const userStore = useUserStore();
 const router = useRouter();
+const message: any = useMessage();
 
 const loading = ref(true);
-
 const checkLogin = async () => {
   console.log('Token are in local storage ===>', AuthUtils.isAuthenticated());
   if (AuthUtils.isAuthenticated()) {
     if (!userStore.hasData()) {
       const { result }: any = (await AuthAPI.getUserInfoApi()) || {};
-      userStore.setUser(result);
+      userStore.setCurrentUser(result);
+      message.success('Current User Authenticated Successfully!');
     }
     loading.value = false;
   } else {
-    userStore.clearUser();
+    userStore.clearCurrentUser();
     router.replace({
       path: '/login',
     });
     loading.value = false;
   }
+  loading.value = false;
 };
 
 onBeforeMount(() => checkLogin());

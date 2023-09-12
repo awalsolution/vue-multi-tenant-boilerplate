@@ -94,7 +94,7 @@ const handleSubmit = async () => {
       loadingDispatcher.loaded();
       const { token, user } = res.result || {};
       AuthUtils.setToken(token);
-      userStore.setUser(user);
+      userStore.setCurrentUser(user);
       if (res.message) {
         message.success(res.message);
       }

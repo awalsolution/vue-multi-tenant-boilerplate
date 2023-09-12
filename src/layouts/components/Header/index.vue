@@ -75,12 +75,12 @@
           :options="userOptions"
           @select="selectUserOption"
         >
-          <template v-if="userStore.user.profile.profile_picture">
+          <template v-if="userStore.currentUser.profile.profile_picture">
             <NAvatar
               class="cursor-pointer select-none shadow-md !transition-all hover:opacity-90 active:opacity-70"
               round
               size="small"
-              :src="`${imgUrl}${userStore.user.profile.profile_picture}`"
+              :src="`${imgUrl}${userStore.currentUser.profile.profile_picture}`"
             />
           </template>
           <template v-else>
@@ -116,7 +116,6 @@ import { useUserStore } from '@src/store/modules/user';
 import Breadcrumb from '@src/components/Breadcrumb/index.vue';
 import { useEnv } from '@src/hooks/useEnv';
 import { BrowserUtils } from '@src/utils/browser';
-import { AuthUtils } from '@src/utils/auth';
 import { RenderUtils } from '@src/utils/render';
 
 const { teamGitHubURL, imgUrl } = useEnv();
@@ -131,10 +130,9 @@ const message = useMessage();
 // const { isFullscreen, toggle: toggleFullscreen } = useFullscreen();
 
 const logout = async () => {
-  return await router.replace('/login').then(() => {
-    message.success('Logout Successfully');
-    userStore.clearUser();
-    AuthUtils.clearToken();
+  return await router.replace('/login').then(async () => {
+    const res = userStore.logout();
+    message.success(res.message);
   });
 };
 
@@ -146,13 +144,13 @@ const selectUserOption = (key: UserOptionKey) => {
       logout();
       break;
     case 'profile':
-      router.push({ name: 'user_profile' });
+      router.push({ name: 'system_profile' });
       break;
     case 'change-password':
       router.push('/change-password');
       break;
     case 'shop_setting':
-      router.push({ name: 'user_shop' });
+      router.push({ name: 'system_shop' });
       break;
     default:
       break;
@@ -201,7 +199,7 @@ function renderCustomHeader() {
       h(NAvatar, {
         round: true,
         style: 'margin-right: 12px;',
-        src: `${imgUrl}${userStore.user.profile.profile_picture}`,
+        src: `${imgUrl}${userStore.currentUser.profile.profile_picture}`,
       }),
       h('div', null, [
         h('div', null, [
@@ -211,16 +209,16 @@ function renderCustomHeader() {
             {
               default: () =>
                 `${
-                  userStore.user.profile.first_name +
+                  userStore.currentUser.profile.first_name +
                   ' ' +
-                  userStore.user.profile.last_name
+                  userStore.currentUser.profile.last_name
                 }`,
             }
           ),
         ]),
         h('div', null, {
           style: 'font-size: 12px;',
-          default: () => `${userStore.user.email}`,
+          default: () => `${userStore.currentUser.email}`,
         }),
       ]),
     ]
