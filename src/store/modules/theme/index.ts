@@ -6,7 +6,7 @@ import { darkThemeOverrides, lightThemeOverrides } from '@src/constants/theme';
 import type { Theme } from '@src/types/theme';
 import { ThemeUtils } from '@src/utils/theme';
 
-export const useThemeStore = defineStore('theme', () => {
+export const useThemeStore = defineStore('app-theme', () => {
   const themeMode = ref<Theme>(ThemeUtils.getDefaultThemeMode());
 
   const theme = computed(() =>

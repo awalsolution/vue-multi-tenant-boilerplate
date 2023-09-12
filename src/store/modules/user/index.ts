@@ -2,7 +2,7 @@ import { ref } from 'vue';
 import { defineStore } from 'pinia';
 import { AuthUtils } from '@src/utils/auth';
 
-export const useUserStore = defineStore('user', () => {
+export const useUserStore = defineStore('app-user', () => {
   const currentUser = ref<any>({});
   const permissions: any = ref([]);
 
