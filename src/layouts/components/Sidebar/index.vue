@@ -90,14 +90,12 @@ import { MenuInst, MenuOption } from 'naive-ui';
 import { useRoute, useRouter, RouteRecordNormalized } from 'vue-router';
 import { useSidebarStore } from '@src/store/modules/sidebar';
 import { useEnv } from '@src/hooks/useEnv';
-import { usePermission } from '@src/utils/permission/usePermission';
 import { isExternal } from '@src/utils/common/is';
 import { asyncRoutes } from '@src/router';
 import { transfromMenu } from '@src/utils/router/transformMenu';
 
 const router = useRouter();
 const { appTitle } = useEnv();
-const { hasPermission } = usePermission();
 const sidebarStore = useSidebarStore();
 const menuInstRef = ref<MenuInst | null>(null);
 const menuOptions = shallowReactive([] as Array<MenuOption>);
