@@ -1,26 +1,15 @@
 <template>
-  <n-form
-    ref="generalInfoFormRef"
-    :model="generalInfo"
-    size="small"
-    :loading="loading"
-  >
+  <n-form ref="generalInfoFormRef" :model="generalInfo" size="small" :loading="loading">
     <n-space :vertical="true" class="p-3">
       <n-row :gutter="10">
         <n-col :span="6">
           <n-form-item label="Product Title" path="title">
-            <n-input
-              v-model:value="generalInfo.title"
-              placeholder="Enter Product Title"
-            />
+            <n-input v-model:value="generalInfo.title" placeholder="Enter Product Title" />
           </n-form-item>
         </n-col>
         <n-col :span="6">
           <n-form-item label="Product Code" path="product_code">
-            <n-input
-              v-model:value="generalInfo.product_code"
-              placeholder="Enter Product Code"
-            />
+            <n-input v-model:value="generalInfo.product_code" placeholder="Enter Product Code" />
           </n-form-item>
         </n-col>
         <n-col :span="6">
@@ -60,15 +49,8 @@
         </n-col>
       </n-row>
       <n-space justify="end">
-        <n-form-item
-          :theme-overrides="{ labelHeightSmall: '0', feedbackHeightSmall: '0' }"
-        >
-          <n-button
-            secondary
-            type="info"
-            size="medium"
-            @click="handleValidateClick"
-          >
+        <n-form-item :theme-overrides="{ labelHeightSmall: '0', feedbackHeightSmall: '0' }">
+          <n-button secondary type="info" size="medium" @click="handleValidateClick">
             Update
           </n-button>
         </n-form-item>
@@ -79,7 +61,7 @@
 
 <script lang="ts" setup>
 import { ref, unref } from 'vue';
-import { FormInst, useMessage } from 'naive-ui';
+import { type FormInst, useMessage } from 'naive-ui';
 import { updateRecordApi } from '@src/api/endpoints';
 import { SingleCategorySelector } from '@src/components/products/categories/selector';
 import { SingleImageUploader } from '@src/components/upload';
@@ -107,10 +89,7 @@ const handleValidateClick = (e: MouseEvent) => {
   generalInfoFormRef.value?.validate((errors) => {
     if (!errors) {
       loadingDispatcher.loading();
-      updateRecordApi(
-        `/products/${generalInfo.value.id}`,
-        generalInfo.value
-      ).then((res: any) => {
+      updateRecordApi(`/products/${generalInfo.value.id}`, generalInfo.value).then((res: any) => {
         message.success(res.message);
         loadingDispatcher.loaded();
       });
@@ -124,12 +103,12 @@ const handleValidateClick = (e: MouseEvent) => {
 const status = [
   {
     label: 'Active',
-    value: 'active',
+    value: 'active'
   },
   {
     label: 'Draft',
-    value: 'draft',
-  },
+    value: 'draft'
+  }
 ];
 </script>
 

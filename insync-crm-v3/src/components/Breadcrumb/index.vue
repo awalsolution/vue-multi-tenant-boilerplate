@@ -48,9 +48,7 @@ watch(
 
     const routePath = route.fullPath.split('/').filter((path) => path !== '');
 
-    const firstLevelOption = firstLevelOptions.value.find(
-      (option) => option.key === routePath[0]
-    );
+    const firstLevelOption = firstLevelOptions.value.find((option) => option.key === routePath[0]);
     if (!firstLevelOption) {
       return;
     }

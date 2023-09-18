@@ -31,7 +31,7 @@
             <th
               class="sticky_el right-0 z-20"
               v-permission="{
-                action: ['can view variant update', 'can view variant delete'],
+                action: ['can view variant update', 'can view variant delete']
               }"
             >
               Actions
@@ -58,9 +58,7 @@
               <n-tag :bordered="false" type="info">{{ item.status }}</n-tag>
             </td>
             <td class="text-center td">
-              <n-tag :bordered="false" type="info">{{
-                item.stock_status
-              }}</n-tag>
+              <n-tag :bordered="false" type="info">{{ item.stock_status }}</n-tag>
             </td>
             <td class="td">{{ item.stock_quantity }}</td>
             <td class="td">{{ item.price }}</td>
@@ -70,7 +68,7 @@
             <td
               class="sticky_el right-0 z-10"
               v-permission="{
-                action: ['can view variant update', 'can view variant delete'],
+                action: ['can view variant update', 'can view variant delete']
               }"
             >
               <n-dropdown
@@ -127,7 +125,7 @@ import { useRoute } from 'vue-router';
 import { useDialog, useMessage } from 'naive-ui';
 import { MoreOutlined, EditOutlined, DeleteOutlined } from '@vicons/antd';
 import { useEnv } from '@src/hooks/useEnv';
-import { RenderUtils } from '@src/utils/render';
+import { renderIcon } from '@src/utils/renderIcon';
 import { useLoading } from '@src/hooks/useLoading';
 import { deleteRecordApi, getRecordApi } from '@src/api/endpoints';
 import AddVariant from '@src/components/products/variants/AddVariant.vue';
@@ -140,7 +138,6 @@ const props = defineProps<{
 }>();
 
 const list: any = ref(props.variants);
-const { renderIcon } = RenderUtils;
 const { imgUrl } = useEnv();
 const isMobile = useMobile();
 const route = useRoute();
@@ -160,14 +157,14 @@ const moreOptions = ref([
     label: 'Edit',
     key: 'edit',
     icon: renderIcon(EditOutlined),
-    permission: hasPermission(['can view variant update']),
+    permission: hasPermission(['can view variant update'])
   },
   {
     label: 'Delete',
     key: 'delete',
     icon: renderIcon(DeleteOutlined),
-    permission: hasPermission(['can view variant delete']),
-  },
+    permission: hasPermission(['can view variant delete'])
+  }
 ]);
 
 const filteredOptions = computed(() => {
@@ -180,7 +177,7 @@ function confirmationDialog() {
     content: () => 'Are you sure you want to delete?',
     positiveText: 'Delete',
     negativeText: 'Cancel',
-    onPositiveClick: deleteOperation,
+    onPositiveClick: deleteOperation
   });
 }
 
@@ -217,11 +214,9 @@ const selectedAction = (key: any) => {
 };
 
 const getVariantList = () => {
-  getRecordApi(`/variants/getVariantsByProduct/${route.params.id}`).then(
-    (res: any) => {
-      list.value = res.result;
-    }
-  );
+  getRecordApi(`/variants/getVariantsByProduct/${route.params.id}`).then((res: any) => {
+    list.value = res.result;
+  });
 };
 </script>
 

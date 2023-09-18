@@ -49,7 +49,7 @@ const productDataLoaded = ref(false);
 const message: any = useMessage();
 const currentTab = ref('general');
 const variants: any = ref({
-  images: [],
+  images: []
 });
 const variantDataLoaded = ref(false);
 
@@ -60,13 +60,11 @@ getRecordApi(`/products/${route.params.id}`).then((res: any) => {
 
 const handleTabChange = (value: string) => {
   if (value === 'variants') {
-    getRecordApi(`/variants/getVariantsByProduct/${route.params.id}`).then(
-      (res: any) => {
-        variants.value = res.result;
-        variantDataLoaded.value = true;
-        message.success(res.message);
-      }
-    );
+    getRecordApi(`/variants/getVariantsByProduct/${route.params.id}`).then((res: any) => {
+      variants.value = res.result;
+      variantDataLoaded.value = true;
+      message.success(res.message);
+    });
   }
 };
 </script>

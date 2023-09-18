@@ -6,7 +6,7 @@ import type {
   AxiosResponse,
   InternalAxiosRequestConfig
 } from 'axios';
-import router from '@src/router';
+import { router } from '@src/router';
 import { axiosConfig } from '@src/api/axios/config';
 import { ResponseStatusCode } from '@src/api/axios/statusCode';
 import { ACCESS_TOKEN } from '@src/utils/storage/variables';

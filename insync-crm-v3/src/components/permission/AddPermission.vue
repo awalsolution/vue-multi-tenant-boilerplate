@@ -1,11 +1,5 @@
 <template>
-  <n-form
-    ref="formRef"
-    :label-width="80"
-    :model="formValue"
-    :rules="rules"
-    size="small"
-  >
+  <n-form ref="formRef" :label-width="80" :model="formValue" :rules="rules" size="small">
     <n-form-item label="Name" path="name">
       <n-input v-model:value="formValue.name" placeholder="Enter Name" />
     </n-form-item>
@@ -39,12 +33,8 @@
       />
     </n-form-item>
     <n-space justify="end">
-      <n-form-item
-        :theme-overrides="{ labelHeightSmall: '0', feedbackHeightSmall: '0' }"
-      >
-        <n-button secondary type="info" @click="handleValidateClick">
-          Create
-        </n-button>
+      <n-form-item :theme-overrides="{ labelHeightSmall: '0', feedbackHeightSmall: '0' }">
+        <n-button secondary type="info" @click="handleValidateClick"> Create </n-button>
       </n-form-item>
     </n-space>
   </n-form>
@@ -52,7 +42,7 @@
 
 <script lang="ts" setup>
 import { ref } from 'vue';
-import { FormInst, useMessage } from 'naive-ui';
+import { type FormInst, useMessage } from 'naive-ui';
 import { createRecordApi } from '@src/api/endpoints';
 import { usefilterMenu } from '@src/filters/menus';
 
@@ -66,8 +56,8 @@ const rules = ref({
   name: {
     required: true,
     message: 'Please Enter Name',
-    trigger: 'blur',
-  },
+    trigger: 'blur'
+  }
 });
 
 const handleValidateClick = (e: MouseEvent) => {
@@ -88,7 +78,7 @@ const handleValidateClick = (e: MouseEvent) => {
 
 const permissionType = [
   { label: 'Public', key: 'public' },
-  { label: 'Private', key: 'private' },
+  { label: 'Private', key: 'private' }
 ];
 </script>
 

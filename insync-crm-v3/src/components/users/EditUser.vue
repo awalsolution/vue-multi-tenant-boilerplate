@@ -1,21 +1,11 @@
 <template>
-  <n-form
-    ref="formRef"
-    :label-width="80"
-    :model="formValue"
-    :rules="rules"
-    size="small"
-  >
+  <n-form ref="formRef" :label-width="80" :model="formValue" :rules="rules" size="small">
     <n-grid :span="24" :x-gap="24">
       <n-form-item-gi :span="12" label="Email" path="email">
         <n-input v-model:value="formValue.email" placeholder="Enter Email" />
       </n-form-item-gi>
       <n-form-item-gi :span="12" label="Status" path="status">
-        <n-select
-          v-model:value="formValue.status"
-          size="small"
-          :options="status"
-        />
+        <n-select v-model:value="formValue.status" size="small" :options="status" />
       </n-form-item-gi>
       <n-form-item-gi :span="12" label="User Role" path="role_id">
         <n-select
@@ -36,12 +26,8 @@
       </n-form-item-gi>
     </n-grid>
     <n-space justify="end">
-      <n-form-item
-        :theme-overrides="{ labelHeightSmall: '0', feedbackHeightSmall: '0' }"
-      >
-        <n-button secondary type="info" @click="handleValidateClick">
-          Update
-        </n-button>
+      <n-form-item :theme-overrides="{ labelHeightSmall: '0', feedbackHeightSmall: '0' }">
+        <n-button secondary type="info" @click="handleValidateClick"> Update </n-button>
       </n-form-item>
     </n-space>
   </n-form>
@@ -49,7 +35,7 @@
 
 <script lang="ts" setup>
 import { ref } from 'vue';
-import { FormInst, useMessage } from 'naive-ui';
+import { type FormInst, useMessage } from 'naive-ui';
 import { getRecordApi, updateRecordApi } from '@src/api/endpoints';
 import { usefilterRole } from '@src/filters/roles';
 
@@ -61,8 +47,8 @@ const message: any = useMessage();
 const emits = defineEmits(['updated']);
 const props = defineProps({
   id: {
-    type: Number,
-  },
+    type: Number
+  }
 });
 // fetch single user using id
 getRecordApi(`/users/${props.id}`).then((res: any) => {
@@ -76,12 +62,10 @@ const handleValidateClick = (e: MouseEvent) => {
   formRef.value?.validate((errors) => {
     if (!errors) {
       console.log(formValue.value);
-      updateRecordApi(`/users/${formValue.value.id}`, formValue.value).then(
-        (res: any) => {
-          message.success(res.message);
-          emits('updated', res.result);
-        }
-      );
+      updateRecordApi(`/users/${formValue.value.id}`, formValue.value).then((res: any) => {
+        message.success(res.message);
+        emits('updated', res.result);
+      });
     } else {
       console.log(errors);
       message.error('Invalid');
@@ -92,35 +76,35 @@ const handleValidateClick = (e: MouseEvent) => {
 const status = ref([
   {
     label: 'active',
-    value: 'active',
+    value: 'active'
   },
   {
     label: 'disabled',
-    value: 'disabled',
-  },
+    value: 'disabled'
+  }
 ]);
 
 const rules = ref({
   first_name: {
     required: true,
     message: 'Please Enter First Name',
-    trigger: 'blur',
+    trigger: 'blur'
   },
   last_name: {
     required: true,
     message: 'Please Enter last Name',
-    trigger: 'blur',
+    trigger: 'blur'
   },
   email: {
     required: true,
     message: 'Please Enter email',
-    trigger: 'blur',
+    trigger: 'blur'
   },
   password: {
     required: true,
     message: 'Please Enter Password',
-    trigger: 'blur',
-  },
+    trigger: 'blur'
+  }
 });
 </script>
 

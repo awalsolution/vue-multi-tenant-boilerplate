@@ -31,6 +31,6 @@ export const useTabStore = defineStore('app-tab', () => {
     addTab,
     removeTab,
     removeTabByHref,
-    clearAll,
+    clearAll
   };
 });

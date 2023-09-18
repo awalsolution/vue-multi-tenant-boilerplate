@@ -1,24 +1,15 @@
 <template>
   <div
     class="bg-default-light dark:bg-default-dark absolute inset-y-0 left-0 z-[100] h-full border-r border-gray-300 shadow-sm transition-[width] dark:border-gray-800 sm:static"
-    :class="[
-      sidebarStore.isDisplay
-        ? sidebarStore.isCollapse
-          ? 'w-16'
-          : 'w-56'
-        : 'w-0',
-    ]"
+    :class="[sidebarStore.isDisplay ? (sidebarStore.isCollapse ? 'w-16' : 'w-56') : 'w-0']"
   >
     <!-- Header -->
-    <div
-      class="flex h-14 w-full select-none items-center justify-center"
-      @click="router.push('/')"
-    >
+    <div class="flex h-14 w-full select-none items-center justify-center" @click="router.push('/')">
       <img
         class="animate-pulse cursor-pointer select-none"
         width="36"
         height="36"
-        src="@src/assets/images/favicon.png"
+        src="@src/assets/images/bit_ocean.png"
         alt=""
         loading="eager"
       />
@@ -29,7 +20,7 @@
             ? sidebarStore.isCollapse
               ? 'ml-0 hidden'
               : 'ml-3 w-auto'
-            : 'hidden',
+            : 'hidden'
         ]"
       >
         {{ appTitle }}
@@ -38,21 +29,7 @@
 
     <div class="h-[calc(100%-96px)]">
       <NScrollbar :size="10">
-        <NMenu
-          ref="menuInstRef"
-          :collapsed-icon-size="20"
-          :collapsed="sidebarStore.isCollapse"
-          :value="defaultPath"
-          :options="menuOptions"
-          :default-value="defaultPath"
-          :expanded-keys="defaultExpandKeys"
-          :collapsed-width="64"
-          :root-indent="18"
-          :indent="26"
-          accordion
-          @update:value="onMenuClick"
-          @update:expanded-keys="onMenuExpandedKeysClick"
-        />
+        <SideBarItems />
       </NScrollbar>
     </div>
 
@@ -84,68 +61,15 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref, watch, shallowReactive } from 'vue';
 import { MenuFoldOutlined } from '@vicons/antd';
-import { MenuInst, MenuOption } from 'naive-ui';
-import { useRoute, useRouter, RouteRecordNormalized } from 'vue-router';
+import { useRouter } from 'vue-router';
 import { useSidebarStore } from '@src/store/modules/sidebar';
+import { SideBarItems } from '@src/layouts/components/menu';
 import { useEnv } from '@src/hooks/useEnv';
-import { isExternal } from '@src/utils/common/is';
-import { asyncRoutes } from '@src/router';
-import { transfromMenu } from '@src/utils/router/transformMenu';
 
 const router = useRouter();
 const { appTitle } = useEnv();
 const sidebarStore = useSidebarStore();
-const menuInstRef = ref<MenuInst | null>(null);
-const menuOptions = shallowReactive([] as Array<MenuOption>);
-const defaultPath = ref('');
-const defaultExpandKeys = ref<Array<string>>([]);
-const currentRoute = useRoute();
-defaultPath.value = currentRoute.fullPath;
-handleExpandPath();
-
-function handleMenu(routes?: Array<RouteRecordNormalized>) {
-  menuOptions.length = 0;
-  const tempMenus = transfromMenu(routes || []);
-  menuOptions.push(...tempMenus);
-}
-
-function handleExpandPath() {
-  const keys = defaultPath.value.split('/');
-  const results = keys
-    .filter((it) => !!it)
-    .reduce((pre, cur) => {
-      const lastItem = pre[pre.length - 1];
-      if (!lastItem) {
-        pre.push('/' + cur);
-      } else {
-        pre.push(lastItem + '/' + cur);
-      }
-      return pre;
-    }, [] as string[]);
-  defaultExpandKeys.value = Array.from(
-    new Set([...defaultExpandKeys.value, ...results])
-  );
-}
-function onMenuClick(key: string, item: any) {
-  if (isExternal(key)) return;
-  router.push({ name: item.name });
-}
-function onMenuExpandedKeysClick(keys: string[]) {
-  defaultExpandKeys.value = keys;
-}
-watch(
-  () => currentRoute.fullPath,
-  (newVal) => {
-    defaultPath.value = newVal;
-    handleExpandPath();
-  }
-);
-
-onMounted(() => {
-  handleMenu(asyncRoutes);
-});
 </script>
 
 <style scoped lang="scss">

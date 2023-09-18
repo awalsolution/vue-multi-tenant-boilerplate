@@ -1,12 +1,6 @@
 <template>
   <div class="login_container flex items-center justify-center h-full">
-    <n-form
-      ref="formRef"
-      label-placement="left"
-      size="large"
-      :model="formData"
-      :rules="rules"
-    >
+    <n-form ref="formRef" label-placement="left" size="large" :model="formData" :rules="rules">
       <n-form-item path="email">
         <n-input v-model:value="formData.email" placeholder="Enter Email">
           <template #prefix>
@@ -31,13 +25,7 @@
         </n-input>
       </n-form-item>
       <n-form-item>
-        <n-button
-          type="primary"
-          @click="handleSubmit"
-          size="large"
-          :loading="loading"
-          block
-        >
+        <n-button type="primary" @click="handleSubmit" size="large" :loading="loading" block>
           Login
         </n-button>
       </n-form-item>
@@ -48,17 +36,15 @@
 <script lang="ts" setup>
 import { onMounted, reactive, ref, computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import { FormValidationError, useMessage } from 'naive-ui';
+import { type FormValidationError } from 'naive-ui';
 import { PersonOutline, LockClosedOutline } from '@vicons/ionicons5';
 import { useUserStore } from '@src/store/modules/user';
 import { AuthUtils } from '@src/utils/auth';
 import { useLoading } from '@src/hooks/useLoading';
-import { AuthAPI } from '@src/api/auth';
-import { RememberedAccountData } from '@src/views/login/types';
+import type { RememberedAccountData } from '@src/views/login/types';
 
 const formRef = ref();
 const rememberPassword = ref(false);
-const message = useMessage();
 const userStore = useUserStore();
 const router = useRouter();
 const route = useRoute();
@@ -66,7 +52,7 @@ const [loading, loadingDispatcher] = useLoading(false);
 
 const formData = reactive({
   email: 'iqbal@gmail.com',
-  password: '123456',
+  password: '123456'
 });
 
 const redirectUrl = computed(() => route.query.redirect as string);
@@ -77,7 +63,7 @@ const handleSubmit = async () => {
   } catch (errors) {
     const errorMessage = (errors as FormValidationError[])[0][0].message;
     if (errorMessage) {
-      message.error(errorMessage);
+      window['$message'].error(errorMessage);
     }
     return;
   }
@@ -88,15 +74,13 @@ const handleSubmit = async () => {
 
   loadingDispatcher.loading();
 
-  AuthAPI.loginApi(formData)
+  userStore
+    .login(formData)
     .then((res: any) => {
       console.log(res);
       loadingDispatcher.loaded();
-      const { token, user } = res.result || {};
-      AuthUtils.setToken(token);
-      userStore.setCurrentUser(user);
       if (res.message) {
-        message.success(res.message);
+        window['$message'].success(res.message);
       }
       if (rememberPassword.value) {
         AuthUtils.setRememberedAccount(JSON.stringify(formData));
@@ -110,9 +94,9 @@ const handleSubmit = async () => {
         router.replace('/');
       }
     })
-    .catch((err) => {
+    .catch((err: any) => {
       if (err.message) {
-        message.error(err.message);
+        window['$message'].error(err.message);
       }
       loadingDispatcher.loaded();
       formData.password = '';
@@ -123,14 +107,12 @@ onMounted(() => {
   const localStorageData = AuthUtils.getRememberedAccount();
   if (localStorageData) {
     try {
-      const { email, password } = JSON.parse(
-        localStorageData
-      ) as RememberedAccountData;
+      const { email, password } = JSON.parse(localStorageData) as RememberedAccountData;
       formData.email = email;
       formData.password = password;
       rememberPassword.value = true;
     } catch {
-      message.error('Some thing went wrong try again');
+      window['$message'].error('Some thing went wrong try again');
     }
   }
 });
@@ -139,13 +121,13 @@ const rules = {
   email: {
     required: true,
     message: 'Please Enter User Email',
-    trigger: 'blur',
+    trigger: 'blur'
   },
   password: {
     required: true,
     message: 'Please Enter Password',
-    trigger: 'blur',
-  },
+    trigger: 'blur'
+  }
 };
 </script>
 

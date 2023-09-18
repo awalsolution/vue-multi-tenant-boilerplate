@@ -1,18 +1,10 @@
 <template>
   <main class="flex h-screen w-screen">
-    <div
-      class="invisible relative w-0 bg-blue-200 dark:bg-gray-600 sm:visible sm:w-1/2"
-    >
+    <div class="invisible relative w-0 bg-blue-200 dark:bg-gray-600 sm:visible sm:w-1/2">
       <div
         class="absolute inset-0 m-auto flex h-fit w-fit select-none flex-col space-y-2 text-center font-mono"
       >
-        <img
-          src="@src/assets/images/favicon.png"
-          alt=""
-          width="180"
-          height="180"
-          loading="eager"
-        />
+        <img src="@src/assets/images/bit_ocean.png" width="180" height="180" loading="eager" />
         <span class="text-xl font-semibold">{{ appTitle }}</span>
         <span class="text-base">v{{ version }}</span>
       </div>
@@ -32,8 +24,9 @@ import { onBeforeMount } from 'vue';
 import { useRouter } from 'vue-router';
 import { useEnv } from '@src/hooks/useEnv';
 import { useUserStore } from '@src/store/modules/user';
-import { AuthUtils } from '@src/utils/auth';
 import ThemeSwitchDevTool from '@src/components/ThemeSwitchDevTool/index.vue';
+import { ACCESS_TOKEN } from '@src/utils/storage/variables';
+import { storage } from '@src/utils/storage';
 
 const { version, appTitle } = useEnv();
 
@@ -41,11 +34,11 @@ const usersStore = useUserStore();
 const router = useRouter();
 
 const checkLogin = () => {
-  if (AuthUtils.isAuthenticated()) {
+  if (storage.isAuthenticated(ACCESS_TOKEN)) {
     router.replace('/');
   } else {
     console.log('check login on authlayout component');
-    usersStore.clearCurrentUser();
+    usersStore.logout();
   }
 };
 

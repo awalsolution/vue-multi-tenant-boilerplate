@@ -13,7 +13,7 @@ export function filterAttribute() {
     } else {
       attributeLoading.value = true;
       const response: any = await getRecordsApi('/attributes', { name: query });
-      attributes.value = response.result.data;
+      attributes.value = response.result;
       attributeLoading.value = false;
     }
   }
@@ -21,7 +21,7 @@ export function filterAttribute() {
   async function getAttributes() {
     attributeLoading.value = true;
     const response: any = await getRecordsApi('/attributes');
-    attributes.value = response.result.data;
+    attributes.value = response.result;
     attributeLoading.value = false;
   }
 
@@ -38,6 +38,6 @@ export function filterAttribute() {
     attributesInitialized,
     findAttribute,
     getAttributes,
-    getAttributesOnFocus,
+    getAttributesOnFocus
   };
 }

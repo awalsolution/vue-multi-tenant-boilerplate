@@ -9,7 +9,7 @@ export const useEnv = () => {
     VITE_IMG_URL,
     VITE_TEAM_NAME,
     VITE_GITHUB_URL,
-    VITE_APP_VERSION,
+    VITE_APP_VERSION
   } = ENV;
 
   return {
@@ -21,6 +21,6 @@ export const useEnv = () => {
     imgUrl: VITE_IMG_URL,
     version: VITE_APP_VERSION,
     teamName: VITE_TEAM_NAME,
-    teamGitHubURL: VITE_GITHUB_URL,
+    teamGitHubURL: VITE_GITHUB_URL
   };
 };

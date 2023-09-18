@@ -53,12 +53,7 @@ export function isFunction(val: any) {
 }
 
 export function isPromise(val: any) {
-  return (
-    is(val, 'Promise') &&
-    isObject(val) &&
-    isFunction(val.then) &&
-    isFunction(val.catch)
-  );
+  return is(val, 'Promise') && isObject(val) && isFunction(val.then) && isFunction(val.catch);
 }
 
 export function isElement(val: any) {

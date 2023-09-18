@@ -1,15 +1,8 @@
 <template>
-  <DataTableLayout
-    :loading="loading"
-    v-permission="{ action: ['can view categories'] }"
-  >
+  <DataTableLayout :loading="loading" v-permission="{ action: ['can view categories'] }">
     <template #tableHeader>
-      <div
-        class="flex flex-col items-center space-y-2 sm:flex-row sm:justify-between sm:space-y-0"
-      >
-        <div
-          class="flex flex-col items-center space-y-2 sm:flex-row sm:space-x-3 sm:space-y-0"
-        >
+      <div class="flex flex-col items-center space-y-2 sm:flex-row sm:justify-between sm:space-y-0">
+        <div class="flex flex-col items-center space-y-2 sm:flex-row sm:space-x-3 sm:space-y-0">
           <div class="flex w-full items-center !space-x-2 sm:w-fit">
             <NInput
               v-model:value="searchParams.name"
@@ -24,9 +17,7 @@
             </NInput>
           </div>
         </div>
-        <div
-          class="flex w-full items-center justify-between space-x-3 sm:justify-end"
-        >
+        <div class="flex w-full items-center justify-between space-x-3 sm:justify-end">
           <NButton
             secondary
             type="info"
@@ -52,10 +43,7 @@
             <th
               class="sticky_el right-0 z-20"
               v-permission="{
-                action: [
-                  'can view category update',
-                  'can view category delete',
-                ],
+                action: ['can view category update', 'can view category delete']
               }"
             >
               Actions
@@ -77,10 +65,7 @@
             <td
               class="sticky_el right-0 z-10"
               v-permission="{
-                action: [
-                  'can view category update',
-                  'can view category delete',
-                ],
+                action: ['can view category update', 'can view category delete']
               }"
             >
               <n-dropdown
@@ -102,9 +87,7 @@
     </template>
 
     <template #tableFooter>
-      <div
-        class="flex flex-col items-center space-y-2 sm:flex-row sm:justify-end sm:space-y-0"
-      >
+      <div class="flex flex-col items-center space-y-2 sm:flex-row sm:justify-end sm:space-y-0">
         <n-pagination
           v-model:page="page"
           v-model:page-size="pageSize"
@@ -155,12 +138,7 @@ import { ref, onMounted, h, computed } from 'vue';
 import type { Component } from 'vue';
 import { useDialog, useMessage } from 'naive-ui';
 import { NIcon, NPagination } from 'naive-ui';
-import {
-  MoreOutlined,
-  EditOutlined,
-  DeleteOutlined,
-  SearchOutlined,
-} from '@vicons/antd';
+import { MoreOutlined, EditOutlined, DeleteOutlined, SearchOutlined } from '@vicons/antd';
 import { usePagination } from '@src/hooks/pagination/usePagination';
 import { useLoading } from '@src/hooks/useLoading';
 import { useEnv } from '@src/hooks/useEnv';
@@ -181,15 +159,8 @@ const message: any = useMessage();
 const [loading, loadingDispatcher] = useLoading(false);
 
 // fetch all records
-const {
-  getList,
-  list,
-  page,
-  pageSizes,
-  itemCount,
-  pageSize,
-  searchParams,
-}: any = usePagination('/categories');
+const { getList, list, page, pageSizes, itemCount, pageSize, searchParams }: any =
+  usePagination('/categories');
 
 onMounted(() => {
   getList();
@@ -198,7 +169,7 @@ onMounted(() => {
 const renderIcon = (icon: Component) => {
   return () => {
     return h(NIcon, null, {
-      default: () => h(icon),
+      default: () => h(icon)
     });
   };
 };
@@ -208,14 +179,14 @@ const moreOptions = ref([
     label: 'Edit',
     key: 'edit',
     icon: renderIcon(EditOutlined),
-    permission: hasPermission(['can view category update']),
+    permission: hasPermission(['can view category update'])
   },
   {
     label: 'Delete',
     key: 'delete',
     icon: renderIcon(DeleteOutlined),
-    permission: hasPermission(['can view category delete']),
-  },
+    permission: hasPermission(['can view category delete'])
+  }
 ]);
 
 const filteredOptions = computed(() => {
@@ -228,7 +199,7 @@ function confirmationDialog() {
     content: () => 'Are you sure you want to delete?',
     positiveText: 'Delete',
     negativeText: 'Cancel',
-    onPositiveClick: deleteOperation,
+    onPositiveClick: deleteOperation
   });
 }
 

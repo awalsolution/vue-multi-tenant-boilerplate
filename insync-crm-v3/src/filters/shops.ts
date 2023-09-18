@@ -2,7 +2,7 @@ import { ref } from 'vue';
 import { getRecordsApi } from '@src/api/endpoints';
 import { isEmpty } from 'lodash';
 
-export function filterShop() {
+export function usefilterShop() {
   const shops: any = ref([]);
   const shopLoading = ref(false);
   const shopsInitialized = ref(false);
@@ -13,7 +13,7 @@ export function filterShop() {
     } else {
       shopLoading.value = true;
       const response: any = await getRecordsApi('/shops', { name: query });
-      shops.value = response.result.data;
+      shops.value = response.result;
       shopLoading.value = false;
     }
   }
@@ -21,7 +21,7 @@ export function filterShop() {
   async function getShops() {
     shopLoading.value = true;
     const response: any = await getRecordsApi('/shops');
-    shops.value = response.result.data;
+    shops.value = response.result;
     shopLoading.value = false;
   }
 
@@ -38,6 +38,6 @@ export function filterShop() {
     shopsInitialized,
     findShop,
     getShops,
-    getShopsOnFocus,
+    getShopsOnFocus
   };
 }

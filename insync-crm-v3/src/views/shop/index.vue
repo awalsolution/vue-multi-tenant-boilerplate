@@ -1,15 +1,8 @@
 <template>
-  <DataTableLayout
-    :loading="loading"
-    v-permission="{ action: ['can view shop'] }"
-  >
+  <DataTableLayout :loading="loading" v-permission="{ action: ['can view shop'] }">
     <template #tableHeader>
-      <div
-        class="flex flex-col items-center space-y-2 sm:flex-row sm:justify-between sm:space-y-0"
-      >
-        <div
-          class="flex flex-col items-center space-y-2 sm:flex-row sm:space-x-3 sm:space-y-0"
-        >
+      <div class="flex flex-col items-center space-y-2 sm:flex-row sm:justify-between sm:space-y-0">
+        <div class="flex flex-col items-center space-y-2 sm:flex-row sm:space-x-3 sm:space-y-0">
           <div class="flex w-full items-center !space-x-2 sm:w-fit">
             <NInput
               v-model:value="searchParams.name"
@@ -24,9 +17,7 @@
             </NInput>
           </div>
         </div>
-        <div
-          class="flex w-full items-center justify-between space-x-3 sm:justify-end"
-        >
+        <div class="flex w-full items-center justify-between space-x-3 sm:justify-end">
           <NButton
             secondary
             type="info"
@@ -55,7 +46,7 @@
             <th
               class="sticky_el right-0 z-20"
               v-permission="{
-                action: ['can view shop update', 'can view shop delete'],
+                action: ['can view shop update', 'can view shop delete']
               }"
             >
               Actions
@@ -79,22 +70,14 @@
               <n-tag :bordered="false" type="info">{{ item.status }}</n-tag>
             </td>
             <td class="td">
-              {{
-                item.address +
-                ' ' +
-                item.city +
-                ' ' +
-                item?.state +
-                ' ' +
-                item.country
-              }}
+              {{ item.address + ' ' + item.city + ' ' + item?.state + ' ' + item.country }}
             </td>
             <td class="td">{{ item.created_at }}</td>
             <td class="td">{{ item.updated_at }}</td>
             <td
               class="sticky_el right-0 z-10"
               v-permission="{
-                action: ['can view shop update', 'can view shop delete'],
+                action: ['can view shop update', 'can view shop delete']
               }"
             >
               <n-dropdown
@@ -116,9 +99,7 @@
     </template>
 
     <template #tableFooter>
-      <div
-        class="flex flex-col items-center space-y-2 sm:flex-row sm:justify-end sm:space-y-0"
-      >
+      <div class="flex flex-col items-center space-y-2 sm:flex-row sm:justify-end sm:space-y-0">
         <n-pagination
           v-model:page="page"
           v-model:page-size="pageSize"
@@ -172,19 +153,13 @@ import { useEnv } from '@src/hooks/useEnv';
 import { ref, onMounted, computed } from 'vue';
 import { useDialog, useMessage } from 'naive-ui';
 import { NIcon, NPagination } from 'naive-ui';
-import {
-  MoreOutlined,
-  EditOutlined,
-  DeleteOutlined,
-  SearchOutlined,
-} from '@vicons/antd';
+import { MoreOutlined, EditOutlined, DeleteOutlined, SearchOutlined } from '@vicons/antd';
 import DataTableLayout from '@src/layouts/DataTableLayout/index.vue';
 import AddShop from '@src/components/shop/AddShop.vue';
 import EditShop from '@src/components/shop/EditShop.vue';
-import { RenderUtils } from '@src/utils/render';
+import { renderIcon } from '@src/utils/renderIcon';
 
 const { imgUrl } = useEnv();
-const { renderIcon } = RenderUtils;
 const isMobile = useMobile();
 const dialog = useDialog();
 const selectedOption: any = ref(null);
@@ -196,15 +171,8 @@ const message: any = useMessage();
 const [loading, loadingDispatcher] = useLoading(false);
 
 // fetch all records
-const {
-  getList,
-  list,
-  page,
-  pageSizes,
-  itemCount,
-  pageSize,
-  searchParams,
-}: any = usePagination('/shops');
+const { getList, list, page, pageSizes, itemCount, pageSize, searchParams }: any =
+  usePagination('/shops');
 
 onMounted(() => {
   getList();
@@ -215,14 +183,14 @@ const moreOptions = ref([
     label: 'Edit',
     key: 'edit',
     icon: renderIcon(EditOutlined),
-    permission: hasPermission(['can view shop update']),
+    permission: hasPermission(['can view shop update'])
   },
   {
     label: 'Delete',
     key: 'delete',
     icon: renderIcon(DeleteOutlined),
-    permission: hasPermission(['can view shop delete']),
-  },
+    permission: hasPermission(['can view shop delete'])
+  }
 ]);
 
 const filteredOptions = computed(() => {
@@ -235,7 +203,7 @@ function confirmationDialog() {
     content: () => 'Are you sure you want to delete?',
     positiveText: 'Delete',
     negativeText: 'Cancel',
-    onPositiveClick: deleteOperation,
+    onPositiveClick: deleteOperation
   });
 }
 

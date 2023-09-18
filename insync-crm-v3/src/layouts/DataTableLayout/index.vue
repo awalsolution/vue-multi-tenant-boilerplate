@@ -8,7 +8,7 @@
         flex: '1 1 auto',
         flexDirection: 'column',
         padding: '16px',
-        overflow: 'scroll',
+        overflow: 'scroll'
       }"
     >
       <div class="mb-2 sm:mb-3">
@@ -16,7 +16,7 @@
           embedded
           :content-style="{
             padding: '12px',
-            overflow: 'hidden',
+            overflow: 'hidden'
           }"
         >
           <slot name="tableHeader"></slot>
@@ -32,7 +32,7 @@
           embedded
           :content-style="{
             padding: '12px',
-            overflow: 'hidden',
+            overflow: 'hidden'
           }"
         >
           <slot name="tableFooter"></slot>

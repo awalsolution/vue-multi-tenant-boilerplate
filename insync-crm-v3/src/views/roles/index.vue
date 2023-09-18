@@ -1,15 +1,8 @@
 <template>
-  <DataTableLayout
-    :loading="loading"
-    v-permission="{ action: ['can view roles'] }"
-  >
+  <DataTableLayout :loading="loading" v-permission="{ action: ['can view roles'] }">
     <template #tableHeader>
-      <div
-        class="flex flex-col items-center space-y-2 sm:flex-row sm:justify-between sm:space-y-0"
-      >
-        <div
-          class="flex flex-col items-center space-y-2 sm:flex-row sm:space-x-3 sm:space-y-0"
-        >
+      <div class="flex flex-col items-center space-y-2 sm:flex-row sm:justify-between sm:space-y-0">
+        <div class="flex flex-col items-center space-y-2 sm:flex-row sm:space-x-3 sm:space-y-0">
           <div class="flex w-full items-center !space-x-2 sm:w-fit">
             <NInput
               v-model:value="searchParams.name"
@@ -24,9 +17,7 @@
             </NInput>
           </div>
         </div>
-        <div
-          class="flex w-full items-center justify-between space-x-3 sm:justify-end"
-        >
+        <div class="flex w-full items-center justify-between space-x-3 sm:justify-end">
           <NButton
             secondary
             type="info"
@@ -51,7 +42,7 @@
             <th
               class="sticky_el right-0 z-10"
               v-permission="{
-                action: ['can view role update', 'can view role delete'],
+                action: ['can view role update', 'can view role delete']
               }"
             >
               Actions
@@ -70,7 +61,7 @@
             <td
               class="sticky_el right-0 z-10"
               v-permission="{
-                action: ['can view role update', 'can view role delete'],
+                action: ['can view role update', 'can view role delete']
               }"
             >
               <n-dropdown
@@ -92,9 +83,7 @@
     </template>
 
     <template #tableFooter>
-      <div
-        class="flex flex-col items-center space-y-2 sm:flex-row sm:justify-end sm:space-y-0"
-      >
+      <div class="flex flex-col items-center space-y-2 sm:flex-row sm:justify-end sm:space-y-0">
         <n-pagination
           v-model:page="page"
           v-model:page-size="pageSize"
@@ -148,18 +137,12 @@ import { ref, onMounted, computed } from 'vue';
 import { useDialog, useMessage } from 'naive-ui';
 import { useRouter } from 'vue-router';
 import { NIcon, NPagination } from 'naive-ui';
-import {
-  MoreOutlined,
-  EditOutlined,
-  DeleteOutlined,
-  SearchOutlined,
-} from '@vicons/antd';
+import { MoreOutlined, EditOutlined, DeleteOutlined, SearchOutlined } from '@vicons/antd';
 import DataTableLayout from '@src/layouts/DataTableLayout/index.vue';
 import AddRole from '@src/components/Role/AddRole.vue';
 import EditRole from '@src/components/Role/EditRole.vue';
-import { RenderUtils } from '@src/utils/render';
+import { renderIcon } from '@src/utils/renderIcon';
 
-const { renderIcon } = RenderUtils;
 const isMobile = useMobile();
 const dialog = useDialog();
 const router = useRouter();
@@ -172,15 +155,8 @@ const [loading, loadingDispatcher] = useLoading(false);
 const { hasPermission } = usePermission();
 
 // fetch all records
-const {
-  getList,
-  list,
-  page,
-  pageSizes,
-  itemCount,
-  pageSize,
-  searchParams,
-}: any = usePagination('/roles');
+const { getList, list, page, pageSizes, itemCount, pageSize, searchParams }: any =
+  usePagination('/roles');
 
 onMounted(() => {
   getList();
@@ -191,20 +167,20 @@ const moreOptions = ref([
     label: 'Assign Permission',
     key: 'assign_permission',
     icon: renderIcon(EditOutlined),
-    permission: hasPermission(['can view role update']),
+    permission: hasPermission(['can view role update'])
   },
   {
     label: 'Edit',
     key: 'edit',
     icon: renderIcon(EditOutlined),
-    permission: hasPermission(['can view role update']),
+    permission: hasPermission(['can view role update'])
   },
   {
     label: 'Delete',
     key: 'delete',
     icon: renderIcon(DeleteOutlined),
-    permission: hasPermission(['can view role delete']),
-  },
+    permission: hasPermission(['can view role delete'])
+  }
 ]);
 
 const filteredOptions = computed(() => {
@@ -217,7 +193,7 @@ function confirmationDialog() {
     content: () => 'Are you sure you want to delete?',
     positiveText: 'Delete',
     negativeText: 'Cancel',
-    onPositiveClick: deleteOperation,
+    onPositiveClick: deleteOperation
   });
 }
 
@@ -243,7 +219,7 @@ const actionOperation = (item: any) => {
   if (selectedOption.value === 'assign_permission') {
     router.push({
       name: 'system_assing_permission',
-      query: { roleId: item.id },
+      query: { roleId: item.id }
     });
   } else if (selectedOption.value === 'edit') {
     showEditModal.value = true;

@@ -13,7 +13,7 @@ export function filterPermission() {
     } else {
       permissionLoading.value = true;
       const response: any = await getRecordsApi('/permissions', {
-        name: query,
+        name: query
       });
       permissions.value = response.result.data;
       permissionLoading.value = false;
@@ -40,6 +40,6 @@ export function filterPermission() {
     permissionsInitialized,
     findPermission,
     getPermissions,
-    getPermissionsOnFocus,
+    getPermissionsOnFocus
   };
 }

@@ -1,24 +1,11 @@
 <template>
-  <n-form
-    ref="menuFormRef"
-    :label-width="80"
-    :model="menusData"
-    :rules="rules"
-    size="small"
-  >
+  <n-form ref="menuFormRef" :label-width="80" :model="menusData" :rules="rules" size="small">
     <n-form-item label="Menu Name" path="menu_name">
-      <n-input
-        v-model:value="menusData.menu_name"
-        placeholder="Enter Menu Name"
-      />
+      <n-input v-model:value="menusData.menu_name" placeholder="Enter Menu Name" />
     </n-form-item>
     <n-space justify="end">
-      <n-form-item
-        :theme-overrides="{ labelHeightSmall: '0', feedbackHeightSmall: '0' }"
-      >
-        <n-button secondary type="info" @click="handleValidateClick">
-          Create
-        </n-button>
+      <n-form-item :theme-overrides="{ labelHeightSmall: '0', feedbackHeightSmall: '0' }">
+        <n-button secondary type="info" @click="handleValidateClick"> Create </n-button>
       </n-form-item>
     </n-space>
   </n-form>
@@ -26,7 +13,7 @@
 
 <script lang="ts" setup>
 import { ref } from 'vue';
-import { FormInst, useMessage } from 'naive-ui';
+import { type FormInst, useMessage } from 'naive-ui';
 import { getRecordApi, updateRecordApi } from '@src/api/endpoints';
 
 const menuFormRef = ref<FormInst | null>(null);
@@ -36,8 +23,8 @@ const message: any = useMessage();
 const emits = defineEmits(['updated']);
 const props = defineProps({
   id: {
-    type: Number,
-  },
+    type: Number
+  }
 });
 
 // fetch single Shop  using id
@@ -49,12 +36,10 @@ const handleValidateClick = (e: MouseEvent) => {
   e.preventDefault();
   menuFormRef.value?.validate((errors) => {
     if (!errors) {
-      updateRecordApi(`/menus/${menusData.value.id}`, menusData.value).then(
-        (res: any) => {
-          message.success(res.message);
-          emits('updated', res.result);
-        }
-      );
+      updateRecordApi(`/menus/${menusData.value.id}`, menusData.value).then((res: any) => {
+        message.success(res.message);
+        emits('updated', res.result);
+      });
     } else {
       console.log(errors);
       message.error('Invalid');
@@ -66,8 +51,8 @@ const rules = ref({
   menu_name: {
     required: true,
     message: 'Please Enter Menu Name',
-    trigger: 'blur',
-  },
+    trigger: 'blur'
+  }
 });
 </script>
 

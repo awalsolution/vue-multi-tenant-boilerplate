@@ -1,15 +1,8 @@
 <template>
-  <DataTableLayout
-    :loading="loading"
-    v-permission="{ action: ['can view attributes'] }"
-  >
+  <DataTableLayout :loading="loading" v-permission="{ action: ['can view attributes'] }">
     <template #tableHeader>
-      <div
-        class="flex flex-col items-center space-y-2 sm:flex-row sm:justify-between sm:space-y-0"
-      >
-        <div
-          class="flex flex-col items-center space-y-2 sm:flex-row sm:space-x-3 sm:space-y-0"
-        >
+      <div class="flex flex-col items-center space-y-2 sm:flex-row sm:justify-between sm:space-y-0">
+        <div class="flex flex-col items-center space-y-2 sm:flex-row sm:space-x-3 sm:space-y-0">
           <div class="flex w-full items-center !space-x-2 sm:w-fit">
             <NInput
               v-model:value="searchParams.name"
@@ -24,9 +17,7 @@
             </NInput>
           </div>
         </div>
-        <div
-          class="flex w-full items-center justify-between space-x-3 sm:justify-end"
-        >
+        <div class="flex w-full items-center justify-between space-x-3 sm:justify-end">
           <NButton
             secondary
             type="info"
@@ -51,10 +42,7 @@
             <th
               class="sticky_el right-0 z-20"
               v-permission="{
-                action: [
-                  'can view attribute update',
-                  'can view attribute delete',
-                ],
+                action: ['can view attribute update', 'can view attribute delete']
               }"
             >
               Actions
@@ -73,10 +61,7 @@
             <td
               class="sticky_el right-0 z-10"
               v-permission="{
-                action: [
-                  'can view attribute update',
-                  'can view attribute delete',
-                ],
+                action: ['can view attribute update', 'can view attribute delete']
               }"
             >
               <n-dropdown
@@ -98,9 +83,7 @@
     </template>
 
     <template #tableFooter>
-      <div
-        class="flex flex-col items-center space-y-2 sm:flex-row sm:justify-end sm:space-y-0"
-      >
+      <div class="flex flex-col items-center space-y-2 sm:flex-row sm:justify-end sm:space-y-0">
         <n-pagination
           v-model:page="page"
           v-model:page-size="pageSize"
@@ -152,12 +135,7 @@ import { useLoading } from '@src/hooks/useLoading';
 import { ref, onMounted, h, computed } from 'vue';
 import type { Component } from 'vue';
 import { useDialog, useMessage, NIcon, NPagination } from 'naive-ui';
-import {
-  MoreOutlined,
-  EditOutlined,
-  DeleteOutlined,
-  SearchOutlined,
-} from '@vicons/antd';
+import { MoreOutlined, EditOutlined, DeleteOutlined, SearchOutlined } from '@vicons/antd';
 import AddAttribute from '@src/components/products/attributes/AddAttribute.vue';
 import EditAttribute from '@src/components/products/attributes/EditAttribute.vue';
 import DataTableLayout from '@src/layouts/DataTableLayout/index.vue';
@@ -174,15 +152,8 @@ const message: any = useMessage();
 const [loading, loadingDispatcher] = useLoading(false);
 
 // fetch all records
-const {
-  getList,
-  list,
-  page,
-  pageSizes,
-  itemCount,
-  pageSize,
-  searchParams,
-}: any = usePagination('/attributes');
+const { getList, list, page, pageSizes, itemCount, pageSize, searchParams }: any =
+  usePagination('/attributes');
 
 onMounted(() => {
   getList();
@@ -191,7 +162,7 @@ onMounted(() => {
 const renderIcon = (icon: Component) => {
   return () => {
     return h(NIcon, null, {
-      default: () => h(icon),
+      default: () => h(icon)
     });
   };
 };
@@ -201,14 +172,14 @@ const moreOptions = ref([
     label: 'Edit',
     key: 'edit',
     icon: renderIcon(EditOutlined),
-    permission: hasPermission(['can view attribute update']),
+    permission: hasPermission(['can view attribute update'])
   },
   {
     label: 'Delete',
     key: 'delete',
     icon: renderIcon(DeleteOutlined),
-    permission: hasPermission(['can view attribute delete']),
-  },
+    permission: hasPermission(['can view attribute delete'])
+  }
 ]);
 
 const filteredOptions = computed(() => {
@@ -221,7 +192,7 @@ function confirmationDialog() {
     content: () => 'Are you sure you want to delete?',
     positiveText: 'Delete',
     negativeText: 'Cancel',
-    onPositiveClick: deleteOperation,
+    onPositiveClick: deleteOperation
   });
 }
 

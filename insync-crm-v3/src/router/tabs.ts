@@ -10,6 +10,6 @@ export const processRouteTag = (to: RouteLocationNormalized) => {
   tagStore.addTab({
     href: to.path,
     label: to.meta?.title as string | (() => VNodeChild),
-    icon: shallowRef(to.meta?.icon as any),
+    icon: shallowRef(to.meta?.icon as any)
   });
 };

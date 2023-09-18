@@ -16,11 +16,9 @@ export function useShop(tag = false) {
       categoriesLoading.value = true;
       getRecordsApi('/shops', { name: query, pageSize: 100 })
         .then((res: any) => {
-          filteredCategories.value = res.result.data;
+          filteredCategories.value = res.result;
           if (tag && query) {
-            if (
-              !filteredCategories.value.some((role: any) => role.name === query)
-            ) {
+            if (!filteredCategories.value.some((role: any) => role.name === query)) {
               filteredCategories.value.unshift({ id: 0, name: query });
             }
           }

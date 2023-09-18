@@ -38,38 +38,22 @@
               </n-col>
               <n-col :span="8">
                 <n-form-item label="Address" path="address">
-                  <n-input
-                    v-model:value="shopData.address"
-                    placeholder="Enter Address"
-                    disabled
-                  />
+                  <n-input v-model:value="shopData.address" placeholder="Enter Address" disabled />
                 </n-form-item>
               </n-col>
               <n-col :span="8">
                 <n-form-item label="City" path="city">
-                  <n-input
-                    v-model:value="shopData.city"
-                    placeholder="Enter City"
-                    disabled
-                  />
+                  <n-input v-model:value="shopData.city" placeholder="Enter City" disabled />
                 </n-form-item>
               </n-col>
               <n-col :span="8">
                 <n-form-item label="State" path="state">
-                  <n-input
-                    v-model:value="shopData.state"
-                    placeholder="Enter State"
-                    disabled
-                  />
+                  <n-input v-model:value="shopData.state" placeholder="Enter State" disabled />
                 </n-form-item>
               </n-col>
               <n-col :span="8">
                 <n-form-item label="Country" path="country">
-                  <n-input
-                    v-model:value="shopData.country"
-                    placeholder="Enter Country"
-                    disabled
-                  />
+                  <n-input v-model:value="shopData.country" placeholder="Enter Country" disabled />
                 </n-form-item>
               </n-col>
             </n-row>
@@ -79,12 +63,10 @@
           <n-form-item
             :theme-overrides="{
               labelHeightSmall: '0',
-              feedbackHeightSmall: '0',
+              feedbackHeightSmall: '0'
             }"
           >
-            <n-button type="success" @click="handleValidateClick">
-              Edit Shop</n-button
-            >
+            <n-button secondary type="info" @click="handleValidateClick"> Edit Shop</n-button>
           </n-form-item>
         </n-space>
       </n-col>
@@ -117,21 +99,22 @@ const handleValidateClick = (e: MouseEvent) => {
   showEditModal.value = true;
 };
 
-console.log(shopData);
+// console.log(shopData);
 
 onMounted(() => {
-  shopData.value = userStore.user.shop;
+  shopData.value = userStore.currentUser.shop;
 });
 
 const status = ref([
   {
     label: 'active',
-    value: 'active',
+    value: 'active'
   },
   {
     label: 'disabled',
-    value: 'disabled',
-  },
+    value: 'disabled'
+  }
 ]);
 </script>
+
 <style lang="scss" scoped></style>

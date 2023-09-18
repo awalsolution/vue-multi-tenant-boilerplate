@@ -8,16 +8,14 @@
           <NIcon
             class="cursor-pointer"
             size="20"
-            :component="
-              sidebarStore.isDisplay ? MenuFoldOutlined : MenuUnfoldOutlined
-            "
+            :component="sidebarStore.isDisplay ? MenuFoldOutlined : MenuUnfoldOutlined"
             @click="sidebarStore.toggleSidebarDisplay"
           />
         </template>
         {{ sidebarStore.isDisplay ? 'Hide' : 'Show' }}
       </NTooltip>
 
-      <Breadcrumb />
+      <!-- <Breadcrumb /> -->
     </div>
 
     <div class="flex h-full items-center justify-end space-x-4">
@@ -47,14 +45,8 @@
           <NIcon
             class="cursor-pointer"
             size="20"
-            :component="
-              themeStore.themeMode === 'light' ? SunnyOutline : MoonOutline
-            "
-            @click="
-              themeStore.changeThemeMode(
-                themeStore.themeMode === 'light' ? 'dark' : 'light'
-              )
-            "
+            :component="themeStore.themeMode === 'light' ? SunnyOutline : MoonOutline"
+            @click="themeStore.changeThemeMode(themeStore.themeMode === 'light' ? 'dark' : 'light')"
           />
         </template>
         SwitchTheme
@@ -70,11 +62,7 @@
       </template> -->
       <!-- :src="userStore.user.avatarUrl" -->
       <template v-if="userStore.hasData()">
-        <NDropdown
-          trigger="click"
-          :options="userOptions"
-          @select="selectUserOption"
-        >
+        <NDropdown trigger="click" :options="userOptions" @select="selectUserOption">
           <template v-if="userStore.currentUser.profile.profile_picture">
             <NAvatar
               class="cursor-pointer select-none shadow-md !transition-all hover:opacity-90 active:opacity-70"
@@ -102,25 +90,24 @@ import {
   MenuUnfoldOutlined,
   ProfileOutlined,
   UnlockOutlined,
-  LogoutOutlined,
+  LogoutOutlined
 } from '@vicons/antd';
 import {
   // NotificationsCircleOutline,
   SunnyOutline,
   MoonOutline,
-  SettingsOutline,
+  SettingsOutline
 } from '@vicons/ionicons5';
 import { useThemeStore } from '@src/store/modules/theme';
 import { useSidebarStore } from '@src/store/modules/sidebar';
 import { useUserStore } from '@src/store/modules/user';
-import Breadcrumb from '@src/components/Breadcrumb/index.vue';
+// import Breadcrumb from '@src/components/Breadcrumb/index.vue';
 import { useEnv } from '@src/hooks/useEnv';
 import { BrowserUtils } from '@src/utils/browser';
-import { RenderUtils } from '@src/utils/render';
+import { renderIcon } from '@src/utils/renderIcon';
 
 const { teamGitHubURL, imgUrl } = useEnv();
 const { openNewWindow } = BrowserUtils;
-const { renderIcon } = RenderUtils;
 
 const themeStore = useThemeStore();
 const sidebarStore = useSidebarStore();
@@ -131,7 +118,7 @@ const message = useMessage();
 
 const logout = async () => {
   return await router.replace('/login').then(async () => {
-    const res = userStore.logout();
+    const res = await userStore.logout();
     message.success(res.message);
   });
 };
@@ -161,45 +148,45 @@ const userOptions = [
   {
     key: 'header',
     type: 'render',
-    render: renderCustomHeader,
+    render: renderCustomHeader
   },
   {
     key: 'header-divider',
-    type: 'divider',
+    type: 'divider'
   },
   {
     label: () => 'Profile',
     key: 'profile',
-    icon: renderIcon(ProfileOutlined),
+    icon: renderIcon(ProfileOutlined)
   },
   {
     label: () => 'Shop Setting',
     key: 'shop_setting',
-    icon: renderIcon(SettingsOutline),
+    icon: renderIcon(SettingsOutline)
   },
   {
     label: () => 'Change Password',
     key: 'change-password',
-    icon: renderIcon(UnlockOutlined),
+    icon: renderIcon(UnlockOutlined)
   },
   {
     label: () => 'Logout',
     key: 'logout',
-    icon: renderIcon(LogoutOutlined),
-  },
+    icon: renderIcon(LogoutOutlined)
+  }
 ];
 
 function renderCustomHeader() {
   return h(
     'div',
     {
-      style: 'display: flex; align-items: center; padding: 8px 12px;',
+      style: 'display: flex; align-items: center; padding: 8px 12px;'
     },
     [
       h(NAvatar, {
         round: true,
         style: 'margin-right: 12px;',
-        src: `${imgUrl}${userStore.currentUser.profile.profile_picture}`,
+        src: `${imgUrl}${userStore.currentUser.profile.profile_picture}`
       }),
       h('div', null, [
         h('div', null, [
@@ -212,15 +199,15 @@ function renderCustomHeader() {
                   userStore.currentUser.profile.first_name +
                   ' ' +
                   userStore.currentUser.profile.last_name
-                }`,
+                }`
             }
-          ),
+          )
         ]),
         h('div', null, {
           style: 'font-size: 12px;',
-          default: () => `${userStore.currentUser.email}`,
-        }),
-      ]),
+          default: () => `${userStore.currentUser.email}`
+        })
+      ])
     ]
   );
 }

@@ -72,7 +72,7 @@ import {
   NH1,
   NH2,
   NH3,
-  NFormItemGi,
+  NFormItemGi
 } from 'naive-ui';
 
 // https://www.naiveui.com/en-US/os-theme/docs/import-on-demand
@@ -149,8 +149,8 @@ const naive = create({
     NSpin,
     NTimePicker,
     NBackTop,
-    NSkeleton,
-  ],
+    NSkeleton
+  ]
 });
 
 export function setupNaive(app: App<Element>) {

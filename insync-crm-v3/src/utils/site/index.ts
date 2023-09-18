@@ -9,7 +9,7 @@ export class SiteUtils {
       useTitle(appTitle);
     } else {
       useTitle(typeof title === 'function' ? title() : title, {
-        titleTemplate: `%s | ${appTitle}`,
+        titleTemplate: `%s | ${appTitle}`
       });
     }
   }

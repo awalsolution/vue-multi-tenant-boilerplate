@@ -7,10 +7,7 @@
             <n-space :vertical="true">
               <n-card title="Title">
                 <n-form-item label="Product Title" path="title">
-                  <n-input
-                    v-model:value="product.title"
-                    placeholder="Enter Product Title"
-                  />
+                  <n-input v-model:value="product.title" placeholder="Enter Product Title" />
                 </n-form-item>
               </n-card>
               <n-card title="Description">
@@ -60,22 +57,31 @@
                 <n-form-item label="Status" path="status">
                   <n-select v-model:value="product.status" :options="status" />
                 </n-form-item>
-                <n-button
-                  secondary
-                  type="info"
-                  @click="handleValidateClick"
-                  class="float-right"
-                >
+                <n-button secondary type="info" @click="handleValidateClick" class="float-right">
                   Create
                 </n-button>
               </n-card>
               <n-card title="Product Categories">
                 <n-form-item label="Categories" path="category_id">
-                  <single-category-selector
+                  <!-- <single-category-selector
                     v-model:value="product.category_id"
                     label-field="name"
                     value-field="id"
                     :tag="false"
+                  /> -->
+                  <n-select
+                    :filterable="true"
+                    :tag="false"
+                    placeholder="Select Category"
+                    v-model:value="product.category_id"
+                    clearable
+                    @focus="getCategoriesOnFocus"
+                    :remote="true"
+                    :clear-filter-after-select="false"
+                    label-field="name"
+                    value-field="id"
+                    :loading="categoryLoading"
+                    :options="categories"
                   />
                 </n-form-item>
               </n-card>
@@ -90,16 +96,17 @@
 <script lang="ts" setup>
 import ContentLayout from '@src/layouts/ContentLayout/index.vue';
 import { ref, unref } from 'vue';
-import { FormInst, useMessage } from 'naive-ui';
+import { type FormInst, useMessage } from 'naive-ui';
 import { useRouter } from 'vue-router';
 // import '@vueup/vue-quill/dist/vue-quill.snow.css';
 // import { QuillEditor } from '@vueup/vue-quill';
 import { createRecordApi } from '@src/api/endpoints';
 import { SingleImageUploader } from '@src/components/upload';
 import { useEnv } from '@src/hooks/useEnv';
+import { usefilterCategory } from '@src/filters/categories';
 
 const { uploadUrl } = useEnv();
-
+const { categories, categoryLoading, getCategoriesOnFocus } = usefilterCategory();
 // const quillEditor = ref();
 const formRef = ref<FormInst | null>(null);
 const product: any = ref({});
@@ -135,12 +142,12 @@ const handleValidateClick = (e: MouseEvent) => {
 const status = [
   {
     label: 'Active',
-    value: 'active',
+    value: 'active'
   },
   {
     label: 'Draft',
-    value: 'draft',
-  },
+    value: 'draft'
+  }
 ];
 
 // const options = reactive({
@@ -169,18 +176,18 @@ const rules = ref({
   title: {
     required: true,
     message: 'Please Enter title',
-    trigger: 'blur',
+    trigger: 'blur'
   },
   status: {
     required: true,
     message: 'Please Select Status',
-    trigger: 'blur',
+    trigger: 'blur'
   },
   description: {
     required: true,
     message: 'Please Enter description',
-    trigger: 'blur',
-  },
+    trigger: 'blur'
+  }
 });
 </script>
 

@@ -13,7 +13,7 @@ export function usePagination(endpoint: any) {
     getRecordsApi(endpoint, {
       ...searchParams.value,
       page: page.value,
-      pageSize: pageSize.value,
+      pageSize: pageSize.value
     }).then((res: any) => {
       console.log('record list => ', res.result);
       list.value = res.result.data;
@@ -35,6 +35,6 @@ export function usePagination(endpoint: any) {
     pageSizes,
     itemCount,
     pageSize,
-    searchParams,
+    searchParams
   };
 }

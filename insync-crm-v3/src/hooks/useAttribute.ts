@@ -16,11 +16,9 @@ export function useAttribute(tag = false) {
       attributesLoading.value = true;
       getRecordsApi('/attributes', { name: query, pageSize: 100 })
         .then((res: any) => {
-          filteredAttributes.value = res.result.data;
+          filteredAttributes.value = res.result;
           if (tag && query) {
-            if (
-              !filteredAttributes.value.some((role: any) => role.name === query)
-            ) {
+            if (!filteredAttributes.value.some((role: any) => role.name === query)) {
               filteredAttributes.value.unshift({ id: 0, name: query });
             }
           }

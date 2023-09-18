@@ -13,7 +13,7 @@ export function usefilterRole() {
     } else {
       roleLoading.value = true;
       const response: any = await getRecordsApi('/roles', {
-        name: query,
+        name: query
       });
       roles.value = response.result.data;
       roleLoading.value = false;
@@ -41,6 +41,6 @@ export function usefilterRole() {
     rolesInitialized,
     getByRoleParams,
     getRoles,
-    getRolesOnFocus,
+    getRolesOnFocus
   };
 }

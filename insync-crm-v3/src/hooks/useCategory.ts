@@ -16,11 +16,10 @@ export function useCategory(tag = false) {
       categoriesLoading.value = true;
       getRecordsApi('/categories', { name: query, pageSize: 100 })
         .then((res: any) => {
-          filteredCategories.value = res.result.data;
+          filteredCategories.value = res.result;
+          console.log('res.result');
           if (tag && query) {
-            if (
-              !filteredCategories.value.some((role: any) => role.name === query)
-            ) {
+            if (!filteredCategories.value.some((role: any) => role.name === query)) {
               filteredCategories.value.unshift({ id: 0, name: query });
             }
           }

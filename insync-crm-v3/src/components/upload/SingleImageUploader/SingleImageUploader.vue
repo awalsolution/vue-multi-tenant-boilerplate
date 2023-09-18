@@ -9,11 +9,7 @@
               <img :src="imgList" />
             </div>
             <div class="img-box-actions">
-              <n-icon
-                size="18"
-                class="mx-2 action-icon"
-                @click="preview(imgList)"
-              >
+              <n-icon size="18" class="mx-2 action-icon" @click="preview(imgList)">
                 <EyeOutlined />
               </n-icon>
               <n-icon size="18" class="mx-2 action-icon" @click="remove()">
@@ -24,10 +20,7 @@
         </div>
 
         <!--Upload picture-->
-        <div
-          class="upload-card-item upload-card-item-select-picture"
-          :style="getCSSProperties"
-        >
+        <div class="upload-card-item upload-card-item-select-picture" :style="getCSSProperties">
           <n-upload
             v-bind="$props"
             :file-list-style="{ display: 'none' }"
@@ -74,14 +67,14 @@ export default defineComponent({
 
   components: { EyeOutlined, DeleteOutlined, CloudUpload },
   props: {
-    ...basicProps,
+    ...basicProps
   },
   emits: ['uploadChange', 'delete'],
   setup(props, { emit }) {
     const getCSSProperties = computed(() => {
       return {
         width: `${props.width}px`,
-        height: `${props.height}px`,
+        height: `${props.height}px`
       };
     });
 
@@ -92,7 +85,7 @@ export default defineComponent({
       showModal: false,
       previewUrl: '',
       originalImgList: '',
-      imgList: '',
+      imgList: ''
     });
 
     //Assign the default image display
@@ -121,18 +114,14 @@ export default defineComponent({
           emit('uploadChange', state.originalImgList);
           emit('delete', state.originalImgList);
         },
-        onNegativeClick: () => {},
+        onNegativeClick: () => {}
       });
     }
 
     //Assemble the complete image address
     function getImgUrl(url: string): string {
       const { imgUrl } = useEnv();
-      return url
-        ? /(^http|https:\/\/)/g.test(url)
-          ? url
-          : `${imgUrl}${url}`
-        : '';
+      return url ? (/(^http|https:\/\/)/g.test(url) ? url : `${imgUrl}${url}`) : '';
     }
 
     function checkFileType(fileType: string) {
@@ -202,9 +191,9 @@ export default defineComponent({
       preview,
       remove,
       beforeUpload,
-      getCSSProperties,
+      getCSSProperties
     };
-  },
+  }
 });
 </script>
 

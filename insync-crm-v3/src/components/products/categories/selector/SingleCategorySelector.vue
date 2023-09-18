@@ -23,54 +23,53 @@ import { useCategory } from '@src/hooks/useCategory';
 export default defineComponent({
   props: {
     modelValue: {
-      type: [String, Array, Object, Number, Boolean],
+      type: [String, Array, Object, Number, Boolean]
     },
     labelField: {
       type: String,
-      default: 'name',
+      default: 'name'
     },
     placeholder: {
       type: String,
-      default: 'Search Categories',
+      default: 'Search Categories'
     },
     clearable: {
       type: Boolean,
-      default: true,
+      default: true
     },
     multiple: {
       type: Boolean,
-      default: true,
+      default: true
     },
     tag: {
       type: Boolean,
-      default: false,
+      default: false
     },
     valueField: {
       type: String,
-      default: 'id',
-    },
+      default: 'id'
+    }
   },
   emits: ['update:modelValue'],
   setup(props) {
-    const { filterCategories, filteredCategories, categoriesLoading } =
-      useCategory(props.tag);
+    const { filterCategories, filteredCategories, categoriesLoading } = useCategory(props.tag);
     const selectValue = ref(null);
     return {
       filterCategories,
       filteredCategories,
       categoriesLoading,
-      selectValue,
+      selectValue
     };
   },
   watch: {
     modelValue: function (value) {
       this.selectValue = value;
-    },
+    }
   },
   methods: {
     onChangeValue(value: any) {
       this.$emit('update:modelValue', value);
-    },
-  },
+    }
+  }
 });
 </script>

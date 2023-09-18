@@ -2,7 +2,7 @@ import { ref } from 'vue';
 import { getRecordsApi } from '@src/api/endpoints';
 import { isEmpty } from 'lodash';
 
-export function filterCategory() {
+export function usefilterCategory() {
   const categories: any = ref([]);
   const categoryLoading = ref(false);
   const categoriesInitialized = ref(false);
@@ -13,7 +13,7 @@ export function filterCategory() {
     } else {
       categoryLoading.value = true;
       const response: any = await getRecordsApi('/categories', { name: query });
-      categories.value = response.result.data;
+      categories.value = response.result;
       categoryLoading.value = false;
     }
   }
@@ -21,7 +21,7 @@ export function filterCategory() {
   async function getCategories() {
     categoryLoading.value = true;
     const response: any = await getRecordsApi('/categories');
-    categories.value = response.result.data;
+    categories.value = response.result;
     categoryLoading.value = false;
   }
 
@@ -38,6 +38,6 @@ export function filterCategory() {
     categoriesInitialized,
     findCategory,
     getCategories,
-    getCategoriesOnFocus,
+    getCategoriesOnFocus
   };
 }

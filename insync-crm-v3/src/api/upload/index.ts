@@ -13,13 +13,13 @@ export class UploadAPI {
   static uploadFile(data: any, options?: UploadOptions) {
     return Request.post<BaseResponse<UploadResponse>>(this.UPLOAD_API, data, {
       headers: this.headers,
-      onUploadProgress: options?.onUploadProgress ? options.onUploadProgress : () => {},
+      onUploadProgress: options?.onUploadProgress ? options.onUploadProgress : () => {}
     });
   }
 
   static uploadFiles(data: any) {
     return Request.post(`${this.UPLOAD_API}/batch`, data, {
-      headers: this.headers,
+      headers: this.headers
     });
   }
 }

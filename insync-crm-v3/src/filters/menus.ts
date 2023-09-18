@@ -38,6 +38,6 @@ export function usefilterMenu() {
     menusInitialized,
     findMenu,
     getMenus,
-    getMenusOnFocus,
+    getMenusOnFocus
   };
 }

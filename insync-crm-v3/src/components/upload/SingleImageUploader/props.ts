@@ -5,30 +5,30 @@ export const basicProps = {
   ...NUpload.props,
   accept: {
     type: String,
-    default: '.jpg,.png,.jpeg,.svg,.gif',
+    default: '.jpg,.png,.jpeg,.svg,.gif'
   },
   helpText: {
     type: String,
-    default: '',
+    default: ''
   },
   maxSize: {
     type: Number,
-    default: 2,
+    default: 2
   },
   maxNumber: {
     type: Number,
-    default: Infinity,
+    default: Infinity
   },
   value: {
     type: String,
-    default: '',
+    default: ''
   },
   width: {
     type: Number,
-    default: 104,
+    default: 104
   },
   height: {
     type: Number,
-    default: 104,
-  },
+    default: 104
+  }
 };

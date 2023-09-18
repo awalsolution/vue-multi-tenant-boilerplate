@@ -1,34 +1,16 @@
 <template>
-  <DataTableLayout
-    :loading="loading"
-    v-permission="{ action: ['can view products'] }"
-  >
+  <DataTableLayout :loading="loading" v-permission="{ action: ['can view products'] }">
     <template #tableHeader>
-      <div
-        class="flex flex-col items-center space-y-2 sm:flex-row sm:justify-between sm:space-y-0"
-      >
-        <div
-          class="flex flex-col items-center space-y-2 sm:flex-row sm:space-x-3 sm:space-y-0"
-        >
+      <div class="flex flex-col items-center space-y-2 sm:flex-row sm:justify-between sm:space-y-0">
+        <div class="flex flex-col items-center space-y-2 sm:flex-row sm:space-x-3 sm:space-y-0">
           <div class="flex gap-2">
-            <NButton
-              tertiary
-              type="primary"
-              :size="isMobile ? 'small' : 'medium'"
+            <NButton tertiary type="primary" :size="isMobile ? 'small' : 'medium'"
               >All (1000)
             </NButton>
-            <NButton
-              tertiary
-              type="success"
-              :size="isMobile ? 'small' : 'medium'"
-            >
+            <NButton tertiary type="success" :size="isMobile ? 'small' : 'medium'">
               Published (800)
             </NButton>
-            <NButton
-              tertiary
-              type="warning"
-              :size="isMobile ? 'small' : 'medium'"
-            >
+            <NButton tertiary type="warning" :size="isMobile ? 'small' : 'medium'">
               Darft (200)
             </NButton>
           </div>
@@ -46,9 +28,7 @@
             </NInput>
           </div>
         </div>
-        <div
-          class="flex w-full items-center justify-between space-x-3 sm:justify-end"
-        >
+        <div class="flex w-full items-center justify-between space-x-3 sm:justify-end">
           <NButton
             secondary
             type="info"
@@ -77,7 +57,7 @@
             <th
               class="sticky_el right-0 z-20"
               v-permission="{
-                action: ['can view product update', 'can view product delete'],
+                action: ['can view product update', 'can view product delete']
               }"
             >
               Actions
@@ -91,11 +71,7 @@
           <tr v-else v-for="item in list" :key="item.id" class="body_tr">
             <td class="sticky_el left-0 z-10">{{ item.id }}</td>
             <td class="text-center td">
-              <n-avatar
-                round
-                size="large"
-                :src="`${imgUrl}${item.product_image}`"
-              />
+              <n-avatar round size="large" :src="`${imgUrl}${item.product_image}`" />
             </td>
             <td class="td">{{ item.shop.shop_name }}</td>
             <td class="td">{{ item.title }}</td>
@@ -108,7 +84,7 @@
             <td
               class="sticky_el right-0 z-10"
               v-permission="{
-                action: ['can view product update', 'can view product delete'],
+                action: ['can view product update', 'can view product delete']
               }"
             >
               <n-dropdown
@@ -130,9 +106,7 @@
     </template>
 
     <template #tableFooter>
-      <div
-        class="flex flex-col items-center space-y-2 sm:flex-row sm:justify-end sm:space-y-0"
-      >
+      <div class="flex flex-col items-center space-y-2 sm:flex-row sm:justify-end sm:space-y-0">
         <n-pagination
           v-model:page="page"
           v-model:page-size="pageSize"
@@ -154,12 +128,7 @@ import { ref, onMounted, h } from 'vue';
 import { useDialog, useMessage } from 'naive-ui';
 import type { Component } from 'vue';
 import { NIcon, NPagination } from 'naive-ui';
-import {
-  MoreOutlined,
-  EditOutlined,
-  DeleteOutlined,
-  SearchOutlined,
-} from '@vicons/antd';
+import { MoreOutlined, EditOutlined, DeleteOutlined, SearchOutlined } from '@vicons/antd';
 import { useEnv } from '@src/hooks/useEnv';
 import { useLoading } from '@src/hooks/useLoading';
 import { usePagination } from '@src/hooks/pagination/usePagination';
@@ -176,15 +145,8 @@ const message: any = useMessage();
 const [loading, loadingDispatcher] = useLoading(false);
 
 // fetch all records
-const {
-  getList,
-  list,
-  page,
-  pageSizes,
-  itemCount,
-  pageSize,
-  searchParams,
-}: any = usePagination('/products');
+const { getList, list, page, pageSizes, itemCount, pageSize, searchParams }: any =
+  usePagination('/products');
 
 onMounted(() => {
   getList();
@@ -193,7 +155,7 @@ onMounted(() => {
 const renderIcon = (icon: Component) => {
   return () => {
     return h(NIcon, null, {
-      default: () => h(icon),
+      default: () => h(icon)
     });
   };
 };
@@ -202,13 +164,13 @@ const moreOptions = ref([
   {
     label: 'Edit',
     key: 'edit',
-    icon: renderIcon(EditOutlined),
+    icon: renderIcon(EditOutlined)
   },
   {
     label: 'Delete',
     key: 'delete',
-    icon: renderIcon(DeleteOutlined),
-  },
+    icon: renderIcon(DeleteOutlined)
+  }
 ]);
 
 function confirmationDialog() {
@@ -217,7 +179,7 @@ function confirmationDialog() {
     content: () => 'Are you sure you want to delete?',
     positiveText: 'Delete',
     negativeText: 'Cancel',
-    onPositiveClick: deleteOperation,
+    onPositiveClick: deleteOperation
   });
 }
 

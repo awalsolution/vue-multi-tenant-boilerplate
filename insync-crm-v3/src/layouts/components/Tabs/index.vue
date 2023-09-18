@@ -50,11 +50,7 @@
         <NIcon size="18" :component="ArrowsLeft" />
       </div>
 
-      <NDropdown
-        trigger="hover"
-        :options="tabsOptions"
-        @select="selectTabsOption"
-      >
+      <NDropdown trigger="hover" :options="tabsOptions" @select="selectTabsOption">
         <NIcon size="20" class="cursor-pointer" :component="DashboardFilled" />
       </NDropdown>
     </div>
@@ -77,7 +73,7 @@ const router = useRouter();
 const tabStore = useTabStore();
 const record = reactive({
   current: -1,
-  replace: -1,
+  replace: -1
 });
 
 const selectTabsOption = (key: TabsOptionKey) => {
@@ -119,7 +115,7 @@ const scrollLeft = () => {
     animationFrameId = BrowserUtils.smoothScroll({
       element: scrollbarRef.value,
       target: currentScrollLeft - 100,
-      animationFrameId,
+      animationFrameId
     });
   }
 };
@@ -130,7 +126,7 @@ const scrollRight = () => {
     animationFrameId = BrowserUtils.smoothScroll({
       element: scrollbarRef.value,
       target: currentScrollLeft + 100,
-      animationFrameId,
+      animationFrameId
     });
   }
 };

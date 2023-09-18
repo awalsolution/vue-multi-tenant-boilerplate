@@ -29,6 +29,6 @@ export const useSidebarStore = defineStore('app-sidebar', () => {
     changeSidebarCollapse,
     toggleSidebarCollapse,
     changeSidebarDisplay,
-    toggleSidebarDisplay,
+    toggleSidebarDisplay
   };
 });

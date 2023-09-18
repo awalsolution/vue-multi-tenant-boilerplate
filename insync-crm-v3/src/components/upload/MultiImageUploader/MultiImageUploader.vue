@@ -78,14 +78,14 @@ export default defineComponent({
 
   components: { EyeOutlined, DeleteOutlined, CloudUpload },
   props: {
-    ...basicProps,
+    ...basicProps
   },
   emits: ['uploadChange', 'delete'],
   setup(props, { emit }) {
     const getCSSProperties = computed(() => {
       return {
         width: `${props.width}px`,
-        height: `${props.height}px`,
+        height: `${props.height}px`
       };
     });
     const message = useMessage();
@@ -94,7 +94,7 @@ export default defineComponent({
       showModal: false,
       previewUrl: '',
       originalImgList: [] as string[],
-      imgList: [] as string[],
+      imgList: [] as string[]
     });
 
     // assign the default image display
@@ -127,7 +127,7 @@ export default defineComponent({
           emit('uploadChange', state.originalImgList);
           emit('delete', state.originalImgList);
         },
-        onNegativeClick: () => {},
+        onNegativeClick: () => {}
       });
     }
 
@@ -210,9 +210,9 @@ export default defineComponent({
       preview,
       remove,
       beforeUpload,
-      getCSSProperties,
+      getCSSProperties
     };
-  },
+  }
 });
 </script>
 

@@ -4,12 +4,7 @@
       <NCard embedded class="mb-2 px-3 py-2" :content-style="{ padding: 0 }">
         <div class="flex flex-col items-center sm:flex-row sm:justify-between">
           <h3 class="text-lg">Permissions List</h3>
-          <NButton
-            secondary
-            type="info"
-            size="medium"
-            @click="handleAssignPermissions"
-          >
+          <NButton secondary type="info" size="medium" @click="handleAssignPermissions">
             Assign Permission
           </NButton>
         </div>
@@ -22,19 +17,10 @@
       pane-class="border-x border-b overflow-scroll h-full"
       class="sticky top-0 h-full overflow-scroll"
     >
-      <n-tab-pane
-        v-for="item of menus"
-        :key="item.id"
-        :name="item.menu_name"
-        :tab="item.menu_name"
-      >
+      <n-tab-pane v-for="item of menus" :key="item.id" :name="item.menu_name" :tab="item.menu_name">
         <n-checkbox-group class="mx-2" v-model:value="selectedPermissions">
           <n-row>
-            <n-col
-              v-for="permission of item.permissions"
-              :key="permission.id"
-              :span="6"
-            >
+            <n-col v-for="permission of item.permissions" :key="permission.id" :span="6">
               <n-checkbox :value="permission.id" :label="permission.name" />
             </n-col>
           </n-row>
@@ -79,7 +65,7 @@ onMounted(() => {
 
 const handleAssignPermissions = () => {
   updateRecordApi(updateEndpoint.value, {
-    permissions: selectedPermissions.value,
+    permissions: selectedPermissions.value
   }).then((res: any) => {
     message.success(res.message);
   });

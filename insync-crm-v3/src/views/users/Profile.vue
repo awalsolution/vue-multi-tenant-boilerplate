@@ -2,11 +2,7 @@
   <n-card title="Profile">
     <n-row>
       <n-col :span="8" class="text-center">
-        <n-avatar
-          round
-          :size="200"
-          :src="`${imgUrl}${profileData.profile_picture}`"
-        />
+        <n-avatar round :size="200" :src="`${imgUrl}${profileData.profile_picture}`" />
       </n-col>
       <n-col :span="16">
         <n-space style="display: block" vertical>
@@ -50,20 +46,12 @@
               </n-col>
               <n-col :span="8">
                 <n-form-item label="City" path="city">
-                  <n-input
-                    v-model:value="profileData.city"
-                    placeholder="Enter City"
-                    disabled
-                  />
+                  <n-input v-model:value="profileData.city" placeholder="Enter City" disabled />
                 </n-form-item>
               </n-col>
               <n-col :span="8">
                 <n-form-item label="State" path="state">
-                  <n-input
-                    v-model:value="profileData.state"
-                    placeholder="Enter State"
-                    disabled
-                  />
+                  <n-input v-model:value="profileData.state" placeholder="Enter State" disabled />
                 </n-form-item>
               </n-col>
               <n-col :span="8">
@@ -82,12 +70,10 @@
           <n-form-item
             :theme-overrides="{
               labelHeightSmall: '0',
-              feedbackHeightSmall: '0',
+              feedbackHeightSmall: '0'
             }"
           >
-            <n-button type="success" @click="handleValidateClick">
-              Edit Profile</n-button
-            >
+            <n-button secondary type="info" @click="handleValidateClick"> Edit Profile</n-button>
           </n-form-item>
         </n-space>
       </n-col>
@@ -119,9 +105,12 @@ const handleValidateClick = (e: MouseEvent) => {
   e.preventDefault();
   showEditModal.value = true;
 };
-console.log(profileData);
+
+// console.log(profileData);
+
 onMounted(() => {
-  profileData.value = userStore.user.profile;
+  profileData.value = userStore.currentUser.profile;
 });
 </script>
+
 <style lang="scss" scoped></style>

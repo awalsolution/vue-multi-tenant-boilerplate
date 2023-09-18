@@ -4,9 +4,7 @@
       <img src="@src/assets/images/exception/404.svg" alt="" />
     </div>
     <div class="text-center">
-      <h1 class="text-base text-gray-500">
-        Sorry, the page you visited does not exist
-      </h1>
+      <h1 class="text-base text-gray-500">Sorry, the page you visited does not exist</h1>
       <n-button type="info" @click="goHome">Back to the Home Page</n-button>
     </div>
   </div>

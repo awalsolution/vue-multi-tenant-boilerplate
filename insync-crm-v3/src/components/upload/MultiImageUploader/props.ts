@@ -5,30 +5,30 @@ export const basicProps = {
   ...NUpload.props,
   accept: {
     type: String,
-    default: '.jpg,.png,.jpeg,.svg,.gif',
+    default: '.jpg,.png,.jpeg,.svg,.gif'
   },
   helpText: {
     type: String as PropType<string>,
-    default: '',
+    default: ''
   },
   maxSize: {
     type: Number as PropType<number>,
-    default: 2,
+    default: 2
   },
   maxNumber: {
     type: Number as PropType<number>,
-    default: Infinity,
+    default: Infinity
   },
   value: {
     type: Array as PropType<string[]>,
-    default: () => [],
+    default: () => []
   },
   width: {
     type: Number as PropType<number>,
-    default: 104,
+    default: 104
   },
   height: {
     type: Number as PropType<number>,
-    default: 104,
-  },
+    default: 104
+  }
 };

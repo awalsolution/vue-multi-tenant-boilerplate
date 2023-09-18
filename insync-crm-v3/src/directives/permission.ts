@@ -1,4 +1,4 @@
-import { ObjectDirective } from 'vue';
+import type { ObjectDirective } from 'vue';
 import { usePermission } from '@src/utils/permission/usePermission';
 
 export const permission: ObjectDirective = {
