@@ -1,18 +1,14 @@
 <template>
   <DataTableLayout :loading="loading" v-permission="{ action: ['can view products'] }">
     <template #tableHeader>
-      <div class="flex flex-col items-center space-y-2 sm:flex-row sm:justify-between sm:space-y-0">
+      <div
+        class="flex flex-col flex-wrap gap-5 items-center space-y-2 sm:flex-row sm:justify-between sm:space-y-0"
+      >
         <div class="flex flex-col items-center space-y-2 sm:flex-row sm:space-x-3 sm:space-y-0">
           <div class="flex gap-2">
-            <NButton tertiary type="primary" :size="isMobile ? 'small' : 'medium'"
-              >All (1000)
-            </NButton>
-            <NButton tertiary type="success" :size="isMobile ? 'small' : 'medium'">
-              Published (800)
-            </NButton>
-            <NButton tertiary type="warning" :size="isMobile ? 'small' : 'medium'">
-              Darft (200)
-            </NButton>
+            <NButton tertiary type="primary" size="small"> All (1000) </NButton>
+            <NButton tertiary type="success" size="small"> Published (800) </NButton>
+            <NButton tertiary type="warning" size="small"> Darft (200) </NButton>
           </div>
           <div class="flex flex-col sm:flex-row w-full items-center !space-x-2 sm:w-fit">
             <n-input
