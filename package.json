@@ -12,6 +12,7 @@
     "format": "prettier --write src/"
   },
   "dependencies": {
+    "@vueuse/core": "^10.4.1",
     "axios": "^1.5.0",
     "dayjs": "^1.11.9",
     "pinia": "^2.1.6",
@@ -25,6 +26,7 @@
     "@vicons/antd": "^0.12.0",
     "@vicons/fluent": "^0.12.0",
     "@vicons/ionicons5": "^0.12.0",
+    "@vicons/material": "^0.12.0",
     "@vicons/tabler": "^0.12.0",
     "@vitejs/plugin-vue": "^4.3.1",
     "@vitejs/plugin-vue-jsx": "^3.0.2",

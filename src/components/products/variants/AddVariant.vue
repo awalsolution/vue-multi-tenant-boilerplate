@@ -3,10 +3,19 @@
     <n-form ref="formRef" :label-width="80" :model="variants" :rules="rules" size="small">
       <n-grid x-gap="10">
         <n-form-item-gi :span="12" label="Attribute" path="attribute_id">
-          <single-attribute-selector
+          <n-select
+            :filterable="true"
+            :tag="false"
+            placeholder="Select Attribute"
             v-model:value="variants.attribute_id"
+            clearable
+            @focus="getAttributesOnFocus"
+            :remote="true"
+            :clear-filter-after-select="false"
             label-field="name"
             value-field="id"
+            :loading="attributeLoading"
+            :options="attributes"
           />
         </n-form-item-gi>
         <n-form-item-gi :span="12" label="Attribute Value" path="attribute_value">
@@ -71,9 +80,10 @@ import { useRoute } from 'vue-router';
 import { createRecordApi } from '@src/api/endpoints';
 import { MultiImageUploader } from '@src/components/upload';
 import { useEnv } from '@src/hooks/useEnv';
+import { usefilterAttribute } from '@src/filters/attributes';
 
+const { attributes, attributeLoading, getAttributesOnFocus } = usefilterAttribute();
 const { uploadUrl } = useEnv();
-
 const route = useRoute();
 const formRef = ref<FormInst | null>(null);
 const variants: any = ref({

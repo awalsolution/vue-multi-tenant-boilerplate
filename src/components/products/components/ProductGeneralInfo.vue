@@ -80,17 +80,16 @@ const props = defineProps<{
   product: Record<string, any>;
 }>();
 
-const { categories, categoryLoading, getCategoriesOnFocus } = usefilterCategory();
+const { categories, categoryLoading, getCategories, getCategoriesOnFocus } = usefilterCategory();
 const generalInfoFormRef = ref<FormInst | null>(null);
 const generalInfo: any = ref(props.product);
+getCategories();
 const [loading, loadingDispatcher] = useLoading(false);
 
 const { uploadUrl } = useEnv();
 const imageUploadChange = (list: string) => {
   generalInfo.value.product_image = unref(list);
 };
-
-console.log(generalInfo);
 
 const handleValidateClick = (e: MouseEvent) => {
   e.preventDefault();
