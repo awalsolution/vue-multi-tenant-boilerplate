@@ -63,12 +63,6 @@
               </n-card>
               <n-card title="Product Categories">
                 <n-form-item label="Categories" path="category_id">
-                  <!-- <single-category-selector
-                    v-model:value="product.category_id"
-                    label-field="name"
-                    value-field="id"
-                    :tag="false"
-                  /> -->
                   <n-select
                     :filterable="true"
                     :tag="false"
@@ -94,23 +88,22 @@
 </template>
 
 <script lang="ts" setup>
-import ContentLayout from '@src/layouts/ContentLayout/index.vue';
 import { ref, unref } from 'vue';
-import { type FormInst, useMessage } from 'naive-ui';
+import { type FormInst } from 'naive-ui';
 import { useRouter } from 'vue-router';
 // import '@vueup/vue-quill/dist/vue-quill.snow.css';
 // import { QuillEditor } from '@vueup/vue-quill';
+import { useEnv } from '@src/hooks/useEnv';
 import { createRecordApi } from '@src/api/endpoints';
 import { SingleImageUploader } from '@src/components/upload';
-import { useEnv } from '@src/hooks/useEnv';
 import { usefilterCategory } from '@src/filters/categories';
+import ContentLayout from '@src/layouts/ContentLayout/index.vue';
 
 const { uploadUrl } = useEnv();
 const { categories, categoryLoading, getCategoriesOnFocus } = usefilterCategory();
 // const quillEditor = ref();
 const formRef = ref<FormInst | null>(null);
 const product: any = ref({});
-const message: any = useMessage();
 
 const loading = ref(false);
 const router = useRouter();
@@ -127,14 +120,14 @@ const handleValidateClick = (e: MouseEvent) => {
     if (!errors) {
       loading.value = true;
       createRecordApi(`/products`, product.value).then((res: any) => {
-        message.success(res.message);
+        window['$message'].success(res.message);
         emits('created', res.result);
         loading.value = false;
         router.replace('/product');
       });
     } else {
       console.log(errors);
-      message.error('Please fill out required fields');
+      window['$message'].error('Please fill out required fields');
     }
   });
 };

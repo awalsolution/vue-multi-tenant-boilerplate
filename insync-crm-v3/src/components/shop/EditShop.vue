@@ -42,7 +42,7 @@
 
 <script lang="ts" setup>
 import { ref, unref } from 'vue';
-import { type FormInst, useMessage } from 'naive-ui';
+import { type FormInst } from 'naive-ui';
 import { getRecordApi, updateRecordApi } from '@src/api/endpoints';
 import { SingleImageUploader } from '@src/components/upload';
 import { useEnv } from '@src/hooks/useEnv';
@@ -50,7 +50,6 @@ import { useEnv } from '@src/hooks/useEnv';
 const { uploadUrl } = useEnv();
 const formRef = ref<FormInst | null>(null);
 const formValue: any = ref({});
-const message: any = useMessage();
 
 const emits = defineEmits(['updated']);
 const props = defineProps({
@@ -73,15 +72,16 @@ const handleValidateClick = (e: MouseEvent) => {
   formRef.value?.validate((errors) => {
     if (!errors) {
       updateRecordApi(`/shops/${formValue.value.id}`, formValue.value).then((res: any) => {
-        message.success(res.message);
+        window['$message'].success(res.message);
         emits('updated', res.result);
       });
     } else {
       console.log(errors);
-      message.error('Invalid');
+      window['$message'].error('Invalid');
     }
   });
 };
+
 const status = ref([
   {
     label: 'active',
@@ -92,6 +92,7 @@ const status = ref([
     value: 'disabled'
   }
 ]);
+
 const rules = ref({
   shop_name: {
     required: true,

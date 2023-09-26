@@ -22,7 +22,7 @@
 
 <script lang="ts" setup>
 import { ref, unref } from 'vue';
-import { type FormInst, useMessage } from 'naive-ui';
+import { type FormInst } from 'naive-ui';
 import { updateRecordApi, getRecordApi } from '@src/api/endpoints';
 import { SingleImageUploader } from '@src/components/upload';
 import { useEnv } from '@src/hooks/useEnv';
@@ -30,7 +30,7 @@ import { useEnv } from '@src/hooks/useEnv';
 const { uploadUrl } = useEnv();
 const formValue: any = ref({});
 const formRef = ref<FormInst | null>(null);
-const message: any = useMessage();
+
 const emits = defineEmits(['updated']);
 
 const uploadChange = (list: string) => {
@@ -59,12 +59,12 @@ const handleValidateClick = (e: MouseEvent) => {
     if (!errors) {
       console.log(formValue.value);
       updateRecordApi(`/categories/${formValue.value.id}`, formValue.value).then((res: any) => {
-        message.success(res.message);
+        window['$message'].success(res.message);
         emits('updated', res.result);
       });
     } else {
       console.log(errors);
-      message.error('Invalid');
+      window['$message'].error('Invalid');
     }
   });
 };

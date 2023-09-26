@@ -66,7 +66,7 @@
 
 <script lang="ts" setup>
 import { ref } from 'vue';
-import { type FormInst, useMessage } from 'naive-ui';
+import { type FormInst } from 'naive-ui';
 import { createRecordApi } from '@src/api/endpoints';
 import { usefilterRole } from '@src/filters/roles';
 import { usefilterShop } from '@src/filters/shops';
@@ -75,7 +75,6 @@ const { roles, roleLoading, getRolesOnFocus } = usefilterRole();
 const { shops, shopLoading, getShopsOnFocus } = usefilterShop();
 const formRef = ref<FormInst | null>(null);
 const formValue: any = ref({});
-const message: any = useMessage();
 const isVendor: any = ref(false);
 
 const checkVendorRole = () => {
@@ -100,12 +99,12 @@ const handleValidateClick = (e: MouseEvent) => {
   formRef.value?.validate((errors) => {
     if (!errors) {
       createRecordApi('/users', formValue.value).then((res: any) => {
-        message.success(res.message);
+        window['$message'].success(res.message);
         emits('created', res.result);
       });
     } else {
       console.log(errors);
-      message.error('Please fill out required fields');
+      window['$message'].error('Please fill out required fields');
     }
   });
 };

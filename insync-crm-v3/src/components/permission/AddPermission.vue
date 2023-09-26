@@ -42,7 +42,7 @@
 
 <script lang="ts" setup>
 import { ref } from 'vue';
-import { type FormInst, useMessage } from 'naive-ui';
+import { type FormInst } from 'naive-ui';
 import { createRecordApi } from '@src/api/endpoints';
 import { usefilterMenu } from '@src/filters/menus';
 
@@ -50,7 +50,7 @@ const { menus, menuLoading, getMenusOnFocus } = usefilterMenu();
 console.log('menus list =>', menus);
 const formValue: any = ref({});
 const formRef = ref<FormInst | null>(null);
-const message: any = useMessage();
+
 const emits = defineEmits(['created']);
 const rules = ref({
   name: {
@@ -65,13 +65,12 @@ const handleValidateClick = (e: MouseEvent) => {
   formRef.value?.validate((errors) => {
     if (!errors) {
       createRecordApi('/permissions', formValue.value).then((res: any) => {
-        console.log(res);
-        message.success(res.message);
+        window['$message'].success(res.message);
         emits('created', res.result);
       });
     } else {
       console.log(errors);
-      message.error('Please fill out required fields');
+      window['$message'].error('Please fill out required fields');
     }
   });
 };

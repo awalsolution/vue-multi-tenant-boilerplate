@@ -46,7 +46,7 @@
 
 <script lang="ts" setup>
 import { onMounted, ref, unref } from 'vue';
-import { type FormInst, useMessage } from 'naive-ui';
+import { type FormInst } from 'naive-ui';
 import { updateRecordApi } from '@src/api/endpoints';
 import { SingleImageUploader } from '@src/components/upload';
 import { useUserStore } from '@src/store/modules/user';
@@ -56,7 +56,7 @@ const { uploadUrl } = useEnv();
 const formRef = ref<FormInst | null>(null);
 const shopData: any = ref({});
 const userStore = useUserStore();
-const message: any = useMessage();
+
 const emits = defineEmits(['updated']);
 
 const uploadChange = (list: string) => {
@@ -68,12 +68,12 @@ const handleValidateClick = (e: MouseEvent) => {
   formRef.value?.validate((errors) => {
     if (!errors) {
       updateRecordApi(`/shops/${shopData.value.id}`, shopData.value).then((res: any) => {
-        message.success(res.message);
+        window['$message'].success(res.message);
         emits('updated', res.result);
       });
     } else {
       console.log(errors);
-      message.error('Invalid');
+      window['$message'].error('Invalid');
     }
   });
 };

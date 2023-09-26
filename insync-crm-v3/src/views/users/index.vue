@@ -248,23 +248,22 @@
 </template>
 
 <script lang="ts" setup>
+import { ref, onMounted, computed } from 'vue';
+import { useRouter } from 'vue-router';
+import { NIcon, NPagination, useDialog } from 'naive-ui';
+import { MoreOutlined, EditOutlined, DeleteOutlined, SearchOutlined } from '@vicons/antd';
 import { deleteRecordApi } from '@src/api/endpoints';
-import { usePermission } from '@src/utils/permission/usePermission';
-import { usePagination } from '@src/hooks/pagination/usePagination';
 import { useLoading } from '@src/hooks/useLoading';
 import { useEnv } from '@src/hooks/useEnv';
 import { useMobile } from '@src/hooks/useMediaQuery';
-import { ref, onMounted, computed } from 'vue';
-import { useRouter } from 'vue-router';
-import { useDialog, useMessage } from 'naive-ui';
-import { NIcon, NPagination } from 'naive-ui';
-import { MoreOutlined, EditOutlined, DeleteOutlined, SearchOutlined } from '@vicons/antd';
+import { usefilterRole } from '@src/filters/roles';
+import { usefilterShop } from '@src/filters/shops';
+import { renderIcon } from '@src/utils/renderIcon';
+import { usePermission } from '@src/hooks/permission/usePermission';
+import { usePagination } from '@src/hooks/pagination/usePagination';
 import DataTableLayout from '@src/layouts/DataTableLayout/index.vue';
 import AddUser from '@src/components/users/AddUser.vue';
 import EditUser from '@src/components/users/EditUser.vue';
-import { renderIcon } from '@src/utils/renderIcon';
-import { usefilterRole } from '@src/filters/roles';
-import { usefilterShop } from '@src/filters/shops';
 
 const { imgUrl } = useEnv();
 const router = useRouter();
@@ -275,7 +274,6 @@ const showModal = ref(false);
 const showEditModal = ref(false);
 const selectedId = ref();
 const { hasPermission } = usePermission();
-const message: any = useMessage();
 const [loading, loadingDispatcher] = useLoading(false);
 const { roles, roleLoading, findRole, getRolesOnFocus } = usefilterRole();
 const { shops, shopLoading, findShop, getShopsOnFocus } = usefilterShop();
@@ -326,14 +324,14 @@ function confirmationDialog() {
 function deleteOperation() {
   loadingDispatcher.loading();
   deleteRecordApi(`/users/${selectedId.value}`)
-    .then((result: any) => {
-      message.success(result.message);
+    .then((res: any) => {
+      window['$message'].success(res.message);
       getList();
       loadingDispatcher.loaded();
       dialog.destroyAll;
     })
-    .catch((result: any) => {
-      message.error(result.message);
+    .catch((res: any) => {
+      window['$message'].error(res.message);
       loadingDispatcher.loaded();
       dialog.destroyAll;
     });

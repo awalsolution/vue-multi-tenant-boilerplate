@@ -54,13 +54,13 @@
 
 <script lang="ts">
 import { defineComponent, toRefs, reactive, computed, watch } from 'vue';
-import { EyeOutlined, DeleteOutlined } from '@vicons/antd';
+import { useDialog } from 'naive-ui';
 import { CloudUpload } from '@vicons/tabler';
-import { basicProps } from '@src/components/upload/SingleImageUploader/props';
-import { useMessage, useDialog } from 'naive-ui';
+import { EyeOutlined, DeleteOutlined } from '@vicons/antd';
 import { useEnv } from '@src/hooks/useEnv';
-import componentSetting from '@src/components/upload/SingleImageUploader/componentSetting';
+import { basicProps } from '@src/components/upload/SingleImageUploader/props';
 import { isString } from '@src/components/upload/SingleImageUploader/utils';
+import componentSetting from '@src/components/upload/SingleImageUploader/componentSetting';
 
 export default defineComponent({
   name: 'SingleImageUploader',
@@ -78,7 +78,6 @@ export default defineComponent({
       };
     });
 
-    const message = useMessage();
     const dialog = useDialog();
 
     const state = reactive({
@@ -135,14 +134,14 @@ export default defineComponent({
       const acceptRef = (isString(accept) && accept.split(',')) || [];
       // Set the maximum value, then judge
       if (maxSize && fileInfo.size / 1024 / 1024 >= maxSize) {
-        message.error(`The maximum upload file size cannot exceed${maxSize}M`);
+        window['$message'].error(`The maximum upload file size cannot exceed${maxSize}M`);
         return false;
       }
 
       // Set the type, then judge
       const fileType = componentSetting.upload.fileType;
       if (acceptRef.length > 0 && !checkFileType(fileInfo.type)) {
-        message.error(`Only upload file type is ${fileType.join(',')}`);
+        window['$message'].error(`Only upload file type is ${fileType.join(',')}`);
         return false;
       }
       return true;
@@ -159,7 +158,7 @@ export default defineComponent({
     //   if (code === 200) {
     //     state.originalImgList = result;
     //     emit('uploadChange', state.originalImgList);
-    //   } else message.error(message);
+    //   } else  window['$message'].error(message);
     // }
 
     function finish({ event }: any) {

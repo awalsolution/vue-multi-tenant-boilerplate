@@ -19,11 +19,19 @@
         </n-col>
         <n-col :span="6">
           <n-form-item label="Categories" path="category_id">
-            <SingleCategorySelector
+            <n-select
+              :filterable="true"
+              :tag="false"
+              placeholder="Select Category"
               v-model:value="generalInfo.category_id"
+              clearable
+              @focus="getCategoriesOnFocus"
+              :remote="true"
+              :clear-filter-after-select="false"
               label-field="name"
               value-field="id"
-              :tag="false"
+              :loading="categoryLoading"
+              :options="categories"
             />
           </n-form-item>
         </n-col>
@@ -61,10 +69,10 @@
 
 <script lang="ts" setup>
 import { ref, unref } from 'vue';
-import { type FormInst, useMessage } from 'naive-ui';
+import { type FormInst } from 'naive-ui';
 import { updateRecordApi } from '@src/api/endpoints';
-import { SingleCategorySelector } from '@src/components/products/categories/selector';
 import { SingleImageUploader } from '@src/components/upload';
+import { usefilterCategory } from '@src/filters/categories';
 import { useEnv } from '@src/hooks/useEnv';
 import { useLoading } from '@src/hooks/useLoading';
 
@@ -72,9 +80,9 @@ const props = defineProps<{
   product: Record<string, any>;
 }>();
 
+const { categories, categoryLoading, getCategoriesOnFocus } = usefilterCategory();
 const generalInfoFormRef = ref<FormInst | null>(null);
 const generalInfo: any = ref(props.product);
-const message: any = useMessage();
 const [loading, loadingDispatcher] = useLoading(false);
 
 const { uploadUrl } = useEnv();
@@ -90,12 +98,12 @@ const handleValidateClick = (e: MouseEvent) => {
     if (!errors) {
       loadingDispatcher.loading();
       updateRecordApi(`/products/${generalInfo.value.id}`, generalInfo.value).then((res: any) => {
-        message.success(res.message);
+        window['$message'].success(res.message);
         loadingDispatcher.loaded();
       });
     } else {
       console.log(errors);
-      message.error('Invalid');
+      window['$message'].error('Invalid');
     }
   });
 };

@@ -13,13 +13,12 @@
 
 <script lang="ts" setup>
 import { ref } from 'vue';
-import { type FormInst, useMessage } from 'naive-ui';
+import { type FormInst } from 'naive-ui';
 import { createRecordApi } from '@src/api/endpoints';
 
 const formValue: any = ref({});
 const formRef = ref<FormInst | null>(null);
 const emits = defineEmits(['created']);
-const message: any = useMessage();
 
 const rules = ref({
   name: {
@@ -34,12 +33,12 @@ const handleValidateClick = (e: MouseEvent) => {
   formRef.value?.validate((errors) => {
     if (!errors) {
       createRecordApi('/roles', formValue.value).then((res: any) => {
-        message(res.message);
+        window['$message'].success(res.message);
         emits('created', res.result);
       });
     } else {
       console.log(errors);
-      message.error('Please fill out required fields');
+      window['$message'].error('Please fill out required fields');
     }
   });
 };

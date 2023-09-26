@@ -134,19 +134,18 @@
 </template>
 
 <script lang="ts" setup>
-import { deleteRecordApi } from '@src/api/endpoints';
-import { usePermission } from '@src/utils/permission/usePermission';
-import { usePagination } from '@src/hooks/pagination/usePagination';
-import { useLoading } from '@src/hooks/useLoading';
-import { useMobile } from '@src/hooks/useMediaQuery';
 import { ref, onMounted, computed } from 'vue';
-import { useDialog, useMessage } from 'naive-ui';
-import { NIcon, NPagination } from 'naive-ui';
+import { NIcon, NPagination, useDialog } from 'naive-ui';
 import { MoreOutlined, EditOutlined, DeleteOutlined, SearchOutlined } from '@vicons/antd';
+import { useLoading } from '@src/hooks/useLoading';
+import { deleteRecordApi } from '@src/api/endpoints';
+import { useMobile } from '@src/hooks/useMediaQuery';
+import { renderIcon } from '@src/utils/renderIcon';
+import { usePermission } from '@src/hooks/permission/usePermission';
+import { usePagination } from '@src/hooks/pagination/usePagination';
 import DataTableLayout from '@src/layouts/DataTableLayout/index.vue';
 import AddMenu from '@src/components/menu/AddMenu.vue';
 import EditMenu from '@src/components/menu/EditMenu.vue';
-import { renderIcon } from '@src/utils/renderIcon';
 
 const isMobile = useMobile();
 const dialog = useDialog();
@@ -155,7 +154,6 @@ const showModal = ref(false);
 const showEditModal = ref(false);
 const selectedId = ref();
 const { hasPermission } = usePermission();
-const message: any = useMessage();
 const [loading, loadingDispatcher] = useLoading(false);
 
 // fetch all records
@@ -198,14 +196,14 @@ function confirmationDialog() {
 function deleteOperation() {
   loadingDispatcher.loading();
   deleteRecordApi(`/menus/${selectedId.value}`)
-    .then((result: any) => {
-      message.success(result.message);
+    .then((res: any) => {
+      window['$message'].success(res.message);
       getList();
       loadingDispatcher.loaded();
       dialog.destroyAll;
     })
-    .catch((result: any) => {
-      message.error(result.message);
+    .catch((res: any) => {
+      window['$message'].error(res.message);
       loadingDispatcher.loaded();
       dialog.destroyAll;
     });

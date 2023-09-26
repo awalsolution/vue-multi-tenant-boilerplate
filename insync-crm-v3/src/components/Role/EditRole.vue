@@ -13,12 +13,11 @@
 
 <script lang="ts" setup>
 import { ref } from 'vue';
-import { type FormInst, useMessage } from 'naive-ui';
+import { type FormInst } from 'naive-ui';
 import { getRecordApi, updateRecordApi } from '@src/api/endpoints';
 
 const formValue: any = ref({});
 const formRef = ref<FormInst | null>(null);
-const message: any = useMessage();
 
 const emits = defineEmits(['updated']);
 const props = defineProps({
@@ -30,7 +29,7 @@ const props = defineProps({
 getRecordApi(`/roles/${props.id}`).then((res: any) => {
   formValue.value = res.result;
 });
-console.log(formValue);
+
 const rules = ref({
   name: {
     required: true,
@@ -44,12 +43,12 @@ const handleValidateClick = (e: MouseEvent) => {
   formRef.value?.validate((errors) => {
     if (!errors) {
       updateRecordApi(`/roles/${formValue.value.id}`, formValue.value).then((res: any) => {
-        message.success(res.message);
+        window['$message'].success(res.message);
         emits('updated', res.result);
       });
     } else {
       console.log(errors);
-      message.error('Invalid');
+      window['$message'].error('Invalid');
     }
   });
 };

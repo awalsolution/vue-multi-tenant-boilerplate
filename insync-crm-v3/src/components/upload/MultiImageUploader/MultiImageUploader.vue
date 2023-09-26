@@ -65,13 +65,13 @@
 
 <script lang="ts">
 import { defineComponent, toRefs, reactive, computed, watch } from 'vue';
-import { EyeOutlined, DeleteOutlined } from '@vicons/antd';
+import { useDialog } from 'naive-ui';
 import { CloudUpload } from '@vicons/tabler';
-import { basicProps } from '@src/components/upload/MultiImageUploader/props';
-import { useMessage, useDialog } from 'naive-ui';
+import { EyeOutlined, DeleteOutlined } from '@vicons/antd';
 import { useEnv } from '@src/hooks/useEnv';
-import componentSetting from '@src/components/upload/MultiImageUploader/componentSetting';
+import { basicProps } from '@src/components/upload/MultiImageUploader/props';
 import { isString } from '@src/components/upload/MultiImageUploader/utils';
+import componentSetting from '@src/components/upload/MultiImageUploader/componentSetting';
 
 export default defineComponent({
   name: 'MultiImageUploader',
@@ -88,7 +88,7 @@ export default defineComponent({
         height: `${props.height}px`
       };
     });
-    const message = useMessage();
+
     const dialog = useDialog();
     const state = reactive({
       showModal: false,
@@ -149,14 +149,14 @@ export default defineComponent({
 
       // Set the maximum value, then judge
       if (maxSize && fileInfo.size / 1024 / 1024 >= maxSize) {
-        message.error(`The maximum upload file size cannot exceed ${maxSize}M`);
+        window['$message'].error(`The maximum upload file size cannot exceed ${maxSize}M`);
         return false;
       }
 
       // Set the type, then judge
       const fileType = componentSetting.upload.fileType;
       if (acceptRef.length > 0 && !checkFileType(fileInfo.type)) {
-        message.error(`Only upload files of type ${fileType.join(',')}`);
+        window['$message'].error(`Only upload files of type ${fileType.join(',')}`);
         return false;
       }
 

@@ -122,16 +122,16 @@
 <script lang="ts" setup>
 import { ref, computed } from 'vue';
 import { useRoute } from 'vue-router';
-import { useDialog, useMessage } from 'naive-ui';
+import { useDialog } from 'naive-ui';
 import { MoreOutlined, EditOutlined, DeleteOutlined } from '@vicons/antd';
 import { useEnv } from '@src/hooks/useEnv';
 import { renderIcon } from '@src/utils/renderIcon';
 import { useLoading } from '@src/hooks/useLoading';
+import { useMobile } from '@src/hooks/useMediaQuery';
 import { deleteRecordApi, getRecordApi } from '@src/api/endpoints';
+import { usePermission } from '@src/hooks/permission/usePermission';
 import AddVariant from '@src/components/products/variants/AddVariant.vue';
 import EditVariant from '@src/components/products/variants/EditVariant.vue';
-import { usePermission } from '@src/utils/permission/usePermission';
-import { useMobile } from '@src/hooks/useMediaQuery';
 
 const props = defineProps<{
   variants: Record<string, any>;
@@ -147,10 +147,7 @@ const selectedOption: any = ref(null);
 const selectedId = ref();
 const showModal = ref(false);
 const showEditModal = ref(false);
-const message: any = useMessage();
 const [loading, loadingDispatcher] = useLoading(false);
-
-console.log('getVariantsByProduct ===>', list);
 
 const moreOptions = ref([
   {
@@ -185,13 +182,13 @@ function deleteOperation() {
   loadingDispatcher.loading();
   deleteRecordApi(`/variants/${selectedId.value}`)
     .then((res: any) => {
-      message.success(res.message);
+      window['$message'].success(res.message);
       getVariantList();
       loadingDispatcher.loaded();
       dialog.destroyAll;
     })
     .catch((res: any) => {
-      message.error(res.message);
+      window['$message'].error(res.message);
       loadingDispatcher.loaded();
       dialog.destroyAll;
     });

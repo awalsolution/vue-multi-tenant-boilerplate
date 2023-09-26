@@ -42,7 +42,7 @@
 
 <script lang="ts" setup>
 import { ref, unref } from 'vue';
-import { type FormInst, useMessage } from 'naive-ui';
+import { type FormInst } from 'naive-ui';
 import { createRecordApi } from '@src/api/endpoints';
 import { SingleImageUploader } from '@src/components/upload';
 import { useEnv } from '@src/hooks/useEnv';
@@ -50,7 +50,6 @@ import { useEnv } from '@src/hooks/useEnv';
 const { uploadUrl } = useEnv();
 const formValue: any = ref({});
 const formRef = ref<FormInst | null>(null);
-const message: any = useMessage();
 
 const emits = defineEmits(['created']);
 
@@ -62,17 +61,17 @@ const handleValidateClick = (e: MouseEvent) => {
   e.preventDefault();
   formRef.value?.validate((errors) => {
     if (!errors) {
-      console.log(formValue.value);
       createRecordApi('/shops', formValue.value).then((res: any) => {
-        message.success(res.message);
+        window['$message'].success(res.message);
         emits('created', res.result);
       });
     } else {
       console.log(errors);
-      message.error('Please fill out required fields');
+      window['$message'].error('Please fill out required fields');
     }
   });
 };
+
 const status = ref([
   {
     label: 'active',
@@ -83,6 +82,7 @@ const status = ref([
     value: 'disabled'
   }
 ]);
+
 const rules = ref({
   shop_name: {
     required: true,

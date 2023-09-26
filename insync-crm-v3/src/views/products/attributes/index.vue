@@ -134,18 +134,18 @@
 </template>
 
 <script lang="ts" setup>
-import { deleteRecordApi } from '@src/api/endpoints';
-import { usePermission } from '@src/utils/permission/usePermission';
-import { usePagination } from '@src/hooks/pagination/usePagination';
-import { useLoading } from '@src/hooks/useLoading';
-import { ref, onMounted, h, computed } from 'vue';
-import type { Component } from 'vue';
-import { useDialog, useMessage, NIcon, NPagination } from 'naive-ui';
+import { ref, onMounted, computed } from 'vue';
+import { useDialog, NIcon, NPagination } from 'naive-ui';
 import { MoreOutlined, EditOutlined, DeleteOutlined, SearchOutlined } from '@vicons/antd';
+import { useLoading } from '@src/hooks/useLoading';
+import { deleteRecordApi } from '@src/api/endpoints';
+import { renderIcon } from '@src/utils/renderIcon';
+import { useMobile } from '@src/hooks/useMediaQuery';
+import { usePermission } from '@src/hooks/permission/usePermission';
+import { usePagination } from '@src/hooks/pagination/usePagination';
 import AddAttribute from '@src/components/products/attributes/AddAttribute.vue';
 import EditAttribute from '@src/components/products/attributes/EditAttribute.vue';
 import DataTableLayout from '@src/layouts/DataTableLayout/index.vue';
-import { useMobile } from '@src/hooks/useMediaQuery';
 
 const dialog = useDialog();
 const isMobile = useMobile();
@@ -154,7 +154,6 @@ const selectedOption: any = ref(null);
 const showEditModal = ref(false);
 const selectedId = ref();
 const { hasPermission } = usePermission();
-const message: any = useMessage();
 const [loading, loadingDispatcher] = useLoading(false);
 
 // fetch all records
@@ -164,14 +163,6 @@ const { getList, list, page, pageSizes, itemCount, pageSize, searchParams }: any
 onMounted(() => {
   getList();
 });
-
-const renderIcon = (icon: Component) => {
-  return () => {
-    return h(NIcon, null, {
-      default: () => h(icon)
-    });
-  };
-};
 
 const moreOptions = ref([
   {
@@ -205,14 +196,14 @@ function confirmationDialog() {
 function deleteOperation() {
   loadingDispatcher.loading();
   deleteRecordApi(`/attributes/${selectedId.value}`)
-    .then((result: any) => {
-      message.success(result.message);
+    .then((res: any) => {
+      window['$message'].success(res.message);
       getList();
       loadingDispatcher.loaded();
       dialog.destroyAll;
     })
-    .catch((result: any) => {
-      message.error(result.message);
+    .catch((res: any) => {
+      window['$message'].error(res.message);
       loadingDispatcher.loaded();
       dialog.destroyAll;
     });

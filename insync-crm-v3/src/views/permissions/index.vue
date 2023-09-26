@@ -179,20 +179,19 @@
 </template>
 
 <script lang="ts" setup>
-import { deleteRecordApi } from '@src/api/endpoints';
-import { usePermission } from '@src/utils/permission/usePermission';
-import { usePagination } from '@src/hooks/pagination/usePagination';
-import { useLoading } from '@src/hooks/useLoading';
-import { ref, onMounted, h, computed } from 'vue';
-import type { Component } from 'vue';
-import { useDialog, useMessage } from 'naive-ui';
-import { NIcon, NPagination } from 'naive-ui';
+import { ref, onMounted, computed } from 'vue';
+import { NIcon, NPagination, useDialog } from 'naive-ui';
 import { MoreOutlined, EditOutlined, DeleteOutlined, SearchOutlined } from '@vicons/antd';
+import { useLoading } from '@src/hooks/useLoading';
+import { deleteRecordApi } from '@src/api/endpoints';
+import { usefilterMenu } from '@src/filters/menus';
+import { useMobile } from '@src/hooks/useMediaQuery';
+import { usePermission } from '@src/hooks/permission/usePermission';
+import { usePagination } from '@src/hooks/pagination/usePagination';
 import AddPermission from '@src/components/permission/AddPermission.vue';
 import EditPermission from '@src/components/permission/EditPermission.vue';
 import DataTableLayout from '@src/layouts/DataTableLayout/index.vue';
-import { useMobile } from '@src/hooks/useMediaQuery';
-import { usefilterMenu } from '@src/filters/menus';
+import { renderIcon } from '@src/utils/renderIcon';
 
 const dialog = useDialog();
 const isMobile = useMobile();
@@ -201,7 +200,6 @@ const selectedOption: any = ref(null);
 const showEditModal = ref(false);
 const selectedId = ref();
 const { hasPermission } = usePermission();
-const message: any = useMessage();
 const [loading, loadingDispatcher] = useLoading(false);
 const { menus, menuLoading, findMenu, getMenusOnFocus } = usefilterMenu();
 
@@ -211,14 +209,6 @@ const { getList, list, page, pageSizes, itemCount, pageSize, searchParams }: any
 onMounted(() => {
   getList();
 });
-
-const renderIcon = (icon: Component) => {
-  return () => {
-    return h(NIcon, null, {
-      default: () => h(icon)
-    });
-  };
-};
 
 const moreOptions = ref([
   {
@@ -252,14 +242,14 @@ function confirmationDialog() {
 function deleteOperation() {
   loadingDispatcher.loading();
   deleteRecordApi(`/permissions/${selectedId.value}`)
-    .then((result: any) => {
-      message.success(result.message);
+    .then((res: any) => {
+      window['$message'].success(res.message);
       getList();
       loadingDispatcher.loaded();
       dialog.destroyAll;
     })
-    .catch((result) => {
-      message.error(result.message);
+    .catch((res) => {
+      window['$message'].error(res.message);
       loadingDispatcher.loaded();
       dialog.destroyAll;
     });

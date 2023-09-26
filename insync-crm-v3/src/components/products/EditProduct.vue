@@ -36,7 +36,6 @@
 <script lang="ts" setup>
 import { ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import { useMessage } from 'naive-ui';
 import { getRecordApi } from '@src/api/endpoints';
 import ContentLayout from '@src/layouts/ContentLayout/index.vue';
 import ProductGeneralInfo from '@src/components/products/components/ProductGeneralInfo.vue';
@@ -46,7 +45,6 @@ const route = useRoute();
 const router = useRouter();
 const product: any = ref({});
 const productDataLoaded = ref(false);
-const message: any = useMessage();
 const currentTab = ref('general');
 const variants: any = ref({
   images: []
@@ -63,7 +61,7 @@ const handleTabChange = (value: string) => {
     getRecordApi(`/variants/getVariantsByProduct/${route.params.id}`).then((res: any) => {
       variants.value = res.result;
       variantDataLoaded.value = true;
-      message.success(res.message);
+      window['$message'].success(res.message);
     });
   }
 };

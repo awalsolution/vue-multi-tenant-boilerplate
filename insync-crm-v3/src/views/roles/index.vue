@@ -132,20 +132,19 @@
 </template>
 
 <script lang="ts" setup>
-import { deleteRecordApi } from '@src/api/endpoints';
-import { usePagination } from '@src/hooks/pagination/usePagination';
-import { useLoading } from '@src/hooks/useLoading';
-import { usePermission } from '@src/utils/permission/usePermission';
-import { useMobile } from '@src/hooks/useMediaQuery';
 import { ref, onMounted, computed } from 'vue';
-import { useDialog, useMessage } from 'naive-ui';
+import { useDialog, NIcon, NPagination } from 'naive-ui';
 import { useRouter } from 'vue-router';
-import { NIcon, NPagination } from 'naive-ui';
 import { MoreOutlined, EditOutlined, DeleteOutlined, SearchOutlined } from '@vicons/antd';
+import { deleteRecordApi } from '@src/api/endpoints';
+import { useLoading } from '@src/hooks/useLoading';
+import { useMobile } from '@src/hooks/useMediaQuery';
+import { renderIcon } from '@src/utils/renderIcon';
+import { usePagination } from '@src/hooks/pagination/usePagination';
+import { usePermission } from '@src/hooks/permission/usePermission';
 import DataTableLayout from '@src/layouts/DataTableLayout/index.vue';
 import AddRole from '@src/components/Role/AddRole.vue';
 import EditRole from '@src/components/Role/EditRole.vue';
-import { renderIcon } from '@src/utils/renderIcon';
 
 const isMobile = useMobile();
 const dialog = useDialog();
@@ -154,7 +153,6 @@ const selectedOption: any = ref(null);
 const showModal = ref(false);
 const showEditModal = ref(false);
 const selectedId = ref();
-const message: any = useMessage();
 const [loading, loadingDispatcher] = useLoading(false);
 const { hasPermission } = usePermission();
 
@@ -204,14 +202,14 @@ function confirmationDialog() {
 function deleteOperation() {
   loadingDispatcher.loading();
   deleteRecordApi(`/roles/${selectedId.value}`)
-    .then((result: any) => {
-      message.success(result.message);
+    .then((res: any) => {
+      window['$message'].success(res.message);
       getList();
       loadingDispatcher.loaded();
       dialog.destroyAll;
     })
-    .catch((result) => {
-      message.error(result.message);
+    .catch((res) => {
+      window['$message'].error(res.message);
       loadingDispatcher.loaded();
       dialog.destroyAll;
     });

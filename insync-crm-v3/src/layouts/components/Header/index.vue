@@ -83,7 +83,7 @@
 <script setup lang="ts">
 import { h } from 'vue';
 import { useRouter } from 'vue-router';
-import { useMessage, NAvatar, NText } from 'naive-ui';
+import { NAvatar, NText } from 'naive-ui';
 import { BrandGithub, UserCircle } from '@vicons/tabler';
 import {
   MenuFoldOutlined,
@@ -113,13 +113,12 @@ const themeStore = useThemeStore();
 const sidebarStore = useSidebarStore();
 const userStore = useUserStore();
 const router = useRouter();
-const message = useMessage();
 // const { isFullscreen, toggle: toggleFullscreen } = useFullscreen();
 
 const logout = async () => {
   return await router.replace('/login').then(async () => {
     const res = await userStore.logout();
-    message.success(res.message);
+    window['$message'].success(res.message);
   });
 };
 

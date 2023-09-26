@@ -148,18 +148,18 @@
 </template>
 
 <script lang="ts" setup>
-import { deleteRecordApi } from '@src/api/endpoints';
+import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
-import { ref, onMounted, h } from 'vue';
-import { useDialog, useMessage } from 'naive-ui';
-import type { Component } from 'vue';
-import { NIcon, NPagination } from 'naive-ui';
+import { NIcon, NPagination, useDialog } from 'naive-ui';
 import { MoreOutlined, EditOutlined, DeleteOutlined, SearchOutlined } from '@vicons/antd';
 import { useEnv } from '@src/hooks/useEnv';
 import { useLoading } from '@src/hooks/useLoading';
-import { usePagination } from '@src/hooks/pagination/usePagination';
-import DataTableLayout from '@src/layouts/DataTableLayout/index.vue';
+import { deleteRecordApi } from '@src/api/endpoints';
 import { useMobile } from '@src/hooks/useMediaQuery';
+import { renderIcon } from '@src/utils/renderIcon';
+import { usePagination } from '@src/hooks/pagination/usePagination';
+import { usePermission } from '@src/hooks/permission/usePermission';
+import DataTableLayout from '@src/layouts/DataTableLayout/index.vue';
 
 const { imgUrl } = useEnv();
 const isMobile = useMobile();
@@ -167,7 +167,7 @@ const router = useRouter();
 const dialog = useDialog();
 const selectedOption: any = ref(null);
 const selectedId = ref();
-const message: any = useMessage();
+const { hasPermission } = usePermission();
 const [loading, loadingDispatcher] = useLoading(false);
 
 // fetch all records
@@ -178,24 +178,18 @@ onMounted(() => {
   getList();
 });
 
-const renderIcon = (icon: Component) => {
-  return () => {
-    return h(NIcon, null, {
-      default: () => h(icon)
-    });
-  };
-};
-
 const moreOptions = ref([
   {
     label: 'Edit',
     key: 'edit',
-    icon: renderIcon(EditOutlined)
+    icon: renderIcon(EditOutlined),
+    permission: hasPermission(['can view product update'])
   },
   {
     label: 'Delete',
     key: 'delete',
-    icon: renderIcon(DeleteOutlined)
+    icon: renderIcon(DeleteOutlined),
+    permission: hasPermission(['can view product delete'])
   }
 ]);
 
@@ -212,14 +206,14 @@ function confirmationDialog() {
 function deleteOperation() {
   loadingDispatcher.loading();
   deleteRecordApi(`/products/${selectedId.value}`)
-    .then((result: any) => {
-      message.success(result.message);
+    .then((res: any) => {
+      window['$message'].success(res.message);
       getList();
       loadingDispatcher.loaded();
       dialog.destroyAll;
     })
-    .catch((result) => {
-      message.error(result.message);
+    .catch((res) => {
+      window['$message'].error(res.message);
       loadingDispatcher.loaded();
       dialog.destroyAll;
     });

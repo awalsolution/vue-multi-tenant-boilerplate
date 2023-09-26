@@ -138,17 +138,16 @@
 </template>
 
 <script lang="ts" setup>
-import { deleteRecordApi } from '@src/api/endpoints';
-import { usePermission } from '@src/utils/permission/usePermission';
-import { ref, onMounted, h, computed } from 'vue';
-import type { Component } from 'vue';
-import { useDialog, useMessage } from 'naive-ui';
-import { NIcon, NPagination } from 'naive-ui';
+import { ref, onMounted, computed } from 'vue';
+import { NIcon, NPagination, useDialog } from 'naive-ui';
 import { MoreOutlined, EditOutlined, DeleteOutlined, SearchOutlined } from '@vicons/antd';
-import { usePagination } from '@src/hooks/pagination/usePagination';
-import { useLoading } from '@src/hooks/useLoading';
 import { useEnv } from '@src/hooks/useEnv';
+import { useLoading } from '@src/hooks/useLoading';
 import { useMobile } from '@src/hooks/useMediaQuery';
+import { renderIcon } from '@src/utils/renderIcon';
+import { deleteRecordApi } from '@src/api/endpoints';
+import { usePermission } from '@src/hooks/permission/usePermission';
+import { usePagination } from '@src/hooks/pagination/usePagination';
 import DataTableLayout from '@src/layouts/DataTableLayout/index.vue';
 import AddCategory from '@src/components/products/categories/AddCategory.vue';
 import EditCategory from '@src/components/products/categories/EditCategory.vue';
@@ -161,7 +160,6 @@ const selectedOption: any = ref(null);
 const showEditModal = ref(false);
 const selectedId = ref();
 const { hasPermission } = usePermission();
-const message: any = useMessage();
 const [loading, loadingDispatcher] = useLoading(false);
 
 // fetch all records
@@ -171,14 +169,6 @@ const { getList, list, page, pageSizes, itemCount, pageSize, searchParams }: any
 onMounted(() => {
   getList();
 });
-
-const renderIcon = (icon: Component) => {
-  return () => {
-    return h(NIcon, null, {
-      default: () => h(icon)
-    });
-  };
-};
 
 const moreOptions = ref([
   {
@@ -212,14 +202,14 @@ function confirmationDialog() {
 function deleteOperation() {
   loadingDispatcher.loading();
   deleteRecordApi(`/categories/${selectedId.value}`)
-    .then((result: any) => {
-      message.success(result.message);
+    .then((res: any) => {
+      window['$message'].success(res.message);
       getList();
       loadingDispatcher.loaded();
       dialog.destroyAll;
     })
-    .catch((result: any) => {
-      message.error(result.message);
+    .catch((res: any) => {
+      window['$message'].error(res.message);
       loadingDispatcher.loaded();
       dialog.destroyAll;
     });
