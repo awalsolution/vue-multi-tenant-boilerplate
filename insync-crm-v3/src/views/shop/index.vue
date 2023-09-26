@@ -3,18 +3,42 @@
     <template #tableHeader>
       <div class="flex flex-col items-center space-y-2 sm:flex-row sm:justify-between sm:space-y-0">
         <div class="flex flex-col items-center space-y-2 sm:flex-row sm:space-x-3 sm:space-y-0">
-          <div class="flex w-full items-center !space-x-2 sm:w-fit">
-            <NInput
-              v-model:value="searchParams.name"
-              class="sm:!w-[200px]"
+          <div class="flex flex-col sm:flex-row w-full items-center !space-x-2 sm:w-fit">
+            <n-input
+              class="sm:!w-[230px]"
+              v-model:value="searchParams.shop_name"
               clearable
-              placeholder="Search by Name"
-              @keyup="fetchList"
+              placeholder="Search By Name"
+              size="small"
+              type="text"
             >
-              <template #prefix>
-                <NIcon :component="SearchOutlined" class="mr-1" />
-              </template>
-            </NInput>
+              <template #prefix> <NIcon :component="SearchOutlined" class="mr-1" /> </template>
+            </n-input>
+            <n-input
+              class="sm:!w-[230px]"
+              v-model:value="searchParams.shop_phone"
+              clearable
+              placeholder="Search By Phone"
+              size="small"
+              type="text"
+            >
+              <template #prefix> <NIcon :component="SearchOutlined" class="mr-1" /> </template>
+            </n-input>
+            <n-select
+              class="sm:!w-[230px]"
+              v-model:value="searchParams.status"
+              :options="[
+                { label: 'Active', value: 'active' },
+                { label: 'Disabled', value: 'disabled' }
+              ]"
+              clearable
+              filterable
+              placeholder="Search By Status"
+              size="small"
+            />
+            <n-button secondary size="small" strong type="info" @click="fetchList">
+              Search
+            </n-button>
           </div>
         </div>
         <div class="flex w-full items-center justify-between space-x-3 sm:justify-end">
@@ -66,8 +90,10 @@
             </td>
             <td class="td">{{ item.shop_name }}</td>
             <td class="td">{{ item.shop_phone }}</td>
-            <td class="text-center td">
-              <n-tag :bordered="false" type="info">{{ item.status }}</n-tag>
+            <td class="td">
+              <n-tag :bordered="false" :type="item.status === 'disabled' ? 'error' : 'info'">
+                {{ item.status }}
+              </n-tag>
             </td>
             <td class="td">
               {{ item.address + ' ' + item.city + ' ' + item?.state + ' ' + item.country }}
@@ -108,7 +134,9 @@
           size="small"
           :show-quick-jumper="true"
           :show-size-picker="true"
-        />
+        >
+          <template #prefix="{ itemCount }"> Total: {{ itemCount }} </template>
+        </n-pagination>
       </div>
     </template>
 

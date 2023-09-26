@@ -3,21 +3,99 @@
     <template #tableHeader>
       <div class="flex flex-col items-center space-y-2 sm:flex-row sm:justify-between sm:space-y-0">
         <div class="flex flex-col items-center space-y-2 sm:flex-row sm:space-x-3 sm:space-y-0">
-          <div class="flex w-full items-center !space-x-2 sm:w-fit">
-            <NInput
+          <div class="flex gap-3 flex-col sm:flex-row flex-wrap w-full items-center sm:w-fit">
+            <n-input
+              class="sm:!w-[230px]"
               v-model:value="searchParams.name"
-              class="sm:!w-[200px]"
               clearable
-              placeholder="Search by Email"
-              @keyup="fetchList"
+              placeholder="Search By Name"
+              size="small"
+              type="text"
             >
-              <template #prefix>
-                <NIcon :component="SearchOutlined" class="mr-1" />
-              </template>
-            </NInput>
+              <template #prefix> <NIcon :component="SearchOutlined" class="mr-1" /> </template>
+            </n-input>
+            <n-input
+              class="sm:!w-[230px]"
+              v-model:value="searchParams.email"
+              clearable
+              placeholder="Search By Email"
+              size="small"
+              type="text"
+            >
+              <template #prefix> <NIcon :component="SearchOutlined" class="mr-1" /> </template>
+            </n-input>
+            <n-select
+              class="sm:!w-[230px]"
+              v-model:value="searchParams.role_name"
+              :clear-filter-after-select="false"
+              :filterable="true"
+              :loading="roleLoading"
+              :options="roles"
+              :remote="true"
+              :tag="false"
+              clearable
+              label-field="name"
+              value-field="name"
+              placeholder="Search By Role"
+              size="small"
+              @focus="getRolesOnFocus"
+              @search="findRole"
+            />
+            <n-input
+              class="sm:!w-[230px]"
+              v-model:value="searchParams.phone_number"
+              clearable
+              placeholder="Search By Phone"
+              size="small"
+              type="text"
+            >
+              <template #prefix> <NIcon :component="SearchOutlined" class="mr-1" /> </template>
+            </n-input>
+            <n-select
+              class="sm:!w-[230px]"
+              v-model:value="searchParams.shop_name"
+              :clear-filter-after-select="false"
+              :filterable="true"
+              :loading="shopLoading"
+              :options="shops"
+              :remote="true"
+              :tag="false"
+              clearable
+              label-field="shop_name"
+              value-field="shop_name"
+              placeholder="Search By Shop"
+              size="small"
+              @focus="getShopsOnFocus"
+              @search="findShop"
+            />
+            <n-select
+              class="sm:!w-[230px]"
+              v-model:value="searchParams.status"
+              :options="[
+                { label: 'Active', value: 'active' },
+                { label: 'Disabled', value: 'disabled' }
+              ]"
+              clearable
+              filterable
+              placeholder="Search By Status"
+              size="small"
+            />
+            <n-input
+              class="sm:!w-[230px]"
+              v-model:value="searchParams.address"
+              clearable
+              placeholder="Search By Address"
+              size="small"
+              type="text"
+            >
+              <template #prefix> <NIcon :component="SearchOutlined" class="mr-1" /> </template>
+            </n-input>
+            <n-button secondary size="small" strong type="info" @click="fetchList">
+              Search
+            </n-button>
           </div>
         </div>
-        <div class="flex w-full items-center justify-between space-x-3 sm:justify-end">
+        <div class="flex flex-1 w-full items-center justify-between space-x-3 sm:justify-end">
           <NButton
             secondary
             type="info"
@@ -81,7 +159,7 @@
             <td class="td">{{ item?.shop?.shop_name }}</td>
             <td class="td">{{ item?.shop?.shop_phone }}</td>
             <td class="td">
-              <n-tag :bordered="false" type="info">
+              <n-tag :bordered="false" :type="item.status === 'disabled' ? 'error' : 'info'">
                 {{ item.status }}
               </n-tag>
             </td>
@@ -132,7 +210,9 @@
           size="small"
           :show-quick-jumper="true"
           :show-size-picker="true"
-        />
+        >
+          <template #prefix="{ itemCount }"> Total: {{ itemCount }} </template>
+        </n-pagination>
       </div>
     </template>
 
@@ -183,6 +263,8 @@ import DataTableLayout from '@src/layouts/DataTableLayout/index.vue';
 import AddUser from '@src/components/users/AddUser.vue';
 import EditUser from '@src/components/users/EditUser.vue';
 import { renderIcon } from '@src/utils/renderIcon';
+import { usefilterRole } from '@src/filters/roles';
+import { usefilterShop } from '@src/filters/shops';
 
 const { imgUrl } = useEnv();
 const router = useRouter();
@@ -195,6 +277,8 @@ const selectedId = ref();
 const { hasPermission } = usePermission();
 const message: any = useMessage();
 const [loading, loadingDispatcher] = useLoading(false);
+const { roles, roleLoading, findRole, getRolesOnFocus } = usefilterRole();
+const { shops, shopLoading, findShop, getShopsOnFocus } = usefilterShop();
 
 // fetch all records
 const { getList, list, page, pageSizes, itemCount, pageSize, searchParams }: any =

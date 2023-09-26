@@ -3,21 +3,62 @@
     <template #tableHeader>
       <div class="flex flex-col items-center space-y-2 sm:flex-row sm:justify-between sm:space-y-0">
         <div class="flex flex-col items-center space-y-2 sm:flex-row sm:space-x-3 sm:space-y-0">
-          <div class="flex w-full items-center !space-x-2 sm:w-fit">
-            <NInput
+          <div class="flex flex-col sm:flex-row w-full items-center !space-x-2 sm:w-fit">
+            <n-input
+              class="sm:!w-[230px]"
               v-model:value="searchParams.name"
-              class="sm:!w-[250px]"
               clearable
-              placeholder="Search by Permission Name"
-              @keyup="fetchList"
+              placeholder="Search By Name"
+              size="small"
+              type="text"
             >
-              <template #prefix>
-                <NIcon :component="SearchOutlined" class="mr-1" />
-              </template>
-            </NInput>
+              <template #prefix> <NIcon :component="SearchOutlined" class="mr-1" /> </template>
+            </n-input>
+            <n-input
+              class="sm:!w-[230px]"
+              v-model:value="searchParams.type"
+              clearable
+              placeholder="Search By Type"
+              size="small"
+              type="text"
+            >
+              <template #prefix> <NIcon :component="SearchOutlined" class="mr-1" /> </template>
+            </n-input>
+            <n-select
+              class="sm:!w-[230px]"
+              v-model:value="searchParams.status"
+              :options="[
+                { label: 'Active', value: 'active' },
+                { label: 'Disabled', value: 'disabled' }
+              ]"
+              clearable
+              filterable
+              placeholder="Search By Status"
+              size="small"
+            />
+            <n-select
+              class="sm:!w-[230px]"
+              v-model:value="searchParams.menu_name"
+              :clear-filter-after-select="false"
+              :filterable="true"
+              :loading="menuLoading"
+              :options="menus"
+              :remote="true"
+              :tag="false"
+              clearable
+              label-field="menu_name"
+              value-field="menu_name"
+              placeholder="Search By Menu"
+              size="small"
+              @focus="getMenusOnFocus"
+              @search="findMenu"
+            />
+            <n-button secondary size="small" strong type="info" @click="fetchList">
+              Search
+            </n-button>
           </div>
         </div>
-        <div class="flex w-full items-center justify-between space-x-3 sm:justify-end">
+        <div class="flex flex-1 w-full items-center justify-between space-x-3 sm:justify-end">
           <NButton
             secondary
             type="info"
@@ -59,7 +100,9 @@
             <td class="sticky_el left-0 z-10">{{ item.id }}</td>
             <td class="td">{{ item.name }}</td>
             <td class="text-center td">
-              <n-tag :bordered="false" type="info">{{ item.type }}</n-tag>
+              <n-tag :bordered="false" :type="item.type === 'private' ? 'error' : 'info'"
+                >{{ item.type }}
+              </n-tag>
             </td>
             <td class="td">{{ item.menus.menu_name }}</td>
             <td class="td">{{ item.created_at }}</td>
@@ -98,7 +141,9 @@
           size="small"
           :show-quick-jumper="true"
           :show-size-picker="true"
-        />
+        >
+          <template #prefix="{ itemCount }"> Total: {{ itemCount }} </template>
+        </n-pagination>
       </div>
     </template>
 
@@ -147,6 +192,7 @@ import AddPermission from '@src/components/permission/AddPermission.vue';
 import EditPermission from '@src/components/permission/EditPermission.vue';
 import DataTableLayout from '@src/layouts/DataTableLayout/index.vue';
 import { useMobile } from '@src/hooks/useMediaQuery';
+import { usefilterMenu } from '@src/filters/menus';
 
 const dialog = useDialog();
 const isMobile = useMobile();
@@ -157,6 +203,7 @@ const selectedId = ref();
 const { hasPermission } = usePermission();
 const message: any = useMessage();
 const [loading, loadingDispatcher] = useLoading(false);
+const { menus, menuLoading, findMenu, getMenusOnFocus } = usefilterMenu();
 
 const { getList, list, page, pageSizes, itemCount, pageSize, searchParams }: any =
   usePagination('/permissions');

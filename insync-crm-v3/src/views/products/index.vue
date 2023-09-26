@@ -14,21 +14,45 @@
               Darft (200)
             </NButton>
           </div>
-          <div class="flex w-full items-center !space-x-2 sm:w-fit">
-            <NInput
-              v-model:value="searchParams.name"
-              class="sm:!w-[200px]"
+          <div class="flex flex-col sm:flex-row w-full items-center !space-x-2 sm:w-fit">
+            <n-input
+              class="sm:!w-[230px]"
+              v-model:value="searchParams.title"
               clearable
-              placeholder="Search by title"
-              @keyup="fetchList"
+              placeholder="Search By Title"
+              size="small"
+              type="text"
             >
-              <template #prefix>
-                <NIcon :component="SearchOutlined" class="mr-1" />
-              </template>
-            </NInput>
+              <template #prefix> <NIcon :component="SearchOutlined" class="mr-1" /> </template>
+            </n-input>
+            <n-input
+              class="sm:!w-[230px]"
+              v-model:value="searchParams.product_code"
+              clearable
+              placeholder="Search By Code"
+              size="small"
+              type="text"
+            >
+              <template #prefix> <NIcon :component="SearchOutlined" class="mr-1" /> </template>
+            </n-input>
+            <n-select
+              class="sm:!w-[230px]"
+              v-model:value="searchParams.status"
+              :options="[
+                { label: 'Active', value: 'active' },
+                { label: 'Disabled', value: 'disabled' }
+              ]"
+              clearable
+              filterable
+              placeholder="Search By Status"
+              size="small"
+            />
+            <n-button secondary size="small" strong type="info" @click="fetchList">
+              Search
+            </n-button>
           </div>
         </div>
-        <div class="flex w-full items-center justify-between space-x-3 sm:justify-end">
+        <div class="flex flex-1 w-full items-center justify-between space-x-3 sm:justify-end">
           <NButton
             secondary
             type="info"
@@ -46,7 +70,6 @@
       <table class="table">
         <thead class="head">
           <tr>
-            <th class="sticky_el left-0 z-20">ID</th>
             <th class="th">Image</th>
             <th class="th">Vendor</th>
             <th class="th">Title</th>
@@ -69,7 +92,6 @@
             <td colspan="9" class="data_placeholder">Record Not Exist</td>
           </tr>
           <tr v-else v-for="item in list" :key="item.id" class="body_tr">
-            <td class="sticky_el left-0 z-10">{{ item.id }}</td>
             <td class="text-center td">
               <n-avatar round size="large" :src="`${imgUrl}${item.product_image}`" />
             </td>
@@ -77,7 +99,9 @@
             <td class="td">{{ item.title }}</td>
             <td class="td">{{ item.product_code }}</td>
             <td class="td">
-              <n-tag :bordered="false" type="info">{{ item.status }}</n-tag>
+              <n-tag :bordered="false" :type="item.status === 'disabled' ? 'error' : 'info'">
+                {{ item.status }}
+              </n-tag>
             </td>
             <td class="td">{{ item.created_at }}</td>
             <td class="td">{{ item.updated_at }}</td>
@@ -115,7 +139,9 @@
           size="small"
           :show-quick-jumper="true"
           :show-size-picker="true"
-        />
+        >
+          <template #prefix="{ itemCount }"> Total: {{ itemCount }} </template>
+        </n-pagination>
       </div>
     </template>
   </DataTableLayout>

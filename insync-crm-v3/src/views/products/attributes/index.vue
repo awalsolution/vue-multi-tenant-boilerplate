@@ -3,18 +3,22 @@
     <template #tableHeader>
       <div class="flex flex-col items-center space-y-2 sm:flex-row sm:justify-between sm:space-y-0">
         <div class="flex flex-col items-center space-y-2 sm:flex-row sm:space-x-3 sm:space-y-0">
-          <div class="flex w-full items-center !space-x-2 sm:w-fit">
+          <div class="flex flex-col sm:flex-row w-full items-center !space-x-2 sm:w-fit">
             <NInput
               v-model:value="searchParams.name"
-              class="sm:!w-[200px]"
+              class="sm:!w-[250px]"
               clearable
               placeholder="Search by Name"
-              @keyup="fetchList"
+              size="small"
+              type="text"
             >
               <template #prefix>
                 <NIcon :component="SearchOutlined" class="mr-1" />
               </template>
             </NInput>
+            <n-button secondary size="small" strong type="info" @click="fetchList">
+              Search
+            </n-button>
           </div>
         </div>
         <div class="flex w-full items-center justify-between space-x-3 sm:justify-end">
@@ -92,7 +96,9 @@
           size="small"
           :show-quick-jumper="true"
           :show-size-picker="true"
-        />
+        >
+          <template #prefix="{ itemCount }"> Total: {{ itemCount }} </template>
+        </n-pagination>
       </div>
     </template>
 
