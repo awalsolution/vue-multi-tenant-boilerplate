@@ -15,7 +15,7 @@ const routes: RouteRecordRaw[] = [
       title: 'Supplier',
       icon: renderIcon(ShopOutlined),
       permissions: ['can view supplier'],
-      sort: 2
+      sort: 4
     },
     children: [
       {

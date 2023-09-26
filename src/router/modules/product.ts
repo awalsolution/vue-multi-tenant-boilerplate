@@ -15,7 +15,7 @@ const routes: RouteRecordRaw[] = [
       title: 'Products',
       icon: renderIcon(CartOutline),
       permissions: ['can view products'],
-      sort: 3
+      sort: 5
     },
     children: [
       {
