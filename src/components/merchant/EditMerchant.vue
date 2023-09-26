@@ -1,23 +1,8 @@
 <template>
   <n-form ref="formRef" :label-width="80" :model="formValue" :rules="rules" size="small">
     <n-grid x-gap="10">
-      <n-form-item-gi :span="8" class="pt-6" label="Name" path="shop_name">
-        <n-input v-model:value="formValue.shop_name" placeholder="Enter Name" />
-      </n-form-item-gi>
-      <n-form-item-gi :span="8" class="pt-6" label="Phone" path="shop_phone">
-        <n-input v-model:value="formValue.shop_phone" placeholder="Enter Phone" />
-      </n-form-item-gi>
-      <n-form-item-gi :span="8" class="pt-6" label="Address" path="address">
-        <n-input v-model:value="formValue.address" placeholder="Enter Address" />
-      </n-form-item-gi>
-      <n-form-item-gi :span="8" label="City" path="city">
-        <n-input v-model:value="formValue.city" placeholder="Enter City" />
-      </n-form-item-gi>
-      <n-form-item-gi :span="8" style="padding-top: 4px" label="State" path="state">
-        <n-input v-model:value="formValue.state" placeholder="Enter State" />
-      </n-form-item-gi>
-      <n-form-item-gi :span="8" style="padding-top: 4px" label="Country" path="country">
-        <n-input v-model:value="formValue.country" placeholder="Enter Country" />
+      <n-form-item-gi :span="12" label="Name" path="merchant_name">
+        <n-input v-model:value="formValue.merchant_name" placeholder="Enter Name" />
       </n-form-item-gi>
       <n-form-item-gi :span="12" label="Status" path="status">
         <n-select
@@ -30,31 +15,19 @@
         />
       </n-form-item-gi>
     </n-grid>
-    <SingleImageUploader
-      :action="uploadUrl"
-      :data="{ type: 0 }"
-      name="shop_images"
-      :width="100"
-      :height="100"
-      @upload-change="uploadChange"
-      v-model:value="formValue.shop_logo"
-    />
     <n-space justify="end">
       <n-form-item :theme-overrides="{ labelHeightSmall: '0', feedbackHeightSmall: '0' }">
-        <n-button secondary type="info" @click="handleValidateClick"> Update </n-button>
+        <n-button secondary type="info" @click="handleValidateClick"> update </n-button>
       </n-form-item>
     </n-space>
   </n-form>
 </template>
 
 <script lang="ts" setup>
-import { ref, unref } from 'vue';
+import { ref } from 'vue';
 import { type FormInst } from 'naive-ui';
 import { getRecordApi, updateRecordApi } from '@src/api/endpoints';
-import { SingleImageUploader } from '@src/components/upload';
-import { useEnv } from '@src/hooks/useEnv';
 
-const { uploadUrl } = useEnv();
 const formRef = ref<FormInst | null>(null);
 const formValue: any = ref({});
 
@@ -64,10 +37,6 @@ const props = defineProps({
     type: Number
   }
 });
-
-const uploadChange = (list: string) => {
-  formValue.value.shop_logo = unref(list);
-};
 
 // fetch single supplier  using id
 getRecordApi(`/merchants/${props.id}`).then((res: any) => {
@@ -90,39 +59,14 @@ const handleValidateClick = (e: MouseEvent) => {
 };
 
 const rules = ref({
-  shop_name: {
+  merchant_name: {
     required: true,
     message: 'Please Enter Name',
     trigger: 'blur'
   },
-  shop_phone: {
+  status: {
     required: true,
-    message: 'Please Enter Phone',
-    trigger: 'blur'
-  },
-  address: {
-    required: true,
-    message: 'Please Enter Address',
-    trigger: 'blur'
-  },
-  city: {
-    required: true,
-    message: 'Please Enter City',
-    trigger: 'blur'
-  },
-  state: {
-    required: true,
-    message: 'Please Enter State',
-    trigger: 'blur'
-  },
-  country: {
-    required: true,
-    message: 'Please Enter Country',
-    trigger: 'blur'
-  },
-  shop_logo: {
-    required: true,
-    message: 'Please Upload Logo',
+    message: 'Please select status',
     trigger: 'blur'
   }
 });

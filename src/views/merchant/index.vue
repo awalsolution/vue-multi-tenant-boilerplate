@@ -6,7 +6,7 @@
           <div class="flex flex-col sm:flex-row w-full items-center !space-x-2 sm:w-fit">
             <n-input
               class="sm:!w-[230px]"
-              v-model:value="searchParams.shop_name"
+              v-model:value="searchParams.merchant_name"
               clearable
               placeholder="Search By Name"
               size="small"
@@ -14,16 +14,23 @@
             >
               <template #prefix> <NIcon :component="SearchOutlined" class="mr-1" /> </template>
             </n-input>
-            <n-input
+            <n-select
               class="sm:!w-[230px]"
-              v-model:value="searchParams.shop_phone"
+              v-model:value="searchParams.shop_name"
+              :clear-filter-after-select="false"
+              :filterable="true"
+              :loading="shopLoading"
+              :options="shops"
+              :remote="true"
+              :tag="false"
               clearable
-              placeholder="Search By Phone"
+              label-field="shop_name"
+              value-field="shop_name"
+              placeholder="Search By Shop"
               size="small"
-              type="text"
-            >
-              <template #prefix> <NIcon :component="SearchOutlined" class="mr-1" /> </template>
-            </n-input>
+              @focus="getShopsOnFocus"
+              @search="findShop"
+            />
             <n-select
               class="sm:!w-[230px]"
               v-model:value="searchParams.status"
@@ -59,12 +66,9 @@
       <table class="table">
         <thead class="head">
           <tr>
-            <th class="sticky_el left-0 z-20">ID</th>
-            <th class="th">Logo</th>
             <th class="th">Name</th>
-            <th class="th">Phone#</th>
             <th class="th">Status</th>
-            <th class="th">Address</th>
+            <th class="th">Shop Name</th>
             <th class="th">Created At</th>
             <th class="th">Updated At</th>
             <th
@@ -82,22 +86,13 @@
             <td colspan="9" class="data_placeholder">Record Not Exist</td>
           </tr>
           <tr v-else v-for="item in list" :key="item.id" class="body_tr">
-            <td class="sticky_el left-0 z-10">
-              {{ item.id }}
-            </td>
-            <td class="text-center td pt-2">
-              <n-avatar :size="50" :src="`${imgUrl}${item.shop_logo}`" />
-            </td>
-            <td class="td">{{ item.shop_name }}</td>
-            <td class="td">{{ item.shop_phone }}</td>
-            <td class="td">
+            <td class="td">{{ item.merchant_name }}</td>
+            <td class="text-center td">
               <n-tag :bordered="false" :type="item.status === 'disabled' ? 'error' : 'info'">
                 {{ item.status }}
               </n-tag>
             </td>
-            <td class="td">
-              {{ item.address + ' ' + item.city + ' ' + item?.state + ' ' + item.country }}
-            </td>
+            <td class="td">{{ item.shop.shop_name }}</td>
             <td class="td">{{ item.created_at }}</td>
             <td class="td">{{ item.updated_at }}</td>
             <td
@@ -140,7 +135,7 @@
       </div>
     </template>
 
-    <n-modal style="width: 60%" v-model:show="showModal" preset="dialog">
+    <n-modal style="width: 40%" v-model:show="showModal" preset="dialog">
       <template #header>
         <div>Create New Merchant</div>
       </template>
@@ -154,7 +149,7 @@
       </n-space>
     </n-modal>
 
-    <n-modal style="width: 60%" v-model:show="showEditModal" preset="dialog">
+    <n-modal style="width: 40%" v-model:show="showEditModal" preset="dialog">
       <template #header>
         <div>Update supplier</div>
       </template>
@@ -176,17 +171,16 @@ import { ref, onMounted, computed } from 'vue';
 import { NIcon, NPagination, useDialog } from 'naive-ui';
 import { MoreOutlined, EditOutlined, DeleteOutlined, SearchOutlined } from '@vicons/antd';
 import { deleteRecordApi } from '@src/api/endpoints';
-import { useEnv } from '@src/hooks/useEnv';
 import { useLoading } from '@src/hooks/useLoading';
 import { useMobile } from '@src/hooks/useMediaQuery';
 import { renderIcon } from '@src/utils/renderIcon';
+import { usefilterShop } from '@src/filters/shops';
 import { usePermission } from '@src/hooks/permission/usePermission';
 import { usePagination } from '@src/hooks/pagination/usePagination';
 import DataTableLayout from '@src/layouts/DataTableLayout/index.vue';
 import AddMerchant from '@src/components/merchant/AddMerchant.vue';
 import EditMerchant from '@src/components/merchant/EditMerchant.vue';
 
-const { imgUrl } = useEnv();
 const isMobile = useMobile();
 const dialog = useDialog();
 const selectedOption: any = ref(null);
@@ -195,6 +189,7 @@ const showEditModal = ref(false);
 const selectedId = ref();
 const { hasPermission } = usePermission();
 const [loading, loadingDispatcher] = useLoading(false);
+const { shops, shopLoading, findShop, getShopsOnFocus } = usefilterShop();
 
 // fetch all records
 const { getList, list, page, pageSizes, itemCount, pageSize, searchParams }: any =
@@ -235,7 +230,7 @@ function confirmationDialog() {
 
 function deleteOperation() {
   loadingDispatcher.loading();
-  deleteRecordApi(`/merchant/${selectedId.value}`)
+  deleteRecordApi(`/merchants/${selectedId.value}`)
     .then((res: any) => {
       window['$message'].success(res.message);
       getList();
@@ -283,7 +278,7 @@ const fetchList = () => {
   @apply hover:bg-gray-50 dark:hover:bg-gray-600;
 }
 .td {
-  @apply px-3 border-r border-b border-gray-200 dark:border-gray-800 whitespace-nowrap;
+  @apply px-3 py-2 border-r border-b border-gray-200 dark:border-gray-800 whitespace-nowrap;
 }
 .sticky_el {
   @apply sticky bg-gray-50 dark:bg-gray-700 px-6 whitespace-nowrap text-center border border-gray-200 dark:border-gray-800;

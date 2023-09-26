@@ -6,7 +6,7 @@
           <div class="flex flex-col sm:flex-row w-full items-center !space-x-2 sm:w-fit">
             <n-input
               class="sm:!w-[230px]"
-              v-model:value="searchParams.shop_name"
+              v-model:value="searchParams.supplier_name"
               clearable
               placeholder="Search By Name"
               size="small"
@@ -16,7 +16,7 @@
             </n-input>
             <n-input
               class="sm:!w-[230px]"
-              v-model:value="searchParams.shop_phone"
+              v-model:value="searchParams.supplier_phone"
               clearable
               placeholder="Search By Phone"
               size="small"
@@ -59,18 +59,17 @@
       <table class="table">
         <thead class="head">
           <tr>
-            <th class="sticky_el left-0 z-20">ID</th>
-            <th class="th">Logo</th>
             <th class="th">Name</th>
             <th class="th">Phone#</th>
             <th class="th">Status</th>
+            <th class="th">Shop Name</th>
             <th class="th">Address</th>
             <th class="th">Created At</th>
             <th class="th">Updated At</th>
             <th
               class="sticky_el right-0 z-20"
               v-permission="{
-                action: ['can view shop update', 'can view shop delete']
+                action: ['can view supplier update', 'can view supplier delete']
               }"
             >
               Actions
@@ -82,19 +81,14 @@
             <td colspan="9" class="data_placeholder">Record Not Exist</td>
           </tr>
           <tr v-else v-for="item in list" :key="item.id" class="body_tr">
-            <td class="sticky_el left-0 z-10">
-              {{ item.id }}
-            </td>
-            <td class="text-center td pt-2">
-              <n-avatar :size="50" :src="`${imgUrl}${item.shop_logo}`" />
-            </td>
-            <td class="td">{{ item.shop_name }}</td>
-            <td class="td">{{ item.shop_phone }}</td>
-            <td class="td">
+            <td class="td">{{ item.supplier_name }}</td>
+            <td class="td">{{ item.supplier_phone }}</td>
+            <td class="text-center td">
               <n-tag :bordered="false" :type="item.status === 'disabled' ? 'error' : 'info'">
                 {{ item.status }}
               </n-tag>
             </td>
+            <td class="td">{{ item.shop.shop_name }}</td>
             <td class="td">
               {{ item.address + ' ' + item.city + ' ' + item?.state + ' ' + item.country }}
             </td>
@@ -176,7 +170,6 @@ import { ref, onMounted, computed } from 'vue';
 import { NIcon, NPagination, useDialog } from 'naive-ui';
 import { MoreOutlined, EditOutlined, DeleteOutlined, SearchOutlined } from '@vicons/antd';
 import { deleteRecordApi } from '@src/api/endpoints';
-import { useEnv } from '@src/hooks/useEnv';
 import { useLoading } from '@src/hooks/useLoading';
 import { useMobile } from '@src/hooks/useMediaQuery';
 import { renderIcon } from '@src/utils/renderIcon';
@@ -186,7 +179,6 @@ import DataTableLayout from '@src/layouts/DataTableLayout/index.vue';
 import AddSupplier from '@src/components/supplier/AddSupplier.vue';
 import EditSupplier from '@src/components/supplier/EditSupplier.vue';
 
-const { imgUrl } = useEnv();
 const isMobile = useMobile();
 const dialog = useDialog();
 const selectedOption: any = ref(null);
@@ -283,7 +275,7 @@ const fetchList = () => {
   @apply hover:bg-gray-50 dark:hover:bg-gray-600;
 }
 .td {
-  @apply px-3 border-r border-b border-gray-200 dark:border-gray-800 whitespace-nowrap;
+  @apply px-3 py-2 border-r border-b border-gray-200 dark:border-gray-800 whitespace-nowrap;
 }
 .sticky_el {
   @apply sticky bg-gray-50 dark:bg-gray-700 px-6 whitespace-nowrap text-center border border-gray-200 dark:border-gray-800;
