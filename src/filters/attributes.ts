@@ -2,7 +2,7 @@ import { ref } from 'vue';
 import { getRecordsApi } from '@src/api/endpoints';
 import { isEmpty } from 'lodash';
 
-export function filterAttribute() {
+export function usefilterAttribute() {
   const attributes: any = ref([]);
   const attributeLoading = ref(false);
   const attributesInitialized = ref(false);
