@@ -68,6 +68,7 @@
           <tr>
             <th class="th">Image</th>
             <th class="th">Vendor</th>
+            <th class="th">Merchant</th>
             <th class="th">Title</th>
             <th class="th">Product Code</th>
             <th class="th">Status</th>
@@ -92,6 +93,7 @@
               <n-avatar round size="large" :src="`${imgUrl}${item.product_image}`" />
             </td>
             <td class="td">{{ item.shop.shop_name }}</td>
+            <td class="td">{{ item.merchant.merchant_name }}</td>
             <td class="td">{{ item.title }}</td>
             <td class="td">{{ item.product_code }}</td>
             <td class="td">

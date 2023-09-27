@@ -1,7 +1,5 @@
 <template>
-  <header
-    class="bg-default-light dark:bg-default-dark sticky top-0 z-50 flex h-14 w-full items-center justify-between border-b border-gray-300 p-2 dark:border-gray-800 sm:p-4"
-  >
+  <header class="header_wrap">
     <div class="flex h-full items-center justify-start space-x-3">
       <NTooltip placement="bottom" trigger="hover">
         <template #trigger>
@@ -62,7 +60,7 @@
       </template> -->
       <!-- :src="userStore.user.avatarUrl" -->
       <template v-if="userStore.hasData()">
-        <NDropdown trigger="click" :options="userOptions" @select="selectUserOption">
+        <NDropdown trigger="click" :options="filteredOptions" @select="selectUserOption">
           <template v-if="userStore.currentUser.profile.profile_picture">
             <NAvatar
               class="cursor-pointer select-none shadow-md !transition-all hover:opacity-90 active:opacity-70"
@@ -81,7 +79,7 @@
 </template>
 
 <script setup lang="ts">
-import { h } from 'vue';
+import { h, computed } from 'vue';
 import { useRouter } from 'vue-router';
 import { NAvatar, NText } from 'naive-ui';
 import { BrandGithub, UserCircle } from '@vicons/tabler';
@@ -105,6 +103,7 @@ import { useUserStore } from '@src/store/modules/user';
 import { useEnv } from '@src/hooks/useEnv';
 import { BrowserUtils } from '@src/utils/browser';
 import { renderIcon } from '@src/utils/renderIcon';
+import { isSuperAdminUsers } from '@src/conditionalChecks/isSuperAdminChecks';
 
 const { teamGitHubURL, imgUrl } = useEnv();
 const { openNewWindow } = BrowserUtils;
@@ -147,33 +146,43 @@ const userOptions = [
   {
     key: 'header',
     type: 'render',
-    render: renderCustomHeader
+    render: renderCustomHeader,
+    accesses: true
   },
   {
     key: 'header-divider',
-    type: 'divider'
+    type: 'divider',
+    accesses: true
   },
   {
     label: () => 'Profile',
     key: 'profile',
-    icon: renderIcon(ProfileOutlined)
+    icon: renderIcon(ProfileOutlined),
+    accesses: true
   },
   {
     label: () => 'Shop Setting',
     key: 'shop_setting',
-    icon: renderIcon(SettingsOutline)
+    icon: renderIcon(SettingsOutline),
+    accesses: isSuperAdminUsers()
   },
   {
     label: () => 'Change Password',
     key: 'change-password',
-    icon: renderIcon(UnlockOutlined)
+    icon: renderIcon(UnlockOutlined),
+    accesses: true
   },
   {
     label: () => 'Logout',
     key: 'logout',
-    icon: renderIcon(LogoutOutlined)
+    icon: renderIcon(LogoutOutlined),
+    accesses: true
   }
 ];
+
+const filteredOptions = computed(() => {
+  return userOptions.filter((option) => option.accesses);
+});
 
 function renderCustomHeader() {
   return h(
@@ -211,3 +220,10 @@ function renderCustomHeader() {
   );
 }
 </script>
+
+<style lang="scss" scoped>
+.header_wrap {
+  @apply bg-default-light dark:bg-default-dark sticky top-0 z-50 flex h-14 w-full items-center justify-between border-b border-gray-300 p-2 dark:border-gray-800 sm:p-4;
+}
+</style>
+@src/conditionalChecks/isSuperAdminUsers @src/conditionalChecks/isSuperAdminChecks

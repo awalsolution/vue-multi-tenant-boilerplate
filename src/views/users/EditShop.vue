@@ -1,5 +1,5 @@
 <template>
-  <n-card title="Shop Setting">
+  <n-card title="Shop Setting" v-if="isSuperAdminUsers()">
     <n-form ref="formRef" :label-width="80" :model="shopData" size="small">
       <n-grid x-gap="10">
         <n-form-item-gi :span="12" label="Shop Name" path="shop_name">
@@ -9,7 +9,13 @@
           <n-input v-model:value="shopData.shop_phone" placeholder="Enter Shop Phone" />
         </n-form-item-gi>
         <n-form-item-gi :span="12" label="Shop Status" path="status">
-          <n-select v-model:value="shopData.status" :options="status" />
+          <n-select
+            v-model:value="shopData.status"
+            :options="[
+              { label: 'active', value: 'active' },
+              { label: 'disabled', value: 'disabled' }
+            ]"
+          />
         </n-form-item-gi>
         <n-form-item-gi :span="12" label="Address" path="address">
           <n-input v-model:value="shopData.address" placeholder="Enter Address" />
@@ -51,6 +57,7 @@ import { updateRecordApi } from '@src/api/endpoints';
 import { SingleImageUploader } from '@src/components/upload';
 import { useUserStore } from '@src/store/modules/user';
 import { useEnv } from '@src/hooks/useEnv';
+import { isSuperAdminUsers } from '@src/conditionalChecks/isSuperAdminChecks';
 
 const { uploadUrl } = useEnv();
 const formRef = ref<FormInst | null>(null);
@@ -81,17 +88,7 @@ const handleValidateClick = (e: MouseEvent) => {
 onMounted(() => {
   shopData.value = userStore.currentUser.shop;
 });
-
-const status = ref([
-  {
-    label: 'active',
-    value: 'active'
-  },
-  {
-    label: 'disabled',
-    value: 'disabled'
-  }
-]);
 </script>
 
 <style lang="scss" scoped></style>
+@src/conditionalChecks/isSuperAdminChecks
