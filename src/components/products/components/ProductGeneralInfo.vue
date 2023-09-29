@@ -95,10 +95,10 @@ const handleValidateClick = (e: MouseEvent) => {
   e.preventDefault();
   generalInfoFormRef.value?.validate((errors) => {
     if (!errors) {
-      loadingDispatcher.loading();
+      loadingDispatcher.start();
       updateRecordApi(`/products/${generalInfo.value.id}`, generalInfo.value).then((res: any) => {
         window['$message'].success(res.message);
-        loadingDispatcher.loaded();
+        loadingDispatcher.end();
       });
     } else {
       console.log(errors);

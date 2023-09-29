@@ -115,10 +115,13 @@ const router = useRouter();
 // const { isFullscreen, toggle: toggleFullscreen } = useFullscreen();
 
 const logout = async () => {
-  return await router.replace('/login').then(async () => {
-    const res = await userStore.logout();
-    window['$message'].success(res.message);
-  });
+  return await router
+    .replace('/login')
+    .then(async () => {
+      const res = await userStore.logout();
+      window['$message'].success(res.message);
+    })
+    .finally(() => location.reload());
 };
 
 type UserOptionKey = 'logout' | 'profile' | 'change-password' | 'shop_setting';

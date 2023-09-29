@@ -194,17 +194,17 @@ function confirmationDialog() {
 }
 
 function deleteOperation() {
-  loadingDispatcher.loading();
+  loadingDispatcher.start();
   deleteRecordApi(`/attributes/${selectedId.value}`)
     .then((res: any) => {
       window['$message'].success(res.message);
       getList();
-      loadingDispatcher.loaded();
+      loadingDispatcher.end();
       dialog.destroyAll;
     })
     .catch((res: any) => {
       window['$message'].error(res.message);
-      loadingDispatcher.loaded();
+      loadingDispatcher.end();
       dialog.destroyAll;
     });
   selectedId.value = null;
