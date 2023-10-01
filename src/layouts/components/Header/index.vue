@@ -103,7 +103,7 @@ import { useUserStore } from '@src/store/modules/user';
 import { useEnv } from '@src/hooks/useEnv';
 import { BrowserUtils } from '@src/utils/browser';
 import { renderIcon } from '@src/utils/renderIcon';
-import { isSuperAdminUsers } from '@src/conditionalChecks/isSuperAdminChecks';
+// import { isSuperAdminUser } from '@src/checks/isSuperAdmin';
 
 const { teamGitHubURL, imgUrl } = useEnv();
 const { openNewWindow } = BrowserUtils;
@@ -166,8 +166,8 @@ const userOptions = [
   {
     label: () => 'Shop Setting',
     key: 'shop_setting',
-    icon: renderIcon(SettingsOutline),
-    accesses: isSuperAdminUsers()
+    icon: renderIcon(SettingsOutline)
+    // accesses: isSuperAdminUser()
   },
   {
     label: () => 'Change Password',
@@ -229,4 +229,3 @@ function renderCustomHeader() {
   @apply bg-default-light dark:bg-default-dark sticky top-0 z-50 flex h-14 w-full items-center justify-between border-b border-gray-300 p-2 dark:border-gray-800 sm:p-4;
 }
 </style>
-@src/conditionalChecks/isSuperAdminUsers @src/conditionalChecks/isSuperAdminChecks

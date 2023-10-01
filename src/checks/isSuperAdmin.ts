@@ -1,9 +1,10 @@
 import { useUserStore } from '@src/store/modules/user';
 
-const userStore = useUserStore();
+// const userStore = useUserStore();
 
 // check for all super admins users to access some thing or not
-export const isSuperAdminUsers = () => {
+export const isSuperAdminUser = () => {
+  const userStore = useUserStore();
   if (userStore.hasData()) {
     if (userStore.currentUser.shop_id === null) {
       return false;
@@ -17,10 +18,9 @@ export const isSuperAdminUsers = () => {
 
 // check only super admin
 export const isSuperAdmin = () => {
+  const userStore = useUserStore();
   if (userStore.hasData()) {
-    const isSuperAdmin = userStore.roles.some((item: any) => {
-      return item.name === 'super admin';
-    });
+    const isSuperAdmin = userStore.roles?.find((item: any) => item.name === 'super admin');
 
     return isSuperAdmin;
   } else {
@@ -31,6 +31,7 @@ export const isSuperAdmin = () => {
 
 // check only vendor
 export const isVendor = () => {
+  const userStore = useUserStore();
   if (userStore.hasData()) {
     const isSuperAdmin = userStore.roles.some((item: any) => {
       return item.name === 'vendor';

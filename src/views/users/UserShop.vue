@@ -1,6 +1,6 @@
 <template>
   <ContentLayout>
-    <n-card title="Shop Setting" class="h-full overflow-y-scroll" v-if="isSuperAdminUsers()">
+    <n-card title="Shop Setting" class="h-full overflow-y-scroll">
       <n-row>
         <n-col :span="8" class="text-center">
           <n-avatar round :size="200" :src="`${imgUrl}${shopData.shop_logo}`" />
@@ -101,7 +101,7 @@ import { onMounted, ref } from 'vue';
 import { useUserStore } from '@src/store/modules/user';
 import { useEnv } from '@src/hooks/useEnv';
 import EditShop from '@src/views/users/EditShop.vue';
-import { isSuperAdminUsers } from '@src/conditionalChecks/isSuperAdminChecks';
+// import { isSuperAdminUser } from '@src/checks/isSuperAdmin';
 import ContentLayout from '@src/layouts/ContentLayout/index.vue';
 
 const { imgUrl } = useEnv();
@@ -122,4 +122,3 @@ onMounted(() => {
 </script>
 
 <style lang="scss" scoped></style>
-@src/conditionalChecks/isSuperAdminChecks

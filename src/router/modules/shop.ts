@@ -1,5 +1,5 @@
 import type { RouteRecordRaw } from 'vue-router';
-import { ShopOutlined } from '@vicons/antd';
+import { BuildingShop16Regular } from '@vicons/fluent';
 import { DashboardLayout } from '@src/router/constant';
 import { renderIcon } from '@src/utils/renderIcon';
 
@@ -13,7 +13,7 @@ const routes: RouteRecordRaw[] = [
     component: DashboardLayout,
     meta: {
       title: 'Shop',
-      icon: renderIcon(ShopOutlined),
+      icon: renderIcon(BuildingShop16Regular),
       permissions: ['can view shop menu'],
       sort: 5
     },
