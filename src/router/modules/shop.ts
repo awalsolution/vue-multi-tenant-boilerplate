@@ -14,8 +14,8 @@ const routes: RouteRecordRaw[] = [
     meta: {
       title: 'Shop',
       icon: renderIcon(ShopOutlined),
-      permissions: ['can view shops'],
-      sort: 2
+      permissions: ['can view shop menu'],
+      sort: 5
     },
     children: [
       {
@@ -23,7 +23,7 @@ const routes: RouteRecordRaw[] = [
         name: `${routeName}_list`,
         meta: {
           title: 'Shop List',
-          permissions: ['can view shops']
+          permissions: ['can view shop list']
         },
         component: () => import('@src/views/shop/index.vue')
       }

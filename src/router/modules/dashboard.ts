@@ -12,7 +12,7 @@ const routes: RouteRecordRaw[] = [
     meta: {
       title: 'Dashboard',
       icon: renderIcon(DashboardOutlined),
-      permissions: ['can view dashboard'],
+      permissions: ['can view dashboard menu'],
       sort: 0
     },
     children: [
@@ -22,7 +22,7 @@ const routes: RouteRecordRaw[] = [
         meta: {
           title: 'Dashboard',
           icon: renderIcon(DashboardOutlined),
-          permissions: ['can view dashboard']
+          permissions: ['can view dashboard list']
         },
         component: () => import('@src/views/dashboard/index.vue')
       }

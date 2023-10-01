@@ -1,5 +1,5 @@
 <template>
-  <DataTableLayout :loading="loading" v-permission="{ action: ['can view permissions'] }">
+  <DataTableLayout :loading="loading">
     <template #tableHeader>
       <div class="flex flex-col items-center space-y-2 sm:flex-row sm:justify-between sm:space-y-0">
         <div class="flex flex-col items-center space-y-2 sm:flex-row sm:space-x-3 sm:space-y-0">
@@ -85,7 +85,7 @@
             <th
               class="sticky_el right-0 z-20"
               v-permission="{
-                action: ['can view permissions update', 'can view permissions delete']
+                action: ['can view permission update', 'can view permission delete']
               }"
             >
               Actions
@@ -110,7 +110,7 @@
             <td
               class="sticky_el right-0 z-10"
               v-permission="{
-                action: ['can view permissions update', 'can view permissions delete']
+                action: ['can view permission update', 'can view permission delete']
               }"
             >
               <n-dropdown

@@ -110,7 +110,7 @@
     </template>
 
     <template #tableContent>
-      <table class="table" v-permission="{ action: ['can view users'] }">
+      <table class="table">
         <thead class="head">
           <tr>
             <th class="sticky_el left-0 z-20">ID</th>
@@ -128,7 +128,11 @@
             <th
               class="sticky_el right-0 z-20"
               v-permission="{
-                action: ['can view user update', 'can view user delete']
+                action: [
+                  'can view user update',
+                  'can view user delete',
+                  'can view user assign permission'
+                ]
               }"
             >
               Actions
@@ -179,7 +183,11 @@
             <td
               class="sticky_el right-0 z-10"
               v-permission="{
-                action: ['can view user update', 'can view user delete']
+                action: [
+                  'can view user update',
+                  'can view user delete',
+                  'can view user assign permission'
+                ]
               }"
             >
               <n-dropdown
@@ -291,7 +299,7 @@ const moreOptions = ref([
     label: 'Assign Permission',
     key: 'assign_permission',
     icon: renderIcon(EditOutlined),
-    permission: hasPermission(['can view user update'])
+    permission: hasPermission(['can view user assign permission'])
   },
   {
     label: 'Edit',

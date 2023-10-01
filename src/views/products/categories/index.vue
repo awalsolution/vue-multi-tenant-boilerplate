@@ -1,5 +1,5 @@
 <template>
-  <DataTableLayout :loading="loading" v-permission="{ action: ['can view categories'] }">
+  <DataTableLayout :loading="loading">
     <template #tableHeader>
       <div class="flex flex-col items-center space-y-2 sm:flex-row sm:justify-between sm:space-y-0">
         <div class="flex flex-col items-center space-y-2 sm:flex-row sm:space-x-3 sm:space-y-0">

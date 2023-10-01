@@ -14,16 +14,16 @@ const routes: RouteRecordRaw[] = [
     meta: {
       title: 'merchant',
       icon: renderIcon(ShopOutlined),
-      permissions: ['can view merchant'],
+      permissions: ['can view merchant menu'],
       sort: 3
     },
     children: [
       {
-        path: 'Merchant list',
+        path: 'list',
         name: `${routeName}_list`,
         meta: {
           title: 'Merchant List',
-          permissions: ['can view merchant']
+          permissions: ['can view merchant list']
         },
         component: () => import('@src/views/merchant/index.vue')
       }

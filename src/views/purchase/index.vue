@@ -1,5 +1,5 @@
 <template>
-  <DataTableLayout :loading="loading" v-permission="{ action: ['can view merchant'] }">
+  <DataTableLayout :loading="loading">
     <template #tableHeader>
       <div class="flex flex-col items-center space-y-2 sm:flex-row sm:justify-between sm:space-y-0">
         <div class="flex flex-col items-center space-y-2 sm:flex-row sm:space-x-3 sm:space-y-0">
@@ -54,7 +54,7 @@
             type="info"
             :size="isMobile ? 'small' : 'medium'"
             @click="showModal = true"
-            v-permission="{ action: ['can view merchant create'] }"
+            v-permission="{ action: ['can view purchase create'] }"
           >
             Create
           </NButton>
@@ -74,7 +74,7 @@
             <th
               class="sticky_el right-0 z-20"
               v-permission="{
-                action: ['can view shop update', 'can view shop delete']
+                action: ['can view purchase update', 'can view purchase delete']
               }"
             >
               Actions
@@ -98,7 +98,7 @@
             <td
               class="sticky_el right-0 z-10"
               v-permission="{
-                action: ['can view merchant update', 'can view merchant delete']
+                action: ['can view purchase update', 'can view purchase delete']
               }"
             >
               <n-dropdown
@@ -204,13 +204,13 @@ const moreOptions = ref([
     label: 'Edit',
     key: 'edit',
     icon: renderIcon(EditOutlined),
-    permission: hasPermission(['can view merchant update'])
+    permission: hasPermission(['can view purchase update'])
   },
   {
     label: 'Delete',
     key: 'delete',
     icon: renderIcon(DeleteOutlined),
-    permission: hasPermission(['can view merchant delete'])
+    permission: hasPermission(['can view purchase delete'])
   }
 ]);
 

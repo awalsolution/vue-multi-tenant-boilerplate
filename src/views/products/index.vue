@@ -1,5 +1,5 @@
 <template>
-  <DataTableLayout :loading="loading" v-permission="{ action: ['can view products'] }">
+  <DataTableLayout :loading="loading">
     <template #tableHeader>
       <div
         class="flex flex-col flex-wrap gap-5 items-center space-y-2 sm:flex-row sm:justify-between sm:space-y-0"

@@ -1,5 +1,5 @@
 <template>
-  <DataTableLayout :loading="loading" v-permission="{ action: ['can view roles'] }">
+  <DataTableLayout :loading="loading">
     <template #tableHeader>
       <div class="flex flex-col items-center space-y-2 sm:flex-row sm:justify-between sm:space-y-0">
         <div class="flex flex-col items-center space-y-2 sm:flex-row sm:space-x-3 sm:space-y-0">
@@ -44,7 +44,11 @@
             <th
               class="sticky_el right-0 z-10"
               v-permission="{
-                action: ['can view role update', 'can view role delete']
+                action: [
+                  'can view role update',
+                  'can view role delete',
+                  'can view role assign permission'
+                ]
               }"
             >
               Actions
@@ -63,7 +67,11 @@
             <td
               class="sticky_el right-0 z-10"
               v-permission="{
-                action: ['can view role update', 'can view role delete']
+                action: [
+                  'can view role update',
+                  'can view role delete',
+                  'can view role assign permission'
+                ]
               }"
             >
               <n-dropdown
@@ -169,7 +177,7 @@ const moreOptions = ref([
     label: 'Assign Permission',
     key: 'assign_permission',
     icon: renderIcon(EditOutlined),
-    permission: hasPermission(['can view role update'])
+    permission: hasPermission(['can view role assign permission'])
   },
   {
     label: 'Edit',

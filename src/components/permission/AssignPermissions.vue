@@ -20,8 +20,11 @@
       <n-tab-pane v-for="item of menus" :key="item.id" :name="item.menu_name" :tab="item.menu_name">
         <n-checkbox-group class="mx-2" v-model:value="selectedPermissions">
           <n-row>
-            <n-col v-for="permission of item.permissions" :key="permission.id" :span="6">
-              <n-checkbox :value="permission.id" :label="permission.name" />
+            <n-col v-for="permission of item.permissions" :key="permission.id" :span="7">
+              <n-checkbox :value="permission.id" :label="permission.name" class="pb-1" />
+              <n-tag size="small" :type="permission.type === 'private' ? 'error' : 'success'">
+                {{ permission.type }}
+              </n-tag>
             </n-col>
           </n-row>
         </n-checkbox-group>

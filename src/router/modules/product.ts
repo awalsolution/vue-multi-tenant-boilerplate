@@ -14,8 +14,8 @@ const routes: RouteRecordRaw[] = [
     meta: {
       title: 'Products',
       icon: renderIcon(CartOutline),
-      permissions: ['can view products'],
-      sort: 5
+      permissions: ['can view product menu'],
+      sort: 1
     },
     children: [
       {
@@ -23,7 +23,7 @@ const routes: RouteRecordRaw[] = [
         name: `${routeName}_list`,
         meta: {
           title: 'Products List',
-          permissions: ['can view products']
+          permissions: ['can view product list']
         },
         component: () => import('@src/views/products/index.vue')
       },
@@ -32,8 +32,7 @@ const routes: RouteRecordRaw[] = [
         name: `${routeName}_add`,
         meta: {
           title: 'Add Product',
-          permissions: ['can view product create'],
-          hidden: true
+          permissions: ['can view product create']
         },
         component: () => import('@src/components/products/AddProduct.vue')
       },
@@ -51,8 +50,8 @@ const routes: RouteRecordRaw[] = [
         path: 'attributes',
         name: `${routeName}_attributes`,
         meta: {
-          title: 'Attributes',
-          permissions: ['can view attributes']
+          title: 'Attribute List',
+          permissions: ['can view attribute menu']
         },
         component: () => import('@src/views/products/attributes/index.vue')
       },
@@ -60,8 +59,8 @@ const routes: RouteRecordRaw[] = [
         path: 'categories',
         name: `${routeName}_categories`,
         meta: {
-          title: 'Categories',
-          permissions: ['can view categories']
+          title: 'Categorie List',
+          permissions: ['can view category menu']
         },
         component: () => import('@src/views/products/categories/index.vue')
       }

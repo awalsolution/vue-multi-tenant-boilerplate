@@ -13,17 +13,17 @@ const routes: RouteRecordRaw[] = [
     component: DashboardLayout,
     meta: {
       title: 'System Settings',
-      permissions: ['can view system setting'],
+      permissions: ['can view system setting menu'],
       icon: renderIcon(SettingsOutline),
-      sort: 1
+      sort: 6
     },
     children: [
       {
-        path: 'users',
+        path: 'user',
         name: `${routeName}_users`,
         meta: {
-          title: 'Users',
-          permissions: ['can view users']
+          title: 'User List',
+          permissions: ['can view user menu']
         },
         component: () => import('@src/views/users/index.vue')
       },
@@ -32,7 +32,7 @@ const routes: RouteRecordRaw[] = [
         name: `${routeName}_profile`,
         meta: {
           title: 'Profile',
-          permissions: ['can view profile'],
+          permissions: ['can view user profile'],
           hidden: true
         },
         component: () => import('@src/views/users/Profile.vue')
@@ -42,7 +42,7 @@ const routes: RouteRecordRaw[] = [
         name: `${routeName}_shop`,
         meta: {
           title: 'Shop',
-          permissions: ['can view profile'],
+          permissions: ['can view user shop'],
           hidden: true
         },
         component: () => import('@src/views/users/UserShop.vue')
@@ -52,7 +52,7 @@ const routes: RouteRecordRaw[] = [
         name: `${routeName}_assing_permission`,
         meta: {
           title: 'Assing Permission',
-          permissions: ['can view profile'],
+          permissions: ['can view assign permission menu'],
           hidden: true
         },
         component: () => import('@src/components/permission/AssignPermissions.vue')
@@ -61,17 +61,17 @@ const routes: RouteRecordRaw[] = [
         path: 'role',
         name: `${routeName}_role`,
         meta: {
-          title: 'Roles',
-          permissions: ['can view roles']
+          title: 'Role List',
+          permissions: ['can view role menu']
         },
         component: () => import('@src/views/roles/index.vue')
       },
       {
-        path: 'permissions',
+        path: 'permission',
         name: `${routeName}_permission`,
         meta: {
-          title: 'Permissions',
-          permissions: ['can view permissions']
+          title: 'Permission List',
+          permissions: ['can view permission menu']
         },
         component: () => import('@src/views/permissions/index.vue')
       }
