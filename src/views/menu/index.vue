@@ -49,10 +49,8 @@
       <table class="table">
         <thead class="head">
           <tr>
-            <th class="sticky_el left-0 z-20">ID</th>
             <th class="th">Menu Name</th>
             <th class="th">Created At</th>
-            <th class="th">Updated At</th>
             <th
               class="sticky_el right-0 z-20"
               v-permission="{
@@ -68,12 +66,8 @@
             <td colspan="10" class="data_placeholder">Record Not Exist</td>
           </tr>
           <tr v-else v-for="item in list" :key="item.id" class="body_tr">
-            <td class="sticky_el left-0 z-10">
-              {{ item.id }}
-            </td>
             <td class="td">{{ item.menu_name }}</td>
             <td class="td">{{ item.created_at }}</td>
-            <td class="td">{{ item.updated_at }}</td>
             <td
               class="sticky_el right-0 z-10"
               v-permission="{

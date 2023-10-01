@@ -66,14 +66,13 @@
       <table class="table">
         <thead class="head">
           <tr>
-            <th class="th">Image</th>
             <th class="th">Vendor</th>
             <th class="th">Merchant</th>
+            <th class="th text-center">Image</th>
             <th class="th">Title</th>
             <th class="th">Product Code</th>
             <th class="th">Status</th>
             <th class="th">Created At</th>
-            <th class="th">Updated At</th>
             <th
               class="sticky_el right-0 z-20"
               v-permission="{
@@ -89,11 +88,11 @@
             <td colspan="9" class="data_placeholder">Record Not Exist</td>
           </tr>
           <tr v-else v-for="item in list" :key="item.id" class="body_tr">
-            <td class="text-center td">
-              <n-avatar round size="large" :src="`${imgUrl}${item.product_image}`" />
-            </td>
             <td class="td">{{ item.shop.shop_name }}</td>
             <td class="td">{{ item.merchant.merchant_name }}</td>
+            <td class="td text-center pt-2">
+              <n-avatar size="large" :src="`${imgUrl}${item.product_image}`" />
+            </td>
             <td class="td">{{ item.title }}</td>
             <td class="td">{{ item.product_code }}</td>
             <td class="td">
@@ -102,7 +101,6 @@
               </n-tag>
             </td>
             <td class="td">{{ item.created_at }}</td>
-            <td class="td">{{ item.updated_at }}</td>
             <td
               class="sticky_el right-0 z-10"
               v-permission="{
@@ -243,7 +241,7 @@ const fetchList = () => {
   @apply sticky top-0 text-xs text-gray-700 bg-gray-50 dark:bg-gray-700 dark:text-gray-400 z-20;
 }
 .th {
-  @apply px-6 py-3 border-r border-b border-gray-200 dark:border-gray-800 text-center whitespace-nowrap;
+  @apply px-3 py-3 border-r border-b border-gray-200 dark:border-gray-800  whitespace-nowrap;
 }
 .body_tr {
   @apply hover:bg-gray-50 dark:hover:bg-gray-600;
