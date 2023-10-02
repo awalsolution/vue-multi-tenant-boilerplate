@@ -1,5 +1,5 @@
 <template>
-  <n-card title="Shop Setting">
+  <n-card title="Shop Setting" v-if="isSuperAdminUser()">
     <n-form ref="formRef" :label-width="80" :model="shopData" size="small">
       <n-grid x-gap="10">
         <n-form-item-gi :span="12" label="Shop Name" path="shop_name">
@@ -57,7 +57,7 @@ import { updateRecordApi } from '@src/api/endpoints';
 import { SingleImageUploader } from '@src/components/upload';
 import { useUserStore } from '@src/store/modules/user';
 import { useEnv } from '@src/hooks/useEnv';
-// import { isSuperAdminUser } from '@src/checks/isSuperAdmin';
+import { isSuperAdminUser } from '@src/checks/isSuperAdmin';
 
 const { uploadUrl } = useEnv();
 const formRef = ref<FormInst | null>(null);

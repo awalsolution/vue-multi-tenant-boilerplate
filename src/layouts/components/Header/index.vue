@@ -103,7 +103,7 @@ import { useUserStore } from '@src/store/modules/user';
 import { useEnv } from '@src/hooks/useEnv';
 import { BrowserUtils } from '@src/utils/browser';
 import { renderIcon } from '@src/utils/renderIcon';
-// import { isSuperAdminUser } from '@src/checks/isSuperAdmin';
+import { isSuperAdminUser } from '@src/checks/isSuperAdmin';
 
 const { teamGitHubURL, imgUrl } = useEnv();
 const { openNewWindow } = BrowserUtils;
@@ -166,8 +166,8 @@ const userOptions = [
   {
     label: () => 'Shop Setting',
     key: 'shop_setting',
-    icon: renderIcon(SettingsOutline)
-    // accesses: isSuperAdminUser()
+    icon: renderIcon(SettingsOutline),
+    accesses: isSuperAdminUser()
   },
   {
     label: () => 'Change Password',

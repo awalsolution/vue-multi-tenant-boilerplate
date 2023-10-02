@@ -85,7 +85,11 @@
                       { label: 'Regular', value: 'regular' },
                       { label: 'Pre Order', value: 'pre_order' }
                     ]"
-                    placeholder="Select a type"
+                    placeholder="Search PO type"
+                    clearable
+                    :remote="true"
+                    :filterable="true"
+                    :clear-filter-after-select="false"
                   />
                 </n-form-item>
               </n-col>

@@ -1,15 +1,13 @@
 import { useUserStore } from '@src/store/modules/user';
 
-// const userStore = useUserStore();
-
 // check for all super admins users to access some thing or not
 export const isSuperAdminUser = () => {
   const userStore = useUserStore();
   if (userStore.hasData()) {
     if (userStore.currentUser.shop_id === null) {
-      return false;
-    } else {
       return true;
+    } else {
+      return false;
     }
   } else {
     window['$message'].error('Current does not exist');

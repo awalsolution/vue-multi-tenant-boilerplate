@@ -87,7 +87,10 @@
           <tr v-else v-for="item in list" :key="item.id" class="body_tr">
             <td class="td">{{ item.merchant_name }}</td>
             <td class="text-center td">
-              <n-tag :bordered="false" :type="item.status === 'disabled' ? 'error' : 'info'">
+              <n-tag
+                :bordered="false"
+                :type="item.merchant_status === 'disabled' ? 'error' : 'info'"
+              >
                 {{ item.status }}
               </n-tag>
             </td>
@@ -133,9 +136,9 @@
       </div>
     </template>
 
-    <n-modal style="width: 40%" v-model:show="showModal" preset="dialog">
+    <n-modal style="width: 40%" v-model:show="showModal" preset="dialog" :showIcon="false">
       <template #header>
-        <div>Create New Merchant</div>
+        <div>New Merchant</div>
       </template>
       <n-space :vertical="true">
         <add-merchant
@@ -147,9 +150,9 @@
       </n-space>
     </n-modal>
 
-    <n-modal style="width: 40%" v-model:show="showEditModal" preset="dialog">
+    <n-modal style="width: 40%" v-model:show="showEditModal" preset="dialog" :showIcon="false">
       <template #header>
-        <div>Update supplier</div>
+        <div>Update Merchant</div>
       </template>
       <n-space :vertical="true">
         <edit-merchant
@@ -228,7 +231,7 @@ function confirmationDialog() {
 
 function deleteOperation() {
   loadingDispatcher.start();
-  deleteRecordApi(`/merchants/${selectedId.value}`)
+  deleteRecordApi('/merchants/' + selectedId.value)
     .then((res: any) => {
       window['$message'].success(res.message);
       getList();

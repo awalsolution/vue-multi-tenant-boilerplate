@@ -52,7 +52,7 @@
         </thead>
         <tbody>
           <tr v-if="list.length === 0">
-            <td colspan="3" class="data_placeholder">Record Not Exist</td>
+            <td colspan="4" class="data_placeholder">Record Not Exist</td>
           </tr>
           <tr v-else v-for="item in list" :key="item.id" class="body_tr">
             <td class="td">{{ item.warehouse_name }}</td>
@@ -102,7 +102,7 @@
       </div>
     </template>
 
-    <n-modal style="width: 40%" v-model:show="showModal" preset="dialog" showIcon="false">
+    <n-modal style="width: 40%" v-model:show="showModal" preset="dialog" :showIcon="false">
       <template #header>
         <div>New Warehouse</div>
       </template>
@@ -116,7 +116,7 @@
       </n-space>
     </n-modal>
 
-    <n-modal style="width: 40%" v-model:show="showEditModal" preset="dialog" showIcon="false">
+    <n-modal style="width: 40%" v-model:show="showEditModal" preset="dialog" :showIcon="false">
       <template #header>
         <div>Update Warehouse</div>
       </template>
