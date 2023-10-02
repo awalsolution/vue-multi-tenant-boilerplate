@@ -2,12 +2,12 @@ import { ref } from 'vue';
 import { getRecordsApi } from '@src/api/endpoints';
 import { isEmpty } from 'lodash';
 
-export function usefilterwarehouse() {
+export function usefilterWarehouse() {
   const warehouse: any = ref([]);
   const warehouseLoading = ref(false);
   const warehouseInitialized = ref(false);
 
-  async function findwarehouse(query: any) {
+  async function findWarehouse(query: any) {
     if (isEmpty(query)) {
       warehouse.value = [];
     } else {
@@ -18,16 +18,16 @@ export function usefilterwarehouse() {
     }
   }
 
-  async function getwarehouse() {
+  async function getWarehouse() {
     warehouseLoading.value = true;
     const response: any = await getRecordsApi('/warehouse');
     warehouse.value = response.result;
     warehouseLoading.value = false;
   }
 
-  async function getwarehouseOnFocus() {
+  async function getWarehouseOnFocus() {
     if (!warehouseInitialized.value) {
-      await getwarehouse();
+      await getWarehouse();
       warehouseInitialized.value = true;
     }
   }
@@ -36,8 +36,8 @@ export function usefilterwarehouse() {
     warehouse,
     warehouseLoading,
     warehouseInitialized,
-    findwarehouse,
-    getwarehouse,
-    getwarehouseOnFocus
+    findWarehouse,
+    getWarehouse,
+    getWarehouseOnFocus
   };
 }

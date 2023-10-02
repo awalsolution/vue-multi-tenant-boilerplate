@@ -109,34 +109,37 @@
             :header-style="headerStyle"
             :content-style="contentStyle"
           >
-            <n-form-item label="Merchant" path="merchant_id">
+            <n-form-item :span="12" label="User Role" path="merchant_id">
               <n-select
-                v-model:value="formValue.merchant_id"
-                size="small"
-                :options="[
-                  { label: 'Merchant 01', value: 'Merchant01' },
-                  { label: 'Merchant 02', value: 'Merchant02' }
-                ]"
-                clearable
-                :remote="true"
                 :filterable="true"
+                multiple
+                :tag="false"
+                placeholder="Select Merchant"
+                v-model:value="formValue.merchant_id"
+                clearable
+                @focus="getMerchantsOnFocus"
+                :remote="true"
                 :clear-filter-after-select="false"
-                placeholder="Search merchant"
+                label-field="merchant_name"
+                value-field="id"
+                :loading="merchantLoading"
+                :options="merchants"
               />
             </n-form-item>
-            <n-form-item label="Warehouse" path="warehouse_id">
+            <n-form-item :span="12" label="Warehouse" path="warehouse_id">
               <n-select
-                v-model:value="formValue.warehouse_id"
-                size="small"
-                :options="[
-                  { label: 'WareHouse 01', value: 'WareHouse01' },
-                  { label: 'WareHouse 02', value: 'WareHouse02' }
-                ]"
-                clearable
-                :remote="true"
                 :filterable="true"
+                :tag="false"
+                placeholder="Select warehouse"
+                v-model:value="formValue.warehouse_id"
+                clearable
+                @focus="getWarehouseOnFocus"
+                :remote="true"
                 :clear-filter-after-select="false"
-                placeholder="Search warehouse"
+                label-field="warehouse_name"
+                value-field="id"
+                :loading="warehouseLoading"
+                :options="warehouse"
               />
             </n-form-item>
           </n-card>
@@ -184,8 +187,12 @@ import { type FormInst } from 'naive-ui';
 // import { createRecordApi } from '@src/api/endpoints';
 import { rules } from '@src/rules/purchase_rules';
 import { usefilterSupplier } from '@src/filters/supplier';
+import { usefilterMerchant } from '@src/filters/merchants';
+import { usefilterWarehouse } from '@src/filters/warehouse';
 
 const { supplier, supplierLoading, getSupplierOnFocus } = usefilterSupplier();
+const { merchants, merchantLoading, getMerchantsOnFocus } = usefilterMerchant();
+const { warehouse, warehouseLoading, getWarehouseOnFocus } = usefilterWarehouse();
 const formValue: any = ref({});
 const formRef = ref<FormInst | null>(null);
 
