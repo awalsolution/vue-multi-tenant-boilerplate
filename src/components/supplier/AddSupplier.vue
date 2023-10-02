@@ -10,79 +10,79 @@
       >
         <n-row gutter="10">
           <n-col :span="6">
-            <n-form-item label="Supplier Name" path="supplier_name">
-              <n-input v-model="formValue.supplier_name" size="small" placeholder="Supplier Name" />
+            <n-form-item label="Name" path="supplier_name">
+              <n-input v-model="formValue.supplier_name" size="small" placeholder="Enter Name" />
             </n-form-item>
           </n-col>
           <n-col :span="6">
-            <n-form-item label="Supplier Company" path="supplier_company">
+            <n-form-item label="Company" path="supplier_company">
               <n-input
                 v-model:value="formValue.supplier_company"
                 size="small"
-                placeholder="Supplier Company"
+                placeholder="Enter Company"
               />
             </n-form-item>
           </n-col>
           <n-col :span="6">
-            <n-form-item label="Supplier Phone" path="supplier_phone">
+            <n-form-item label="Phone" path="supplier_phone">
               <n-input
                 v-model:value="formValue.supplier_phone"
                 size="small"
-                placeholder="Supplier Phone"
+                placeholder="Enter Phone"
               />
             </n-form-item>
           </n-col>
           <n-col :span="6">
-            <n-form-item label="Supplier Email" path="supplier_email">
+            <n-form-item label="Email" path="supplier_email">
               <n-input
                 v-model:value="formValue.supplier_email"
                 size="small"
-                placeholder="Supplier Email"
+                placeholder="Enter Email"
               />
             </n-form-item>
           </n-col>
           <n-col :span="6">
-            <n-form-item label="Supplier Country" path="supplier_country">
+            <n-form-item label="Country" path="supplier_country">
               <n-input
                 v-model:value="formValue.supplier_country"
                 size="small"
-                placeholder="Supplier country"
+                placeholder="Enter Country"
               />
             </n-form-item>
           </n-col>
           <n-col :span="6">
-            <n-form-item label="Supplier State" path="supplier_state">
+            <n-form-item label="State" path="supplier_state">
               <n-input
                 v-model:value="formValue.supplier_state"
                 size="small"
-                placeholder="Supplier State"
+                placeholder="Enter State"
               />
             </n-form-item>
           </n-col>
           <n-col :span="6">
-            <n-form-item label="Supplier City" path="supplier_city">
+            <n-form-item label="City" path="supplier_city">
               <n-input
                 v-model:value="formValue.supplier_city"
                 size="small"
-                placeholder="Supplier City"
+                placeholder="Enter City"
               />
             </n-form-item>
           </n-col>
           <n-col :span="6">
-            <n-form-item label="Supplier Category" path="supplier_category">
+            <n-form-item label="Category" path="supplier_category">
               <n-input
                 v-model:value="formValue.supplier_category"
                 size="small"
-                placeholder="Supplier Category"
+                placeholder="Enter Category"
               />
             </n-form-item>
           </n-col>
           <n-col :span="24">
-            <n-form-item label="Supplier Address" path="supplier_address">
+            <n-form-item label="Address" path="supplier_address">
               <n-input
                 v-model:value="formValue.supplier_address"
                 size="small"
-                placeholder="Supplier Address"
+                placeholder="Enter Address"
                 type="textarea"
                 :autosize="{
                   minRows: 3,

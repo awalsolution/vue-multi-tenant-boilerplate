@@ -1,19 +1,81 @@
 <template>
   <n-form ref="formRef" :label-width="80" :model="formValue" :rules="rules" size="small">
     <n-card
-      title="Warehouse Detail"
+      title="Warehouse Details"
       :theme-overrides="cardStyle"
       size="small"
       :header-style="headerStyle"
       :content-style="contentStyle"
     >
       <n-row gutter="10">
-        <n-col :span="24">
-          <n-form-item label="Warehouse Name" path="warehouse_name">
+        <n-col :span="8">
+          <n-form-item label="Name" path="warehouse_name">
             <n-input
               v-model:value="formValue.warehouse_name"
               size="small"
-              placeholder="Warehouse Name"
+              placeholder="Enter Name"
+            />
+          </n-form-item>
+        </n-col>
+        <n-col :span="8">
+          <n-form-item label="Phone" path="warehouse_phone">
+            <n-input
+              v-model:value="formValue.warehouse_phone"
+              size="small"
+              placeholder="Enter Phone"
+            />
+          </n-form-item>
+        </n-col>
+        <n-col :span="8">
+          <n-form-item label="Status" path="warehouse_status">
+            <n-select
+              v-model:value="formValue.warehouse_status"
+              size="small"
+              :options="[
+                { label: 'Active', value: 'active' },
+                { label: 'Disabled', value: 'disabled' }
+              ]"
+              placeholder="Search Status"
+              clearable
+              :remote="true"
+              :filterable="true"
+              :clear-filter-after-select="false"
+            />
+          </n-form-item>
+        </n-col>
+        <n-col :span="8">
+          <n-form-item label="Address" path="warehouse_address">
+            <n-input
+              v-model:value="formValue.warehouse_address"
+              size="small"
+              placeholder="Enter Address"
+            />
+          </n-form-item>
+        </n-col>
+        <n-col :span="8">
+          <n-form-item label="City" path="warehouse_city">
+            <n-input
+              v-model:value="formValue.warehouse_city"
+              size="small"
+              placeholder="Enter City"
+            />
+          </n-form-item>
+        </n-col>
+        <n-col :span="8">
+          <n-form-item label="State" path="warehouse_state">
+            <n-input
+              v-model:value="formValue.warehouse_state"
+              size="small"
+              placeholder="Enter State"
+            />
+          </n-form-item>
+        </n-col>
+        <n-col :span="8">
+          <n-form-item label="Country" path="warehouse_country">
+            <n-input
+              v-model:value="formValue.warehouse_country"
+              size="small"
+              placeholder="Enter Country"
             />
           </n-form-item>
         </n-col>

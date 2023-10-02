@@ -73,7 +73,7 @@ import { getRecordApi, updateRecordApi } from '@src/api/endpoints';
 import { isSuperAdminUser } from '@src/checks/isSuperAdmin';
 import { usefilterShop } from '@src/filters/shops';
 
-const { shops, shopLoading, getShopsOnFocus } = usefilterShop();
+const { shops, shopLoading, getShops, getShopsOnFocus } = usefilterShop();
 const formRef = ref<FormInst | null>(null);
 const formValue: any = ref({});
 
@@ -87,6 +87,7 @@ const props = defineProps({
 // fetch single supplier  using id
 getRecordApi(`/merchants/${props.id}`).then((res: any) => {
   formValue.value = res.result;
+  getShops();
 });
 
 const handleUpdateClick = (e: MouseEvent) => {

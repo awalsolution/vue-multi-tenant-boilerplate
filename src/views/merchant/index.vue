@@ -91,7 +91,7 @@
                 :bordered="false"
                 :type="item.merchant_status === 'disabled' ? 'error' : 'info'"
               >
-                {{ item.status }}
+                {{ item.merchant_status }}
               </n-tag>
             </td>
             <td class="td">{{ item.shop.shop_name }}</td>
