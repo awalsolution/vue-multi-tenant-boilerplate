@@ -26,6 +26,16 @@ const routes: RouteRecordRaw[] = [
           permissions: ['can view supplier list']
         },
         component: () => import('@src/views/supplier/index.vue')
+      },
+      {
+        path: 'update/:id',
+        name: `${routeName}_update`,
+        meta: {
+          title: 'Update Supplier',
+          permissions: ['can view supplier update'],
+          hidden: true
+        },
+        component: () => import('@src/components/supplier/EditSupplier.vue')
       }
     ]
   }

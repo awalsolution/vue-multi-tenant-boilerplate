@@ -26,6 +26,16 @@ const routes: RouteRecordRaw[] = [
           permissions: ['can view purchase list']
         },
         component: () => import('@src/views/purchase/index.vue')
+      },
+      {
+        path: 'update/:id',
+        name: `${routeName}_update`,
+        meta: {
+          title: 'Update Purchase',
+          permissions: ['can view purchase update'],
+          hidden: true
+        },
+        component: () => import('@src/components/purchase/EditPurchase.vue')
       }
     ]
   }

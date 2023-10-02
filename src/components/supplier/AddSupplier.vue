@@ -1,38 +1,164 @@
 <template>
   <n-form ref="formRef" :label-width="80" :model="formValue" :rules="rules" size="small">
-    <n-grid x-gap="10">
-      <n-form-item-gi :span="8" class="pt-6" label="Name" path="supplier_name">
-        <n-input v-model:value="formValue.supplier_name" placeholder="Enter Name" />
-      </n-form-item-gi>
-      <n-form-item-gi :span="8" class="pt-6" label="Phone" path="supplier_phone">
-        <n-input v-model:value="formValue.supplier_phone" placeholder="Enter Phone" />
-      </n-form-item-gi>
-      <n-form-item-gi :span="8" class="pt-6" label="Address" path="address">
-        <n-input v-model:value="formValue.address" placeholder="Enter Address" />
-      </n-form-item-gi>
-      <n-form-item-gi :span="8" label="City" path="city">
-        <n-input v-model:value="formValue.city" placeholder="Enter City" />
-      </n-form-item-gi>
-      <n-form-item-gi :span="8" style="padding-top: 4px" label="State" path="state">
-        <n-input v-model:value="formValue.state" placeholder="Enter State" />
-      </n-form-item-gi>
-      <n-form-item-gi :span="8" style="padding-top: 4px" label="Country" path="country">
-        <n-input v-model:value="formValue.country" placeholder="Enter Country" />
-      </n-form-item-gi>
-      <n-form-item-gi :span="12" label="Status" path="status">
-        <n-select
-          v-model:value="formValue.status"
-          size="small"
-          :options="[
-            { label: 'active', value: 'active' },
-            { label: 'disabled', value: 'disabled' }
-          ]"
-        />
-      </n-form-item-gi>
-    </n-grid>
-    <n-space justify="end">
+    <n-space vertical>
+      <n-card
+        title="Supplier Details"
+        :theme-overrides="cardStyle"
+        size="small"
+        :header-style="headerStyle"
+        :content-style="contentStyle"
+      >
+        <n-row gutter="10">
+          <n-col :span="6">
+            <n-form-item label="Supplier Name" path="supplier_name">
+              <n-input v-model="formValue.supplier_name" size="small" placeholder="Supplier Name" />
+            </n-form-item>
+          </n-col>
+          <n-col :span="6">
+            <n-form-item label="Supplier Company" path="supplier_company">
+              <n-input
+                v-model:value="formValue.supplier_company"
+                size="small"
+                placeholder="Supplier Company"
+              />
+            </n-form-item>
+          </n-col>
+          <n-col :span="6">
+            <n-form-item label="Supplier Phone" path="supplier_phone">
+              <n-input
+                v-model:value="formValue.supplier_phone"
+                size="small"
+                placeholder="Supplier Phone"
+              />
+            </n-form-item>
+          </n-col>
+          <n-col :span="6">
+            <n-form-item label="Supplier Email" path="supplier_email">
+              <n-input
+                v-model:value="formValue.supplier_email"
+                size="small"
+                placeholder="Supplier Email"
+              />
+            </n-form-item>
+          </n-col>
+          <n-col :span="6">
+            <n-form-item label="Supplier Country" path="supplier_country">
+              <n-input
+                v-model:value="formValue.supplier_country"
+                size="small"
+                placeholder="Supplier country"
+              />
+            </n-form-item>
+          </n-col>
+          <n-col :span="6">
+            <n-form-item label="Supplier State" path="supplier_state">
+              <n-input
+                v-model:value="formValue.supplier_state"
+                size="small"
+                placeholder="Supplier State"
+              />
+            </n-form-item>
+          </n-col>
+          <n-col :span="6">
+            <n-form-item label="Supplier City" path="supplier_city">
+              <n-input
+                v-model:value="formValue.supplier_city"
+                size="small"
+                placeholder="Supplier City"
+              />
+            </n-form-item>
+          </n-col>
+          <n-col :span="6">
+            <n-form-item label="Supplier Category" path="supplier_category">
+              <n-input
+                v-model:value="formValue.supplier_category"
+                size="small"
+                placeholder="Supplier Category"
+              />
+            </n-form-item>
+          </n-col>
+          <n-col :span="24">
+            <n-form-item label="Supplier Address" path="supplier_address">
+              <n-input
+                v-model:value="formValue.supplier_address"
+                size="small"
+                placeholder="Supplier Address"
+                type="textarea"
+                :autosize="{
+                  minRows: 3,
+                  maxRows: 5
+                }"
+              />
+            </n-form-item>
+          </n-col>
+        </n-row>
+      </n-card>
+      <n-card
+        title="Email Details"
+        :theme-overrides="cardStyle"
+        size="small"
+        :header-style="headerStyle"
+        :content-style="contentStyle"
+      >
+        <n-row gutter="10">
+          <n-col :span="4">
+            <n-form-item label="Ordered" path="order_email">
+              <n-switch v-model:value="formValue.order_email" />
+            </n-form-item>
+          </n-col>
+          <n-col :span="4">
+            <n-form-item label="Received" path="order_received">
+              <n-switch v-model:value="formValue.order_email" />
+            </n-form-item>
+          </n-col>
+          <n-col :span="4">
+            <n-form-item label="Quantity Check" path="order_quantity_check">
+              <n-switch v-model:value="formValue.order_email" />
+            </n-form-item>
+          </n-col>
+          <n-col :span="4">
+            <n-form-item label="Quality Check" path="order_quality_check">
+              <n-switch v-model:value="formValue.order_email" />
+            </n-form-item>
+          </n-col>
+          <n-col :span="4">
+            <n-form-item label="Put Away" path="order_putaway">
+              <n-switch v-model:value="formValue.order_email" />
+            </n-form-item>
+          </n-col>
+        </n-row>
+        <n-row gutter="10">
+          <n-col :span="12">
+            <n-form-item label="To" path="order_send_email_to">
+              <n-input
+                v-model:value="formValue.order_send_email_to"
+                size="small"
+                placeholder="To"
+              />
+            </n-form-item>
+          </n-col>
+          <n-col :span="12">
+            <n-form-item label="To" path="order_send_email_cc">
+              <n-input
+                v-model:value="formValue.order_send_email_cc"
+                size="small"
+                placeholder="CC"
+              />
+            </n-form-item>
+          </n-col>
+        </n-row>
+      </n-card>
+    </n-space>
+    <n-space justify="start" class="pt-3">
       <n-form-item :theme-overrides="{ labelHeightSmall: '0', feedbackHeightSmall: '0' }">
-        <n-button secondary type="info" @click="handleValidateClick"> Create </n-button>
+        <n-button strong secondary type="success" size="medium" @click="handleCreateClick">
+          Create
+        </n-button>
+      </n-form-item>
+      <n-form-item :theme-overrides="{ labelHeightSmall: '0', feedbackHeightSmall: '0' }">
+        <n-button strong secondary type="error" size="medium" @click="handleResetClick">
+          Reset
+        </n-button>
       </n-form-item>
     </n-space>
   </n-form>
@@ -41,21 +167,24 @@
 <script lang="ts" setup>
 import { ref } from 'vue';
 import { type FormInst } from 'naive-ui';
-import { createRecordApi } from '@src/api/endpoints';
+import { rules } from '@src/rules/supplier_rules';
+// import { createRecordApi } from '@src/api/endpoints';
 
 const formValue: any = ref({});
 const formRef = ref<FormInst | null>(null);
 
-const emits = defineEmits(['created']);
+// const emits = defineEmits(['created']);
 
-const handleValidateClick = (e: MouseEvent) => {
+const handleCreateClick = (e: MouseEvent) => {
   e.preventDefault();
   formRef.value?.validate((errors) => {
     if (!errors) {
-      createRecordApi('/supplier', formValue.value).then((res: any) => {
-        window['$message'].success(res.message);
-        emits('created', res.result);
-      });
+      console.log('submitted data =>', formValue.value);
+      window['$message'].success('Successfully click on Reset Button look data in console');
+      // createRecordApi('/supplier', formValue.value).then((res: any) => {
+      //   window['$message'].success(res.message);
+      //   emits('created', res.result);
+      // });
     } else {
       console.log(errors);
       window['$message'].error('Please fill out required fields');
@@ -63,43 +192,21 @@ const handleValidateClick = (e: MouseEvent) => {
   });
 };
 
-const rules = ref({
-  supplier_name: {
-    required: true,
-    message: 'Please Enter Name',
-    trigger: 'blur'
-  },
-  supplier_phone: {
-    required: true,
-    message: 'Please Enter Phone',
-    trigger: 'blur'
-  },
-  address: {
-    required: true,
-    message: 'Please Enter Address',
-    trigger: 'blur'
-  },
-  city: {
-    required: true,
-    message: 'Please Enter City',
-    trigger: 'blur'
-  },
-  state: {
-    required: true,
-    message: 'Please Enter State',
-    trigger: 'blur'
-  },
-  country: {
-    required: true,
-    message: 'Please Enter Country',
-    trigger: 'blur'
-  },
-  status: {
-    required: true,
-    message: 'Please select status',
-    trigger: 'blur'
-  }
-});
+const handleResetClick = (e: MouseEvent) => {
+  e.preventDefault();
+  window['$message'].success('Successfully click on Reset Button kindly write your logic');
+};
+
+// card style
+const cardStyle = {
+  paddingSmall: '0px',
+  borderRadius: '3px'
+};
+const headerStyle = {
+  borderBottom: '1px solid #efeff5',
+  padding: '8px 0px 8px 15px'
+};
+const contentStyle = { padding: '24px 15px 8px 15px' };
 </script>
 
 <style lang="scss" scoped></style>

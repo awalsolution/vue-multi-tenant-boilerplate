@@ -133,9 +133,9 @@
       </div>
     </template>
 
-    <n-modal style="width: 40%" v-model:show="showModal" preset="dialog">
+    <n-modal style="width: 80%" v-model:show="showModal" preset="dialog" :showIcon="false">
       <template #header>
-        <div>Create New Merchant</div>
+        <div>New Purchase Order</div>
       </template>
       <n-space :vertical="true">
         <add-merchant
@@ -146,26 +146,12 @@
         />
       </n-space>
     </n-modal>
-
-    <n-modal style="width: 40%" v-model:show="showEditModal" preset="dialog">
-      <template #header>
-        <div>Update supplier</div>
-      </template>
-      <n-space :vertical="true">
-        <edit-merchant
-          :id="selectedId"
-          @updated="
-            getList();
-            showEditModal = false;
-          "
-        />
-      </n-space>
-    </n-modal>
   </DataTableLayout>
 </template>
 
 <script lang="ts" setup>
 import { ref, onMounted, computed } from 'vue';
+import { useRouter } from 'vue-router';
 import { NIcon, NPagination, useDialog } from 'naive-ui';
 import { MoreOutlined, EditOutlined, DeleteOutlined, SearchOutlined } from '@vicons/antd';
 import { deleteRecordApi } from '@src/api/endpoints';
@@ -176,14 +162,15 @@ import { usefilterShop } from '@src/filters/shops';
 import { usePermission } from '@src/hooks/permission/usePermission';
 import { usePagination } from '@src/hooks/pagination/usePagination';
 import DataTableLayout from '@src/layouts/DataTableLayout/index.vue';
-import AddMerchant from '@src/components/merchant/AddMerchant.vue';
-import EditMerchant from '@src/components/merchant/EditMerchant.vue';
+import AddMerchant from '@src/components/purchase/AddPurchase.vue';
+// import EditMerchant from '@src/components/merchant/EditMerchant.vue';
 
 const isMobile = useMobile();
+const router = useRouter();
 const dialog = useDialog();
 const selectedOption: any = ref(null);
 const showModal = ref(false);
-const showEditModal = ref(false);
+// const showEditModal = ref(false);
 const selectedId = ref();
 const { hasPermission } = usePermission();
 const [loading, loadingDispatcher] = useLoading(false);
@@ -246,9 +233,7 @@ function deleteOperation() {
 
 const actionOperation = (item: any) => {
   if (selectedOption.value === 'edit') {
-    showEditModal.value = true;
-    selectedId.value = item.id;
-    // router.push(`/roles/${item.id}`);
+    router.push({ name: 'purchase_update', params: { id: item.id } });
   } else if (selectedOption.value === 'delete') {
     selectedId.value = item.id;
     confirmationDialog();
