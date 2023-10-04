@@ -61,8 +61,11 @@
           <tr>
             <th class="th">Name</th>
             <th class="th">Phone#</th>
+            <th class="th">Email</th>
             <th class="th text-center">Status</th>
             <th class="th">Shop Name</th>
+            <th class="th">To</th>
+            <th class="th">CC</th>
             <th class="th">Address</th>
             <th class="th">Created At</th>
             <th
@@ -89,6 +92,8 @@
               </n-tag>
             </td>
             <td class="td">{{ item.shop.shop_name }}</td>
+            <td class="td">{{ item.to }}</td>
+            <td class="td">{{ item.cc }}</td>
             <td class="td">
               {{ item.address + ' ' + item.city + ' ' + item?.state + ' ' + item.country }}
             </td>

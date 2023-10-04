@@ -112,27 +112,43 @@
         <n-row gutter="10">
           <n-col :span="4">
             <n-form-item label="Ordered" path="ordered">
-              <n-switch v-model:value="formValue.ordered" />
+              <n-switch v-model:value="formValue.ordered" :checked-value="1" :unchecked-value="0" />
             </n-form-item>
           </n-col>
           <n-col :span="4">
             <n-form-item label="Received" path="received">
-              <n-switch v-model:value="formValue.received" />
+              <n-switch
+                v-model:value="formValue.received"
+                :checked-value="1"
+                :unchecked-value="0"
+              />
             </n-form-item>
           </n-col>
           <n-col :span="4">
             <n-form-item label="Quantity Check" path="quantity_check">
-              <n-switch v-model:value="formValue.quantity_check" />
+              <n-switch
+                v-model:value="formValue.quantity_check"
+                :checked-value="1"
+                :unchecked-value="0"
+              />
             </n-form-item>
           </n-col>
           <n-col :span="4">
             <n-form-item label="Quality Check" path="quality_check">
-              <n-switch v-model:value="formValue.quality_check" />
+              <n-switch
+                v-model:value="formValue.quality_check"
+                :checked-value="1"
+                :unchecked-value="0"
+              />
             </n-form-item>
           </n-col>
           <n-col :span="4">
             <n-form-item label="Put Away" path="put_away">
-              <n-switch v-model:value="formValue.put_away" />
+              <n-switch
+                v-model:value="formValue.put_away"
+                :checked-value="1"
+                :unchecked-value="0"
+              />
             </n-form-item>
           </n-col>
         </n-row>
@@ -154,11 +170,6 @@
       <n-form-item :theme-overrides="{ labelHeightSmall: '0', feedbackHeightSmall: '0' }">
         <n-button strong secondary type="success" size="medium" @click="handleUpdateClick">
           Update
-        </n-button>
-      </n-form-item>
-      <n-form-item :theme-overrides="{ labelHeightSmall: '0', feedbackHeightSmall: '0' }">
-        <n-button strong secondary type="error" size="medium" @click="handleResetClick">
-          Reset
         </n-button>
       </n-form-item>
     </n-space>
@@ -203,11 +214,6 @@ const handleUpdateClick = (e: MouseEvent) => {
       window['$message'].error('Invalid');
     }
   });
-};
-
-const handleResetClick = (e: MouseEvent) => {
-  e.preventDefault();
-  formValue.value = {};
 };
 
 // card style

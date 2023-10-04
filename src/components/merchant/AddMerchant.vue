@@ -57,11 +57,6 @@
           Create
         </n-button>
       </n-form-item>
-      <n-form-item :theme-overrides="{ labelHeightSmall: '0', feedbackHeightSmall: '0' }">
-        <n-button strong secondary type="error" size="medium" @click="handleResetClick">
-          Reset
-        </n-button>
-      </n-form-item>
     </n-space>
   </n-form>
 </template>
@@ -92,11 +87,6 @@ const handleCreateClick = (e: MouseEvent) => {
       window['$message'].error('Please fill out required fields');
     }
   });
-};
-
-const handleResetClick = (e: MouseEvent) => {
-  e.preventDefault();
-  window['$message'].success('Successfully click on Reset Button kindly write your logic');
 };
 
 // card style
