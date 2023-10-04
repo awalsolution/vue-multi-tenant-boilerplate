@@ -62,20 +62,6 @@
                   />
                 </n-form-item>
               </n-col>
-              <n-col :span="4">
-                <n-form-item label="Order Type" path="order_type">
-                  <n-radio-group v-model:value="formValue.regular" name="regular">
-                    <n-radio-button :checked="true"> Regular </n-radio-button>
-                  </n-radio-group>
-                </n-form-item>
-              </n-col>
-              <n-col :span="4">
-                <n-form-item path="order_type">
-                  <n-radio-group v-model:value="formValue.pre_order" name="pre_order">
-                    <n-radio-button :checked="false"> Pre Order </n-radio-button>
-                  </n-radio-group>
-                </n-form-item>
-              </n-col>
               <n-col :span="8">
                 <n-form-item label="PO Type" path="purchase_order_type">
                   <n-select
@@ -113,7 +99,7 @@
             :header-style="headerStyle"
             :content-style="contentStyle"
           >
-            <n-form-item :span="12" label="User Role" path="merchant_id">
+            <n-form-item :span="12" label="Merchant" path="merchant_id">
               <n-select
                 :filterable="true"
                 multiple

@@ -15,15 +15,6 @@
             </n-form-item>
           </n-col>
           <n-col :span="6">
-            <n-form-item label="Company" path="supplier_company">
-              <n-input
-                v-model:value="formValue.supplier_company"
-                size="small"
-                placeholder="Enter Company"
-              />
-            </n-form-item>
-          </n-col>
-          <n-col :span="6">
             <n-form-item label="Phone" path="supplier_phone">
               <n-input
                 v-model:value="formValue.supplier_phone"
@@ -68,15 +59,6 @@
               />
             </n-form-item>
           </n-col>
-          <n-col :span="6">
-            <n-form-item label="Category" path="supplier_category">
-              <n-input
-                v-model:value="formValue.supplier_category"
-                size="small"
-                placeholder="Enter Category"
-              />
-            </n-form-item>
-          </n-col>
           <n-col :span="24">
             <n-form-item label="Address" path="supplier_address">
               <n-input
@@ -102,48 +84,40 @@
       >
         <n-row gutter="10">
           <n-col :span="4">
-            <n-form-item label="Ordered" path="order_email">
-              <n-switch v-model:value="formValue.order_email" />
+            <n-form-item label="Ordered" path="ordered">
+              <n-switch v-model:value="formValue.ordered" />
             </n-form-item>
           </n-col>
           <n-col :span="4">
-            <n-form-item label="Received" path="order_received">
-              <n-switch v-model:value="formValue.order_email" />
+            <n-form-item label="Received" path="received">
+              <n-switch v-model:value="formValue.received" />
             </n-form-item>
           </n-col>
           <n-col :span="4">
-            <n-form-item label="Quantity Check" path="order_quantity_check">
-              <n-switch v-model:value="formValue.order_email" />
+            <n-form-item label="Quantity Check" path="quantity_check">
+              <n-switch v-model:value="formValue.quantity_check" />
             </n-form-item>
           </n-col>
           <n-col :span="4">
-            <n-form-item label="Quality Check" path="order_quality_check">
-              <n-switch v-model:value="formValue.order_email" />
+            <n-form-item label="Quality Check" path="quality_check">
+              <n-switch v-model:value="formValue.quality_check" />
             </n-form-item>
           </n-col>
           <n-col :span="4">
-            <n-form-item label="Put Away" path="order_putaway">
-              <n-switch v-model:value="formValue.order_email" />
+            <n-form-item label="Put Away" path="put_away">
+              <n-switch v-model:value="formValue.put_away" />
             </n-form-item>
           </n-col>
         </n-row>
         <n-row gutter="10">
           <n-col :span="12">
-            <n-form-item label="To" path="order_send_email_to">
-              <n-input
-                v-model:value="formValue.order_send_email_to"
-                size="small"
-                placeholder="To"
-              />
+            <n-form-item label="To" path="to">
+              <n-input v-model:value="formValue.to" size="small" placeholder="To" />
             </n-form-item>
           </n-col>
           <n-col :span="12">
-            <n-form-item label="To" path="order_send_email_cc">
-              <n-input
-                v-model:value="formValue.order_send_email_cc"
-                size="small"
-                placeholder="CC"
-              />
+            <n-form-item label="To" path="cc">
+              <n-input v-model:value="formValue.cc" size="small" placeholder="CC" />
             </n-form-item>
           </n-col>
         </n-row>
