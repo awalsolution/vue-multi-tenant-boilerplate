@@ -87,11 +87,8 @@
           <tr v-else v-for="item in list" :key="item.id" class="body_tr">
             <td class="td">{{ item.merchant_name }}</td>
             <td class="text-center td">
-              <n-tag
-                :bordered="false"
-                :type="item.merchant_status === 'disabled' ? 'error' : 'info'"
-              >
-                {{ item.merchant_status }}
+              <n-tag :bordered="false" :type="item.status === 'disabled' ? 'error' : 'info'">
+                {{ item.status }}
               </n-tag>
             </td>
             <td class="td">{{ item.shop.shop_name }}</td>

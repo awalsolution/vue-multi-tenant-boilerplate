@@ -82,6 +82,7 @@
           <tr v-else v-for="item in list" :key="item.id" class="body_tr">
             <td class="td">{{ item.supplier_name }}</td>
             <td class="td">{{ item.supplier_phone }}</td>
+            <td class="td">{{ item.supplier_email }}</td>
             <td class="text-center td">
               <n-tag :bordered="false" :type="item.status === 'disabled' ? 'error' : 'info'">
                 {{ item.status }}

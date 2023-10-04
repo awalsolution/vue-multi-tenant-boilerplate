@@ -61,24 +61,13 @@
             <td class="td">{{ item.warehouse_name }}</td>
             <td class="td">{{ item.warehouse_phone }}</td>
             <td class="text-center td">
-              <n-tag
-                :bordered="false"
-                :type="item.warehouse_status === 'disabled' ? 'error' : 'info'"
-              >
-                {{ item.warehouse_status }}
+              <n-tag :bordered="false" :type="item.status === 'disabled' ? 'error' : 'info'">
+                {{ item.status }}
               </n-tag>
             </td>
             <td class="td">{{ item.shop.shop_name }}</td>
             <td class="td">
-              {{
-                item.warehouse_address +
-                ' ' +
-                item.warehouse_city +
-                ' ' +
-                item?.warehouse_state +
-                ' ' +
-                item.warehouse_country
-              }}
+              {{ item.address + ' ' + item.city + ' ' + item?.state + ' ' + item.country }}
             </td>
             <td class="td">{{ item.created_at }}</td>
             <td
