@@ -11,7 +11,11 @@
         <n-row gutter="10">
           <n-col :span="6">
             <n-form-item label="Name" path="supplier_name">
-              <n-input v-model="formValue.supplier_name" size="small" placeholder="Enter Name" />
+              <n-input
+                v-model:value="formValue.supplier_name"
+                size="small"
+                placeholder="Enter Name"
+              />
             </n-form-item>
           </n-col>
           <n-col :span="6">
@@ -169,7 +173,7 @@ import { getRecordApi, updateRecordApi } from '@src/api/endpoints';
 import { isSuperAdminUser } from '@src/checks/isSuperAdmin';
 import { usefilterShop } from '@src/filters/shops';
 
-const { shops, shopLoading, getShopsOnFocus } = usefilterShop();
+const { shops, shopLoading, getShops, getShopsOnFocus } = usefilterShop();
 const formRef = ref<FormInst | null>(null);
 const formValue: any = ref({});
 
@@ -183,13 +187,14 @@ const props = defineProps({
 // fetch single supplier  using id
 getRecordApi(`/supplier/${props.id}`).then((res: any) => {
   formValue.value = res.result;
+  getShops();
 });
 
 const handleUpdateClick = (e: MouseEvent) => {
   e.preventDefault();
   formRef.value?.validate((errors) => {
     if (!errors) {
-      updateRecordApi(`/supplier/${formValue.value.id}`, formValue.value).then((res: any) => {
+      updateRecordApi('/supplier/' + formValue.value.id, formValue.value).then((res: any) => {
         window['$message'].success(res.message);
         emits('updated', res.result);
       });
@@ -202,7 +207,7 @@ const handleUpdateClick = (e: MouseEvent) => {
 
 const handleResetClick = (e: MouseEvent) => {
   e.preventDefault();
-  window['$message'].success('Successfully click on Reset Button kindly write your logic');
+  formValue.value = {};
 };
 
 // card style

@@ -146,6 +146,21 @@
         />
       </n-space>
     </n-modal>
+
+    <n-modal style="width: 80%" v-model:show="showEditModal" preset="dialog" :showIcon="false">
+      <template #header>
+        <div>Update Supplier</div>
+      </template>
+      <n-space :vertical="true">
+        <edit-supplier
+          :id="selectedId"
+          @updated="
+            getList();
+            showEditModal = false;
+          "
+        />
+      </n-space>
+    </n-modal>
   </DataTableLayout>
 </template>
 
@@ -161,7 +176,7 @@ import { usePermission } from '@src/hooks/permission/usePermission';
 import { usePagination } from '@src/hooks/pagination/usePagination';
 import DataTableLayout from '@src/layouts/DataTableLayout/index.vue';
 import AddSupplier from '@src/components/supplier/AddSupplier.vue';
-// import EditSupplier from '@src/components/supplier/EditSupplier.vue';
+import EditSupplier from '@src/components/supplier/EditSupplier.vue';
 
 const isMobile = useMobile();
 const dialog = useDialog();

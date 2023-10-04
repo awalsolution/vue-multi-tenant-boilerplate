@@ -11,7 +11,11 @@
         <n-row gutter="10">
           <n-col :span="6">
             <n-form-item label="Name" path="supplier_name">
-              <n-input v-model="formValue.supplier_name" size="small" placeholder="Enter Name" />
+              <n-input
+                v-model:value="formValue.supplier_name"
+                size="small"
+                placeholder="Enter Name"
+              />
             </n-form-item>
           </n-col>
           <n-col :span="6">
@@ -165,7 +169,7 @@
 import { ref } from 'vue';
 import { type FormInst } from 'naive-ui';
 import { rules } from '@src/rules/supplier_rules';
-// import { createRecordApi } from '@src/api/endpoints';
+import { createRecordApi } from '@src/api/endpoints';
 import { isSuperAdminUser } from '@src/checks/isSuperAdmin';
 import { usefilterShop } from '@src/filters/shops';
 
@@ -173,18 +177,18 @@ const { shops, shopLoading, getShopsOnFocus } = usefilterShop();
 const formValue: any = ref({});
 const formRef = ref<FormInst | null>(null);
 
-// const emits = defineEmits(['created']);
+const emits = defineEmits(['created']);
 
 const handleCreateClick = (e: MouseEvent) => {
   e.preventDefault();
   formRef.value?.validate((errors) => {
     if (!errors) {
       console.log('submitted data =>', formValue.value);
-      window['$message'].success('Successfully click on Reset Button look data in console');
-      // createRecordApi('/supplier', formValue.value).then((res: any) => {
-      //   window['$message'].success(res.message);
-      //   emits('created', res.result);
-      // });
+      // window['$message'].success('Successfully click on Reset Button look data in console');
+      createRecordApi('/supplier', formValue.value).then((res: any) => {
+        window['$message'].success(res.message);
+        emits('created', res.result);
+      });
     } else {
       console.log(errors);
       window['$message'].error('Please fill out required fields');
@@ -194,7 +198,7 @@ const handleCreateClick = (e: MouseEvent) => {
 
 const handleResetClick = (e: MouseEvent) => {
   e.preventDefault();
-  window['$message'].success('Successfully click on Reset Button kindly write your logic');
+  formValue.value = {};
 };
 
 // card style

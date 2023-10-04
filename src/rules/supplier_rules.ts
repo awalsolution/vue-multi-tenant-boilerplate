@@ -16,6 +16,11 @@ export const rules = ref({
     message: 'Please Enter Email',
     trigger: 'blur'
   },
+  status: {
+    required: true,
+    message: 'Please Select status',
+    trigger: 'blur'
+  },
   address: {
     required: true,
     message: 'Please Enter Address',
