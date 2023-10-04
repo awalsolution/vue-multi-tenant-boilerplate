@@ -14,9 +14,9 @@
           </n-form-item>
         </n-col>
         <n-col :span="12">
-          <n-form-item label="Merchant Status" path="merchant_status">
+          <n-form-item label="Merchant Status" path="status">
             <n-select
-              v-model:value="formValue.merchant_status"
+              v-model:value="formValue.status"
               size="small"
               :options="[
                 { label: 'active', value: 'active' },

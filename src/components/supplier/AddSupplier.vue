@@ -33,30 +33,35 @@
             </n-form-item>
           </n-col>
           <n-col :span="6">
-            <n-form-item label="Country" path="supplier_country">
-              <n-input
-                v-model:value="formValue.supplier_country"
+            <n-form-item label="Status" path="status">
+              <n-select
+                v-model:value="formValue.status"
                 size="small"
-                placeholder="Enter Country"
+                :options="[
+                  { label: 'active', value: 'active' },
+                  { label: 'disabled', value: 'disabled' }
+                ]"
+                placeholder="Search Status"
+                clearable
+                :remote="true"
+                :filterable="true"
+                :clear-filter-after-select="false"
               />
             </n-form-item>
           </n-col>
           <n-col :span="6">
-            <n-form-item label="State" path="supplier_state">
-              <n-input
-                v-model:value="formValue.supplier_state"
-                size="small"
-                placeholder="Enter State"
-              />
+            <n-form-item label="Country" path="country">
+              <n-input v-model:value="formValue.country" size="small" placeholder="Enter Country" />
             </n-form-item>
           </n-col>
           <n-col :span="6">
-            <n-form-item label="City" path="supplier_city">
-              <n-input
-                v-model:value="formValue.supplier_city"
-                size="small"
-                placeholder="Enter City"
-              />
+            <n-form-item label="State" path="state">
+              <n-input v-model:value="formValue.state" size="small" placeholder="Enter State" />
+            </n-form-item>
+          </n-col>
+          <n-col :span="6">
+            <n-form-item label="City" path="city">
+              <n-input v-model:value="formValue.city" size="small" placeholder="Enter City" />
             </n-form-item>
           </n-col>
           <n-col :span="6" v-if="isSuperAdminUser()">
@@ -78,9 +83,9 @@
             </n-form-item>
           </n-col>
           <n-col :span="24">
-            <n-form-item label="Address" path="supplier_address">
+            <n-form-item label="Address" path="address">
               <n-input
-                v-model:value="formValue.supplier_address"
+                v-model:value="formValue.address"
                 size="small"
                 placeholder="Enter Address"
                 type="textarea"

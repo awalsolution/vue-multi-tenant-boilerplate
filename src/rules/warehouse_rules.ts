@@ -1,19 +1,19 @@
 import { ref } from 'vue';
 
 export const rules = ref({
-  supplier_name: {
+  warehouse_name: {
     required: true,
     message: 'Please Enter Name',
     trigger: 'blur'
   },
-  supplier_phone: {
+  warehouse_phone: {
     required: true,
     message: 'Please Enter Phone',
     trigger: 'blur'
   },
-  supplier_email: {
+  status: {
     required: true,
-    message: 'Please Enter Email',
+    message: 'Please Select Status',
     trigger: 'blur'
   },
   address: {

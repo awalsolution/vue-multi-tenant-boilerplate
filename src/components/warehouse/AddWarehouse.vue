@@ -27,9 +27,9 @@
           </n-form-item>
         </n-col>
         <n-col :span="8">
-          <n-form-item label="Status" path="warehouse_status">
+          <n-form-item label="Status" path="status">
             <n-select
-              v-model:value="formValue.warehouse_status"
+              v-model:value="formValue.status"
               size="small"
               :options="[
                 { label: 'Active', value: 'active' },
@@ -44,39 +44,23 @@
           </n-form-item>
         </n-col>
         <n-col :span="8">
-          <n-form-item label="Address" path="warehouse_address">
-            <n-input
-              v-model:value="formValue.warehouse_address"
-              size="small"
-              placeholder="Enter Address"
-            />
+          <n-form-item label="Address" path="address">
+            <n-input v-model:value="formValue.address" size="small" placeholder="Enter Address" />
           </n-form-item>
         </n-col>
         <n-col :span="8">
-          <n-form-item label="City" path="warehouse_city">
-            <n-input
-              v-model:value="formValue.warehouse_city"
-              size="small"
-              placeholder="Enter City"
-            />
+          <n-form-item label="City" path="city">
+            <n-input v-model:value="formValue.city" size="small" placeholder="Enter City" />
           </n-form-item>
         </n-col>
         <n-col :span="8">
-          <n-form-item label="State" path="warehouse_state">
-            <n-input
-              v-model:value="formValue.warehouse_state"
-              size="small"
-              placeholder="Enter State"
-            />
+          <n-form-item label="State" path="state">
+            <n-input v-model:value="formValue.state" size="small" placeholder="Enter State" />
           </n-form-item>
         </n-col>
         <n-col :span="8">
-          <n-form-item label="Country" path="warehouse_country">
-            <n-input
-              v-model:value="formValue.warehouse_country"
-              size="small"
-              placeholder="Enter Country"
-            />
+          <n-form-item label="Country" path="country">
+            <n-input v-model:value="formValue.country" size="small" placeholder="Enter Country" />
           </n-form-item>
         </n-col>
         <n-col :span="8" v-if="isSuperAdminUser()">
@@ -119,6 +103,7 @@ import { ref } from 'vue';
 import { type FormInst } from 'naive-ui';
 import { createRecordApi } from '@src/api/endpoints';
 import { isSuperAdminUser } from '@src/checks/isSuperAdmin';
+import { rules } from '@src/rules/warehouse_rules';
 import { usefilterShop } from '@src/filters/shops';
 
 const { shops, shopLoading, getShopsOnFocus } = usefilterShop();
@@ -157,14 +142,6 @@ const headerStyle = {
   padding: '8px 0px 8px 15px'
 };
 const contentStyle = { padding: '24px 15px 8px 15px' };
-
-const rules = ref({
-  warehouse_name: {
-    required: true,
-    message: 'Please Enter Name',
-    trigger: 'blur'
-  }
-});
 </script>
 
 <style lang="scss" scoped></style>
