@@ -66,9 +66,14 @@
       <table class="table">
         <thead class="head">
           <tr>
-            <th class="th">Name</th>
+            <th class="th">Expected Date</th>
             <th class="th text-center">Status</th>
             <th class="th">Shop Name</th>
+            <th class="th">Merchant Name</th>
+            <th class="th">Supplier Name</th>
+            <th class="th">Warehouse Name</th>
+            <th class="th">Create By</th>
+            <th class="th">Order Type</th>
             <th class="th">Created At</th>
             <th
               class="sticky_el right-0 z-20"
@@ -85,13 +90,20 @@
             <td colspan="9" class="data_placeholder">Record Not Exist</td>
           </tr>
           <tr v-else v-for="item in list" :key="item.id" class="body_tr">
-            <td class="td">{{ item.merchant_name }}</td>
-            <td class="text-center td">
+            <td class="td">{{ item.expected_date }}</td>
+            <td class="td text-center">
               <n-tag :bordered="false" :type="item.status === 'disabled' ? 'error' : 'info'">
                 {{ item.status }}
               </n-tag>
             </td>
             <td class="td">{{ item.shop.shop_name }}</td>
+            <td class="td">{{ item.merchant.merchant_name }}</td>
+            <td class="td">{{ item.supplier.supplier_name }}</td>
+            <td class="td">{{ item.warehouse.warehouse_name }}</td>
+            <td class="td">
+              {{ item.user.profile.first_name + ' ' + item.user.profile.last_name }}
+            </td>
+            <td class="td">{{ item.order_type }}</td>
             <td class="td">{{ item.created_at }}</td>
             <td
               class="sticky_el right-0 z-10"
@@ -178,7 +190,7 @@ const { shops, shopLoading, findShop, getShopsOnFocus } = usefilterShop();
 
 // fetch all records
 const { getList, list, page, pageSizes, itemCount, pageSize, searchParams }: any =
-  usePagination('/merchants');
+  usePagination('/purchase');
 
 onMounted(() => {
   getList();
@@ -215,7 +227,7 @@ function confirmationDialog() {
 
 function deleteOperation() {
   loadingDispatcher.start();
-  deleteRecordApi(`/merchants/${selectedId.value}`)
+  deleteRecordApi('/purchase/' + selectedId.value)
     .then((res: any) => {
       window['$message'].success(res.message);
       getList();

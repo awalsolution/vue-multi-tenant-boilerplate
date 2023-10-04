@@ -97,8 +97,8 @@
 import { ref } from 'vue';
 import { type FormInst } from 'naive-ui';
 import { createRecordApi } from '@src/api/endpoints';
-import { isSuperAdminUser } from '@src/checks/isSuperAdmin';
 import { rules } from '@src/rules/warehouse_rules';
+import { isSuperAdminUser } from '@src/checks/isSuperAdmin';
 import { usefilterShop } from '@src/filters/shops';
 
 const { shops, shopLoading, getShopsOnFocus } = usefilterShop();

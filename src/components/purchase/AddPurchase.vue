@@ -63,9 +63,9 @@
                 </n-form-item>
               </n-col>
               <n-col :span="8">
-                <n-form-item label="PO Type" path="purchase_order_type">
+                <n-form-item label="PO Type" path="order_type">
                   <n-select
-                    v-model:value="formValue.purchase_order_type"
+                    v-model:value="formValue.order_type"
                     size="small"
                     :options="[
                       { label: 'Regular', value: 'regular' },
@@ -79,12 +79,21 @@
                   />
                 </n-form-item>
               </n-col>
-              <n-col :span="8">
-                <n-form-item label="Pre Order Text" path="pre_order_text">
-                  <n-input
-                    v-model:value="formValue.pre_order_text"
-                    size="small"
-                    placeholder="Pre Order Text"
+              <n-col :span="8" v-if="isSuperAdminUser()">
+                <n-form-item :span="12" label="Shop Name" path="shop_id">
+                  <n-select
+                    :filterable="true"
+                    :tag="false"
+                    placeholder="Search Shop"
+                    v-model:value="formValue.shop_id"
+                    clearable
+                    @focus="getShopsOnFocus"
+                    :remote="true"
+                    :clear-filter-after-select="false"
+                    label-field="shop_name"
+                    value-field="id"
+                    :loading="shopLoading"
+                    :options="shops"
                   />
                 </n-form-item>
               </n-col>
@@ -102,7 +111,6 @@
             <n-form-item :span="12" label="Merchant" path="merchant_id">
               <n-select
                 :filterable="true"
-                multiple
                 :tag="false"
                 placeholder="Select Merchant"
                 v-model:value="formValue.merchant_id"
@@ -143,8 +151,9 @@
           :header-style="headerStyle"
           :content-style="contentStyle"
         >
-          <n-form-item label="Notes">
+          <n-form-item label="Notes" path="notes">
             <n-input
+              v-model:value="formValue.notes"
               size="small"
               type="textarea"
               :autosize="{
@@ -169,30 +178,32 @@
 <script lang="ts" setup>
 import { ref } from 'vue';
 import { type FormInst } from 'naive-ui';
-// import { createRecordApi } from '@src/api/endpoints';
+import { createRecordApi } from '@src/api/endpoints';
 import { rules } from '@src/rules/purchase_rules';
 import { usefilterSupplier } from '@src/filters/supplier';
 import { usefilterMerchant } from '@src/filters/merchants';
 import { usefilterWarehouse } from '@src/filters/warehouse';
+import { isSuperAdminUser } from '@src/checks/isSuperAdmin';
+import { usefilterShop } from '@src/filters/shops';
 
+const { shops, shopLoading, getShopsOnFocus } = usefilterShop();
 const { supplier, supplierLoading, getSupplierOnFocus } = usefilterSupplier();
 const { merchants, merchantLoading, getMerchantsOnFocus } = usefilterMerchant();
 const { warehouse, warehouseLoading, getWarehouseOnFocus } = usefilterWarehouse();
 const formValue: any = ref({});
 const formRef = ref<FormInst | null>(null);
 
-// const emits = defineEmits(['created']);
+const emits = defineEmits(['created']);
 
 const handleCreateClick = (e: MouseEvent) => {
   e.preventDefault();
   formRef.value?.validate((errors) => {
     if (!errors) {
       console.log('submitted data =>', formValue.value);
-      window['$message'].success('Successfully click on Reset Button look data in console');
-      // createRecordApi('/merchants', formValue.value).then((res: any) => {
-      //   window['$message'].success(res.message);
-      //   emits('created', res.result);
-      // });
+      createRecordApi('/purchase', formValue.value).then((res: any) => {
+        window['$message'].success(res.message);
+        emits('created', res.result);
+      });
     } else {
       console.log(errors);
       window['$message'].error('Please fill out required fields');

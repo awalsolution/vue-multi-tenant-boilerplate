@@ -11,6 +11,11 @@ export const rules = ref({
     message: 'Please select status',
     trigger: 'blur'
   },
+  order_type: {
+    required: true,
+    message: 'Please select Order Type',
+    trigger: 'blur'
+  },
   supplier_id: {
     type: 'number',
     required: true,
@@ -27,6 +32,11 @@ export const rules = ref({
     type: 'number',
     required: true,
     message: 'Please Select Warehouse',
+    trigger: 'blur'
+  },
+  notes: {
+    required: false,
+    message: 'Please Enter notes',
     trigger: 'blur'
   }
 });
