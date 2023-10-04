@@ -79,6 +79,24 @@
             />
           </n-form-item>
         </n-col>
+        <n-col :span="8" v-if="isSuperAdminUser()">
+          <n-form-item :span="12" label="Shop Name" path="shop_id">
+            <n-select
+              :filterable="true"
+              :tag="false"
+              placeholder="Search Shop"
+              v-model:value="formValue.shop_id"
+              clearable
+              @focus="getShopsOnFocus"
+              :remote="true"
+              :clear-filter-after-select="false"
+              label-field="shop_name"
+              value-field="id"
+              :loading="shopLoading"
+              :options="shops"
+            />
+          </n-form-item>
+        </n-col>
       </n-row>
     </n-card>
     <n-space justify="start" class="pt-3">
@@ -100,7 +118,10 @@
 import { ref } from 'vue';
 import { type FormInst } from 'naive-ui';
 import { getRecordApi, updateRecordApi } from '@src/api/endpoints';
+import { isSuperAdminUser } from '@src/checks/isSuperAdmin';
+import { usefilterShop } from '@src/filters/shops';
 
+const { shops, shopLoading, getShops, getShopsOnFocus } = usefilterShop();
 const formRef = ref<FormInst | null>(null);
 const formValue: any = ref({});
 
@@ -114,6 +135,7 @@ const props = defineProps({
 // fetch single warehouse  using id
 getRecordApi('/warehouse/' + props.id).then((res: any) => {
   formValue.value = res.result;
+  getShops();
 });
 
 const handleUpdateClick = (e: MouseEvent) => {

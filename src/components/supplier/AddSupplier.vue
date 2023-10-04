@@ -59,6 +59,24 @@
               />
             </n-form-item>
           </n-col>
+          <n-col :span="6" v-if="isSuperAdminUser()">
+            <n-form-item :span="12" label="Shop Name" path="shop_id">
+              <n-select
+                :filterable="true"
+                :tag="false"
+                placeholder="Search Shop"
+                v-model:value="formValue.shop_id"
+                clearable
+                @focus="getShopsOnFocus"
+                :remote="true"
+                :clear-filter-after-select="false"
+                label-field="shop_name"
+                value-field="id"
+                :loading="shopLoading"
+                :options="shops"
+              />
+            </n-form-item>
+          </n-col>
           <n-col :span="24">
             <n-form-item label="Address" path="supplier_address">
               <n-input
@@ -143,7 +161,10 @@ import { ref } from 'vue';
 import { type FormInst } from 'naive-ui';
 import { rules } from '@src/rules/supplier_rules';
 // import { createRecordApi } from '@src/api/endpoints';
+import { isSuperAdminUser } from '@src/checks/isSuperAdmin';
+import { usefilterShop } from '@src/filters/shops';
 
+const { shops, shopLoading, getShopsOnFocus } = usefilterShop();
 const formValue: any = ref({});
 const formRef = ref<FormInst | null>(null);
 
