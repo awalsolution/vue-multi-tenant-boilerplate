@@ -72,7 +72,8 @@ import {
   NH1,
   NH2,
   NH3,
-  NFormItemGi
+  NFormItemGi,
+  NRadioButton
 } from 'naive-ui';
 
 // https://www.naiveui.com/en-US/os-theme/docs/import-on-demand
@@ -149,7 +150,8 @@ const naive = create({
     NSpin,
     NTimePicker,
     NBackTop,
-    NSkeleton
+    NSkeleton,
+    NRadioButton
   ]
 });
 

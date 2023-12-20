@@ -1,5 +1,5 @@
 <template>
-  <DataTableLayout :loading="loading" v-permission="{ action: ['can view categories'] }">
+  <DataTableLayout :loading="loading">
     <template #tableHeader>
       <div class="flex flex-col items-center space-y-2 sm:flex-row sm:justify-between sm:space-y-0">
         <div class="flex flex-col items-center space-y-2 sm:flex-row sm:space-x-3 sm:space-y-0">
@@ -39,11 +39,9 @@
       <table class="table">
         <thead class="head">
           <tr>
-            <th class="sticky_el left-0 z-20">ID</th>
             <th class="th">Name</th>
             <th class="th">Image</th>
             <th class="th">Created At</th>
-            <th class="th">Updated At</th>
             <th
               class="sticky_el right-0 z-20"
               v-permission="{
@@ -59,13 +57,11 @@
             <td colspan="6" class="data_placeholder">Record Not Exist</td>
           </tr>
           <tr v-else v-for="item in list" :key="item.id" class="body_tr">
-            <td class="sticky_el left-0 z-10">{{ item.id }}</td>
             <td class="td">{{ item.name }}</td>
-            <td class="text-center td pt-2">
-              <n-avatar :size="50" :src="`${imgUrl}${item.image}`" />
+            <td class="td text-center pt-2">
+              <n-avatar size="large" :src="`${imgUrl}${item.image}`" />
             </td>
             <td class="td">{{ item.created_at }}</td>
-            <td class="td">{{ item.updated_at }}</td>
             <td
               class="sticky_el right-0 z-10"
               v-permission="{
@@ -200,17 +196,17 @@ function confirmationDialog() {
 }
 
 function deleteOperation() {
-  loadingDispatcher.loading();
+  loadingDispatcher.start();
   deleteRecordApi(`/categories/${selectedId.value}`)
     .then((res: any) => {
       window['$message'].success(res.message);
       getList();
-      loadingDispatcher.loaded();
+      loadingDispatcher.end();
       dialog.destroyAll;
     })
     .catch((res: any) => {
       window['$message'].error(res.message);
-      loadingDispatcher.loaded();
+      loadingDispatcher.end();
       dialog.destroyAll;
     });
   selectedId.value = null;
@@ -246,7 +242,7 @@ onMounted(() => {
   @apply sticky top-0 text-xs text-gray-700 bg-gray-50 dark:bg-gray-700 dark:text-gray-400 z-20;
 }
 .th {
-  @apply px-6 py-3 border-r border-b border-gray-200 dark:border-gray-800 text-center whitespace-nowrap;
+  @apply px-3 py-3 border-r border-b border-gray-200 dark:border-gray-800  whitespace-nowrap;
 }
 .body_tr {
   @apply hover:bg-gray-50 dark:hover:bg-gray-600;
