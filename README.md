@@ -1,4 +1,4 @@
-# InSync Ecommerce CRM
+# Abendsoft Admin CRM
 
 ## Environments
 
@@ -17,34 +17,28 @@
 
 ```sh
 
-git clone https://github.com/abendsoft/insync-crm.git
-cd insync-crm
-npm install
+git clone https://github.com/abendsoft/abendsoft-crm.git
+cd  abendsoft-crm
+yarn
 ```
 
 ## Start development
 
 ```sh
-npm run dev
+yarn dev
 ```
 
 ## Build for production
 
 ```sh
-npm run build
-```
-
-## Lint with
-
-```sh
-npm run lint
+yarn build
 ```
 
 ## Resources
 
 ### Languages & tools
 
-- [npm](https://www.npmjs.com/)
+- [yarn](https://yarnpkg.com/)
 
 - [Typescript](https://www.typescriptlang.org/)
 
@@ -65,5 +59,3 @@ npm run lint
 - [git](https://git-scm.com/)
 
 - [Vite](https://vitejs.dev/)
-
-- [ESLint](https://eslint.org/)
