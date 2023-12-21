@@ -118,8 +118,6 @@
             <th class="th">Email</th>
             <th class="th">Role</th>
             <th class="th">Phone#</th>
-            <th class="th">Shop</th>
-            <th class="th">Shop Phone#</th>
             <th class="th">Status</th>
             <th class="th">Address</th>
             <th class="th">Created At</th>
@@ -139,10 +137,10 @@
           </tr>
           <tr v-else v-for="item in list" :key="item.id" class="body_tr">
             <td class="td">
-              {{ item?.profile?.first_name + ' ' + item?.profile?.last_name }}
+              {{ item?.emp_profile?.first_name + ' ' + item?.emp_profile?.last_name }}
             </td>
             <td class="td text-center pt-2">
-              <n-avatar size="large" :src="`${imgUrl}${item?.profile.profile_picture}`" />
+              <n-avatar size="large" :src="`${imgUrl}${item?.emp_profile.profile_picture}`" />
             </td>
             <td class="td">{{ item?.email }}</td>
             <td class="td">
@@ -152,9 +150,7 @@
                 </n-tag>
               </n-space>
             </td>
-            <td class="td">{{ item?.profile?.phone_number }}</td>
-            <td class="td">{{ item?.shop?.shop_name }}</td>
-            <td class="td">{{ item?.shop?.shop_phone }}</td>
+            <td class="td">{{ item?.emp_profile?.phone_number }}</td>
             <td class="td">
               <n-tag :bordered="false" :type="item.status === 'disabled' ? 'error' : 'info'">
                 {{ item.status }}
@@ -162,13 +158,13 @@
             </td>
             <td class="td">
               {{
-                item?.profile?.address +
+                item?.emp_profile?.address +
                 ' ' +
-                item?.profile?.city +
+                item?.emp_profile?.city +
                 ' ' +
-                item?.profile?.state +
+                item?.emp_profile?.state +
                 ' ' +
-                item?.profile?.country
+                item?.emp_profile?.country
               }}
             </td>
             <td class="td">{{ item.created_at }}</td>

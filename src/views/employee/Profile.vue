@@ -112,7 +112,7 @@ const handleValidateClick = (e: MouseEvent) => {
 // console.log(profileData);
 
 onMounted(() => {
-  profileData.value = userStore.currentUser.profile;
+  profileData.value = userStore.currentUser.emp_profile;
 });
 </script>
 

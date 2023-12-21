@@ -74,6 +74,15 @@ const routes: RouteRecordRaw[] = [
           permissions: ['can view permission menu']
         },
         component: () => import('@src/views/permissions/index.vue')
+      },
+      {
+        path: 'menus',
+        name: `${routeName}_menu`,
+        meta: {
+          title: 'Menus',
+          permissions: ['can view menu menu']
+        },
+        component: () => import('@src/views/menu/index.vue')
       }
     ]
   }
