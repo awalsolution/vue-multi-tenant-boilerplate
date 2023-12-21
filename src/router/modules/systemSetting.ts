@@ -38,14 +38,14 @@ const routes: RouteRecordRaw[] = [
         component: () => import('@src/views/users/Profile.vue')
       },
       {
-        path: 'shop',
-        name: `${routeName}_shop`,
+        path: 'company',
+        name: `${routeName}_company`,
         meta: {
-          title: 'Shop',
-          permissions: ['can view user shop'],
+          title: 'Company',
+          permissions: ['can view user company'],
           hidden: true
         },
-        component: () => import('@src/views/users/UserShop.vue')
+        component: () => import('@src/views/users/UserCompany.vue')
       },
       {
         path: 'assing-permission',

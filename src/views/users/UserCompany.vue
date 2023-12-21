@@ -1,6 +1,6 @@
 <template>
   <ContentLayout v-if="isSuperAdminUser()">
-    <n-card title="Shop Setting" class="h-full overflow-y-scroll">
+    <n-card title="Company Setting" class="h-full overflow-y-scroll">
       <n-row>
         <n-col :span="8" class="text-center">
           <n-avatar round :size="200" :src="`${imgUrl}${shopData.shop_logo}`" />
@@ -78,7 +78,7 @@
                 feedbackHeightSmall: '0'
               }"
             >
-              <n-button secondary type="info" @click="handleValidateClick"> Edit Shop</n-button>
+              <n-button secondary type="info" @click="handleValidateClick">Edit Company</n-button>
             </n-form-item>
           </n-space>
         </n-col>
@@ -86,7 +86,7 @@
 
       <n-modal style="width: 70%" v-model:show="showEditModal" preset="dialog">
         <template #header>
-          <div>Edit Shop</div>
+          <div>Edit Company</div>
         </template>
         <n-space :vertical="true">
           <edit-shop @updated="showEditModal = false" />

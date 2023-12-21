@@ -6,7 +6,7 @@
           <div class="flex flex-col sm:flex-row w-full items-center !space-x-2 sm:w-fit">
             <n-input
               class="sm:!w-[230px]"
-              v-model:value="searchParams.shop_name"
+              v-model:value="searchParams.company_name"
               clearable
               placeholder="Search By Name"
               size="small"
@@ -16,7 +16,7 @@
             </n-input>
             <n-input
               class="sm:!w-[230px]"
-              v-model:value="searchParams.shop_phone"
+              v-model:value="searchParams.phone_number"
               clearable
               placeholder="Search By Phone"
               size="small"
@@ -47,7 +47,7 @@
             type="info"
             :size="isMobile ? 'small' : 'medium'"
             @click="showModal = true"
-            v-permission="{ action: ['can view shop create'] }"
+            v-permission="{ action: ['can view company create'] }"
           >
             Create
           </NButton>
@@ -59,7 +59,7 @@
       <table class="table">
         <thead class="head">
           <tr>
-            <th class="th">Shop Name</th>
+            <th class="th">Company Name</th>
             <th class="th">Logo</th>
             <th class="th">Phone#</th>
             <th class="th text-center">Status</th>
@@ -68,7 +68,7 @@
             <th
               class="sticky_el right-0 z-20"
               v-permission="{
-                action: ['can view shop update', 'can view shop delete']
+                action: ['can view company update', 'can view company delete']
               }"
             >
               Actions
@@ -80,11 +80,11 @@
             <td colspan="9" class="data_placeholder">Record Not Exist</td>
           </tr>
           <tr v-else v-for="item in list" :key="item.id" class="body_tr">
-            <td class="td">{{ item.shop_name }}</td>
+            <td class="td">{{ item.company_name }}</td>
             <td class="td text-center pt-1">
               <n-avatar :size="50" :src="`${imgUrl}${item.shop_logo}`" />
             </td>
-            <td class="td">{{ item.shop_phone }}</td>
+            <td class="td">{{ item.phone_number }}</td>
             <td class="td text-center">
               <n-tag :bordered="false" :type="item.status === 'disabled' ? 'error' : 'info'">
                 {{ item.status }}
@@ -97,7 +97,7 @@
             <td
               class="sticky_el right-0 z-10"
               v-permission="{
-                action: ['can view shop update', 'can view shop delete']
+                action: ['can view company update', 'can view company delete']
               }"
             >
               <n-dropdown
@@ -136,10 +136,10 @@
 
     <n-modal style="width: 60%" v-model:show="showModal" preset="dialog">
       <template #header>
-        <div>Create New Shop</div>
+        <div>Create New Company</div>
       </template>
       <n-space :vertical="true">
-        <add-shop
+        <add-company
           @created="
             getList();
             showModal = false;
@@ -150,10 +150,10 @@
 
     <n-modal style="width: 60%" v-model:show="showEditModal" preset="dialog">
       <template #header>
-        <div>Update Shop</div>
+        <div>Update Company</div>
       </template>
       <n-space :vertical="true">
-        <edit-shop
+        <edit-company
           :id="selectedId"
           @updated="
             getList();
@@ -177,8 +177,8 @@ import { renderIcon } from '@src/utils/renderIcon';
 import { usePermission } from '@src/hooks/permission/usePermission';
 import { usePagination } from '@src/hooks/pagination/usePagination';
 import DataTableLayout from '@src/layouts/DataTableLayout/index.vue';
-import AddShop from '@src/components/shop/AddShop.vue';
-import EditShop from '@src/components/shop/EditShop.vue';
+import AddCompany from '@src/components/company/AddCompany.vue';
+import EditCompany from '@src/components/company/EditCompany.vue';
 
 const { imgUrl } = useEnv();
 const isMobile = useMobile();
@@ -192,7 +192,7 @@ const [loading, loadingDispatcher] = useLoading(false);
 
 // fetch all records
 const { getList, list, page, pageSizes, itemCount, pageSize, searchParams }: any =
-  usePagination('/shops');
+  usePagination('/company');
 
 onMounted(() => {
   getList();
@@ -203,13 +203,13 @@ const moreOptions = ref([
     label: 'Edit',
     key: 'edit',
     icon: renderIcon(EditOutlined),
-    permission: hasPermission(['can view shop update'])
+    permission: hasPermission(['can view company update'])
   },
   {
     label: 'Delete',
     key: 'delete',
     icon: renderIcon(DeleteOutlined),
-    permission: hasPermission(['can view shop delete'])
+    permission: hasPermission(['can view company delete'])
   }
 ]);
 
@@ -229,7 +229,7 @@ function confirmationDialog() {
 
 function deleteOperation() {
   loadingDispatcher.start();
-  deleteRecordApi(`/shops/${selectedId.value}`)
+  deleteRecordApi(`/company/${selectedId.value}`)
     .then((res: any) => {
       window['$message'].success(res.message);
       getList();

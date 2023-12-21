@@ -1,31 +1,31 @@
 import type { RouteRecordRaw } from 'vue-router';
-import { BuildingWarehouse } from '@vicons/tabler';
+import { BuildingShop16Regular } from '@vicons/fluent';
 import { DashboardLayout } from '@src/router/constant';
 import { renderIcon } from '@src/utils/renderIcon';
 
-const routeName = 'merchant';
+const routeName = 'company';
 
 const routes: RouteRecordRaw[] = [
   {
-    path: '/merchant',
+    path: '/company',
     name: routeName,
-    redirect: '/merchant/list',
+    redirect: '/company/list',
     component: DashboardLayout,
     meta: {
-      title: 'merchant',
-      icon: renderIcon(BuildingWarehouse),
-      permissions: ['can view merchant menu'],
-      sort: 3
+      title: 'Company',
+      icon: renderIcon(BuildingShop16Regular),
+      permissions: ['can view company menu'],
+      sort: 5
     },
     children: [
       {
         path: 'list',
         name: `${routeName}_list`,
         meta: {
-          title: 'Merchant List',
-          permissions: ['can view merchant list']
+          title: 'Company List',
+          permissions: ['can view company list']
         },
-        component: () => import('@src/views/merchant/index.vue')
+        component: () => import('@src/views/company/index.vue')
       }
     ]
   }
