@@ -42,7 +42,7 @@ const routes: RouteRecordRaw[] = [
         name: `${routeName}_company`,
         meta: {
           title: 'Company',
-          permissions: ['can view user company'],
+          permissions: ['can view company profile'],
           hidden: true
         },
         component: () => import('@src/views/users/UserCompany.vue')
@@ -52,7 +52,7 @@ const routes: RouteRecordRaw[] = [
         name: `${routeName}_assing_permission`,
         meta: {
           title: 'Assing Permission',
-          permissions: ['can view assign permission menu'],
+          permissions: ['can view assign permission'],
           hidden: true
         },
         component: () => import('@src/components/permission/AssignPermissions.vue')

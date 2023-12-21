@@ -23,7 +23,7 @@ const routes: RouteRecordRaw[] = [
         name: `${routeName}_list`,
         meta: {
           title: 'Company List',
-          permissions: ['can view company list']
+          permissions: ['can view company menu']
         },
         component: () => import('@src/views/company/index.vue')
       }
