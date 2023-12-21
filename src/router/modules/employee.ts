@@ -15,7 +15,7 @@ const routes: RouteRecordRaw[] = [
       title: 'Employee',
       icon: renderIcon(BuildingShop16Regular),
       permissions: ['can view employee menu'],
-      sort: 5
+      sort: 2
     },
     children: [
       {

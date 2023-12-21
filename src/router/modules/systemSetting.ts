@@ -15,7 +15,7 @@ const routes: RouteRecordRaw[] = [
       title: 'System Settings',
       permissions: ['can view system setting menu'],
       icon: renderIcon(SettingsOutline),
-      sort: 6
+      sort: 10
     },
     children: [
       {
