@@ -89,7 +89,7 @@
           <div>Edit Company</div>
         </template>
         <n-space :vertical="true">
-          <edit-shop @updated="showEditModal = false" />
+          <edit-company @updated="showEditModal = false" />
         </n-space>
       </n-modal>
     </n-card>
@@ -100,9 +100,9 @@
 import { onMounted, ref } from 'vue';
 import { useUserStore } from '@src/store/modules/user';
 import { useEnv } from '@src/hooks/useEnv';
-import EditShop from '@src/views/users/EditShop.vue';
 import { isSuperAdminUser } from '@src/checks/isSuperAdmin';
 import ContentLayout from '@src/layouts/ContentLayout/index.vue';
+import EditCompany from '@src/views/users/EditCompany.vue';
 
 const { imgUrl } = useEnv();
 const userStore = useUserStore();
