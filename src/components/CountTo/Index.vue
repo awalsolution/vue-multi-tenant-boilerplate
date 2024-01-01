@@ -79,7 +79,9 @@ export default defineComponent({
         duration: props.duration,
         onFinished: () => emit('onFinished'),
         onStarted: () => emit('onStarted'),
-        ...(props.useEasing ? { transition: TransitionPresets[props.transition] } : {})
+        ...(props.useEasing
+          ? { transition: TransitionPresets[props.transition as keyof typeof TransitionPresets] }
+          : {})
       });
     }
 
