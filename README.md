@@ -1,4 +1,4 @@
-# Abendsoft Admin CRM
+# Awal HR
 
 ## Environments
 
@@ -17,8 +17,8 @@
 
 ```sh
 
-git clone https://github.com/abendsoft/abendsoft-crm.git
-cd  abendsoft-crm
+git clone https://github.com/awal-solution/awal-hr.git
+cd  awal-hr
 yarn
 ```
 
