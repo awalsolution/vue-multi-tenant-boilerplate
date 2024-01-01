@@ -101,7 +101,7 @@
             type="info"
             :size="isMobile ? 'small' : 'medium'"
             @click="showModal = true"
-            v-permission="{ action: ['can view employee create'] }"
+            v-permission="{ action: ['can view designation create'] }"
           >
             Create
           </NButton>
@@ -124,7 +124,7 @@
             <th
               class="sticky_el right-0 z-20"
               v-permission="{
-                action: ['can view employee update', 'can view employee delete']
+                action: ['can view designation update', 'can view designation delete']
               }"
             >
               Actions
@@ -171,7 +171,7 @@
             <td
               class="sticky_el right-0 z-10"
               v-permission="{
-                action: ['can view employee update', 'can view employee delete']
+                action: ['can view designation update', 'can view designation delete']
               }"
             >
               <n-dropdown
@@ -210,10 +210,10 @@
 
     <n-modal style="width: 70%" v-model:show="showModal" preset="dialog">
       <template #header>
-        <div>Create New User</div>
+        <div>Create New designation</div>
       </template>
       <n-space :vertical="true">
-        <add-user
+        <add-designation
           @created="
             getList();
             showModal = false;
@@ -224,10 +224,10 @@
 
     <n-modal style="width: 70%" v-model:show="showEditModal" preset="dialog">
       <template #header>
-        <div>Update User</div>
+        <div>Update designation</div>
       </template>
       <n-space :vertical="true">
-        <edit-user
+        <edit-designation
           :id="selectedId"
           @updated="
             getList();
@@ -241,7 +241,6 @@
 
 <script lang="ts" setup>
 import { ref, onMounted, computed } from 'vue';
-import { useRouter } from 'vue-router';
 import { NIcon, NPagination, useDialog } from 'naive-ui';
 import { MoreOutlined, EditOutlined, DeleteOutlined, SearchOutlined } from '@vicons/antd';
 import { deleteRecordApi } from '@src/api/endpoints';
@@ -254,11 +253,10 @@ import { renderIcon } from '@src/utils/renderIcon';
 import { usePermission } from '@src/hooks/permission/usePermission';
 import { usePagination } from '@src/hooks/pagination/usePagination';
 import DataTableLayout from '@src/layouts/DataTableLayout/index.vue';
-import AddUser from '@src/components/users/AddUser.vue';
-import EditUser from '@src/components/users/EditUser.vue';
+import AddDesignation from '@src/components/designation/AddDesignation.vue';
+import EditDesignation from '@src/components/designation/EditDesignation.vue';
 
 const { imgUrl } = useEnv();
-const router = useRouter();
 const isMobile = useMobile();
 const dialog = useDialog();
 const selectedOption: any = ref(null);
@@ -272,7 +270,7 @@ const { shops, shopLoading, findShop, getShopsOnFocus } = usefilterShop();
 
 // fetch all records
 const { getList, list, page, pageSizes, itemCount, pageSize, searchParams }: any =
-  usePagination('/employee');
+  usePagination('/designation');
 
 onMounted(() => {
   getList();
@@ -283,13 +281,13 @@ const moreOptions = ref([
     label: 'Edit',
     key: 'edit',
     icon: renderIcon(EditOutlined),
-    permission: hasPermission(['can view employee update'])
+    permission: hasPermission(['can view designation update'])
   },
   {
     label: 'Delete',
     key: 'delete',
     icon: renderIcon(DeleteOutlined),
-    permission: hasPermission(['can view employee delete'])
+    permission: hasPermission(['can view designation delete'])
   }
 ]);
 
@@ -309,7 +307,7 @@ function confirmationDialog() {
 
 function deleteOperation() {
   loadingDispatcher.start();
-  deleteRecordApi(`/employee/${selectedId.value}`)
+  deleteRecordApi(`/designation/${selectedId.value}`)
     .then((res: any) => {
       window['$message'].success(res.message);
       getList();
@@ -326,12 +324,7 @@ function deleteOperation() {
 }
 
 const actionOperation = (item: any) => {
-  if (selectedOption.value === 'assign_permission') {
-    router.push({
-      name: 'system_assing_permission',
-      query: { userId: item.id }
-    });
-  } else if (selectedOption.value === 'edit') {
+  if (selectedOption.value === 'edit') {
     showEditModal.value = true;
     selectedId.value = item.id;
   } else if (selectedOption.value === 'delete') {

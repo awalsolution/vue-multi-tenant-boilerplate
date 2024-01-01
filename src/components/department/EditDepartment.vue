@@ -1,5 +1,5 @@
 <template>
-  <n-form ref="formRef" :label-width="80" :model="formValue" :rules="rules" size="small">
+  <n-form ref="formRef" :label-width="80" :model="formValue" :rules="departmentRules" size="small">
     <n-grid :span="24" :x-gap="24">
       <n-form-item-gi :span="12" label="Email" path="email">
         <n-input v-model:value="formValue.email" placeholder="Enter Email" />
@@ -38,6 +38,7 @@ import { ref } from 'vue';
 import { type FormInst } from 'naive-ui';
 import { getRecordApi, updateRecordApi } from '@src/api/endpoints';
 import { usefilterRole } from '@src/filters/roles';
+import { departmentRules } from '@src/rules/department_rules';
 
 const { roles, roleLoading, getRoles, getRolesOnFocus } = usefilterRole();
 const formRef = ref<FormInst | null>(null);
@@ -49,8 +50,8 @@ const props = defineProps({
     type: Number
   }
 });
-// fetch single user using id
-getRecordApi(`/users/${props.id}`).then((res: any) => {
+// fetch single department using id
+getRecordApi(`/department/${props.id}`).then((res: any) => {
   formValue.value = res.result;
   formValue.value.roles = formValue.value.roles.map((v: any) => v.id);
   getRoles();
@@ -61,7 +62,7 @@ const handleValidateClick = (e: MouseEvent) => {
   formRef.value?.validate((errors) => {
     if (!errors) {
       console.log(formValue.value);
-      updateRecordApi(`/users/${formValue.value.id}`, formValue.value).then((res: any) => {
+      updateRecordApi(`/department/${formValue.value.id}`, formValue.value).then((res: any) => {
         window['$message'].success(res.message);
         emits('updated', res.result);
       });
@@ -82,29 +83,6 @@ const status = ref([
     value: 'disabled'
   }
 ]);
-
-const rules = ref({
-  first_name: {
-    required: true,
-    message: 'Please Enter First Name',
-    trigger: 'blur'
-  },
-  last_name: {
-    required: true,
-    message: 'Please Enter last Name',
-    trigger: 'blur'
-  },
-  email: {
-    required: true,
-    message: 'Please Enter email',
-    trigger: 'blur'
-  },
-  password: {
-    required: true,
-    message: 'Please Enter Password',
-    trigger: 'blur'
-  }
-});
 </script>
 
 <style lang="scss" scoped></style>
