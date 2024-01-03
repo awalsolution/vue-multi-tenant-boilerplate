@@ -1,36 +1,8 @@
 <template>
   <DataTableLayout :loading="loading">
-    <template #tableHeader>
-      <div class="flex flex-col items-center space-y-2 sm:flex-row sm:justify-between sm:space-y-0">
-        <div class="flex flex-col items-center space-y-2 sm:flex-row sm:space-x-3 sm:space-y-0">
-          <div class="flex flex-col sm:flex-row w-full items-center !space-x-2 sm:w-fit">
-            <n-input
-              class="sm:!w-[250px]"
-              v-model:value="searchParams.name"
-              clearable
-              placeholder="Search By Name"
-              size="small"
-              type="text"
-            >
-              <template #prefix> <NIcon :component="SearchOutlined" class="mr-1" /> </template>
-            </n-input>
-            <n-select
-              class="sm:!w-[250px]"
-              v-model:value="searchParams.status"
-              :options="[
-                { label: 'Active', value: 'active' },
-                { label: 'Disabled', value: 'disabled' }
-              ]"
-              clearable
-              filterable
-              placeholder="Search By Status"
-              size="small"
-            />
-            <n-button secondary size="small" strong type="info" @click="fetchList">
-              Search
-            </n-button>
-          </div>
-        </div>
+    <template #header>
+      <div class="flex w-full items-center px-10 pt-5">
+        <h2 class="text-lg">Menus</h2>
         <div class="flex flex-1 w-full items-center justify-between space-x-3 sm:justify-end">
           <NButton
             secondary
@@ -39,72 +11,95 @@
             @click="showModal = true"
             v-permission="{ action: ['can view menu create'] }"
           >
-            Create
+            Add Menu
           </NButton>
         </div>
       </div>
     </template>
 
-    <template #tableContent>
-      <table class="table">
-        <thead class="head">
-          <tr>
-            <th class="th">Menu Name</th>
-            <th class="th">Created At</th>
-            <th
-              class="sticky_el right-0 z-20"
-              v-permission="{
-                action: ['can view menu update', 'can view menu delete']
-              }"
+    <template #content>
+      <div class="px-10 pt-5 w-full">
+        <div class="bg-white rounded-lg shadow-lg w-full overflow-x-scroll border border-gray-200">
+          <div class="flex gap-3 flex-col sm:flex-row flex-wrap w-full items-center sm:w-fit p-3">
+            <n-input
+              class="sm:!w-[230px]"
+              v-model:value="searchParams.name"
+              clearable
+              placeholder="Search By Name"
+              size="small"
+              type="text"
             >
-              Actions
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-if="list.length === 0">
-            <td colspan="10" class="data_placeholder">Record Not Exist</td>
-          </tr>
-          <tr v-else v-for="item in list" :key="item.id" class="body_tr">
-            <td class="td">{{ item.menu_name }}</td>
-            <td class="td">{{ item.created_at }}</td>
-            <td
-              class="sticky_el right-0 z-10"
-              v-permission="{
-                action: ['can view menu update', 'can view menu delete']
-              }"
-            >
-              <n-dropdown
-                @click="actionOperation(item)"
-                :onSelect="selectedAction"
-                trigger="click"
-                :options="filteredOptions"
-              >
-                <n-button size="small" :circle="true">
-                  <n-icon>
-                    <more-outlined />
-                  </n-icon>
-                </n-button>
-              </n-dropdown>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+              <template #prefix> <NIcon :component="SearchOutlined" class="mr-1" /> </template>
+            </n-input>
+            <n-button secondary size="small" strong type="info" @click="fetchList">
+              Search
+            </n-button>
+          </div>
+          <table class="table">
+            <thead class="head">
+              <tr>
+                <th class="th">Menu Name</th>
+                <th class="th">Created At</th>
+                <th
+                  class="sticky_el right-0 z-20"
+                  v-permission="{
+                    action: ['can view menu update', 'can view menu delete']
+                  }"
+                >
+                  Actions
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-if="list.length === 0">
+                <td colspan="10" class="data_placeholder">Record Not Exist</td>
+              </tr>
+              <tr v-else v-for="item in list" :key="item.id" class="body_tr">
+                <td class="td">{{ item.menu_name }}</td>
+                <td class="td">{{ item.created_at }}</td>
+                <td
+                  class="sticky_el right-0 z-10"
+                  v-permission="{
+                    action: ['can view menu update', 'can view menu delete']
+                  }"
+                >
+                  <n-dropdown
+                    @click="actionOperation(item)"
+                    :onSelect="selectedAction"
+                    trigger="click"
+                    :options="filteredOptions"
+                  >
+                    <n-button size="small" :circle="true">
+                      <n-icon>
+                        <more-outlined />
+                      </n-icon>
+                    </n-button>
+                  </n-dropdown>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
     </template>
 
-    <template #tableFooter>
-      <div class="flex flex-col items-center space-y-2 sm:flex-row sm:justify-end sm:space-y-0">
-        <n-pagination
-          v-model:page="page"
-          v-model:page-size="pageSize"
-          :item-count="itemCount"
-          :page-sizes="pageSizes"
-          size="small"
-          :show-quick-jumper="true"
-          :show-size-picker="true"
+    <template #footer>
+      <div class="px-10 p-3">
+        <div
+          class="flex flex-col items-center sm:flex-row sm:justify-end bg-white p-3 rounded-lg shadow-lg"
         >
-          <template #prefix="{ itemCount }"> Total: {{ itemCount }} </template>
-        </n-pagination>
+          <n-pagination
+            v-model:page="page"
+            v-model:page-size="pageSize"
+            :item-count="itemCount"
+            :page-sizes="pageSizes"
+            size="small"
+            :show-quick-jumper="true"
+            :show-size-picker="true"
+          >
+            <template #prefix="{ itemCount }"> Total: {{ itemCount }} </template>
+          </n-pagination>
+        </div>
       </div>
     </template>
 
@@ -237,19 +232,19 @@ const fetchList = () => {
 
 <style lang="scss" scoped>
 .table {
-  @apply w-full text-sm text-left text-gray-500 dark:text-gray-400;
+  @apply text-sm w-full overflow-x-auto text-left text-gray-500 dark:text-gray-400;
 }
 .head {
   @apply sticky top-0 text-xs text-gray-700 bg-gray-50 dark:bg-gray-700 dark:text-gray-400 z-20;
 }
 .th {
-  @apply px-6 py-3 border-r border-b border-gray-200 dark:border-gray-800 text-center whitespace-nowrap;
+  @apply px-3 py-3 border-t border-r border-b border-gray-200 dark:border-gray-800 whitespace-nowrap;
 }
 .body_tr {
   @apply hover:bg-gray-50 dark:hover:bg-gray-600;
 }
 .td {
-  @apply px-3 py-3 border-r border-b border-gray-200 dark:border-gray-800 whitespace-nowrap;
+  @apply px-3 py-2 border-r border-b border-gray-200 dark:border-gray-800 whitespace-nowrap;
 }
 .sticky_el {
   @apply sticky bg-gray-50 dark:bg-gray-700 px-6 whitespace-nowrap text-center border border-gray-200 dark:border-gray-800;

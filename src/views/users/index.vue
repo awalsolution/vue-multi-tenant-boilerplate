@@ -2,7 +2,7 @@
   <DataTableLayout :loading="loading">
     <template #header>
       <div class="flex w-full items-center px-10 pt-5">
-        <h2 class="text-lg">Permissions</h2>
+        <h2 class="text-lg">Users</h2>
         <div class="flex flex-1 w-full items-center justify-between space-x-3 sm:justify-end">
           <NButton
             secondary
@@ -378,7 +378,7 @@ const fetchList = () => {
 
 <style lang="scss" scoped>
 .table {
-  @apply text-sm text-left text-gray-500 dark:text-gray-400;
+  @apply text-sm w-full overflow-x-auto text-left text-gray-500 dark:text-gray-400;
 }
 .head {
   @apply sticky top-0 text-xs text-gray-700 bg-gray-50 dark:bg-gray-700 dark:text-gray-400 z-20;
