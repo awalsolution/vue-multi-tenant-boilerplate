@@ -1,5 +1,5 @@
 import type { RouteRecordRaw } from 'vue-router';
-import { BuildingShop16Regular } from '@vicons/fluent';
+import { AccessAlarmFilled } from '@vicons/material';
 import { DashboardLayout } from '@src/router/constant';
 import { renderIcon } from '@src/utils/renderIcon';
 
@@ -13,7 +13,7 @@ const routes: RouteRecordRaw[] = [
     component: DashboardLayout,
     meta: {
       title: 'Attendance',
-      icon: renderIcon(BuildingShop16Regular),
+      icon: renderIcon(AccessAlarmFilled),
       permissions: ['can view attendance menu'],
       sort: 2
     },

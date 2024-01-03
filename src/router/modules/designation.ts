@@ -1,5 +1,5 @@
 import type { RouteRecordRaw } from 'vue-router';
-import { BuildingShop16Regular } from '@vicons/fluent';
+import { PersonFeedback16Regular } from '@vicons/fluent';
 import { DashboardLayout } from '@src/router/constant';
 import { renderIcon } from '@src/utils/renderIcon';
 
@@ -13,7 +13,7 @@ const routes: RouteRecordRaw[] = [
     component: DashboardLayout,
     meta: {
       title: 'Designation',
-      icon: renderIcon(BuildingShop16Regular),
+      icon: renderIcon(PersonFeedback16Regular),
       permissions: ['can view designation menu'],
       sort: 2
     },
