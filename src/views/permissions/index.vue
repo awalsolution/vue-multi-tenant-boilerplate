@@ -22,9 +22,7 @@
     <template #content>
       <div class="px-10 pt-5">
         <div class="bg-white rounded-lg shadow-lg w-full overflow-x-scroll border border-gray-200">
-          <div
-            class="flex flex-wrap flex-col sm:flex-row w-full items-center !space-x-2 sm:w-fit p-3"
-          >
+          <div class="flex flex-wrap flex-col sm:flex-row w-full items-center gap-3 sm:w-fit p-3">
             <n-input
               class="sm:!w-[230px]"
               v-model:value="searchParams.name"
@@ -86,7 +84,7 @@
                 <th class="th">Menu Name</th>
                 <th class="th">Created At</th>
                 <th
-                  class="sticky_el"
+                  class="sticky_el right-0 z-10"
                   v-permission="{
                     action: ['can view permission update', 'can view permission delete']
                   }"
