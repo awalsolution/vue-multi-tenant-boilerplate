@@ -1,6 +1,6 @@
 <template>
   <main
-    class="bg-default-light dark:bg-default-dark flex h-12 w-full items-center justify-between border-b border-gray-300 px-2 py-1 shadow dark:border-gray-800 sm:px-4"
+    class="flex h-12 w-full items-center justify-between border-b border-gray-300 px-2 py-1 dark:border-gray-800 sm:px-4"
   >
     <div
       ref="scrollbarRef"

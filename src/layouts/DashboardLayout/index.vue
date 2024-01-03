@@ -7,7 +7,7 @@
       <Header />
       <div class="flex h-full w-full">
         <Sidebar />
-        <div class="relative h-full flex-1">
+        <div class="relative h-full w-[calc(100%-14rem)]">
           <Tabs />
           <RouterView>
             <template #default="{ Component, route }">

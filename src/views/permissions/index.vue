@@ -21,9 +21,9 @@
 
     <template #content>
       <div class="px-10 pt-5">
-        <div class="bg-white p-4 rounded-lg shadow-lg">
+        <div class="bg-white rounded-lg shadow-lg w-full overflow-x-scroll border border-gray-200">
           <div
-            class="flex flex-wrap flex-col sm:flex-row w-full items-center !space-x-2 sm:w-fit pb-3"
+            class="flex flex-wrap flex-col sm:flex-row w-full items-center !space-x-2 sm:w-fit p-3"
           >
             <n-input
               class="sm:!w-[230px]"
@@ -86,7 +86,7 @@
                 <th class="th">Menu Name</th>
                 <th class="th">Created At</th>
                 <th
-                  class="th"
+                  class="sticky_el"
                   v-permission="{
                     action: ['can view permission update', 'can view permission delete']
                   }"
@@ -109,7 +109,7 @@
                 <td class="td">{{ item.menus.menu_name }}</td>
                 <td class="td">{{ item.created_at }}</td>
                 <td
-                  class="td"
+                  class="sticky_el right-0 z-10"
                   v-permission="{
                     action: ['can view permission update', 'can view permission delete']
                   }"
@@ -287,20 +287,20 @@ const fetchList = () => {
   @apply w-full text-sm text-left text-gray-500 dark:text-gray-400;
 }
 .head {
-  @apply sticky top-0 text-xs border border-gray-200 text-gray-700 bg-gray-50 dark:bg-gray-700 dark:text-gray-400 z-20;
+  @apply sticky top-0 text-xs   bg-gray-50 dark:bg-gray-700 dark:text-gray-400 z-20;
 }
 .th {
-  @apply px-3 py-3 border border-gray-200 dark:border-gray-800 whitespace-nowrap;
+  @apply px-3 py-3 border-t border-r border-b border-gray-200 dark:border-gray-800 whitespace-nowrap;
 }
 .body_tr {
   @apply hover:bg-gray-50 dark:hover:bg-gray-600;
 }
 .td {
-  @apply px-3 py-3 border border-gray-200 dark:border-gray-800 whitespace-nowrap;
+  @apply px-3 py-3 border-r border-b border-gray-200 dark:border-gray-800 whitespace-nowrap;
 }
-// .sticky_el {
-//   @apply sticky px-6 whitespace-nowrap text-center border border-gray-200 dark:border-gray-800;
-// }
+.sticky_el {
+  @apply sticky bg-gray-50 dark:bg-gray-700 px-6 whitespace-nowrap text-center border border-gray-200 dark:border-gray-800;
+}
 .data_placeholder {
   text-align: center;
   color: gray;
