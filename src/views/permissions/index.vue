@@ -193,10 +193,10 @@ import { usefilterMenu } from '@src/filters/menus';
 import { useMobile } from '@src/hooks/useMediaQuery';
 import { usePermission } from '@src/hooks/permission/usePermission';
 import { usePagination } from '@src/hooks/pagination/usePagination';
-import AddPermission from '@src/components/permission/AddPermission.vue';
-import EditPermission from '@src/components/permission/EditPermission.vue';
 import DataTableLayout from '@src/layouts/DataTableLayout/index.vue';
 import { renderIcon } from '@src/utils/renderIcon';
+import AddPermission from '@src/components/permission/AddPermission.vue';
+import EditPermission from '@src/components/permission/EditPermission.vue';
 
 const dialog = useDialog();
 const isMobile = useMobile();

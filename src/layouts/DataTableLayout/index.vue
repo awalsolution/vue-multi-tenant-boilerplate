@@ -4,6 +4,8 @@
 
     <slot name="content"></slot>
 
+    <slot></slot>
+
     <slot name="footer"></slot>
   </div>
 </template>

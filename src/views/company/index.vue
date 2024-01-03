@@ -83,12 +83,12 @@
               <tr v-else v-for="item in list" :key="item.id" class="body_tr">
                 <td class="td">{{ item.company_name }}</td>
                 <td class="td text-center pt-1">
-                  <n-avatar :size="50" :src="`${imgUrl}${item.shop_logo}`" />
+                  <n-avatar :size="50" :src="`${imgUrl}${item.logo}`" />
                 </td>
                 <td class="td">{{ item.phone_number }}</td>
                 <td class="td text-center">
                   <n-tag :bordered="false" :type="item.status === 'disabled' ? 'error' : 'info'">
-                    {{ item.status }}
+                    {{ item.status === 1 ? 'Active' : 'Disable' }}
                   </n-tag>
                 </td>
                 <td class="td">

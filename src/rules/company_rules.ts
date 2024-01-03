@@ -1,24 +1,14 @@
 import { ref } from 'vue';
 
-export const rules = ref({
-  supplier_name: {
+export const formRules = ref({
+  company_name: {
     required: true,
     message: 'Please Enter Name',
     trigger: 'blur'
   },
-  supplier_phone: {
+  phone_number: {
     required: true,
     message: 'Please Enter Phone',
-    trigger: 'blur'
-  },
-  supplier_email: {
-    required: true,
-    message: 'Please Enter Email',
-    trigger: 'blur'
-  },
-  status: {
-    required: true,
-    message: 'Please Select status',
     trigger: 'blur'
   },
   address: {
@@ -39,6 +29,16 @@ export const rules = ref({
   country: {
     required: true,
     message: 'Please Enter Country',
+    trigger: 'blur'
+  },
+  // status: {
+  //   required: true,
+  //   message: 'Please Select Status',
+  //   trigger: 'onchange'
+  // },
+  logo: {
+    required: true,
+    message: 'Please Upload Logo',
     trigger: 'blur'
   }
 });

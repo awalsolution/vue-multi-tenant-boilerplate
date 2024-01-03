@@ -35,6 +35,7 @@ import { ref } from 'vue';
 import { type FormInst } from 'naive-ui';
 import { createRecordApi } from '@src/api/endpoints';
 import { departmentRules } from '@src/rules/department_rules';
+
 const formRef = ref<FormInst | null>(null);
 const formValue: any = ref({});
 

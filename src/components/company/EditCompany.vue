@@ -1,11 +1,11 @@
 <template>
-  <n-form ref="formRef" :label-width="80" :model="formValue" :rules="rules" size="small">
+  <n-form ref="formRef" :label-width="80" :model="formValue" :rules="formRules" size="small">
     <n-grid x-gap="10">
-      <n-form-item-gi :span="8" class="pt-6" label="Name" path="shop_name">
-        <n-input v-model:value="formValue.shop_name" placeholder="Enter Name" />
+      <n-form-item-gi :span="8" class="pt-6" label="Name" path="company_name">
+        <n-input v-model:value="formValue.company_name" placeholder="Enter Name" />
       </n-form-item-gi>
-      <n-form-item-gi :span="8" class="pt-6" label="Phone" path="shop_phone">
-        <n-input v-model:value="formValue.shop_phone" placeholder="Enter Phone" />
+      <n-form-item-gi :span="8" class="pt-6" label="Phone" path="phone_number">
+        <n-input v-model:value="formValue.phone_number" placeholder="Enter Phone" />
       </n-form-item-gi>
       <n-form-item-gi :span="8" class="pt-6" label="Address" path="address">
         <n-input v-model:value="formValue.address" placeholder="Enter Address" />
@@ -20,17 +20,17 @@
         <n-input v-model:value="formValue.country" placeholder="Enter Country" />
       </n-form-item-gi>
       <n-form-item-gi :span="12" label="Status" path="status">
-        <n-select v-model:value="formValue.status" size="small" :options="status" />
+        <n-switch v-model:value="formValue.status" :checked-value="1" :unchecked-value="0" />
       </n-form-item-gi>
     </n-grid>
     <SingleImageUploader
       :action="uploadUrl"
       :data="{ type: 0 }"
-      name="shop_images"
+      name="company_images"
       :width="100"
       :height="100"
       @upload-change="uploadChange"
-      v-model:value="formValue.shop_logo"
+      v-model:value="formValue.logo"
     />
     <n-space justify="end">
       <n-form-item :theme-overrides="{ labelHeightSmall: '0', feedbackHeightSmall: '0' }">
@@ -46,6 +46,7 @@ import { type FormInst } from 'naive-ui';
 import { getRecordApi, updateRecordApi } from '@src/api/endpoints';
 import { SingleImageUploader } from '@src/components/upload';
 import { useEnv } from '@src/hooks/useEnv';
+import { formRules } from '@src/rules/company_rules';
 
 const { uploadUrl } = useEnv();
 const formRef = ref<FormInst | null>(null);
@@ -59,11 +60,11 @@ const props = defineProps({
 });
 
 const uploadChange = (list: string) => {
-  formValue.value.shop_logo = unref(list);
+  formValue.value.logo = unref(list);
 };
 
 // fetch single Shop  using id
-getRecordApi(`/shops/${props.id}`).then((res: any) => {
+getRecordApi(`/company/${props.id}`).then((res: any) => {
   formValue.value = res.result;
 });
 
@@ -71,7 +72,7 @@ const handleValidateClick = (e: MouseEvent) => {
   e.preventDefault();
   formRef.value?.validate((errors) => {
     if (!errors) {
-      updateRecordApi(`/shops/${formValue.value.id}`, formValue.value).then((res: any) => {
+      updateRecordApi(`/company/${formValue.value.id}`, formValue.value).then((res: any) => {
         window['$message'].success(res.message);
         emits('updated', res.result);
       });
@@ -81,55 +82,6 @@ const handleValidateClick = (e: MouseEvent) => {
     }
   });
 };
-
-const status = ref([
-  {
-    label: 'active',
-    value: 'active'
-  },
-  {
-    label: 'disabled',
-    value: 'disabled'
-  }
-]);
-
-const rules = ref({
-  shop_name: {
-    required: true,
-    message: 'Please Enter Name',
-    trigger: 'blur'
-  },
-  shop_phone: {
-    required: true,
-    message: 'Please Enter Phone',
-    trigger: 'blur'
-  },
-  address: {
-    required: true,
-    message: 'Please Enter Address',
-    trigger: 'blur'
-  },
-  city: {
-    required: true,
-    message: 'Please Enter City',
-    trigger: 'blur'
-  },
-  state: {
-    required: true,
-    message: 'Please Enter State',
-    trigger: 'blur'
-  },
-  country: {
-    required: true,
-    message: 'Please Enter Country',
-    trigger: 'blur'
-  },
-  shop_logo: {
-    required: true,
-    message: 'Please Upload Logo',
-    trigger: 'blur'
-  }
-});
 </script>
 
 <style lang="scss" scoped></style>
