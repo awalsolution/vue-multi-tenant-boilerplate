@@ -69,20 +69,18 @@
             </n-input>
             <n-select
               class="sm:!w-[230px]"
-              v-model:value="searchParams.shop_name"
-              :clear-filter-after-select="false"
               :filterable="true"
-              :loading="shopLoading"
-              :options="shops"
-              :remote="true"
-              :tag="false"
+              v-model:value="searchParams.company_name"
               clearable
-              label-field="shop_name"
-              value-field="shop_name"
-              placeholder="Search By Shop"
-              size="small"
-              @focus="getShopsOnFocus"
-              @search="findShop"
+              :remote="true"
+              :clear-filter-after-select="false"
+              label-field="company_name"
+              value-field="company_name"
+              placeholder="Select company"
+              :loading="companyLoading"
+              @focus="getCompaniesOnFocus"
+              :options="companies"
+              @search="findCompany"
             />
             <n-select
               class="sm:!w-[230px]"
@@ -272,7 +270,7 @@ import { useLoading } from '@src/hooks/useLoading';
 import { useEnv } from '@src/hooks/useEnv';
 import { useMobile } from '@src/hooks/useMediaQuery';
 import { usefilterRole } from '@src/filters/roles';
-import { usefilterShop } from '@src/filters/shops';
+import { usefilterCompany } from '@src/filters/company';
 import { renderIcon } from '@src/utils/renderIcon';
 import { usePermission } from '@src/hooks/permission/usePermission';
 import { usePagination } from '@src/hooks/pagination/usePagination';
@@ -291,7 +289,7 @@ const selectedId = ref();
 const { hasPermission } = usePermission();
 const [loading, loadingDispatcher] = useLoading(false);
 const { roles, roleLoading, findRole, getRolesOnFocus } = usefilterRole();
-const { shops, shopLoading, findShop, getShopsOnFocus } = usefilterShop();
+const { companies, companyLoading, getCompaniesOnFocus, findCompany } = usefilterCompany();
 
 // fetch all records
 const { getList, list, page, pageSizes, itemCount, pageSize, searchParams }: any =

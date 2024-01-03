@@ -1,6 +1,6 @@
 import { ref } from 'vue';
 
-export const attendanceRules = ref({
+export const formRules = ref({
   first_name: {
     required: true,
     message: 'Please Enter First Name',

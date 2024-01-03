@@ -31,59 +31,21 @@
             >
               <template #prefix> <NIcon :component="SearchOutlined" class="mr-1" /> </template>
             </n-input>
-            <n-input
-              class="sm:!w-[230px]"
-              v-model:value="searchParams.email"
-              clearable
-              placeholder="Search By Email"
-              size="small"
-              type="text"
-            >
-              <template #prefix> <NIcon :component="SearchOutlined" class="mr-1" /> </template>
-            </n-input>
             <n-select
+              v-if="isSuperAdminUser()"
               class="sm:!w-[230px]"
-              v-model:value="searchParams.role_name"
-              :clear-filter-after-select="false"
               :filterable="true"
-              :loading="roleLoading"
-              :options="roles"
+              v-model:value="searchParams.company_name"
+              clearable
               :remote="true"
-              :tag="false"
-              clearable
-              label-field="name"
-              value-field="name"
-              placeholder="Search By Role"
-              size="small"
-              @focus="getRolesOnFocus"
-              @search="findRole"
-            />
-            <n-input
-              class="sm:!w-[230px]"
-              v-model:value="searchParams.phone_number"
-              clearable
-              placeholder="Search By Phone"
-              size="small"
-              type="text"
-            >
-              <template #prefix> <NIcon :component="SearchOutlined" class="mr-1" /> </template>
-            </n-input>
-            <n-select
-              class="sm:!w-[230px]"
-              v-model:value="searchParams.shop_name"
               :clear-filter-after-select="false"
-              :filterable="true"
-              :loading="shopLoading"
-              :options="shops"
-              :remote="true"
-              :tag="false"
-              clearable
-              label-field="shop_name"
-              value-field="shop_name"
-              placeholder="Search By Shop"
-              size="small"
-              @focus="getShopsOnFocus"
-              @search="findShop"
+              label-field="company_name"
+              value-field="company_name"
+              placeholder="Select company"
+              :loading="companyLoading"
+              @focus="getCompaniesOnFocus"
+              :options="companies"
+              @search="findCompany"
             />
             <n-select
               class="sm:!w-[230px]"
@@ -97,16 +59,6 @@
               placeholder="Search By Status"
               size="small"
             />
-            <n-input
-              class="sm:!w-[230px]"
-              v-model:value="searchParams.address"
-              clearable
-              placeholder="Search By Address"
-              size="small"
-              type="text"
-            >
-              <template #prefix> <NIcon :component="SearchOutlined" class="mr-1" /> </template>
-            </n-input>
             <n-button secondary size="small" strong type="info" @click="fetchList">
               Search
             </n-button>
@@ -114,13 +66,9 @@
           <table class="table">
             <thead class="head">
               <tr>
-                <th class="th">Name</th>
-                <th class="th">Picture</th>
-                <th class="th">Email</th>
-                <th class="th">Role</th>
-                <th class="th">Phone#</th>
+                <th class="th">Department Name</th>
+                <th class="th">Company Name</th>
                 <th class="th">Status</th>
-                <th class="th">Address</th>
                 <th class="th">Created At</th>
                 <th
                   class="sticky_el right-0 z-20"
@@ -134,44 +82,17 @@
             </thead>
             <tbody>
               <tr v-if="list.length === 0">
-                <td colspan="15" class="data_placeholder">Record Not Exist</td>
+                <td colspan="4" class="data_placeholder">Record Not Exist</td>
               </tr>
               <tr v-else v-for="item in list" :key="item.id" class="body_tr">
                 <td class="td">
-                  {{ item?.emp_profile?.first_name + ' ' + item?.emp_profile?.last_name }}
+                  {{ item?.name }}
                 </td>
-                <td class="td text-center pt-2">
-                  <n-avatar size="large" :src="`${imgUrl}${item?.emp_profile.profile_picture}`" />
-                </td>
-                <td class="td">{{ item?.email }}</td>
-                <td class="td">
-                  <n-space>
-                    <n-tag
-                      v-for="role in item.roles"
-                      :key="role.id"
-                      type="success"
-                      :bordered="false"
-                    >
-                      {{ role?.name }}
-                    </n-tag>
-                  </n-space>
-                </td>
-                <td class="td">{{ item?.emp_profile?.phone_number }}</td>
+                <td class="td">{{ item?.company?.company_name }}</td>
                 <td class="td">
                   <n-tag :bordered="false" :type="item.status === 'disabled' ? 'error' : 'info'">
-                    {{ item.status }}
+                    {{ item.status === 1 ? 'Active' : 'Disable' }}
                   </n-tag>
-                </td>
-                <td class="td">
-                  {{
-                    item?.emp_profile?.address +
-                    ' ' +
-                    item?.emp_profile?.city +
-                    ' ' +
-                    item?.emp_profile?.state +
-                    ' ' +
-                    item?.emp_profile?.country
-                  }}
                 </td>
                 <td class="td">{{ item.created_at }}</td>
                 <td
@@ -220,7 +141,7 @@
       </div>
     </template>
 
-    <n-modal style="width: 70%" v-model:show="showModal" preset="dialog">
+    <n-modal style="width: 30%" v-model:show="showModal" preset="dialog">
       <template #header>
         <div>Create New User</div>
       </template>
@@ -234,7 +155,7 @@
       </n-space>
     </n-modal>
 
-    <n-modal style="width: 70%" v-model:show="showEditModal" preset="dialog">
+    <n-modal style="width: 30%" v-model:show="showEditModal" preset="dialog">
       <template #header>
         <div>Update User</div>
       </template>
@@ -257,18 +178,16 @@ import { NIcon, NPagination, useDialog } from 'naive-ui';
 import { MoreOutlined, EditOutlined, DeleteOutlined, SearchOutlined } from '@vicons/antd';
 import { deleteRecordApi } from '@src/api/endpoints';
 import { useLoading } from '@src/hooks/useLoading';
-import { useEnv } from '@src/hooks/useEnv';
 import { useMobile } from '@src/hooks/useMediaQuery';
-import { usefilterRole } from '@src/filters/roles';
-import { usefilterShop } from '@src/filters/shops';
+import { usefilterCompany } from '@src/filters/company';
 import { renderIcon } from '@src/utils/renderIcon';
 import { usePermission } from '@src/hooks/permission/usePermission';
 import { usePagination } from '@src/hooks/pagination/usePagination';
 import DataTableLayout from '@src/layouts/DataTableLayout/index.vue';
 import AddDepartment from '@src/components/department/AddDepartment.vue';
 import EditDepartment from '@src/components/department/EditDepartment.vue';
+import { isSuperAdminUser } from '@src/checks/isSuperAdmin';
 
-const { imgUrl } = useEnv();
 const isMobile = useMobile();
 const dialog = useDialog();
 const selectedOption: any = ref(null);
@@ -277,8 +196,7 @@ const showEditModal = ref(false);
 const selectedId = ref();
 const { hasPermission } = usePermission();
 const [loading, loadingDispatcher] = useLoading(false);
-const { roles, roleLoading, findRole, getRolesOnFocus } = usefilterRole();
-const { shops, shopLoading, findShop, getShopsOnFocus } = usefilterShop();
+const { companies, companyLoading, getCompaniesOnFocus, findCompany } = usefilterCompany();
 
 // fetch all records
 const { getList, list, page, pageSizes, itemCount, pageSize, searchParams }: any =
@@ -380,4 +298,3 @@ const fetchList = () => {
   font-style: italic;
 }
 </style>
-@src/filters/company

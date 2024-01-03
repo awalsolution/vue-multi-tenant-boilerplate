@@ -1,33 +1,32 @@
 <template>
-  <n-form ref="formRef" :label-width="80" :model="formValue" :rules="departmentRules" size="small">
+  <n-form ref="formRef" :label-width="80" :model="formValue" :rules="formRules" size="small">
     <n-grid :span="24" :x-gap="24">
-      <n-form-item-gi :span="12" label="Email" path="email">
-        <n-input v-model:value="formValue.email" placeholder="Enter Email" />
+      <n-form-item-gi :span="24" label="Name" path="name">
+        <n-input v-model:value="formValue.name" placeholder="Enter Name" />
       </n-form-item-gi>
-      <n-form-item-gi :span="12" label="Status" path="status">
-        <n-select v-model:value="formValue.status" size="small" :options="status" />
+      <n-form-item-gi :span="8" label="Status" path="status">
+        <n-switch v-model:value="formValue.status" :checked-value="1" :unchecked-value="0" />
       </n-form-item-gi>
-      <n-form-item-gi :span="12" label="User Role" path="role_id">
+      <n-form-item-gi v-if="isSuperAdminUser()" :span="16" label="company Name" path="company_id">
         <n-select
           :filterable="true"
-          multiple
           :tag="false"
-          placeholder="Select Role"
-          v-model:value="formValue.roles"
+          placeholder="Select company"
+          v-model:value="formValue.company_id"
           clearable
-          @focus="getRolesOnFocus"
+          @focus="getCompaniesOnFocus"
           :remote="true"
           :clear-filter-after-select="false"
-          label-field="name"
+          label-field="company_name"
           value-field="id"
-          :loading="roleLoading"
-          :options="roles"
+          :loading="companyLoading"
+          :options="companies"
         />
       </n-form-item-gi>
     </n-grid>
     <n-space justify="end">
       <n-form-item :theme-overrides="{ labelHeightSmall: '0', feedbackHeightSmall: '0' }">
-        <n-button secondary type="info" @click="handleValidateClick"> Update </n-button>
+        <n-button secondary type="info" @click="handleValidateClick"> Create </n-button>
       </n-form-item>
     </n-space>
   </n-form>
@@ -37,10 +36,11 @@
 import { ref } from 'vue';
 import { type FormInst } from 'naive-ui';
 import { getRecordApi, updateRecordApi } from '@src/api/endpoints';
-import { usefilterRole } from '@src/filters/roles';
-import { departmentRules } from '@src/rules/department_rules';
+import { formRules } from '@src/rules/department_rules';
+import { usefilterCompany } from '@src/filters/company';
+import { isSuperAdminUser } from '@src/checks/isSuperAdmin';
 
-const { roles, roleLoading, getRoles, getRolesOnFocus } = usefilterRole();
+const { companies, companyLoading, getCompaniesOnFocus, getCompanies } = usefilterCompany();
 const formRef = ref<FormInst | null>(null);
 const formValue: any = ref({});
 
@@ -53,8 +53,7 @@ const props = defineProps({
 // fetch single department using id
 getRecordApi(`/department/${props.id}`).then((res: any) => {
   formValue.value = res.result;
-  formValue.value.roles = formValue.value.roles.map((v: any) => v.id);
-  getRoles();
+  getCompanies();
 });
 
 const handleValidateClick = (e: MouseEvent) => {
@@ -72,17 +71,6 @@ const handleValidateClick = (e: MouseEvent) => {
     }
   });
 };
-
-const status = ref([
-  {
-    label: 'active',
-    value: 'active'
-  },
-  {
-    label: 'disabled',
-    value: 'disabled'
-  }
-]);
 </script>
 
 <style lang="scss" scoped></style>
