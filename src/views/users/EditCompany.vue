@@ -1,43 +1,37 @@
 <template>
-  <n-card title="Shop Setting" v-if="isSuperAdminUser()">
-    <n-form ref="formRef" :label-width="80" :model="shopData" size="small">
+  <n-card title="Company Setting" v-if="isSuperAdminUser()">
+    <n-form ref="formRef" :label-width="80" :model="formValue" size="small">
       <n-grid x-gap="10">
-        <n-form-item-gi :span="12" label="Shop Name" path="shop_name">
-          <n-input v-model:value="shopData.shop_name" placeholder="Enter Shop Name" />
+        <n-form-item-gi :span="12" label="Company Name" path="compant_name">
+          <n-input v-model:value="formValue.company_name" placeholder="Enter Name" />
         </n-form-item-gi>
-        <n-form-item-gi :span="12" label="Shop Phone" path="shop_phone">
-          <n-input v-model:value="shopData.shop_phone" placeholder="Enter Shop Phone" />
+        <n-form-item-gi :span="12" label="Company Phone" path="phone_number">
+          <n-input v-model:value="formValue.phone_number" placeholder="Enter Phone" />
         </n-form-item-gi>
-        <n-form-item-gi :span="12" label="Shop Status" path="status">
-          <n-select
-            v-model:value="shopData.status"
-            :options="[
-              { label: 'active', value: 'active' },
-              { label: 'disabled', value: 'disabled' }
-            ]"
-          />
+        <n-form-item-gi :span="12" label="Status" path="status">
+          <n-switch v-model:value="formValue.status" :checked-value="1" :unchecked-value="0" />
         </n-form-item-gi>
         <n-form-item-gi :span="12" label="Address" path="address">
-          <n-input v-model:value="shopData.address" placeholder="Enter Address" />
+          <n-input v-model:value="formValue.address" placeholder="Enter Address" />
         </n-form-item-gi>
         <n-form-item-gi :span="12" label="City" path="city">
-          <n-input v-model:value="shopData.city" placeholder="Enter City" />
+          <n-input v-model:value="formValue.city" placeholder="Enter City" />
         </n-form-item-gi>
         <n-form-item-gi :span="12" label="State" path="state">
-          <n-input v-model:value="shopData.state" placeholder="Enter State" />
+          <n-input v-model:value="formValue.state" placeholder="Enter State" />
         </n-form-item-gi>
         <n-form-item-gi :span="12" label="Country" path="country">
-          <n-input v-model:value="shopData.country" placeholder="Enter Country" />
+          <n-input v-model:value="formValue.country" placeholder="Enter Country" />
         </n-form-item-gi>
-        <n-form-item-gi :span="24" path="shop_logo">
+        <n-form-item-gi :span="24" path="logo">
           <SingleImageUploader
             :action="uploadUrl"
             :data="{ type: 0 }"
-            name="shop_images"
+            name="compant_images"
             :width="100"
             :height="100"
             @upload-change="uploadChange"
-            v-model:value="shopData.shop_logo"
+            v-model:value="formValue.logo"
           />
         </n-form-item-gi>
       </n-grid>
@@ -61,20 +55,20 @@ import { isSuperAdminUser } from '@src/checks/isSuperAdmin';
 
 const { uploadUrl } = useEnv();
 const formRef = ref<FormInst | null>(null);
-const shopData: any = ref({});
+const formValue: any = ref({});
 const userStore = useUserStore();
 
 const emits = defineEmits(['updated']);
 
 const uploadChange = (list: string) => {
-  shopData.value.shop_logo = unref(list);
+  formValue.value.logo = unref(list);
 };
 
 const handleValidateClick = (e: MouseEvent) => {
   e.preventDefault();
   formRef.value?.validate((errors) => {
     if (!errors) {
-      updateRecordApi(`/shops/${shopData.value.id}`, shopData.value).then((res: any) => {
+      updateRecordApi(`/company/${formValue.value.id}`, formValue.value).then((res: any) => {
         window['$message'].success(res.message);
         emits('updated', res.result);
       });
@@ -86,7 +80,7 @@ const handleValidateClick = (e: MouseEvent) => {
 };
 
 onMounted(() => {
-  shopData.value = userStore.currentUser.shop;
+  formValue.value = userStore.currentUser.company;
 });
 </script>
 

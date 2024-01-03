@@ -1,5 +1,5 @@
 <template>
-  <n-form ref="formRef" :label-width="80" :model="formValue" :rules="rules" size="small">
+  <n-form ref="formRef" :label-width="80" :model="formValue" :rules="formRules" size="small">
     <n-grid :span="24" :x-gap="24">
       <n-form-item-gi :span="12" label="First Name" path="first_name">
         <n-input v-model:value="formValue.first_name" placeholder="Enter First Name" />
@@ -19,7 +19,7 @@
         />
       </n-form-item-gi>
       <n-form-item-gi :span="12" label="Status" path="status">
-        <n-select v-model:value="formValue.status" size="small" :options="status" />
+        <n-switch v-model:value="formValue.status" :checked-value="1" :unchecked-value="0" />
       </n-form-item-gi>
       <n-form-item-gi :span="12" label="User Role" path="role_id">
         <n-select
@@ -39,20 +39,20 @@
           :options="roles"
         />
       </n-form-item-gi>
-      <n-form-item-gi v-if="isVendor" :span="12" label="Shop Name" path="shop_id">
+      <n-form-item-gi v-if="isVendor" :span="12" label="company Name" path="company_id">
         <n-select
           :filterable="true"
           :tag="false"
-          placeholder="Select Shop"
-          v-model:value="formValue.shop_id"
+          placeholder="Select company"
+          v-model:value="formValue.company_id"
           clearable
-          @focus="getShopsOnFocus"
+          @focus="getCompaniesOnFocus"
           :remote="true"
           :clear-filter-after-select="false"
-          label-field="shop_name"
+          label-field="company_name"
           value-field="id"
-          :loading="shopLoading"
-          :options="shops"
+          :loading="companyLoading"
+          :options="companies"
         />
       </n-form-item-gi>
     </n-grid>
@@ -69,10 +69,11 @@ import { ref } from 'vue';
 import { type FormInst } from 'naive-ui';
 import { createRecordApi } from '@src/api/endpoints';
 import { usefilterRole } from '@src/filters/roles';
-import { usefilterShop } from '@src/filters/shops';
+import { usefilterCompany } from '@src/filters/company';
+import { formRules } from '@src/rules/user_rules';
 
 const { roles, roleLoading, getRolesOnFocus } = usefilterRole();
-const { shops, shopLoading, getShopsOnFocus } = usefilterShop();
+const { companies, companyLoading, getCompaniesOnFocus } = usefilterCompany();
 const formRef = ref<FormInst | null>(null);
 const formValue: any = ref({});
 const isVendor: any = ref(false);
@@ -108,40 +109,6 @@ const handleValidateClick = (e: MouseEvent) => {
     }
   });
 };
-
-const status = ref([
-  {
-    label: 'active',
-    value: 'active'
-  },
-  {
-    label: 'disabled',
-    value: 'disabled'
-  }
-]);
-
-const rules = ref({
-  first_name: {
-    required: true,
-    message: 'Please Enter First Name',
-    trigger: 'blur'
-  },
-  last_name: {
-    required: true,
-    message: 'Please Enter last Name',
-    trigger: 'blur'
-  },
-  email: {
-    required: true,
-    message: 'Please Enter email',
-    trigger: 'blur'
-  },
-  password: {
-    required: true,
-    message: 'Please Enter Password',
-    trigger: 'blur'
-  }
-});
 </script>
 
 <style lang="scss" scoped></style>

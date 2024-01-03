@@ -1,11 +1,11 @@
 <template>
-  <n-form ref="formRef" :label-width="80" :model="formValue" :rules="rules" size="small">
+  <n-form ref="formRef" :label-width="80" :model="formValue" :rules="formRules" size="small">
     <n-grid :span="24" :x-gap="24">
       <n-form-item-gi :span="12" label="Email" path="email">
         <n-input v-model:value="formValue.email" placeholder="Enter Email" />
       </n-form-item-gi>
       <n-form-item-gi :span="12" label="Status" path="status">
-        <n-select v-model:value="formValue.status" size="small" :options="status" />
+        <n-switch v-model:value="formValue.status" :checked-value="1" :unchecked-value="0" />
       </n-form-item-gi>
       <n-form-item-gi :span="12" label="User Role" path="role_id">
         <n-select
@@ -38,6 +38,7 @@ import { ref } from 'vue';
 import { type FormInst } from 'naive-ui';
 import { getRecordApi, updateRecordApi } from '@src/api/endpoints';
 import { usefilterRole } from '@src/filters/roles';
+import { formRules } from '@src/rules/user_rules';
 
 const { roles, roleLoading, getRoles, getRolesOnFocus } = usefilterRole();
 const formRef = ref<FormInst | null>(null);
@@ -71,40 +72,6 @@ const handleValidateClick = (e: MouseEvent) => {
     }
   });
 };
-
-const status = ref([
-  {
-    label: 'active',
-    value: 'active'
-  },
-  {
-    label: 'disabled',
-    value: 'disabled'
-  }
-]);
-
-const rules = ref({
-  first_name: {
-    required: true,
-    message: 'Please Enter First Name',
-    trigger: 'blur'
-  },
-  last_name: {
-    required: true,
-    message: 'Please Enter last Name',
-    trigger: 'blur'
-  },
-  email: {
-    required: true,
-    message: 'Please Enter email',
-    trigger: 'blur'
-  },
-  password: {
-    required: true,
-    message: 'Please Enter Password',
-    trigger: 'blur'
-  }
-});
 </script>
 
 <style lang="scss" scoped></style>

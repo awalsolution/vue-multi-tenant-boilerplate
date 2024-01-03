@@ -39,6 +39,7 @@
             <thead class="head">
               <tr>
                 <th class="th">Role Name</th>
+                <th class="th">Company Name</th>
                 <th class="th">Created At</th>
                 <th
                   class="sticky_el right-0 z-20"
@@ -59,8 +60,9 @@
                 <td colspan="6" class="data_placeholder">Record Not Exist</td>
               </tr>
               <tr v-else v-for="item in list" :key="item.id" class="body_tr">
-                <td v-if="item.name" class="td">{{ item.name }}</td>
-                <td class="td">{{ item.created_at }}</td>
+                <td class="td">{{ item?.name }}</td>
+                <td class="td">{{ item?.company?.company_name }}</td>
+                <td class="td">{{ item?.created_at }}</td>
                 <td
                   class="sticky_el right-0 z-10"
                   v-permission="{

@@ -151,7 +151,7 @@ const logout = async () => {
     .finally(() => location.reload());
 };
 
-type UserOptionKey = 'logout' | 'profile' | 'change-password' | 'shop_setting';
+type UserOptionKey = 'logout' | 'profile' | 'change-password' | 'company_setting';
 
 const selectUserOption = (key: UserOptionKey) => {
   switch (key) {
@@ -164,8 +164,8 @@ const selectUserOption = (key: UserOptionKey) => {
     case 'change-password':
       router.push('/change-password');
       break;
-    case 'shop_setting':
-      router.push({ name: 'system_shop' });
+    case 'company_setting':
+      router.push({ name: 'system_company' });
       break;
     default:
       break;
@@ -191,8 +191,8 @@ const userOptions = [
     accesses: true
   },
   {
-    label: () => 'Shop Setting',
-    key: 'shop_setting',
+    label: () => 'Company Setting',
+    key: 'compant_setting',
     icon: renderIcon(SettingsOutline),
     accesses: isSuperAdminUser()
   },

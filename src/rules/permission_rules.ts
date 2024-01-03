@@ -6,11 +6,11 @@ export const formRules = ref({
     message: 'Please Enter Name',
     trigger: 'blur'
   },
-  menu_id: {
-    required: true,
-    message: 'Please select Menu Type',
-    trigger: 'blur'
-  },
+  // menu_id: {
+  //   required: true,
+  //   message: 'Please select Menu Type',
+  //   trigger: 'onchange'
+  // },
   type: {
     required: true,
     message: 'Please select Permission Type',

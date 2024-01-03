@@ -118,8 +118,8 @@
                 <th class="th">Email</th>
                 <th class="th">Role</th>
                 <th class="th">Phone#</th>
-                <th class="th">Shop</th>
-                <th class="th">Shop Phone#</th>
+                <th class="th">Company</th>
+                <th class="th">Company Phone#</th>
                 <th class="th">Status</th>
                 <th class="th">Address</th>
                 <th class="th">Created At</th>
@@ -146,7 +146,7 @@
                   {{ item?.profile?.first_name + ' ' + item?.profile?.last_name }}
                 </td>
                 <td class="td text-center pt-2">
-                  <n-avatar size="large" :src="`${imgUrl}${item?.profile.profile_picture}`" />
+                  <n-avatar size="large" :src="`${imgUrl}${item?.profile?.profile_picture}`" />
                 </td>
                 <td class="td">{{ item?.email }}</td>
                 <td class="td">
@@ -162,11 +162,11 @@
                   </n-space>
                 </td>
                 <td class="td">{{ item?.profile?.phone_number }}</td>
-                <td class="td">{{ item?.shop?.shop_name }}</td>
-                <td class="td">{{ item?.shop?.shop_phone }}</td>
+                <td class="td">{{ item?.company?.company_name }}</td>
+                <td class="td">{{ item?.company?.phone_number }}</td>
                 <td class="td">
                   <n-tag :bordered="false" :type="item.status === 'disabled' ? 'error' : 'info'">
-                    {{ item.status }}
+                    {{ item.status === 1 ? 'Active' : 'Disable' }}
                   </n-tag>
                 </td>
                 <td class="td">
@@ -404,3 +404,4 @@ const fetchList = () => {
   font-style: italic;
 }
 </style>
+@src/filters/company

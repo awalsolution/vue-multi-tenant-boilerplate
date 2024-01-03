@@ -100,8 +100,8 @@
               <tr v-else v-for="item in list" :key="item.id">
                 <td class="td">{{ item.name }}</td>
                 <td class="text-center td">
-                  <n-tag :bordered="false" :type="item.type === 'private' ? 'error' : 'info'"
-                    >{{ item.type }}
+                  <n-tag :bordered="false" :type="item.type === 'private' ? 'error' : 'info'">
+                    {{ item.type }}
                   </n-tag>
                 </td>
                 <td class="td">{{ item.menus.menu_name }}</td>

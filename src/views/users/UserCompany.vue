@@ -3,39 +3,36 @@
     <n-card title="Company Setting" class="h-full overflow-y-scroll">
       <n-row>
         <n-col :span="8" class="text-center">
-          <n-avatar round :size="200" :src="`${imgUrl}${shopData.shop_logo}`" />
+          <n-avatar round :size="200" :src="`${imgUrl}${formValue.logo}`" />
         </n-col>
         <n-col :span="16">
           <n-space style="display: block" vertical>
-            <n-card title="Shop Details">
+            <n-card title="Company Details">
               <n-row gutter="12">
                 <n-col :span="8">
-                  <n-form-item label="Shop Name" path="shop_name">
+                  <n-form-item label="Compant Name" path="company_name">
                     <n-input
-                      v-model:value="shopData.shop_name"
-                      placeholder="Enter Shop Name"
+                      v-model:value="formValue.compant_name"
+                      placeholder="Enter Name"
                       disabled
                     />
                   </n-form-item>
                 </n-col>
                 <n-col :span="8">
-                  <n-form-item label="Shop Phone" path="shop_phone">
+                  <n-form-item label="Company Phone" path="phone_number">
                     <n-input
-                      v-model:value="shopData.shop_phone"
-                      placeholder="Enter Shop Phone"
+                      v-model:value="formValue.phone_number"
+                      placeholder="Enter Phone"
                       disabled
                     />
                   </n-form-item>
                 </n-col>
                 <n-col :span="8">
                   <n-form-item label="Status" path="status">
-                    <n-select
-                      v-model:value="shopData.status"
-                      size="small"
-                      :options="[
-                        { label: 'active', value: 'active' },
-                        { label: 'disabled', value: 'disabled' }
-                      ]"
+                    <n-switch
+                      v-model:value="formValue.status"
+                      :checked-value="1"
+                      :unchecked-value="0"
                       disabled
                     />
                   </n-form-item>
@@ -43,7 +40,7 @@
                 <n-col :span="8">
                   <n-form-item label="Address" path="address">
                     <n-input
-                      v-model:value="shopData.address"
+                      v-model:value="formValue.address"
                       placeholder="Enter Address"
                       disabled
                     />
@@ -51,18 +48,18 @@
                 </n-col>
                 <n-col :span="8">
                   <n-form-item label="City" path="city">
-                    <n-input v-model:value="shopData.city" placeholder="Enter City" disabled />
+                    <n-input v-model:value="formValue.city" placeholder="Enter City" disabled />
                   </n-form-item>
                 </n-col>
                 <n-col :span="8">
                   <n-form-item label="State" path="state">
-                    <n-input v-model:value="shopData.state" placeholder="Enter State" disabled />
+                    <n-input v-model:value="formValue.state" placeholder="Enter State" disabled />
                   </n-form-item>
                 </n-col>
                 <n-col :span="8">
                   <n-form-item label="Country" path="country">
                     <n-input
-                      v-model:value="shopData.country"
+                      v-model:value="formValue.country"
                       placeholder="Enter Country"
                       disabled
                     />
@@ -107,17 +104,17 @@ import EditCompany from '@src/views/users/EditCompany.vue';
 const { imgUrl } = useEnv();
 const userStore = useUserStore();
 const showEditModal = ref(false);
-const shopData: any = ref({});
+const formValue: any = ref({});
 
 const handleValidateClick = (e: MouseEvent) => {
   e.preventDefault();
   showEditModal.value = true;
 };
 
-console.log(shopData);
+console.log(formValue);
 
 onMounted(() => {
-  shopData.value = userStore.currentUser.shop;
+  formValue.value = userStore.currentUser.company;
 });
 </script>
 
