@@ -1,11 +1,11 @@
 <template>
-  <n-form ref="formRef" :label-width="80" :model="formValue" :rules="formRules" size="small">
+  <n-form ref="formRef" :label-width="80" :model="formValue" :rules="attendanceRules" size="small">
     <n-grid :span="24" :x-gap="24">
       <n-form-item-gi :span="12" label="Email" path="email">
         <n-input v-model:value="formValue.email" placeholder="Enter Email" />
       </n-form-item-gi>
       <n-form-item-gi :span="12" label="Status" path="status">
-        <n-switch v-model:value="formValue.status" :checked-value="1" :unchecked-value="0" />
+        <n-select v-model:value="formValue.status" size="small" :options="status" />
       </n-form-item-gi>
       <n-form-item-gi :span="12" label="User Role" path="role_id">
         <n-select
@@ -38,7 +38,7 @@ import { ref } from 'vue';
 import { type FormInst } from 'naive-ui';
 import { getRecordApi, updateRecordApi } from '@src/api/endpoints';
 import { usefilterRole } from '@src/filters/roles';
-import { formRules } from '@src/rules/user_rules';
+import { attendanceRules } from '@src/rules/attendance_rules';
 
 const { roles, roleLoading, getRoles, getRolesOnFocus } = usefilterRole();
 const formRef = ref<FormInst | null>(null);
@@ -50,8 +50,8 @@ const props = defineProps({
     type: Number
   }
 });
-// fetch single user using id
-getRecordApi(`/users/${props.id}`).then((res: any) => {
+// fetch single attendance using id
+getRecordApi(`/attendance/${props.id}`).then((res: any) => {
   formValue.value = res.result;
   formValue.value.roles = formValue.value.roles.map((v: any) => v.id);
   getRoles();
@@ -62,7 +62,7 @@ const handleValidateClick = (e: MouseEvent) => {
   formRef.value?.validate((errors) => {
     if (!errors) {
       console.log(formValue.value);
-      updateRecordApi(`/users/${formValue.value.id}`, formValue.value).then((res: any) => {
+      updateRecordApi(`/attendance/${formValue.value.id}`, formValue.value).then((res: any) => {
         window['$message'].success(res.message);
         emits('updated', res.result);
       });
@@ -72,6 +72,17 @@ const handleValidateClick = (e: MouseEvent) => {
     }
   });
 };
+
+const status = ref([
+  {
+    label: 'active',
+    value: 'active'
+  },
+  {
+    label: 'disabled',
+    value: 'disabled'
+  }
+]);
 </script>
 
 <style lang="scss" scoped></style>

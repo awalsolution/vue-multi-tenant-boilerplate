@@ -1,9 +1,28 @@
 <template>
   <DataTableLayout :loading="loading">
-    <template #tableHeader>
-      <div class="flex flex-col items-center space-y-2 sm:flex-row sm:justify-between sm:space-y-0">
-        <div class="flex flex-col items-center space-y-2 sm:flex-row sm:space-x-3 sm:space-y-0">
-          <div class="flex flex-col sm:flex-row w-full items-center !space-x-2 sm:w-fit">
+    <template #header>
+      <div class="flex w-full items-center px-10 pt-5">
+        <h2 class="text-lg">Permissions</h2>
+        <div class="flex flex-1 w-full items-center justify-between space-x-3 sm:justify-end">
+          <NButton secondary type="info" :size="isMobile ? 'small' : 'medium'"> Import </NButton>
+          <NButton secondary type="info" :size="isMobile ? 'small' : 'medium'"> Export </NButton>
+          <NButton
+            secondary
+            type="info"
+            :size="isMobile ? 'small' : 'medium'"
+            @click="showModal = true"
+            v-permission="{ action: ['can view permission create'] }"
+          >
+            Add Permission
+          </NButton>
+        </div>
+      </div>
+    </template>
+
+    <template #content>
+      <div class="px-10 pt-5">
+        <div class="bg-white rounded-lg shadow-lg w-full overflow-x-scroll border border-gray-200">
+          <div class="flex flex-wrap flex-col sm:flex-row w-full items-center gap-3 sm:w-fit p-3">
             <n-input
               class="sm:!w-[230px]"
               v-model:value="searchParams.name"
@@ -57,89 +76,79 @@
               Search
             </n-button>
           </div>
-        </div>
-        <div class="flex flex-1 w-full items-center justify-between space-x-3 sm:justify-end">
-          <NButton
-            secondary
-            type="info"
-            :size="isMobile ? 'small' : 'medium'"
-            @click="showModal = true"
-            v-permission="{ action: ['can view permission create'] }"
-          >
-            Create
-          </NButton>
+          <table class="table">
+            <thead class="head">
+              <tr>
+                <th class="th">Permission Name</th>
+                <th class="th">Permission Type</th>
+                <th class="th">Menu Name</th>
+                <th class="th">Created At</th>
+                <th
+                  class="sticky_el right-0 z-10"
+                  v-permission="{
+                    action: ['can view permission update', 'can view permission delete']
+                  }"
+                >
+                  Actions
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-if="list.length === 0">
+                <td colspan="7" class="data_placeholder">Record Not Exist</td>
+              </tr>
+              <tr v-else v-for="item in list" :key="item.id">
+                <td class="td">{{ item.name }}</td>
+                <td class="text-center td">
+                  <n-tag :bordered="false" :type="item.type === 'private' ? 'error' : 'info'">
+                    {{ item.type }}
+                  </n-tag>
+                </td>
+                <td class="td">{{ item.menus.menu_name }}</td>
+                <td class="td">{{ item.created_at }}</td>
+                <td
+                  class="sticky_el right-0 z-10"
+                  v-permission="{
+                    action: ['can view permission update', 'can view permission delete']
+                  }"
+                >
+                  <n-dropdown
+                    @click="actionOperation(item)"
+                    :onSelect="selectedAction"
+                    trigger="click"
+                    :options="filteredOptions"
+                  >
+                    <n-button size="small" :circle="true">
+                      <n-icon>
+                        <more-outlined />
+                      </n-icon>
+                    </n-button>
+                  </n-dropdown>
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
     </template>
 
-    <template #tableContent>
-      <table class="table">
-        <thead class="head">
-          <tr>
-            <th class="th">Permission Name</th>
-            <th class="th">Permission Type</th>
-            <th class="th">Menu Name</th>
-            <th class="th">Created At</th>
-            <th
-              class="sticky_el right-0 z-20"
-              v-permission="{
-                action: ['can view permission update', 'can view permission delete']
-              }"
-            >
-              Actions
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-if="list.length === 0">
-            <td colspan="7" class="data_placeholder">Record Not Exist</td>
-          </tr>
-          <tr v-else v-for="item in list" :key="item.id">
-            <td class="td">{{ item.name }}</td>
-            <td class="text-center td">
-              <n-tag :bordered="false" :type="item.type === 'private' ? 'error' : 'info'"
-                >{{ item.type }}
-              </n-tag>
-            </td>
-            <td class="td">{{ item.menus.menu_name }}</td>
-            <td class="td">{{ item.created_at }}</td>
-            <td
-              class="sticky_el right-0 z-10"
-              v-permission="{
-                action: ['can view permission update', 'can view permission delete']
-              }"
-            >
-              <n-dropdown
-                @click="actionOperation(item)"
-                :onSelect="selectedAction"
-                trigger="click"
-                :options="filteredOptions"
-              >
-                <n-button size="small" :circle="true">
-                  <n-icon>
-                    <more-outlined />
-                  </n-icon>
-                </n-button>
-              </n-dropdown>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </template>
-
-    <template #tableFooter>
-      <div class="flex flex-col items-center space-y-2 sm:flex-row sm:justify-end sm:space-y-0">
-        <n-pagination
-          v-model:page="page"
-          v-model:page-size="pageSize"
-          :item-count="itemCount"
-          :page-sizes="pageSizes"
-          size="small"
-          :show-quick-jumper="true"
-          :show-size-picker="true"
+    <template #footer>
+      <div class="px-10 p-3">
+        <div
+          class="flex flex-col items-center sm:flex-row sm:justify-end bg-white p-3 rounded-lg shadow-lg"
         >
-          <template #prefix="{ itemCount }"> Total: {{ itemCount }} </template>
-        </n-pagination>
+          <n-pagination
+            v-model:page="page"
+            v-model:page-size="pageSize"
+            :item-count="itemCount"
+            :page-sizes="pageSizes"
+            size="small"
+            :show-quick-jumper="true"
+            :show-size-picker="true"
+          >
+            <template #prefix="{ itemCount }"> Total: {{ itemCount }} </template>
+          </n-pagination>
+        </div>
       </div>
     </template>
 
@@ -184,10 +193,10 @@ import { usefilterMenu } from '@src/filters/menus';
 import { useMobile } from '@src/hooks/useMediaQuery';
 import { usePermission } from '@src/hooks/permission/usePermission';
 import { usePagination } from '@src/hooks/pagination/usePagination';
-import AddPermission from '@src/components/permission/AddPermission.vue';
-import EditPermission from '@src/components/permission/EditPermission.vue';
 import DataTableLayout from '@src/layouts/DataTableLayout/index.vue';
 import { renderIcon } from '@src/utils/renderIcon';
+import AddPermission from '@src/components/permission/AddPermission.vue';
+import EditPermission from '@src/components/permission/EditPermission.vue';
 
 const dialog = useDialog();
 const isMobile = useMobile();
@@ -276,10 +285,10 @@ const fetchList = () => {
   @apply w-full text-sm text-left text-gray-500 dark:text-gray-400;
 }
 .head {
-  @apply sticky top-0 text-xs text-gray-700 bg-gray-50 dark:bg-gray-700 dark:text-gray-400 z-20;
+  @apply sticky top-0 text-xs   bg-gray-50 dark:bg-gray-700 dark:text-gray-400 z-20;
 }
 .th {
-  @apply px-3 py-3 border-r border-b border-gray-200 dark:border-gray-800 whitespace-nowrap;
+  @apply px-3 py-3 border-t border-r border-b border-gray-200 dark:border-gray-800 whitespace-nowrap;
 }
 .body_tr {
   @apply hover:bg-gray-50 dark:hover:bg-gray-600;

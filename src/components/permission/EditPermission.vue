@@ -1,5 +1,5 @@
 <template>
-  <n-form ref="formRef" :label-width="80" :model="formValue" :rules="rules" size="small">
+  <n-form ref="formRef" :label-width="80" :model="formValue" :rules="formRules" size="small">
     <n-form-item style="padding-top: 24px" label="Name" path="name">
       <n-input v-model:value="formValue.name" placeholder="Edit Name" />
     </n-form-item>
@@ -45,6 +45,7 @@ import { ref } from 'vue';
 import { type FormInst } from 'naive-ui';
 import { getRecordApi, updateRecordApi } from '@src/api/endpoints';
 import { usefilterMenu } from '@src/filters/menus';
+import { formRules } from '@src/rules/permission_rules';
 
 const { menus, menuLoading, getMenus, getMenusOnFocus } = usefilterMenu();
 const formValue: any = ref({});
@@ -60,14 +61,6 @@ const props = defineProps({
 getRecordApi(`/permissions/${props.id}`).then((res: any) => {
   formValue.value = res.result;
   getMenus();
-});
-
-const rules = ref({
-  name: {
-    required: true,
-    message: 'Please Enter Name',
-    trigger: 'blur'
-  }
 });
 
 const handleValidateClick = (e: MouseEvent) => {

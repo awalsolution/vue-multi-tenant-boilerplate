@@ -23,12 +23,12 @@
 import { ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
 import { type MenuOption } from 'naive-ui';
-import { menuOptions } from '@src/constants/sidebarItems';
+// import { menuOptions } from '@src/constants/sidebarItems';
 import { router } from '@src/router';
 
 const route = useRoute();
 
-const firstLevelOptions = ref(menuOptions);
+const firstLevelOptions = ref([{ label: '', children: [] }]);
 const firstLevelPath = ref();
 
 const secondLevelOptions = ref<MenuOption[]>([]);
@@ -48,7 +48,9 @@ watch(
 
     const routePath = route.fullPath.split('/').filter((path) => path !== '');
 
-    const firstLevelOption = firstLevelOptions.value.find((option) => option.key === routePath[0]);
+    const firstLevelOption = firstLevelOptions.value.find(
+      (option: any) => option.key === routePath[0]
+    );
     if (!firstLevelOption) {
       return;
     }
@@ -59,8 +61,8 @@ watch(
     }
 
     secondLevelOptions.value = firstLevelOption.children;
-    const secondLevelOption = firstLevelOption.children.find(
-      (option) => option.key === routePath[1]
+    const secondLevelOption: any = firstLevelOption.children.find(
+      (option: any) => option.key === routePath[1]
     );
     if (!secondLevelOption) {
       secondLevelPath.value = '';

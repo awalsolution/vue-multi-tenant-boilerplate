@@ -4,7 +4,7 @@ import { useUserStore } from '@src/store/modules/user';
 export const isSuperAdminUser = () => {
   const userStore = useUserStore();
   if (userStore.hasData()) {
-    if (userStore.currentUser.shop_id === null) {
+    if (userStore.currentUser.company_id === null) {
       return true;
     } else {
       return false;
@@ -27,12 +27,12 @@ export const isSuperAdmin = () => {
   }
 };
 
-// check only vendor
+// check only company admin
 export const isVendor = () => {
   const userStore = useUserStore();
   if (userStore.hasData()) {
     const isSuperAdmin = userStore.roles.some((item: any) => {
-      return item.name === 'vendor';
+      return item.name === 'company admin';
     });
 
     return isSuperAdmin;

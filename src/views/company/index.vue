@@ -2,16 +2,16 @@
   <DataTableLayout :loading="loading">
     <template #header>
       <div class="flex w-full items-center px-10 pt-5">
-        <h2 class="text-lg">Menus</h2>
+        <h2 class="text-lg">Companies</h2>
         <div class="flex flex-1 w-full items-center justify-between space-x-3 sm:justify-end">
           <NButton
             secondary
             type="info"
             :size="isMobile ? 'small' : 'medium'"
             @click="showModal = true"
-            v-permission="{ action: ['can view menu create'] }"
+            v-permission="{ action: ['can view company create'] }"
           >
-            Add Menu
+            Add Company
           </NButton>
         </div>
       </div>
@@ -23,7 +23,7 @@
           <div class="flex gap-3 flex-col sm:flex-row flex-wrap w-full items-center sm:w-fit p-3">
             <n-input
               class="sm:!w-[230px]"
-              v-model:value="searchParams.name"
+              v-model:value="searchParams.company_name"
               clearable
               placeholder="Search By Name"
               size="small"
@@ -31,6 +31,28 @@
             >
               <template #prefix> <NIcon :component="SearchOutlined" class="mr-1" /> </template>
             </n-input>
+            <n-input
+              class="sm:!w-[230px]"
+              v-model:value="searchParams.phone_number"
+              clearable
+              placeholder="Search By Phone"
+              size="small"
+              type="text"
+            >
+              <template #prefix> <NIcon :component="SearchOutlined" class="mr-1" /> </template>
+            </n-input>
+            <n-select
+              class="sm:!w-[230px]"
+              v-model:value="searchParams.status"
+              :options="[
+                { label: 'Active', value: 'active' },
+                { label: 'Disabled', value: 'disabled' }
+              ]"
+              clearable
+              filterable
+              placeholder="Search By Status"
+              size="small"
+            />
             <n-button secondary size="small" strong type="info" @click="fetchList">
               Search
             </n-button>
@@ -38,12 +60,16 @@
           <table class="table">
             <thead class="head">
               <tr>
-                <th class="th">Menu Name</th>
+                <th class="th">Company Name</th>
+                <th class="th">Logo</th>
+                <th class="th">Phone#</th>
+                <th class="th text-center">Status</th>
+                <th class="th">Address</th>
                 <th class="th">Created At</th>
                 <th
                   class="sticky_el right-0 z-20"
                   v-permission="{
-                    action: ['can view menu update', 'can view menu delete']
+                    action: ['can view company update', 'can view company delete']
                   }"
                 >
                   Actions
@@ -52,15 +78,27 @@
             </thead>
             <tbody>
               <tr v-if="list.length === 0">
-                <td colspan="10" class="data_placeholder">Record Not Exist</td>
+                <td colspan="9" class="data_placeholder">Record Not Exist</td>
               </tr>
               <tr v-else v-for="item in list" :key="item.id" class="body_tr">
-                <td class="td">{{ item.menu_name }}</td>
+                <td class="td">{{ item.company_name }}</td>
+                <td class="td text-center pt-1">
+                  <n-avatar :size="50" :src="`${imgUrl}${item.logo}`" />
+                </td>
+                <td class="td">{{ item.phone_number }}</td>
+                <td class="td text-center">
+                  <n-tag :bordered="false" :type="item.status === 'disabled' ? 'error' : 'info'">
+                    {{ item.status === 1 ? 'Active' : 'Disable' }}
+                  </n-tag>
+                </td>
+                <td class="td">
+                  {{ item.address + ' ' + item.city + ' ' + item?.state + ' ' + item.country }}
+                </td>
                 <td class="td">{{ item.created_at }}</td>
                 <td
                   class="sticky_el right-0 z-10"
                   v-permission="{
-                    action: ['can view menu update', 'can view menu delete']
+                    action: ['can view company update', 'can view company delete']
                   }"
                 >
                   <n-dropdown
@@ -103,12 +141,12 @@
       </div>
     </template>
 
-    <n-modal v-model:show="showModal" preset="dialog">
+    <n-modal style="width: 60%" v-model:show="showModal" preset="dialog">
       <template #header>
-        <div>Create New Menu</div>
+        <div>Create New Company</div>
       </template>
       <n-space :vertical="true">
-        <add-menu
+        <add-company
           @created="
             getList();
             showModal = false;
@@ -117,12 +155,12 @@
       </n-space>
     </n-modal>
 
-    <n-modal v-model:show="showEditModal" preset="dialog">
+    <n-modal style="width: 60%" v-model:show="showEditModal" preset="dialog">
       <template #header>
-        <div>Update Menu</div>
+        <div>Update Company</div>
       </template>
       <n-space :vertical="true">
-        <edit-menu
+        <edit-company
           :id="selectedId"
           @updated="
             getList();
@@ -138,16 +176,18 @@
 import { ref, onMounted, computed } from 'vue';
 import { NIcon, NPagination, useDialog } from 'naive-ui';
 import { MoreOutlined, EditOutlined, DeleteOutlined, SearchOutlined } from '@vicons/antd';
-import { useLoading } from '@src/hooks/useLoading';
 import { deleteRecordApi } from '@src/api/endpoints';
+import { useEnv } from '@src/hooks/useEnv';
+import { useLoading } from '@src/hooks/useLoading';
 import { useMobile } from '@src/hooks/useMediaQuery';
 import { renderIcon } from '@src/utils/renderIcon';
 import { usePermission } from '@src/hooks/permission/usePermission';
 import { usePagination } from '@src/hooks/pagination/usePagination';
 import DataTableLayout from '@src/layouts/DataTableLayout/index.vue';
-import AddMenu from '@src/components/menu/AddMenu.vue';
-import EditMenu from '@src/components/menu/EditMenu.vue';
+import AddCompany from '@src/components/company/AddCompany.vue';
+import EditCompany from '@src/components/company/EditCompany.vue';
 
+const { imgUrl } = useEnv();
 const isMobile = useMobile();
 const dialog = useDialog();
 const selectedOption: any = ref(null);
@@ -159,7 +199,7 @@ const [loading, loadingDispatcher] = useLoading(false);
 
 // fetch all records
 const { getList, list, page, pageSizes, itemCount, pageSize, searchParams }: any =
-  usePagination('/menus');
+  usePagination('/company');
 
 onMounted(() => {
   getList();
@@ -170,13 +210,13 @@ const moreOptions = ref([
     label: 'Edit',
     key: 'edit',
     icon: renderIcon(EditOutlined),
-    permission: hasPermission(['can view menu update'])
+    permission: hasPermission(['can view company update'])
   },
   {
     label: 'Delete',
     key: 'delete',
     icon: renderIcon(DeleteOutlined),
-    permission: hasPermission(['can view menu delete'])
+    permission: hasPermission(['can view company delete'])
   }
 ]);
 
@@ -196,7 +236,7 @@ function confirmationDialog() {
 
 function deleteOperation() {
   loadingDispatcher.start();
-  deleteRecordApi(`/menus/${selectedId.value}`)
+  deleteRecordApi(`/company/${selectedId.value}`)
     .then((res: any) => {
       window['$message'].success(res.message);
       getList();
@@ -244,7 +284,7 @@ const fetchList = () => {
   @apply hover:bg-gray-50 dark:hover:bg-gray-600;
 }
 .td {
-  @apply px-3 py-2 border-r border-b border-gray-200 dark:border-gray-800 whitespace-nowrap;
+  @apply px-3 border-r border-b border-gray-200 dark:border-gray-800 whitespace-nowrap;
 }
 .sticky_el {
   @apply sticky bg-gray-50 dark:bg-gray-700 px-6 whitespace-nowrap text-center border border-gray-200 dark:border-gray-800;

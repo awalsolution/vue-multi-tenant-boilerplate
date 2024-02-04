@@ -2,16 +2,16 @@
   <DataTableLayout :loading="loading">
     <template #header>
       <div class="flex w-full items-center px-10 pt-5">
-        <h2 class="text-lg">Menus</h2>
+        <h2 class="text-lg">Designations</h2>
         <div class="flex flex-1 w-full items-center justify-between space-x-3 sm:justify-end">
           <NButton
             secondary
             type="info"
             :size="isMobile ? 'small' : 'medium'"
             @click="showModal = true"
-            v-permission="{ action: ['can view menu create'] }"
+            v-permission="{ action: ['can view designation create'] }"
           >
-            Add Menu
+            Add Designation
           </NButton>
         </div>
       </div>
@@ -31,6 +31,82 @@
             >
               <template #prefix> <NIcon :component="SearchOutlined" class="mr-1" /> </template>
             </n-input>
+            <n-input
+              class="sm:!w-[230px]"
+              v-model:value="searchParams.email"
+              clearable
+              placeholder="Search By Email"
+              size="small"
+              type="text"
+            >
+              <template #prefix> <NIcon :component="SearchOutlined" class="mr-1" /> </template>
+            </n-input>
+            <n-select
+              class="sm:!w-[230px]"
+              v-model:value="searchParams.role_name"
+              :clear-filter-after-select="false"
+              :filterable="true"
+              :loading="roleLoading"
+              :options="roles"
+              :remote="true"
+              :tag="false"
+              clearable
+              label-field="name"
+              value-field="name"
+              placeholder="Search By Role"
+              size="small"
+              @focus="getRolesOnFocus"
+              @search="findRole"
+            />
+            <n-input
+              class="sm:!w-[230px]"
+              v-model:value="searchParams.phone_number"
+              clearable
+              placeholder="Search By Phone"
+              size="small"
+              type="text"
+            >
+              <template #prefix> <NIcon :component="SearchOutlined" class="mr-1" /> </template>
+            </n-input>
+            <n-select
+              class="sm:!w-[230px]"
+              v-model:value="searchParams.shop_name"
+              :clear-filter-after-select="false"
+              :filterable="true"
+              :loading="shopLoading"
+              :options="shops"
+              :remote="true"
+              :tag="false"
+              clearable
+              label-field="shop_name"
+              value-field="shop_name"
+              placeholder="Search By Shop"
+              size="small"
+              @focus="getShopsOnFocus"
+              @search="findShop"
+            />
+            <n-select
+              class="sm:!w-[230px]"
+              v-model:value="searchParams.status"
+              :options="[
+                { label: 'Active', value: 'active' },
+                { label: 'Disabled', value: 'disabled' }
+              ]"
+              clearable
+              filterable
+              placeholder="Search By Status"
+              size="small"
+            />
+            <n-input
+              class="sm:!w-[230px]"
+              v-model:value="searchParams.address"
+              clearable
+              placeholder="Search By Address"
+              size="small"
+              type="text"
+            >
+              <template #prefix> <NIcon :component="SearchOutlined" class="mr-1" /> </template>
+            </n-input>
             <n-button secondary size="small" strong type="info" @click="fetchList">
               Search
             </n-button>
@@ -38,12 +114,18 @@
           <table class="table">
             <thead class="head">
               <tr>
-                <th class="th">Menu Name</th>
+                <th class="th">Name</th>
+                <th class="th">Picture</th>
+                <th class="th">Email</th>
+                <th class="th">Role</th>
+                <th class="th">Phone#</th>
+                <th class="th">Status</th>
+                <th class="th">Address</th>
                 <th class="th">Created At</th>
                 <th
                   class="sticky_el right-0 z-20"
                   v-permission="{
-                    action: ['can view menu update', 'can view menu delete']
+                    action: ['can view designation update', 'can view designation delete']
                   }"
                 >
                   Actions
@@ -52,15 +134,50 @@
             </thead>
             <tbody>
               <tr v-if="list.length === 0">
-                <td colspan="10" class="data_placeholder">Record Not Exist</td>
+                <td colspan="15" class="data_placeholder">Record Not Exist</td>
               </tr>
               <tr v-else v-for="item in list" :key="item.id" class="body_tr">
-                <td class="td">{{ item.menu_name }}</td>
+                <td class="td">
+                  {{ item?.emp_profile?.first_name + ' ' + item?.emp_profile?.last_name }}
+                </td>
+                <td class="td text-center pt-2">
+                  <n-avatar size="large" :src="`${imgUrl}${item?.emp_profile.profile_picture}`" />
+                </td>
+                <td class="td">{{ item?.email }}</td>
+                <td class="td">
+                  <n-space>
+                    <n-tag
+                      v-for="role in item.roles"
+                      :key="role.id"
+                      type="success"
+                      :bordered="false"
+                    >
+                      {{ role?.name }}
+                    </n-tag>
+                  </n-space>
+                </td>
+                <td class="td">{{ item?.emp_profile?.phone_number }}</td>
+                <td class="td">
+                  <n-tag :bordered="false" :type="item.status === 'disabled' ? 'error' : 'info'">
+                    {{ item.status }}
+                  </n-tag>
+                </td>
+                <td class="td">
+                  {{
+                    item?.emp_profile?.address +
+                    ' ' +
+                    item?.emp_profile?.city +
+                    ' ' +
+                    item?.emp_profile?.state +
+                    ' ' +
+                    item?.emp_profile?.country
+                  }}
+                </td>
                 <td class="td">{{ item.created_at }}</td>
                 <td
                   class="sticky_el right-0 z-10"
                   v-permission="{
-                    action: ['can view menu update', 'can view menu delete']
+                    action: ['can view designation update', 'can view designation delete']
                   }"
                 >
                   <n-dropdown
@@ -103,12 +220,12 @@
       </div>
     </template>
 
-    <n-modal v-model:show="showModal" preset="dialog">
+    <n-modal style="width: 70%" v-model:show="showModal" preset="dialog">
       <template #header>
-        <div>Create New Menu</div>
+        <div>Create New designation</div>
       </template>
       <n-space :vertical="true">
-        <add-menu
+        <add-designation
           @created="
             getList();
             showModal = false;
@@ -117,12 +234,12 @@
       </n-space>
     </n-modal>
 
-    <n-modal v-model:show="showEditModal" preset="dialog">
+    <n-modal style="width: 70%" v-model:show="showEditModal" preset="dialog">
       <template #header>
-        <div>Update Menu</div>
+        <div>Update designation</div>
       </template>
       <n-space :vertical="true">
-        <edit-menu
+        <edit-designation
           :id="selectedId"
           @updated="
             getList();
@@ -138,16 +255,20 @@
 import { ref, onMounted, computed } from 'vue';
 import { NIcon, NPagination, useDialog } from 'naive-ui';
 import { MoreOutlined, EditOutlined, DeleteOutlined, SearchOutlined } from '@vicons/antd';
-import { useLoading } from '@src/hooks/useLoading';
 import { deleteRecordApi } from '@src/api/endpoints';
+import { useLoading } from '@src/hooks/useLoading';
+import { useEnv } from '@src/hooks/useEnv';
 import { useMobile } from '@src/hooks/useMediaQuery';
+import { usefilterRole } from '@src/filters/roles';
+import { usefilterShop } from '@src/filters/shops';
 import { renderIcon } from '@src/utils/renderIcon';
 import { usePermission } from '@src/hooks/permission/usePermission';
 import { usePagination } from '@src/hooks/pagination/usePagination';
 import DataTableLayout from '@src/layouts/DataTableLayout/index.vue';
-import AddMenu from '@src/components/menu/AddMenu.vue';
-import EditMenu from '@src/components/menu/EditMenu.vue';
+import AddDesignation from '@src/components/designation/AddDesignation.vue';
+import EditDesignation from '@src/components/designation/EditDesignation.vue';
 
+const { imgUrl } = useEnv();
 const isMobile = useMobile();
 const dialog = useDialog();
 const selectedOption: any = ref(null);
@@ -156,10 +277,12 @@ const showEditModal = ref(false);
 const selectedId = ref();
 const { hasPermission } = usePermission();
 const [loading, loadingDispatcher] = useLoading(false);
+const { roles, roleLoading, findRole, getRolesOnFocus } = usefilterRole();
+const { shops, shopLoading, findShop, getShopsOnFocus } = usefilterShop();
 
 // fetch all records
 const { getList, list, page, pageSizes, itemCount, pageSize, searchParams }: any =
-  usePagination('/menus');
+  usePagination('/designation');
 
 onMounted(() => {
   getList();
@@ -170,13 +293,13 @@ const moreOptions = ref([
     label: 'Edit',
     key: 'edit',
     icon: renderIcon(EditOutlined),
-    permission: hasPermission(['can view menu update'])
+    permission: hasPermission(['can view designation update'])
   },
   {
     label: 'Delete',
     key: 'delete',
     icon: renderIcon(DeleteOutlined),
-    permission: hasPermission(['can view menu delete'])
+    permission: hasPermission(['can view designation delete'])
   }
 ]);
 
@@ -196,7 +319,7 @@ function confirmationDialog() {
 
 function deleteOperation() {
   loadingDispatcher.start();
-  deleteRecordApi(`/menus/${selectedId.value}`)
+  deleteRecordApi(`/designation/${selectedId.value}`)
     .then((res: any) => {
       window['$message'].success(res.message);
       getList();
@@ -216,7 +339,6 @@ const actionOperation = (item: any) => {
   if (selectedOption.value === 'edit') {
     showEditModal.value = true;
     selectedId.value = item.id;
-    // router.push(`/roles/${item.id}`);
   } else if (selectedOption.value === 'delete') {
     selectedId.value = item.id;
     confirmationDialog();
@@ -249,6 +371,7 @@ const fetchList = () => {
 .sticky_el {
   @apply sticky bg-gray-50 dark:bg-gray-700 px-6 whitespace-nowrap text-center border border-gray-200 dark:border-gray-800;
 }
+
 .data_placeholder {
   text-align: center;
   color: gray;
@@ -257,3 +380,4 @@ const fetchList = () => {
   font-style: italic;
 }
 </style>
+@src/filters/company

@@ -12,7 +12,7 @@ export function generatorMenu(routerMap: Array<any>) {
       ...info.meta,
       label: info.meta?.title,
       key: info.name,
-      icon: isRoot ? item.meta?.icon : info.meta?.icon,
+      icon: isRoot ? item.meta?.icon : info.meta?.icon
     };
     // Whether there is a submenu and process it recursively
     if (info.children && info.children.length > 0) {
@@ -40,9 +40,7 @@ function filterRouter(routerMap: Array<any>) {
   return routerMap.filter((item) => {
     return (
       (item.meta?.hidden || false) != true &&
-      !['/:path(.*)*', '/', PageEnum.REDIRECT, PageEnum.BASE_LOGIN].includes(
-        item.path
-      )
+      !['/:path(.*)*', '/', PageEnum.REDIRECT, PageEnum.BASE_LOGIN].includes(item.path)
     );
   });
 }

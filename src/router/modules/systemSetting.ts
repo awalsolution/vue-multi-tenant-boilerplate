@@ -15,7 +15,7 @@ const routes: RouteRecordRaw[] = [
       title: 'System Settings',
       permissions: ['can view system setting menu'],
       icon: renderIcon(SettingsOutline),
-      sort: 6
+      sort: 10
     },
     children: [
       {
@@ -38,21 +38,21 @@ const routes: RouteRecordRaw[] = [
         component: () => import('@src/views/users/Profile.vue')
       },
       {
-        path: 'shop',
-        name: `${routeName}_shop`,
+        path: 'company',
+        name: `${routeName}_company`,
         meta: {
-          title: 'Shop',
-          permissions: ['can view user shop'],
+          title: 'Company',
+          permissions: ['can view company profile'],
           hidden: true
         },
-        component: () => import('@src/views/users/UserShop.vue')
+        component: () => import('@src/views/users/UserCompany.vue')
       },
       {
         path: 'assing-permission',
         name: `${routeName}_assing_permission`,
         meta: {
           title: 'Assing Permission',
-          permissions: ['can view assign permission menu'],
+          permissions: ['can view assign permission'],
           hidden: true
         },
         component: () => import('@src/components/permission/AssignPermissions.vue')
@@ -74,6 +74,15 @@ const routes: RouteRecordRaw[] = [
           permissions: ['can view permission menu']
         },
         component: () => import('@src/views/permissions/index.vue')
+      },
+      {
+        path: 'menus',
+        name: `${routeName}_menu`,
+        meta: {
+          title: 'Menus',
+          permissions: ['can view menu menu']
+        },
+        component: () => import('@src/views/menu/index.vue')
       }
     ]
   }
