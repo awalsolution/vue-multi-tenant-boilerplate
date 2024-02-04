@@ -1,13 +1,9 @@
 <template>
   <main class="flex h-screen w-screen">
-    <div class="invisible relative w-0 bg-blue-200 dark:bg-gray-600 sm:visible sm:w-1/2">
-      <div
-        class="absolute inset-0 m-auto flex h-fit w-fit select-none flex-col space-y-2 text-center font-mono"
-      >
-        <img src="@src/assets/images/bit_ocean.png" width="180" height="180" loading="eager" />
-        <span class="text-xl font-semibold">{{ appTitle }}</span>
-        <span class="text-base">v{{ version }}</span>
-      </div>
+    <div class="flex flex-col items-center justify-center w-1/2 bg-blue-200 dark:bg-gray-600">
+      <img src="@src/assets/images/bit_ocean.png" width="180" height="180" loading="eager" />
+      <span class="text-xl font-semibold">{{ appTitle }}</span>
+      <span class="text-base">v{{ version }}</span>
     </div>
 
     <div class="relative w-full bg-blue-300 dark:bg-gray-700 sm:w-1/2">
