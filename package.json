@@ -1,6 +1,6 @@
 {
-  "name": "awal-hrms-tenant-dashbaord",
-  "version": "0.0.0",
+  "name": "awal-hrms-admin-dashbaord",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
     "dev": "vite",

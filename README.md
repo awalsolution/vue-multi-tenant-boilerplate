@@ -1,4 +1,4 @@
-# Awal HR Management System Tenant Dashbaord
+# Awal HR Management System Admin Dashbaord
 
 ## Environments
 
@@ -17,8 +17,8 @@
 
 ```sh
 
-git clone https://github.com/awal-solution/awal-hrms-tenant-dashbaord.git
-cd  awal-hrms-tenant-dashbaord.git
+git clone https://github.com/awal-solution/awal-hrms-admin-dashbaord.git
+cd  awal-hrms-admin-dashbaord.git
 yarn
 ```
 
