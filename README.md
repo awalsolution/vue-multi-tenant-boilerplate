@@ -1,4 +1,4 @@
-# Awal HR
+# Awal HR Management System Dashboard
 
 ## Environments
 
@@ -17,8 +17,8 @@
 
 ```sh
 
-git clone https://github.com/awal-solution/awal-hr.git
-cd  awal-hr
+git clone https://github.com/awal-solution/awal-hrms-dashboard.git
+cd  awal-hrms-dashboard.git
 yarn
 ```
 
