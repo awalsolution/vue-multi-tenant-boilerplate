@@ -1,0 +1,88 @@
+<template>
+  <n-form ref="formRef" :label-width="80" :model="formValue" :rules="formRules" size="small">
+    <n-grid x-gap="10">
+      <n-form-item-gi :span="8" class="pt-6" label="Name" path="company_name">
+        <n-input v-model:value="formValue.company_name" placeholder="Enter Name" />
+      </n-form-item-gi>
+      <n-form-item-gi :span="8" class="pt-6" label="Phone" path="phone_number">
+        <n-input v-model:value="formValue.phone_number" placeholder="Enter Phone" />
+      </n-form-item-gi>
+      <n-form-item-gi :span="8" class="pt-6" label="Address" path="address">
+        <n-input v-model:value="formValue.address" placeholder="Enter Address" />
+      </n-form-item-gi>
+      <n-form-item-gi :span="8" label="City" path="city">
+        <n-input v-model:value="formValue.city" placeholder="Enter City" />
+      </n-form-item-gi>
+      <n-form-item-gi :span="8" style="padding-top: 4px" label="State" path="state">
+        <n-input v-model:value="formValue.state" placeholder="Enter State" />
+      </n-form-item-gi>
+      <n-form-item-gi :span="8" style="padding-top: 4px" label="Country" path="country">
+        <n-input v-model:value="formValue.country" placeholder="Enter Country" />
+      </n-form-item-gi>
+      <n-form-item-gi :span="12" label="Status" path="status">
+        <n-switch v-model:value="formValue.status" :checked-value="1" :unchecked-value="0" />
+      </n-form-item-gi>
+    </n-grid>
+    <SingleImageUploader
+      :action="uploadUrl"
+      :data="{ type: 0 }"
+      name="company_images"
+      :width="100"
+      :height="100"
+      @upload-change="uploadChange"
+      v-model:value="formValue.logo"
+    />
+    <n-space justify="end">
+      <n-form-item :theme-overrides="{ labelHeightSmall: '0', feedbackHeightSmall: '0' }">
+        <n-button secondary type="info" @click="handleValidateClick"> Update </n-button>
+      </n-form-item>
+    </n-space>
+  </n-form>
+</template>
+
+<script lang="ts" setup>
+import { ref, unref } from 'vue';
+import { type FormInst } from 'naive-ui';
+import { getRecordApi, updateRecordApi } from '@src/api/endpoints';
+import { SingleImageUploader } from '@src/components/common/upload';
+import { useEnv } from '@src/hooks/useEnv';
+import { formRules } from '@src/rules/tenant_rules';
+
+const { uploadUrl } = useEnv();
+const formRef = ref<FormInst | null>(null);
+const formValue: any = ref({});
+
+const emits = defineEmits(['updated']);
+const props = defineProps({
+  id: {
+    type: Number
+  }
+});
+
+const uploadChange = (list: string) => {
+  formValue.value.logo = unref(list);
+};
+
+// fetch single tenant  using id
+getRecordApi(`/tenant/${props.id}`).then((res: any) => {
+  formValue.value = res.result;
+});
+
+const handleValidateClick = (e: MouseEvent) => {
+  e.preventDefault();
+  formRef.value?.validate((errors) => {
+    if (!errors) {
+      updateRecordApi(`/tenant/${formValue.value.id}`, formValue.value).then((res: any) => {
+        window['$message'].success(res.message);
+        emits('updated', res.result);
+      });
+    } else {
+      console.log(errors);
+      window['$message'].error('Invalid');
+    }
+  });
+};
+</script>
+
+<style lang="scss" scoped></style>
+@src/rules/tenant_rules

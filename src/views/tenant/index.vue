@@ -152,7 +152,7 @@
         <div>Create New Tenant</div>
       </template>
       <n-space :vertical="true">
-        <add-company
+        <add-tenant
           @created="
             getList();
             showModal = false;
@@ -166,7 +166,7 @@
         <div>Update Tenant</div>
       </template>
       <n-space :vertical="true">
-        <edit-company
+        <edit-tenant
           :id="selectedId"
           @updated="
             getList();
@@ -190,8 +190,8 @@ import { renderIcon } from '@src/utils/renderIcon';
 import { usePermission } from '@src/hooks/permission/usePermission';
 import { usePagination } from '@src/hooks/pagination/usePagination';
 import DataTableLayout from '@src/layouts/DataTableLayout/index.vue';
-import AddCompany from '@src/components/company/AddCompany.vue';
-import EditCompany from '@src/components/company/EditCompany.vue';
+import AddTenant from '@src/components/tenant/AddTenant.vue';
+import EditTenant from '@src/components/tenant/EditTenant.vue';
 
 // const { imgUrl } = useEnv();
 const isMobile = useMobile();
@@ -216,13 +216,13 @@ const moreOptions = ref([
     label: 'Edit',
     key: 'edit',
     icon: renderIcon(EditOutlined),
-    permission: hasPermission(['can view company update'])
+    permission: hasPermission(['can view tenant update'])
   },
   {
     label: 'Delete',
     key: 'delete',
     icon: renderIcon(DeleteOutlined),
-    permission: hasPermission(['can view company delete'])
+    permission: hasPermission(['can view tenant delete'])
   }
 ]);
 

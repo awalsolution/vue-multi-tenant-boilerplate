@@ -14,7 +14,7 @@ const routes: RouteRecordRaw[] = [
     meta: {
       title: 'Tenant',
       icon: renderIcon(Organization16Regular),
-      permissions: ['can view company menu'],
+      permissions: ['can view tenant menu'],
       sort: 1
     },
     children: [
@@ -23,7 +23,7 @@ const routes: RouteRecordRaw[] = [
         name: `${routeName}_list`,
         meta: {
           title: 'Tenant List',
-          permissions: ['can view company menu']
+          permissions: ['can view tenant menu']
         },
         component: () => import('@src/views/tenant/index.vue')
       }
