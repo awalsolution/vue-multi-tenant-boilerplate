@@ -41,6 +41,7 @@
                 <th class="th">Name</th>
                 <th class="th">Price</th>
                 <th class="th">Type</th>
+                <th class="th">Description</th>
                 <th class="th">Created At</th>
                 <th
                   class="sticky_el right-0 z-20"
@@ -60,6 +61,7 @@
                 <td class="td">{{ item.name }}</td>
                 <td class="td">{{ item.price }}</td>
                 <td class="td">{{ item.type }}</td>
+                <td class="td">{{ item.description }}</td>
                 <td class="td">{{ item.created_at }}</td>
                 <td
                   class="sticky_el right-0 z-10"
@@ -149,8 +151,8 @@ import { renderIcon } from '@src/utils/renderIcon';
 import { usePermission } from '@src/hooks/permission/usePermission';
 import { usePagination } from '@src/hooks/pagination/usePagination';
 import DataTableLayout from '@src/layouts/DataTableLayout/index.vue';
-import AddMenu from '@src/components/menu/AddMenu.vue';
-import EditMenu from '@src/components/menu/EditMenu.vue';
+import AddPlan from '@src/components/plan/AddPlan.vue';
+import EditPlan from '@src/components/plan/EditPlan.vue';
 
 const isMobile = useMobile();
 const dialog = useDialog();
@@ -163,7 +165,7 @@ const [loading, loadingDispatcher] = useLoading(false);
 
 // fetch all records
 const { getList, list, page, pageSizes, itemCount, pageSize, searchParams }: any =
-  usePagination('/menu');
+  usePagination('/plan');
 
 onMounted(() => {
   getList();
@@ -200,7 +202,7 @@ function confirmationDialog() {
 
 function deleteOperation() {
   loadingDispatcher.start();
-  deleteRecordApi(`/menus/${selectedId.value}`)
+  deleteRecordApi(`/plan/${selectedId.value}`)
     .then((res: any) => {
       window['$message'].success(res.message);
       getList();

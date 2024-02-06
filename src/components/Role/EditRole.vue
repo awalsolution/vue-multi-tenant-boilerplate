@@ -1,5 +1,5 @@
 <template>
-  <n-form ref="formRef" :label-width="80" :model="formValue" :rules="roleRules" size="small">
+  <n-form ref="formRef" :label-width="80" :model="formValue" :rules="formRules" size="small">
     <n-form-item label="Name" path="name">
       <n-input v-model:value="formValue.name" placeholder="Edit Name" />
     </n-form-item>
@@ -15,7 +15,7 @@
 import { ref } from 'vue';
 import { type FormInst } from 'naive-ui';
 import { getRecordApi, updateRecordApi } from '@src/api/endpoints';
-import { roleRules } from '@src/rules/role_rules';
+import { formRules } from '@src/rules/role_rules';
 
 const formValue: any = ref({});
 const formRef = ref<FormInst | null>(null);
@@ -27,7 +27,7 @@ const props = defineProps({
   }
 });
 // fetch single Role  using id
-getRecordApi(`/roles/${props.id}`).then((res: any) => {
+getRecordApi(`/role/${props.id}`).then((res: any) => {
   formValue.value = res.result;
 });
 
@@ -35,7 +35,7 @@ const handleValidateClick = (e: MouseEvent) => {
   e.preventDefault();
   formRef.value?.validate((errors) => {
     if (!errors) {
-      updateRecordApi(`/roles/${formValue.value.id}`, formValue.value).then((res: any) => {
+      updateRecordApi(`/role/${formValue.value.id}`, formValue.value).then((res: any) => {
         window['$message'].success(res.message);
         emits('updated', res.result);
       });

@@ -116,8 +116,6 @@
                 <th class="th">Email</th>
                 <th class="th">Role</th>
                 <th class="th">Phone#</th>
-                <th class="th">Company</th>
-                <th class="th">Company Phone#</th>
                 <th class="th">Status</th>
                 <th class="th">Address</th>
                 <th class="th">Created At</th>
@@ -160,8 +158,6 @@
                   </n-space>
                 </td>
                 <td class="td">{{ item?.profile?.phone_number }}</td>
-                <td class="td">{{ item?.company?.company_name }}</td>
-                <td class="td">{{ item?.company?.phone_number }}</td>
                 <td class="td">
                   <n-tag :bordered="false" :type="item.status === 'disabled' ? 'error' : 'info'">
                     {{ item.status === 1 ? 'Active' : 'Disable' }}

@@ -81,6 +81,7 @@
               <tr>
                 <th class="th">Permission Name</th>
                 <th class="th">Permission Type</th>
+                <th class="th">Status</th>
                 <th class="th">Menu Name</th>
                 <th class="th">Created At</th>
                 <th
@@ -102,6 +103,11 @@
                 <td class="text-center td">
                   <n-tag :bordered="false" :type="item.type === 'private' ? 'error' : 'info'">
                     {{ item.type }}
+                  </n-tag>
+                </td>
+                <td class="td">
+                  <n-tag :bordered="false" :type="item.status === 'disabled' ? 'error' : 'info'">
+                    {{ item.status === 1 ? 'Active' : 'Disable' }}
                   </n-tag>
                 </td>
                 <td class="td">{{ item.menu.menu_name }}</td>
