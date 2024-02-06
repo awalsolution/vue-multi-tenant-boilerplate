@@ -1,9 +1,9 @@
 import { ref } from 'vue';
 
 export const formRules = ref({
-  name: {
+  menu_name: {
     required: true,
-    message: 'Please Enter Name',
+    message: 'Please Enter Menu Name',
     trigger: 'blur'
   }
 });
