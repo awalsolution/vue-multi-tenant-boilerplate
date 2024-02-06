@@ -15,10 +15,10 @@ export function usePagination(endpoint: any) {
       page: page.value,
       pageSize: pageSize.value
     }).then((res: any) => {
-      console.log('record list => ', res.result);
-      list.value = res.result.data;
-      itemCount.value = res.result.meta.total;
-      if (res.result.meta.total === 0) {
+      console.log('record list => ', res);
+      list.value = res.data.data;
+      itemCount.value = res.data.total;
+      if (res.data.total === 0) {
         emptyState.value = true;
       }
     });

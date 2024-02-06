@@ -2,7 +2,7 @@
   <DataTableLayout :loading="loading">
     <template #header>
       <div class="flex w-full items-center px-10 pt-5">
-        <h2 class="text-lg">Companies</h2>
+        <h2 class="text-lg">Tenants</h2>
         <div class="flex flex-1 w-full items-center justify-between space-x-3 sm:justify-end">
           <NButton
             secondary
@@ -11,7 +11,7 @@
             @click="showModal = true"
             v-permission="{ action: ['can view company create'] }"
           >
-            Add Company
+            Add Tenant
           </NButton>
         </div>
       </div>
@@ -60,11 +60,14 @@
           <table class="table">
             <thead class="head">
               <tr>
-                <th class="th">Company Name</th>
-                <th class="th">Logo</th>
+                <th class="th">Tenant Name</th>
+                <th class="th">Email</th>
                 <th class="th">Phone#</th>
+                <th class="th">Domain</th>
+                <th class="th">Plan</th>
+                <th class="th">Plan Type</th>
                 <th class="th text-center">Status</th>
-                <th class="th">Address</th>
+                <th class="th">Database Name</th>
                 <th class="th">Created At</th>
                 <th
                   class="sticky_el right-0 z-20"
@@ -81,18 +84,21 @@
                 <td colspan="9" class="data_placeholder">Record Not Exist</td>
               </tr>
               <tr v-else v-for="item in list" :key="item.id" class="body_tr">
-                <td class="td">{{ item.company_name }}</td>
-                <td class="td text-center pt-1">
-                  <n-avatar :size="50" :src="`${imgUrl}${item.logo}`" />
-                </td>
+                <td class="td">{{ item.first_name + ' ' + item.last_name }}</td>
+                <td class="td">{{ item.email }}</td>
                 <td class="td">{{ item.phone_number }}</td>
+                <td class="td" v-for="subitem in item.domains" :key="subitem.id">
+                  {{ subitem.domain }}
+                </td>
+                <td class="td">{{ item.plan.name }}</td>
+                <td class="td">{{ item.plan.type }}</td>
                 <td class="td text-center">
                   <n-tag :bordered="false" :type="item.status === 'disabled' ? 'error' : 'info'">
                     {{ item.status === 1 ? 'Active' : 'Disable' }}
                   </n-tag>
                 </td>
                 <td class="td">
-                  {{ item.address + ' ' + item.city + ' ' + item?.state + ' ' + item.country }}
+                  {{ item.tenancy_db_name }}
                 </td>
                 <td class="td">{{ item.created_at }}</td>
                 <td
@@ -143,7 +149,7 @@
 
     <n-modal style="width: 60%" v-model:show="showModal" preset="dialog">
       <template #header>
-        <div>Create New Company</div>
+        <div>Create New Tenant</div>
       </template>
       <n-space :vertical="true">
         <add-company
@@ -157,7 +163,7 @@
 
     <n-modal style="width: 60%" v-model:show="showEditModal" preset="dialog">
       <template #header>
-        <div>Update Company</div>
+        <div>Update Tenant</div>
       </template>
       <n-space :vertical="true">
         <edit-company
@@ -177,7 +183,7 @@ import { ref, onMounted, computed } from 'vue';
 import { NIcon, NPagination, useDialog } from 'naive-ui';
 import { MoreOutlined, EditOutlined, DeleteOutlined, SearchOutlined } from '@vicons/antd';
 import { deleteRecordApi } from '@src/api/endpoints';
-import { useEnv } from '@src/hooks/useEnv';
+// import { useEnv } from '@src/hooks/useEnv';
 import { useLoading } from '@src/hooks/useLoading';
 import { useMobile } from '@src/hooks/useMediaQuery';
 import { renderIcon } from '@src/utils/renderIcon';
@@ -187,7 +193,7 @@ import DataTableLayout from '@src/layouts/DataTableLayout/index.vue';
 import AddCompany from '@src/components/company/AddCompany.vue';
 import EditCompany from '@src/components/company/EditCompany.vue';
 
-const { imgUrl } = useEnv();
+// const { imgUrl } = useEnv();
 const isMobile = useMobile();
 const dialog = useDialog();
 const selectedOption: any = ref(null);
@@ -199,7 +205,7 @@ const [loading, loadingDispatcher] = useLoading(false);
 
 // fetch all records
 const { getList, list, page, pageSizes, itemCount, pageSize, searchParams }: any =
-  usePagination('/company');
+  usePagination('/tenant');
 
 onMounted(() => {
   getList();
@@ -236,7 +242,7 @@ function confirmationDialog() {
 
 function deleteOperation() {
   loadingDispatcher.start();
-  deleteRecordApi(`/company/${selectedId.value}`)
+  deleteRecordApi(`/tenant/${selectedId.value}`)
     .then((res: any) => {
       window['$message'].success(res.message);
       getList();
@@ -284,7 +290,7 @@ const fetchList = () => {
   @apply hover:bg-gray-50 dark:hover:bg-gray-600;
 }
 .td {
-  @apply px-3 border-r border-b border-gray-200 dark:border-gray-800 whitespace-nowrap;
+  @apply px-3 py-3 border-r border-b border-gray-200 dark:border-gray-800 whitespace-nowrap;
 }
 .sticky_el {
   @apply sticky bg-gray-50 dark:bg-gray-700 px-6 whitespace-nowrap text-center border border-gray-200 dark:border-gray-800;

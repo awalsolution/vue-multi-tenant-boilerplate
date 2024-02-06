@@ -2,27 +2,25 @@
   <DataTableLayout :loading="loading">
     <template #header>
       <div class="flex w-full items-center px-10 pt-5">
-        <h2 class="text-lg">Permissions</h2>
+        <h2 class="text-lg">Roles</h2>
         <div class="flex flex-1 w-full items-center justify-between space-x-3 sm:justify-end">
-          <NButton secondary type="info" :size="isMobile ? 'small' : 'medium'"> Import </NButton>
-          <NButton secondary type="info" :size="isMobile ? 'small' : 'medium'"> Export </NButton>
           <NButton
             secondary
             type="info"
             :size="isMobile ? 'small' : 'medium'"
             @click="showModal = true"
-            v-permission="{ action: ['can view permission create'] }"
+            v-permission="{ action: ['can view role create'] }"
           >
-            Add Permission
+            Add Role
           </NButton>
         </div>
       </div>
     </template>
 
     <template #content>
-      <div class="px-10 pt-5">
+      <div class="px-10 pt-5 w-full">
         <div class="bg-white rounded-lg shadow-lg w-full overflow-x-scroll border border-gray-200">
-          <div class="flex flex-wrap flex-col sm:flex-row w-full items-center gap-3 sm:w-fit p-3">
+          <div class="flex gap-3 flex-col sm:flex-row flex-wrap w-full items-center sm:w-fit p-3">
             <n-input
               class="sm:!w-[230px]"
               v-model:value="searchParams.name"
@@ -33,45 +31,6 @@
             >
               <template #prefix> <NIcon :component="SearchOutlined" class="mr-1" /> </template>
             </n-input>
-            <n-input
-              class="sm:!w-[230px]"
-              v-model:value="searchParams.type"
-              clearable
-              placeholder="Search By Type"
-              size="small"
-              type="text"
-            >
-              <template #prefix> <NIcon :component="SearchOutlined" class="mr-1" /> </template>
-            </n-input>
-            <n-select
-              class="sm:!w-[230px]"
-              v-model:value="searchParams.status"
-              :options="[
-                { label: 'Active', value: 'active' },
-                { label: 'Disabled', value: 'disabled' }
-              ]"
-              clearable
-              filterable
-              placeholder="Search By Status"
-              size="small"
-            />
-            <n-select
-              class="sm:!w-[230px]"
-              v-model:value="searchParams.menu_name"
-              :clear-filter-after-select="false"
-              :filterable="true"
-              :loading="menuLoading"
-              :options="menus"
-              :remote="true"
-              :tag="false"
-              clearable
-              label-field="menu_name"
-              value-field="menu_name"
-              placeholder="Search By Menu"
-              size="small"
-              @focus="getMenusOnFocus"
-              @search="findMenu"
-            />
             <n-button secondary size="small" strong type="info" @click="fetchList">
               Search
             </n-button>
@@ -79,14 +38,17 @@
           <table class="table">
             <thead class="head">
               <tr>
-                <th class="th">Permission Name</th>
-                <th class="th">Permission Type</th>
-                <th class="th">Menu Name</th>
+                <th class="th">Role Name</th>
+                <th class="th">Company Name</th>
                 <th class="th">Created At</th>
                 <th
-                  class="sticky_el right-0 z-10"
+                  class="sticky_el right-0 z-20"
                   v-permission="{
-                    action: ['can view permission update', 'can view permission delete']
+                    action: [
+                      'can view role update',
+                      'can view role delete',
+                      'can view role assign permission'
+                    ]
                   }"
                 >
                   Actions
@@ -95,21 +57,20 @@
             </thead>
             <tbody>
               <tr v-if="list.length === 0">
-                <td colspan="7" class="data_placeholder">Record Not Exist</td>
+                <td colspan="6" class="data_placeholder">Record Not Exist</td>
               </tr>
-              <tr v-else v-for="item in list" :key="item.id">
-                <td class="td">{{ item.name }}</td>
-                <td class="text-center td">
-                  <n-tag :bordered="false" :type="item.type === 'private' ? 'error' : 'info'">
-                    {{ item.type }}
-                  </n-tag>
-                </td>
-                <td class="td">{{ item.menus.menu_name }}</td>
-                <td class="td">{{ item.created_at }}</td>
+              <tr v-else v-for="item in list" :key="item.id" class="body_tr">
+                <td class="td">{{ item?.name }}</td>
+                <td class="td">{{ item?.company?.company_name }}</td>
+                <td class="td">{{ item?.created_at }}</td>
                 <td
                   class="sticky_el right-0 z-10"
                   v-permission="{
-                    action: ['can view permission update', 'can view permission delete']
+                    action: [
+                      'can view role update',
+                      'can view role delete',
+                      'can view role assign permission'
+                    ]
                   }"
                 >
                   <n-dropdown
@@ -154,10 +115,10 @@
 
     <n-modal v-model:show="showModal" preset="dialog">
       <template #header>
-        <div>Create New Permission</div>
+        <div>Create New Role</div>
       </template>
       <n-space :vertical="true">
-        <add-permission
+        <add-role
           @created="
             getList();
             showModal = false;
@@ -168,10 +129,10 @@
 
     <n-modal v-model:show="showEditModal" preset="dialog">
       <template #header>
-        <div>Update Permission</div>
+        <div>Update Role</div>
       </template>
       <n-space :vertical="true">
-        <edit-permission
+        <edit-role
           :id="selectedId"
           @updated="
             getList();
@@ -185,31 +146,32 @@
 
 <script lang="ts" setup>
 import { ref, onMounted, computed } from 'vue';
-import { NIcon, NPagination, useDialog } from 'naive-ui';
+import { useDialog, NIcon, NPagination } from 'naive-ui';
+import { useRouter } from 'vue-router';
 import { MoreOutlined, EditOutlined, DeleteOutlined, SearchOutlined } from '@vicons/antd';
-import { useLoading } from '@src/hooks/useLoading';
 import { deleteRecordApi } from '@src/api/endpoints';
-import { usefilterMenu } from '@src/filters/menus';
+import { useLoading } from '@src/hooks/useLoading';
 import { useMobile } from '@src/hooks/useMediaQuery';
-import { usePermission } from '@src/hooks/permission/usePermission';
-import { usePagination } from '@src/hooks/pagination/usePagination';
-import DataTableLayout from '@src/layouts/DataTableLayout/index.vue';
 import { renderIcon } from '@src/utils/renderIcon';
-import AddPermission from '@src/components/permission/AddPermission.vue';
-import EditPermission from '@src/components/permission/EditPermission.vue';
+import { usePagination } from '@src/hooks/pagination/usePagination';
+import { usePermission } from '@src/hooks/permission/usePermission';
+import DataTableLayout from '@src/layouts/DataTableLayout/index.vue';
+import AddRole from '@src/components/Role/AddRole.vue';
+import EditRole from '@src/components/Role/EditRole.vue';
 
-const dialog = useDialog();
 const isMobile = useMobile();
-const showModal = ref(false);
+const dialog = useDialog();
+const router = useRouter();
 const selectedOption: any = ref(null);
+const showModal = ref(false);
 const showEditModal = ref(false);
 const selectedId = ref();
-const { hasPermission } = usePermission();
 const [loading, loadingDispatcher] = useLoading(false);
-const { menus, menuLoading, findMenu, getMenusOnFocus } = usefilterMenu();
+const { hasPermission } = usePermission();
 
+// fetch all records
 const { getList, list, page, pageSizes, itemCount, pageSize, searchParams }: any =
-  usePagination('/permissions');
+  usePagination('/role');
 
 onMounted(() => {
   getList();
@@ -217,16 +179,22 @@ onMounted(() => {
 
 const moreOptions = ref([
   {
+    label: 'Assign Permission',
+    key: 'assign_permission',
+    icon: renderIcon(EditOutlined),
+    permission: hasPermission(['can view role assign permission'])
+  },
+  {
     label: 'Edit',
     key: 'edit',
     icon: renderIcon(EditOutlined),
-    permission: hasPermission(['can view permission update'])
+    permission: hasPermission(['can view role update'])
   },
   {
     label: 'Delete',
     key: 'delete',
     icon: renderIcon(DeleteOutlined),
-    permission: hasPermission(['can view permission delete'])
+    permission: hasPermission(['can view role delete'])
   }
 ]);
 
@@ -246,7 +214,7 @@ function confirmationDialog() {
 
 function deleteOperation() {
   loadingDispatcher.start();
-  deleteRecordApi(`/permissions/${selectedId.value}`)
+  deleteRecordApi(`/roles/${selectedId.value}`)
     .then((res: any) => {
       window['$message'].success(res.message);
       getList();
@@ -263,7 +231,12 @@ function deleteOperation() {
 }
 
 const actionOperation = (item: any) => {
-  if (selectedOption.value === 'edit') {
+  if (selectedOption.value === 'assign_permission') {
+    router.push({
+      name: 'system_assing_permission',
+      query: { roleId: item.id }
+    });
+  } else if (selectedOption.value === 'edit') {
     showEditModal.value = true;
     selectedId.value = item.id;
   } else if (selectedOption.value === 'delete') {
@@ -271,7 +244,6 @@ const actionOperation = (item: any) => {
     confirmationDialog();
   }
 };
-
 const selectedAction = (key: any) => {
   selectedOption.value = key;
 };
@@ -282,10 +254,10 @@ const fetchList = () => {
 
 <style lang="scss" scoped>
 .table {
-  @apply w-full text-sm text-left text-gray-500 dark:text-gray-400;
+  @apply text-sm w-full overflow-x-auto text-left text-gray-500 dark:text-gray-400;
 }
 .head {
-  @apply sticky top-0 text-xs   bg-gray-50 dark:bg-gray-700 dark:text-gray-400 z-20;
+  @apply sticky top-0 text-xs text-gray-700 bg-gray-50 dark:bg-gray-700 dark:text-gray-400 z-20;
 }
 .th {
   @apply px-3 py-3 border-t border-r border-b border-gray-200 dark:border-gray-800 whitespace-nowrap;
@@ -294,7 +266,7 @@ const fetchList = () => {
   @apply hover:bg-gray-50 dark:hover:bg-gray-600;
 }
 .td {
-  @apply px-3 py-3 border-r border-b border-gray-200 dark:border-gray-800 whitespace-nowrap;
+  @apply px-3 py-2 border-r border-b border-gray-200 dark:border-gray-800 whitespace-nowrap;
 }
 .sticky_el {
   @apply sticky bg-gray-50 dark:bg-gray-700 px-6 whitespace-nowrap text-center border border-gray-200 dark:border-gray-800;

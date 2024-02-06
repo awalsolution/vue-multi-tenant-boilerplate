@@ -2,7 +2,7 @@ import { defineStore } from 'pinia';
 import { ref } from 'vue';
 import { ACCESS_TOKEN, CURRENT_USER } from '@src/utils/storage/variables';
 import { storage } from '@src/utils/storage';
-import { loginApi, getUserInfoApi } from '@src/api/auth';
+import { loginApi, getCurrentUserApi } from '@src/api/auth';
 import _ from 'lodash';
 
 export const useUserStore = defineStore('app-user', () => {
@@ -31,30 +31,32 @@ export const useUserStore = defineStore('app-user', () => {
 
   const login = async (params: any) => {
     const res: any = await loginApi(params);
-    const { result, code } = res;
+    const { token, code } = res;
     if (code === 200) {
       const ex = 7 * 24 * 60 * 60;
-      storage.set(ACCESS_TOKEN, result.token, ex);
-      storage.set(CURRENT_USER, result.user, ex);
-      setToken(result.token);
-      setCurrentUser(result.user);
+      storage.set(ACCESS_TOKEN, token, ex);
+      // storage.set(CURRENT_USER, result.user, ex);
+      setToken(token);
+      // setCurrentUser(result.user);
     }
 
     return res;
   };
 
-  const getCurrentUserWithApiRequest = async () => {
-    const res: any = await getUserInfoApi();
-    if (res.result) {
-      const permissionsList = await allPermissions(res.result);
+  const getCurrentUser = async () => {
+    const res: any = await getCurrentUserApi();
+    console.log('getCurrentUser ==>', res);
+    const { code, data } = res;
+    if (code === 200) {
+      const permissionsList = await allPermissions(data);
       setPermissions(permissionsList);
-      setRoles(res.result.roles);
-      setCurrentUser(res.result);
+      setRoles(data.roles);
+      setCurrentUser(data);
     } else {
       throw new Error('api not responding correctly!');
     }
 
-    return res.result;
+    return data;
   };
 
   const allPermissions = async (user: any) => {
@@ -88,6 +90,6 @@ export const useUserStore = defineStore('app-user', () => {
     currentUser,
     login,
     logout,
-    getCurrentUserWithApiRequest
+    getCurrentUser
   };
 });

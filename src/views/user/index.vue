@@ -2,21 +2,20 @@
   <DataTableLayout :loading="loading">
     <template #header>
       <div class="flex w-full items-center px-10 pt-5">
-        <h2 class="text-lg">Designations</h2>
+        <h2 class="text-lg">Users</h2>
         <div class="flex flex-1 w-full items-center justify-between space-x-3 sm:justify-end">
           <NButton
             secondary
             type="info"
             :size="isMobile ? 'small' : 'medium'"
             @click="showModal = true"
-            v-permission="{ action: ['can view designation create'] }"
+            v-permission="{ action: ['can view user create'] }"
           >
-            Add Designation
+            Add User
           </NButton>
         </div>
       </div>
     </template>
-
     <template #content>
       <div class="px-10 pt-5 w-full">
         <div class="bg-white rounded-lg shadow-lg w-full overflow-x-scroll border border-gray-200">
@@ -70,20 +69,18 @@
             </n-input>
             <n-select
               class="sm:!w-[230px]"
-              v-model:value="searchParams.shop_name"
-              :clear-filter-after-select="false"
               :filterable="true"
-              :loading="shopLoading"
-              :options="shops"
-              :remote="true"
-              :tag="false"
+              v-model:value="searchParams.company_name"
               clearable
-              label-field="shop_name"
-              value-field="shop_name"
-              placeholder="Search By Shop"
-              size="small"
-              @focus="getShopsOnFocus"
-              @search="findShop"
+              :remote="true"
+              :clear-filter-after-select="false"
+              label-field="company_name"
+              value-field="company_name"
+              placeholder="Select company"
+              :loading="companyLoading"
+              @focus="getCompaniesOnFocus"
+              :options="companies"
+              @search="findCompany"
             />
             <n-select
               class="sm:!w-[230px]"
@@ -119,13 +116,19 @@
                 <th class="th">Email</th>
                 <th class="th">Role</th>
                 <th class="th">Phone#</th>
+                <th class="th">Company</th>
+                <th class="th">Company Phone#</th>
                 <th class="th">Status</th>
                 <th class="th">Address</th>
                 <th class="th">Created At</th>
                 <th
                   class="sticky_el right-0 z-20"
                   v-permission="{
-                    action: ['can view designation update', 'can view designation delete']
+                    action: [
+                      'can view user update',
+                      'can view user delete',
+                      'can view user assign permission'
+                    ]
                   }"
                 >
                   Actions
@@ -138,10 +141,10 @@
               </tr>
               <tr v-else v-for="item in list" :key="item.id" class="body_tr">
                 <td class="td">
-                  {{ item?.emp_profile?.first_name + ' ' + item?.emp_profile?.last_name }}
+                  {{ item?.profile?.first_name + ' ' + item?.profile?.last_name }}
                 </td>
                 <td class="td text-center pt-2">
-                  <n-avatar size="large" :src="`${imgUrl}${item?.emp_profile.profile_picture}`" />
+                  <n-avatar size="large" :src="`${imgUrl}${item?.profile?.profile_picture}`" />
                 </td>
                 <td class="td">{{ item?.email }}</td>
                 <td class="td">
@@ -156,28 +159,34 @@
                     </n-tag>
                   </n-space>
                 </td>
-                <td class="td">{{ item?.emp_profile?.phone_number }}</td>
+                <td class="td">{{ item?.profile?.phone_number }}</td>
+                <td class="td">{{ item?.company?.company_name }}</td>
+                <td class="td">{{ item?.company?.phone_number }}</td>
                 <td class="td">
                   <n-tag :bordered="false" :type="item.status === 'disabled' ? 'error' : 'info'">
-                    {{ item.status }}
+                    {{ item.status === 1 ? 'Active' : 'Disable' }}
                   </n-tag>
                 </td>
                 <td class="td">
                   {{
-                    item?.emp_profile?.address +
+                    item?.profile?.address +
                     ' ' +
-                    item?.emp_profile?.city +
+                    item?.profile?.city +
                     ' ' +
-                    item?.emp_profile?.state +
+                    item?.profile?.state +
                     ' ' +
-                    item?.emp_profile?.country
+                    item?.profile?.country
                   }}
                 </td>
                 <td class="td">{{ item.created_at }}</td>
                 <td
                   class="sticky_el right-0 z-10"
                   v-permission="{
-                    action: ['can view designation update', 'can view designation delete']
+                    action: [
+                      'can view user update',
+                      'can view user delete',
+                      'can view user assign permission'
+                    ]
                   }"
                 >
                   <n-dropdown
@@ -222,10 +231,10 @@
 
     <n-modal style="width: 70%" v-model:show="showModal" preset="dialog">
       <template #header>
-        <div>Create New designation</div>
+        <div>Create New User</div>
       </template>
       <n-space :vertical="true">
-        <add-designation
+        <add-user
           @created="
             getList();
             showModal = false;
@@ -236,10 +245,10 @@
 
     <n-modal style="width: 70%" v-model:show="showEditModal" preset="dialog">
       <template #header>
-        <div>Update designation</div>
+        <div>Update User</div>
       </template>
       <n-space :vertical="true">
-        <edit-designation
+        <edit-user
           :id="selectedId"
           @updated="
             getList();
@@ -253,6 +262,7 @@
 
 <script lang="ts" setup>
 import { ref, onMounted, computed } from 'vue';
+import { useRouter } from 'vue-router';
 import { NIcon, NPagination, useDialog } from 'naive-ui';
 import { MoreOutlined, EditOutlined, DeleteOutlined, SearchOutlined } from '@vicons/antd';
 import { deleteRecordApi } from '@src/api/endpoints';
@@ -260,15 +270,16 @@ import { useLoading } from '@src/hooks/useLoading';
 import { useEnv } from '@src/hooks/useEnv';
 import { useMobile } from '@src/hooks/useMediaQuery';
 import { usefilterRole } from '@src/filters/roles';
-import { usefilterShop } from '@src/filters/shops';
+import { usefilterCompany } from '@src/filters/company';
 import { renderIcon } from '@src/utils/renderIcon';
 import { usePermission } from '@src/hooks/permission/usePermission';
 import { usePagination } from '@src/hooks/pagination/usePagination';
 import DataTableLayout from '@src/layouts/DataTableLayout/index.vue';
-import AddDesignation from '@src/components/designation/AddDesignation.vue';
-import EditDesignation from '@src/components/designation/EditDesignation.vue';
+import AddUser from '@src/components/user/AddUser.vue';
+import EditUser from '@src/components/user/EditUser.vue';
 
 const { imgUrl } = useEnv();
+const router = useRouter();
 const isMobile = useMobile();
 const dialog = useDialog();
 const selectedOption: any = ref(null);
@@ -278,11 +289,11 @@ const selectedId = ref();
 const { hasPermission } = usePermission();
 const [loading, loadingDispatcher] = useLoading(false);
 const { roles, roleLoading, findRole, getRolesOnFocus } = usefilterRole();
-const { shops, shopLoading, findShop, getShopsOnFocus } = usefilterShop();
+const { companies, companyLoading, getCompaniesOnFocus, findCompany } = usefilterCompany();
 
 // fetch all records
 const { getList, list, page, pageSizes, itemCount, pageSize, searchParams }: any =
-  usePagination('/designation');
+  usePagination('/user');
 
 onMounted(() => {
   getList();
@@ -290,16 +301,22 @@ onMounted(() => {
 
 const moreOptions = ref([
   {
+    label: 'Assign Permission',
+    key: 'assign_permission',
+    icon: renderIcon(EditOutlined),
+    permission: hasPermission(['can view user assign permission'])
+  },
+  {
     label: 'Edit',
     key: 'edit',
     icon: renderIcon(EditOutlined),
-    permission: hasPermission(['can view designation update'])
+    permission: hasPermission(['can view user update'])
   },
   {
     label: 'Delete',
     key: 'delete',
     icon: renderIcon(DeleteOutlined),
-    permission: hasPermission(['can view designation delete'])
+    permission: hasPermission(['can view user delete'])
   }
 ]);
 
@@ -319,7 +336,7 @@ function confirmationDialog() {
 
 function deleteOperation() {
   loadingDispatcher.start();
-  deleteRecordApi(`/designation/${selectedId.value}`)
+  deleteRecordApi(`/users/${selectedId.value}`)
     .then((res: any) => {
       window['$message'].success(res.message);
       getList();
@@ -336,7 +353,12 @@ function deleteOperation() {
 }
 
 const actionOperation = (item: any) => {
-  if (selectedOption.value === 'edit') {
+  if (selectedOption.value === 'assign_permission') {
+    router.push({
+      name: 'system_assing_permission',
+      query: { userId: item.id }
+    });
+  } else if (selectedOption.value === 'edit') {
     showEditModal.value = true;
     selectedId.value = item.id;
   } else if (selectedOption.value === 'delete') {
@@ -366,7 +388,7 @@ const fetchList = () => {
   @apply hover:bg-gray-50 dark:hover:bg-gray-600;
 }
 .td {
-  @apply px-3 py-2 border-r border-b border-gray-200 dark:border-gray-800 whitespace-nowrap;
+  @apply px-3 border-r border-b border-gray-200 dark:border-gray-800 whitespace-nowrap;
 }
 .sticky_el {
   @apply sticky bg-gray-50 dark:bg-gray-700 px-6 whitespace-nowrap text-center border border-gray-200 dark:border-gray-800;

@@ -5,7 +5,6 @@
       <span class="text-xl font-semibold mt-3">{{ appTitle }}</span>
       <span class="text-base mt-5">v{{ version }}</span>
     </div>
-
     <div class="relative w-full bg-blue-300 dark:bg-gray-700 sm:w-1/2">
       <RouterView v-slot="{ Component }">
         <component :is="Component" class="animation-switch" />
@@ -20,7 +19,7 @@ import { onBeforeMount } from 'vue';
 import { useRouter } from 'vue-router';
 import { useEnv } from '@src/hooks/useEnv';
 import { useUserStore } from '@src/store/modules/user';
-import ThemeSwitchDevTool from '@src/components/ThemeSwitchDevTool/index.vue';
+import ThemeSwitchDevTool from '@src/components/common/ThemeSwitchDevTool/index.vue';
 import { ACCESS_TOKEN } from '@src/utils/storage/variables';
 import { storage } from '@src/utils/storage';
 

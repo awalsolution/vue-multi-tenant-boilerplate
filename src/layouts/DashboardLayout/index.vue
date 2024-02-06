@@ -30,7 +30,7 @@
 <script setup lang="ts">
 import { ref, onBeforeMount } from 'vue';
 import { useRouter } from 'vue-router';
-import GlobalLoading from '@src/components/GlobalLoading/index.vue';
+import GlobalLoading from '@src/components/common/GlobalLoading/index.vue';
 import Sidebar from '@src/layouts/components/Sidebar/index.vue';
 import Header from '@src/layouts/components/Header/index.vue';
 import Tabs from '@src/layouts/components/Tabs/index.vue';
@@ -46,7 +46,7 @@ const loading = ref(true);
 const checkLogin = async () => {
   if (storage.isAuthenticated(ACCESS_TOKEN)) {
     if (!userStore.hasData()) {
-      await userStore.getCurrentUserWithApiRequest();
+      await userStore.getCurrentUser();
       window['$message'].success('Current User Authenticated Successfully!');
     }
     loading.value = false;

@@ -1,9 +1,9 @@
 import Request from '@src/api/axios';
 
 export const loginApi = (data: any) => {
-  return Request.post('/auth/login', { ...data });
+  return Request.post('/login', { ...data });
 };
 
-export const getUserInfoApi = () => {
-  return Request.get('/users/authenticated');
+export const getCurrentUserApi = () => {
+  return Request.get('/authenticated');
 };

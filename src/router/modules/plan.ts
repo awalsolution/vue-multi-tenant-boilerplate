@@ -1,20 +1,20 @@
 import type { RouteRecordRaw } from 'vue-router';
-import { HomePerson24Regular } from '@vicons/fluent';
+import { DollarCircleOutlined } from '@vicons/antd';
 import { DashboardLayout } from '@src/router/constant';
 import { renderIcon } from '@src/utils/renderIcon';
 
-const routeName = 'department';
+const routeName = 'plan';
 
 const routes: RouteRecordRaw[] = [
   {
-    path: '/department',
+    path: '/plan',
     name: routeName,
-    redirect: '/department/list',
+    redirect: '/plan/list',
     component: DashboardLayout,
     meta: {
-      title: 'Department',
-      icon: renderIcon(HomePerson24Regular),
-      permissions: ['can view department menu'],
+      title: 'Plan',
+      icon: renderIcon(DollarCircleOutlined),
+      permissions: ['can view plan menu'],
       sort: 2
     },
     children: [
@@ -22,10 +22,10 @@ const routes: RouteRecordRaw[] = [
         path: 'list',
         name: `${routeName}_list`,
         meta: {
-          title: 'Department List',
-          permissions: ['can view department menu']
+          title: 'Plan List',
+          permissions: ['can view plan menu']
         },
-        component: () => import('@src/views/department/index.vue')
+        component: () => import('@src/views/plan/index.vue')
       }
     ]
   }

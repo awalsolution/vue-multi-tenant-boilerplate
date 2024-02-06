@@ -2,25 +2,27 @@
   <DataTableLayout :loading="loading">
     <template #header>
       <div class="flex w-full items-center px-10 pt-5">
-        <h2 class="text-lg">Departments</h2>
+        <h2 class="text-lg">Permissions</h2>
         <div class="flex flex-1 w-full items-center justify-between space-x-3 sm:justify-end">
+          <NButton secondary type="info" :size="isMobile ? 'small' : 'medium'"> Import </NButton>
+          <NButton secondary type="info" :size="isMobile ? 'small' : 'medium'"> Export </NButton>
           <NButton
             secondary
             type="info"
             :size="isMobile ? 'small' : 'medium'"
             @click="showModal = true"
-            v-permission="{ action: ['can view department create'] }"
+            v-permission="{ action: ['can view permission create'] }"
           >
-            Add Department
+            Add Permission
           </NButton>
         </div>
       </div>
     </template>
 
     <template #content>
-      <div class="px-10 pt-5 w-full">
+      <div class="px-10 pt-5">
         <div class="bg-white rounded-lg shadow-lg w-full overflow-x-scroll border border-gray-200">
-          <div class="flex gap-3 flex-col sm:flex-row flex-wrap w-full items-center sm:w-fit p-3">
+          <div class="flex flex-wrap flex-col sm:flex-row w-full items-center gap-3 sm:w-fit p-3">
             <n-input
               class="sm:!w-[230px]"
               v-model:value="searchParams.name"
@@ -31,22 +33,16 @@
             >
               <template #prefix> <NIcon :component="SearchOutlined" class="mr-1" /> </template>
             </n-input>
-            <n-select
-              v-if="isSuperAdminUser()"
+            <n-input
               class="sm:!w-[230px]"
-              :filterable="true"
-              v-model:value="searchParams.company_name"
+              v-model:value="searchParams.type"
               clearable
-              :remote="true"
-              :clear-filter-after-select="false"
-              label-field="company_name"
-              value-field="company_name"
-              placeholder="Select company"
-              :loading="companyLoading"
-              @focus="getCompaniesOnFocus"
-              :options="companies"
-              @search="findCompany"
-            />
+              placeholder="Search By Type"
+              size="small"
+              type="text"
+            >
+              <template #prefix> <NIcon :component="SearchOutlined" class="mr-1" /> </template>
+            </n-input>
             <n-select
               class="sm:!w-[230px]"
               v-model:value="searchParams.status"
@@ -59,6 +55,23 @@
               placeholder="Search By Status"
               size="small"
             />
+            <n-select
+              class="sm:!w-[230px]"
+              v-model:value="searchParams.menu_name"
+              :clear-filter-after-select="false"
+              :filterable="true"
+              :loading="menuLoading"
+              :options="menus"
+              :remote="true"
+              :tag="false"
+              clearable
+              label-field="menu_name"
+              value-field="menu_name"
+              placeholder="Search By Menu"
+              size="small"
+              @focus="getMenusOnFocus"
+              @search="findMenu"
+            />
             <n-button secondary size="small" strong type="info" @click="fetchList">
               Search
             </n-button>
@@ -66,14 +79,14 @@
           <table class="table">
             <thead class="head">
               <tr>
-                <th class="th">Department Name</th>
-                <th class="th">Company Name</th>
-                <th class="th">Status</th>
+                <th class="th">Permission Name</th>
+                <th class="th">Permission Type</th>
+                <th class="th">Menu Name</th>
                 <th class="th">Created At</th>
                 <th
-                  class="sticky_el right-0 z-20"
+                  class="sticky_el right-0 z-10"
                   v-permission="{
-                    action: ['can view department update', 'can view department delete']
+                    action: ['can view permission update', 'can view permission delete']
                   }"
                 >
                   Actions
@@ -82,23 +95,21 @@
             </thead>
             <tbody>
               <tr v-if="list.length === 0">
-                <td colspan="4" class="data_placeholder">Record Not Exist</td>
+                <td colspan="7" class="data_placeholder">Record Not Exist</td>
               </tr>
-              <tr v-else v-for="item in list" :key="item.id" class="body_tr">
-                <td class="td">
-                  {{ item?.name }}
-                </td>
-                <td class="td">{{ item?.company?.company_name }}</td>
-                <td class="td">
-                  <n-tag :bordered="false" :type="item.status === 'disabled' ? 'error' : 'info'">
-                    {{ item.status === 1 ? 'Active' : 'Disable' }}
+              <tr v-else v-for="item in list" :key="item.id">
+                <td class="td">{{ item.name }}</td>
+                <td class="text-center td">
+                  <n-tag :bordered="false" :type="item.type === 'private' ? 'error' : 'info'">
+                    {{ item.type }}
                   </n-tag>
                 </td>
+                <td class="td">{{ item.menu.menu_name }}</td>
                 <td class="td">{{ item.created_at }}</td>
                 <td
                   class="sticky_el right-0 z-10"
                   v-permission="{
-                    action: ['can view department update', 'can view department delete']
+                    action: ['can view permission update', 'can view permission delete']
                   }"
                 >
                   <n-dropdown
@@ -141,12 +152,12 @@
       </div>
     </template>
 
-    <n-modal style="width: 30%" v-model:show="showModal" preset="dialog">
+    <n-modal v-model:show="showModal" preset="dialog">
       <template #header>
-        <div>Create New User</div>
+        <div>Create New Permission</div>
       </template>
       <n-space :vertical="true">
-        <add-department
+        <add-permission
           @created="
             getList();
             showModal = false;
@@ -155,12 +166,12 @@
       </n-space>
     </n-modal>
 
-    <n-modal style="width: 30%" v-model:show="showEditModal" preset="dialog">
+    <n-modal v-model:show="showEditModal" preset="dialog">
       <template #header>
-        <div>Update User</div>
+        <div>Update Permission</div>
       </template>
       <n-space :vertical="true">
-        <edit-department
+        <edit-permission
           :id="selectedId"
           @updated="
             getList();
@@ -176,31 +187,29 @@
 import { ref, onMounted, computed } from 'vue';
 import { NIcon, NPagination, useDialog } from 'naive-ui';
 import { MoreOutlined, EditOutlined, DeleteOutlined, SearchOutlined } from '@vicons/antd';
-import { deleteRecordApi } from '@src/api/endpoints';
 import { useLoading } from '@src/hooks/useLoading';
+import { deleteRecordApi } from '@src/api/endpoints';
+import { usefilterMenu } from '@src/filters/menus';
 import { useMobile } from '@src/hooks/useMediaQuery';
-import { usefilterCompany } from '@src/filters/company';
-import { renderIcon } from '@src/utils/renderIcon';
 import { usePermission } from '@src/hooks/permission/usePermission';
 import { usePagination } from '@src/hooks/pagination/usePagination';
 import DataTableLayout from '@src/layouts/DataTableLayout/index.vue';
-import AddDepartment from '@src/components/department/AddDepartment.vue';
-import EditDepartment from '@src/components/department/EditDepartment.vue';
-import { isSuperAdminUser } from '@src/checks/isSuperAdmin';
+import { renderIcon } from '@src/utils/renderIcon';
+import AddPermission from '@src/components/permission/AddPermission.vue';
+import EditPermission from '@src/components/permission/EditPermission.vue';
 
-const isMobile = useMobile();
 const dialog = useDialog();
-const selectedOption: any = ref(null);
+const isMobile = useMobile();
 const showModal = ref(false);
+const selectedOption: any = ref(null);
 const showEditModal = ref(false);
 const selectedId = ref();
 const { hasPermission } = usePermission();
 const [loading, loadingDispatcher] = useLoading(false);
-const { companies, companyLoading, getCompaniesOnFocus, findCompany } = usefilterCompany();
+const { menus, menuLoading, findMenu, getMenusOnFocus } = usefilterMenu();
 
-// fetch all records
 const { getList, list, page, pageSizes, itemCount, pageSize, searchParams }: any =
-  usePagination('/department');
+  usePagination('/permission');
 
 onMounted(() => {
   getList();
@@ -211,13 +220,13 @@ const moreOptions = ref([
     label: 'Edit',
     key: 'edit',
     icon: renderIcon(EditOutlined),
-    permission: hasPermission(['can view department update'])
+    permission: hasPermission(['can view permission update'])
   },
   {
     label: 'Delete',
     key: 'delete',
     icon: renderIcon(DeleteOutlined),
-    permission: hasPermission(['can view department delete'])
+    permission: hasPermission(['can view permission delete'])
   }
 ]);
 
@@ -237,14 +246,14 @@ function confirmationDialog() {
 
 function deleteOperation() {
   loadingDispatcher.start();
-  deleteRecordApi(`/department/${selectedId.value}`)
+  deleteRecordApi(`/permissions/${selectedId.value}`)
     .then((res: any) => {
       window['$message'].success(res.message);
       getList();
       loadingDispatcher.end();
       dialog.destroyAll;
     })
-    .catch((res: any) => {
+    .catch((res) => {
       window['$message'].error(res.message);
       loadingDispatcher.end();
       dialog.destroyAll;
@@ -262,6 +271,7 @@ const actionOperation = (item: any) => {
     confirmationDialog();
   }
 };
+
 const selectedAction = (key: any) => {
   selectedOption.value = key;
 };
@@ -272,10 +282,10 @@ const fetchList = () => {
 
 <style lang="scss" scoped>
 .table {
-  @apply text-sm w-full overflow-x-auto text-left text-gray-500 dark:text-gray-400;
+  @apply w-full text-sm text-left text-gray-500 dark:text-gray-400;
 }
 .head {
-  @apply sticky top-0 text-xs text-gray-700 bg-gray-50 dark:bg-gray-700 dark:text-gray-400 z-20;
+  @apply sticky top-0 text-xs   bg-gray-50 dark:bg-gray-700 dark:text-gray-400 z-20;
 }
 .th {
   @apply px-3 py-3 border-t border-r border-b border-gray-200 dark:border-gray-800 whitespace-nowrap;
@@ -284,12 +294,11 @@ const fetchList = () => {
   @apply hover:bg-gray-50 dark:hover:bg-gray-600;
 }
 .td {
-  @apply px-3 py-2 border-r border-b border-gray-200 dark:border-gray-800 whitespace-nowrap;
+  @apply px-3 py-3 border-r border-b border-gray-200 dark:border-gray-800 whitespace-nowrap;
 }
 .sticky_el {
   @apply sticky bg-gray-50 dark:bg-gray-700 px-6 whitespace-nowrap text-center border border-gray-200 dark:border-gray-800;
 }
-
 .data_placeholder {
   text-align: center;
   color: gray;

@@ -57,7 +57,7 @@ export function createRouterGuards(router: Router) {
       return;
     }
 
-    await userStore.getCurrentUserWithApiRequest();
+    await userStore.getCurrentUser();
 
     const routes = await asyncRouteStore.generateRoutes(userStore.permissions);
 

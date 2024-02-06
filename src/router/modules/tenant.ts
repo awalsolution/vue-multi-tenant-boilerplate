@@ -1,31 +1,31 @@
 import type { RouteRecordRaw } from 'vue-router';
-import { WarehouseOutlined } from '@vicons/material';
+import { Organization16Regular } from '@vicons/fluent';
 import { DashboardLayout } from '@src/router/constant';
 import { renderIcon } from '@src/utils/renderIcon';
 
-const routeName = 'company';
+const routeName = 'tenant';
 
 const routes: RouteRecordRaw[] = [
   {
-    path: '/company',
+    path: '/tenant',
     name: routeName,
-    redirect: '/company/list',
+    redirect: '/tenant/list',
     component: DashboardLayout,
     meta: {
-      title: 'Company',
-      icon: renderIcon(WarehouseOutlined),
+      title: 'Tenant',
+      icon: renderIcon(Organization16Regular),
       permissions: ['can view company menu'],
-      sort: 9
+      sort: 1
     },
     children: [
       {
         path: 'list',
         name: `${routeName}_list`,
         meta: {
-          title: 'Company List',
+          title: 'Tenant List',
           permissions: ['can view company menu']
         },
-        component: () => import('@src/views/company/index.vue')
+        component: () => import('@src/views/tenant/index.vue')
       }
     ]
   }

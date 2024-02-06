@@ -159,7 +159,7 @@ const [loading, loadingDispatcher] = useLoading(false);
 
 // fetch all records
 const { getList, list, page, pageSizes, itemCount, pageSize, searchParams }: any =
-  usePagination('/menus');
+  usePagination('/menu');
 
 onMounted(() => {
   getList();
