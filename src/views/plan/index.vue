@@ -204,7 +204,7 @@ function deleteOperation() {
   loadingDispatcher.start();
   deleteRecordApi(`/plan/${selectedId.value}`)
     .then((res: any) => {
-      window['$message'].success(res.message);
+      window['$message'].warning(res.message);
       getList();
       loadingDispatcher.end();
       dialog.destroyAll;

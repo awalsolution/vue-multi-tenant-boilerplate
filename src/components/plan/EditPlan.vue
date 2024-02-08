@@ -56,6 +56,7 @@ const handleValidateClick = (e: MouseEvent) => {
   formRef.value?.validate((errors) => {
     if (!errors) {
       updateRecordApi(`/plan/${formValue.value.id}`, formValue.value).then((res: any) => {
+        console.log('res===>', res);
         window['$message'].success(res.message);
         emits('updated', res.data);
       });

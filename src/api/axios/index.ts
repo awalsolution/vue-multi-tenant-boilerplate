@@ -33,10 +33,11 @@ class Request {
 
     this.instance.interceptors.response.use(
       (res: AxiosResponse) => {
-        // console.log('api res in axios file ==>', res);
+        console.log('api res in axios file ==>', res);
         return res.data;
       },
       (err: AxiosError) => {
+        console.log('res error', err);
         const { response } = err;
         const { data, status } = response || {};
         if (response) {
@@ -95,7 +96,7 @@ class Request {
         window['$message'].error(msg.message);
         break;
       case ResponseStatusCode.CONFLICT:
-        window['$message'].error(msg.message);
+        window['$message'].error(msg.errors?.name);
         break;
       case ResponseStatusCode.TOO_MANY_REQUESTS:
         window['$message'].error(msg.message);
