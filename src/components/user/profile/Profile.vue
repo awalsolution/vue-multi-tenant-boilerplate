@@ -96,7 +96,7 @@
 import { onMounted, ref } from 'vue';
 import { useUserStore } from '@src/store/modules/user';
 import { useEnv } from '@src/hooks/useEnv';
-import EditProfile from '@src/views/users/EditProfile.vue';
+import EditProfile from '@src/components/user/profile/EditProfile.vue';
 import ContentLayout from '@src/layouts/ContentLayout/index.vue';
 
 const { imgUrl } = useEnv();

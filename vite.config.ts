@@ -12,5 +12,8 @@ export default defineConfig(() => {
         '@src': fileURLToPath(new URL('./src', import.meta.url))
       }
     }
+    // build: {
+    //   outDir: '../../../Herd/awal-hrms-admin-dashboard'
+    // }
   };
 });

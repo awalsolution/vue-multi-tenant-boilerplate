@@ -33,7 +33,7 @@ class Request {
 
     this.instance.interceptors.response.use(
       (res: AxiosResponse) => {
-        console.log('api res in axios file ==>', res);
+        // console.log('api res in axios file ==>', res);
         return res.data;
       },
       (err: AxiosError) => {

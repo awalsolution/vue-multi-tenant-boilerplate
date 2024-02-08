@@ -35,7 +35,7 @@ const routes: RouteRecordRaw[] = [
           permissions: ['can view user profile'],
           hidden: true
         },
-        component: () => import('@src/views/user/Profile.vue')
+        component: () => import('@src/components/user/profile/Profile.vue')
       },
       {
         path: 'assing-permission',

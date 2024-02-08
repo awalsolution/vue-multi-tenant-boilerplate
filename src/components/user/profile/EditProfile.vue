@@ -48,7 +48,7 @@
 import { onMounted, ref, unref } from 'vue';
 import { type FormInst } from 'naive-ui';
 import { updateRecordApi } from '@src/api/endpoints';
-import { SingleImageUploader } from '@src/components/upload';
+import { SingleImageUploader } from '@src/components/common/upload';
 import { useUserStore } from '@src/store/modules/user';
 import { useEnv } from '@src/hooks/useEnv';
 

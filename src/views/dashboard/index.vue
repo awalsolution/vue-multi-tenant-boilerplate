@@ -34,6 +34,8 @@ import { ref, onMounted } from 'vue';
 import { UsergroupAddOutlined, InfoCircleOutlined, DollarCircleOutlined } from '@vicons/antd';
 import { Organization16Regular, LockClosed32Regular, PersonLock20Regular } from '@vicons/fluent';
 
+console.log('domain name ==>', window.location.hostname);
+
 const loading = ref(true);
 
 onMounted(async () => {
