@@ -96,7 +96,10 @@ class Request {
         window['$message'].error(msg.message);
         break;
       case ResponseStatusCode.CONFLICT:
-        window['$message'].error(msg.errors?.name);
+        if (msg.errors?.name) {
+          window['$message'].error(msg.errors?.name);
+        }
+        window['$message'].error(msg.errors?.email);
         break;
       case ResponseStatusCode.TOO_MANY_REQUESTS:
         window['$message'].error(msg.message);

@@ -1,37 +1,93 @@
 <template>
   <n-form ref="formRef" :label-width="80" :model="formValue" :rules="formRules" size="small">
-    <n-grid x-gap="10">
-      <n-form-item-gi :span="8" class="pt-6" label="Name" path="company_name">
-        <n-input v-model:value="formValue.company_name" placeholder="Enter Name" />
-      </n-form-item-gi>
-      <n-form-item-gi :span="8" class="pt-6" label="Phone" path="phone_number">
-        <n-input v-model:value="formValue.phone_number" placeholder="Enter Phone" />
-      </n-form-item-gi>
-      <n-form-item-gi :span="8" class="pt-6" label="Address" path="address">
-        <n-input v-model:value="formValue.address" placeholder="Enter Address" />
-      </n-form-item-gi>
-      <n-form-item-gi :span="8" label="City" path="city">
-        <n-input v-model:value="formValue.city" placeholder="Enter City" />
-      </n-form-item-gi>
-      <n-form-item-gi :span="8" style="padding-top: 4px" label="State" path="state">
-        <n-input v-model:value="formValue.state" placeholder="Enter State" />
-      </n-form-item-gi>
-      <n-form-item-gi :span="8" style="padding-top: 4px" label="Country" path="country">
-        <n-input v-model:value="formValue.country" placeholder="Enter Country" />
-      </n-form-item-gi>
-      <n-form-item-gi :span="12" label="Status" path="status">
-        <n-switch v-model:value="formValue.status" :checked-value="1" :unchecked-value="0" />
-      </n-form-item-gi>
-    </n-grid>
-    <SingleImageUploader
-      :action="uploadUrl"
-      :data="{ type: 0 }"
-      name="company_images"
-      :width="100"
-      :height="100"
-      @upload-change="uploadChange"
-      v-model:value="formValue.logo"
-    />
+    <n-row :gutter="[20, 8]">
+      <n-col :span="12">
+        <n-form-item label="Plan Price" path="plan_id">
+          <n-select
+            :filterable="true"
+            :tag="false"
+            placeholder="Select Plan"
+            v-model:value="formValue.plan_id"
+            clearable
+            @focus="getPlansOnFocus"
+            :remote="true"
+            :clear-filter-after-select="false"
+            label-field="name"
+            value-field="id"
+            :loading="planLoading"
+            :options="plans"
+          />
+        </n-form-item>
+      </n-col>
+      <!-- <n-col :span="12">
+        <n-form-item label="Role" path="role_id">
+          <n-select
+            :filterable="true"
+            :tag="false"
+            placeholder="Select Role"
+            v-model:value="formValue.role_id"
+            clearable
+            @focus="getRolesOnFocus"
+            :remote="true"
+            :clear-filter-after-select="false"
+            label-field="name"
+            value-field="id"
+            :loading="roleLoading"
+            :options="roles"
+          />
+        </n-form-item>
+      </n-col> -->
+      <n-col :span="12">
+        <n-form-item label="Domain Name" path="domain">
+          <n-input v-model:value="formValue.domain" placeholder="Enter Domain Name" />
+        </n-form-item>
+      </n-col>
+      <n-col :span="12">
+        <n-form-item label="First Name" path="first_name">
+          <n-input v-model:value="formValue.first_name" placeholder="Enter First Name" />
+        </n-form-item>
+      </n-col>
+      <n-col :span="12">
+        <n-form-item label="Last Name" path="last_name">
+          <n-input v-model:value="formValue.last_name" placeholder="Enter Last Name" />
+        </n-form-item>
+      </n-col>
+      <n-col :span="12">
+        <n-form-item label="Email" path="email">
+          <n-input v-model:value="formValue.email" placeholder="Enter Email" type="email" />
+        </n-form-item>
+      </n-col>
+      <n-col :span="12">
+        <n-form-item label="Phone Number" path="phone_number">
+          <n-input v-model:value="formValue.phone_number" placeholder="Enter Phone Number" />
+        </n-form-item>
+      </n-col>
+      <n-col :span="12">
+        <n-form-item label="Password" path="password">
+          <n-input
+            v-model:value="formValue.password"
+            placeholder="Enter Password"
+            type="password"
+            showPasswordOn="click"
+          />
+        </n-form-item>
+      </n-col>
+      <n-col :span="12">
+        <n-form-item label="Password Confirm" path="password_confirmation">
+          <n-input
+            v-model:value="formValue.password_confirmation"
+            placeholder="Enter Password"
+            type="password"
+            showPasswordOn="click"
+          />
+        </n-form-item>
+      </n-col>
+      <n-col :span="12">
+        <n-form-item label="status" path="status">
+          <n-switch v-model:value="formValue.status" :checked-value="1" :unchecked-value="0" />
+        </n-form-item>
+      </n-col>
+    </n-row>
     <n-space justify="end">
       <n-form-item :theme-overrides="{ labelHeightSmall: '0', feedbackHeightSmall: '0' }">
         <n-button secondary type="info" @click="handleValidateClick"> Create </n-button>
@@ -41,22 +97,19 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, unref } from 'vue';
+import { ref } from 'vue';
 import { type FormInst } from 'naive-ui';
 import { createRecordApi } from '@src/api/endpoints';
-import { SingleImageUploader } from '@src/components/common/upload';
-import { useEnv } from '@src/hooks/useEnv';
 import { formRules } from '@src/rules/tenant_rules';
+import { usePlanfilter } from '@src/filters/plan';
+// import { useRolefilter } from '@src/filters/role';
 
-const { uploadUrl } = useEnv();
 const formValue: any = ref({});
 const formRef = ref<FormInst | null>(null);
+const { plans, planLoading, getPlansOnFocus } = usePlanfilter();
+// const { roles, roleLoading, getRolesOnFocus } = useRolefilter();
 
 const emits = defineEmits(['created']);
-
-const uploadChange = (list: string) => {
-  formValue.value.logo = unref(list);
-};
 
 const handleValidateClick = (e: MouseEvent) => {
   e.preventDefault();
