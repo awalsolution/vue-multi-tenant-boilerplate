@@ -2,7 +2,7 @@ import { ref } from 'vue';
 import { getRecordsApi } from '@src/api/endpoints';
 import { isEmpty } from 'lodash';
 
-export function usefilterMenu() {
+export function useMenufilter() {
   const menus: any = ref([]);
   const menuLoading = ref(false);
   const menusInitialized = ref(false);
@@ -12,23 +12,22 @@ export function usefilterMenu() {
       menus.value = [];
     } else {
       menuLoading.value = true;
-      const response: any = await getRecordsApi('/menus', { name: query });
-      menus.value = response.result;
+      const response: any = await getRecordsApi('/menu', { name: query });
+      menus.value = response.data?.data;
       menuLoading.value = false;
     }
   }
 
   async function getMenus() {
     menuLoading.value = true;
-    const response: any = await getRecordsApi('/menus');
-    menus.value = response.result;
+    const response: any = await getRecordsApi('/menu');
+    menus.value = response.data?.data;
     menuLoading.value = false;
   }
 
   async function getMenusOnFocus() {
     if (!menusInitialized.value) {
       await getMenus();
-      console.log('menus list =>', menus);
       menusInitialized.value = true;
     }
   }

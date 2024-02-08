@@ -30,7 +30,7 @@
           v-model:value="formValue.role_id"
           clearable
           @focus="getRolesOnFocus"
-          @update:value="checkVendorRole"
+          @update:value="checkRole"
           :remote="true"
           :clear-filter-after-select="false"
           label-field="name"
@@ -39,22 +39,22 @@
           :options="roles"
         />
       </n-form-item-gi>
-      <n-form-item-gi v-if="isVendor" :span="12" label="company Name" path="company_id">
+      <!-- <n-form-item-gi v-if="isVendor" :span="12" label="company Name" path="tenant_id">
         <n-select
           :filterable="true"
           :tag="false"
-          placeholder="Select company"
-          v-model:value="formValue.company_id"
+          placeholder="Select Tenant"
+          v-model:value="formValue.tenant_id"
           clearable
-          @focus="getCompaniesOnFocus"
+          @focus="getTenantsOnFocus"
           :remote="true"
           :clear-filter-after-select="false"
           label-field="company_name"
           value-field="id"
-          :loading="companyLoading"
-          :options="companies"
+          :loading="tenantLoading"
+          :options="tenants"
         />
-      </n-form-item-gi>
+      </n-form-item-gi> -->
     </n-grid>
     <n-space justify="end">
       <n-form-item :theme-overrides="{ labelHeightSmall: '0', feedbackHeightSmall: '0' }">
@@ -68,17 +68,17 @@
 import { ref } from 'vue';
 import { type FormInst } from 'naive-ui';
 import { createRecordApi } from '@src/api/endpoints';
-import { usefilterRole } from '@src/filters/roles';
-import { usefilterCompany } from '@src/filters/company';
+import { useRolefilter } from '@src/filters/role';
+// import { useTenantfilter } from '@src/filters/tenant';
 import { formRules } from '@src/rules/user_rules';
 
-const { roles, roleLoading, getRolesOnFocus } = usefilterRole();
-const { companies, companyLoading, getCompaniesOnFocus } = usefilterCompany();
+const { roles, roleLoading, getRolesOnFocus } = useRolefilter();
+// const { tenants, tenantLoading, getTenantsOnFocus } = useTenantfilter();
 const formRef = ref<FormInst | null>(null);
 const formValue: any = ref({});
-const isVendor: any = ref(false);
+const isCompanyAdmin: any = ref(false);
 
-const checkVendorRole = () => {
+const checkRole = () => {
   const names = formValue.value.role_id
     .map((val: any) => {
       const found = roles.value.find((item: any) => item.id === val);
@@ -86,10 +86,10 @@ const checkVendorRole = () => {
     })
     .filter(Boolean);
 
-  if (names.includes('vendor')) {
-    isVendor.value = true;
+  if (names.includes('company admin')) {
+    isCompanyAdmin.value = true;
   } else {
-    isVendor.value = false;
+    isCompanyAdmin.value = false;
   }
 };
 
@@ -99,7 +99,7 @@ const handleValidateClick = (e: MouseEvent) => {
   e.preventDefault();
   formRef.value?.validate((errors) => {
     if (!errors) {
-      createRecordApi('/users', formValue.value).then((res: any) => {
+      createRecordApi('/user', formValue.value).then((res: any) => {
         window['$message'].success(res.message);
         emits('created', res.data);
       });

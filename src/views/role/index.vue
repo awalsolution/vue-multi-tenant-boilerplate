@@ -214,9 +214,9 @@ function confirmationDialog() {
 
 function deleteOperation() {
   loadingDispatcher.start();
-  deleteRecordApi(`/roles/${selectedId.value}`)
+  deleteRecordApi(`/role/${selectedId.value}`)
     .then((res: any) => {
-      window['$message'].success(res.message);
+      window['$message'].warning(res.message);
       getList();
       loadingDispatcher.end();
       dialog.destroyAll;

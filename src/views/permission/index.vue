@@ -195,7 +195,7 @@ import { NIcon, NPagination, useDialog } from 'naive-ui';
 import { MoreOutlined, EditOutlined, DeleteOutlined, SearchOutlined } from '@vicons/antd';
 import { useLoading } from '@src/hooks/useLoading';
 import { deleteRecordApi } from '@src/api/endpoints';
-import { usefilterMenu } from '@src/filters/menus';
+import { useMenufilter } from '@src/filters/menu';
 import { useMobile } from '@src/hooks/useMediaQuery';
 import { usePermission } from '@src/hooks/permission/usePermission';
 import { usePagination } from '@src/hooks/pagination/usePagination';
@@ -212,7 +212,7 @@ const showEditModal = ref(false);
 const selectedId = ref();
 const { hasPermission } = usePermission();
 const [loading, loadingDispatcher] = useLoading(false);
-const { menus, menuLoading, findMenu, getMenusOnFocus } = usefilterMenu();
+const { menus, menuLoading, findMenu, getMenusOnFocus } = useMenufilter();
 
 const { getList, list, page, pageSizes, itemCount, pageSize, searchParams }: any =
   usePagination('/permission');
@@ -252,9 +252,9 @@ function confirmationDialog() {
 
 function deleteOperation() {
   loadingDispatcher.start();
-  deleteRecordApi(`/permissions/${selectedId.value}`)
+  deleteRecordApi(`/permission/${selectedId.value}`)
     .then((res: any) => {
-      window['$message'].success(res.message);
+      window['$message'].warning(res.message);
       getList();
       loadingDispatcher.end();
       dialog.destroyAll;
@@ -313,3 +313,4 @@ const fetchList = () => {
   font-style: italic;
 }
 </style>
+@src/filters/menu

@@ -2,7 +2,7 @@ import { ref } from 'vue';
 import { getRecordsApi } from '@src/api/endpoints';
 import { isEmpty } from 'lodash';
 
-export function filterPermission() {
+export function usePermissionfilter() {
   const permissions: any = ref([]);
   const permissionLoading = ref(false);
   const permissionsInitialized = ref(false);
@@ -12,18 +12,18 @@ export function filterPermission() {
       permissions.value = [];
     } else {
       permissionLoading.value = true;
-      const response: any = await getRecordsApi('/permissions', {
+      const response: any = await getRecordsApi('/permission', {
         name: query
       });
-      permissions.value = response.result.data;
+      permissions.value = response.data?.data;
       permissionLoading.value = false;
     }
   }
 
   async function getPermissions() {
     permissionLoading.value = true;
-    const response: any = await getRecordsApi('/permissions');
-    permissions.value = response.result.data;
+    const response: any = await getRecordsApi('/permission');
+    permissions.value = response.data?.data;
     permissionLoading.value = false;
   }
 

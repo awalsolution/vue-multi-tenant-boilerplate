@@ -67,7 +67,7 @@
             >
               <template #prefix> <NIcon :component="SearchOutlined" class="mr-1" /> </template>
             </n-input>
-            <n-select
+            <!-- <n-select
               class="sm:!w-[230px]"
               :filterable="true"
               v-model:value="searchParams.company_name"
@@ -81,7 +81,7 @@
               @focus="getCompaniesOnFocus"
               :options="companies"
               @search="findCompany"
-            />
+            /> -->
             <n-select
               class="sm:!w-[230px]"
               v-model:value="searchParams.status"
@@ -265,8 +265,8 @@ import { deleteRecordApi } from '@src/api/endpoints';
 import { useLoading } from '@src/hooks/useLoading';
 import { useEnv } from '@src/hooks/useEnv';
 import { useMobile } from '@src/hooks/useMediaQuery';
-import { usefilterRole } from '@src/filters/roles';
-import { usefilterCompany } from '@src/filters/company';
+import { useRolefilter } from '@src/filters/role';
+// import { useTenantfilter } from '@src/filters/tenant';
 import { renderIcon } from '@src/utils/renderIcon';
 import { usePermission } from '@src/hooks/permission/usePermission';
 import { usePagination } from '@src/hooks/pagination/usePagination';
@@ -284,8 +284,8 @@ const showEditModal = ref(false);
 const selectedId = ref();
 const { hasPermission } = usePermission();
 const [loading, loadingDispatcher] = useLoading(false);
-const { roles, roleLoading, findRole, getRolesOnFocus } = usefilterRole();
-const { companies, companyLoading, getCompaniesOnFocus, findCompany } = usefilterCompany();
+const { roles, roleLoading, findRole, getRolesOnFocus } = useRolefilter();
+// const { tenants, tenantLoading, getTenantsOnFocus, findTenant } = useTenantfilter();
 
 // fetch all records
 const { getList, list, page, pageSizes, itemCount, pageSize, searchParams }: any =
@@ -332,7 +332,7 @@ function confirmationDialog() {
 
 function deleteOperation() {
   loadingDispatcher.start();
-  deleteRecordApi(`/users/${selectedId.value}`)
+  deleteRecordApi(`/user/${selectedId.value}`)
     .then((res: any) => {
       window['$message'].success(res.message);
       getList();
@@ -398,4 +398,4 @@ const fetchList = () => {
   font-style: italic;
 }
 </style>
-@src/filters/company
+@src/filters/company @src/filters/tenant @src/filters/role

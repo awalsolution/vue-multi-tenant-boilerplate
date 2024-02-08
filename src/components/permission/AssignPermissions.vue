@@ -35,11 +35,11 @@
 <script lang="ts" setup>
 import { onMounted, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import { usefilterMenu } from '@src/filters/menus';
+import { useMenufilter } from '@src/filters/menu';
 import ContentLayout from '@src/layouts/ContentLayout/index.vue';
 import { getRecordApi, updateRecordApi } from '@src/api/endpoints';
 
-const { menus, getMenus } = usefilterMenu();
+const { menus, getMenus } = useMenufilter();
 const route = useRoute();
 const router = useRouter();
 const userData = ref({});

@@ -44,10 +44,10 @@
 import { ref } from 'vue';
 import { type FormInst } from 'naive-ui';
 import { createRecordApi } from '@src/api/endpoints';
-import { usefilterMenu } from '@src/filters/menus';
+import { useMenufilter } from '@src/filters/menu';
 import { formRules } from '@src/rules/permission_rules';
 
-const { menus, menuLoading, getMenusOnFocus } = usefilterMenu();
+const { menus, menuLoading, getMenusOnFocus } = useMenufilter();
 const formValue: any = ref({});
 const formRef = ref<FormInst | null>(null);
 
