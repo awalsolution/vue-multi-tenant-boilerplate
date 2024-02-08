@@ -57,7 +57,7 @@ const handleValidateClick = (e: MouseEvent) => {
   e.preventDefault();
   formRef.value?.validate((errors) => {
     if (!errors) {
-      createRecordApi('/permissions', formValue.value).then((res: any) => {
+      createRecordApi('/permission', formValue.value).then((res: any) => {
         window['$message'].success(res.message);
         emits('created', res.result);
       });

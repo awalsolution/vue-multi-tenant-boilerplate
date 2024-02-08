@@ -48,7 +48,7 @@ const props = defineProps({
 
 // fetch single plan  using id
 getRecordApi(`/plan/${props.id}`).then((res: any) => {
-  formValue.value = res.result;
+  formValue.value = res.data;
 });
 
 const handleValidateClick = (e: MouseEvent) => {
@@ -57,7 +57,7 @@ const handleValidateClick = (e: MouseEvent) => {
     if (!errors) {
       updateRecordApi(`/plan/${formValue.value.id}`, formValue.value).then((res: any) => {
         window['$message'].success(res.message);
-        emits('updated', res.result);
+        emits('updated', res.data);
       });
     } else {
       console.log(errors);

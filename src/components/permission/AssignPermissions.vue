@@ -51,11 +51,11 @@ onMounted(() => {
   if (route.query && (route.query.roleId || route.query.userId)) {
     getMenus();
     if (route.query.roleId) {
-      fetchEndpoint.value = `/roles/${route.query.roleId}`;
-      updateEndpoint.value = '/roles/assign-permission/' + route.query.roleId;
+      fetchEndpoint.value = `/role/${route.query.roleId}`;
+      updateEndpoint.value = '/role/assign-permission/' + route.query.roleId;
     } else if (route.query.userId) {
-      fetchEndpoint.value = `/users/${route.query.userId}`;
-      updateEndpoint.value = '/users/assign-permission/' + route.query.userId;
+      fetchEndpoint.value = `/user/${route.query.userId}`;
+      updateEndpoint.value = '/user/assign-permission/' + route.query.userId;
     }
     getRecordApi(fetchEndpoint.value).then((res: any) => {
       userData.value = res.result;

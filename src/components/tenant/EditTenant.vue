@@ -65,7 +65,7 @@ const uploadChange = (list: string) => {
 
 // fetch single tenant  using id
 getRecordApi(`/tenant/${props.id}`).then((res: any) => {
-  formValue.value = res.result;
+  formValue.value = res.data;
 });
 
 const handleValidateClick = (e: MouseEvent) => {
@@ -74,7 +74,7 @@ const handleValidateClick = (e: MouseEvent) => {
     if (!errors) {
       updateRecordApi(`/tenant/${formValue.value.id}`, formValue.value).then((res: any) => {
         window['$message'].success(res.message);
-        emits('updated', res.result);
+        emits('updated', res.data);
       });
     } else {
       console.log(errors);

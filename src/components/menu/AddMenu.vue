@@ -26,9 +26,9 @@ const handleValidateClick = (e: MouseEvent) => {
   e.preventDefault();
   formRef.value?.validate((errors) => {
     if (!errors) {
-      createRecordApi('/menus', formValue.value).then((res: any) => {
+      createRecordApi('/menu', formValue.value).then((res: any) => {
         window['$message'].success(res.message);
-        emits('created', res.result);
+        emits('created', res.data);
       });
     } else {
       console.log(errors);

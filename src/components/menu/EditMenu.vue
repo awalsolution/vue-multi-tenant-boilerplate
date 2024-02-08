@@ -28,17 +28,17 @@ const props = defineProps({
 });
 
 // fetch single menu  using id
-getRecordApi(`/menus/${props.id}`).then((res: any) => {
-  formValue.value = res.result;
+getRecordApi(`/menu/${props.id}`).then((res: any) => {
+  formValue.value = res.data;
 });
 
 const handleValidateClick = (e: MouseEvent) => {
   e.preventDefault();
   formRef.value?.validate((errors) => {
     if (!errors) {
-      updateRecordApi(`/menus/${formValue.value.id}`, formValue.value).then((res: any) => {
+      updateRecordApi(`/menu/${formValue.value.id}`, formValue.value).then((res: any) => {
         window['$message'].success(res.message);
-        emits('updated', res.result);
+        emits('updated', res.data);
       });
     } else {
       console.log(errors);

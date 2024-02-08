@@ -58,8 +58,8 @@ const props = defineProps({
   }
 });
 // get permission for update
-getRecordApi(`/permissions/${props.id}`).then((res: any) => {
-  formValue.value = res.result;
+getRecordApi(`/permission/${props.id}`).then((res: any) => {
+  formValue.value = res.data;
   getMenus();
 });
 
@@ -67,9 +67,9 @@ const handleValidateClick = (e: MouseEvent) => {
   e.preventDefault();
   formRef.value?.validate((errors) => {
     if (!errors) {
-      updateRecordApi(`/permissions/${formValue.value.id}`, formValue.value).then((res: any) => {
+      updateRecordApi(`/permission/${formValue.value.id}`, formValue.value).then((res: any) => {
         window['$message'].success(res.message);
-        emits('updated', res.result);
+        emits('updated', res.data);
       });
     } else {
       console.log(errors);

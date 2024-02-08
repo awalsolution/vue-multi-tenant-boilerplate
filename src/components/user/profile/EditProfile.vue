@@ -67,10 +67,10 @@ const handleValidateClick = (e: MouseEvent) => {
   e.preventDefault();
   formRef.value?.validate((errors) => {
     if (!errors) {
-      updateRecordApi(`/users/profile/${profileData.value.id}`, profileData.value).then(
+      updateRecordApi(`/user/profile/${profileData.value.id}`, profileData.value).then(
         (res: any) => {
           window['$message'].success(res.message);
-          emits('updated', res.result);
+          emits('updated', res.data);
         }
       );
     } else {
