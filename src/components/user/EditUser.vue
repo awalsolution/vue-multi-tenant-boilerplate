@@ -7,7 +7,7 @@
       <n-form-item-gi :span="12" label="Status" path="status">
         <n-switch v-model:value="formValue.status" :checked-value="1" :unchecked-value="0" />
       </n-form-item-gi>
-      <n-form-item-gi :span="12" label="User Role" path="role_id">
+      <n-form-item-gi :span="12" label="User Role" path="roles">
         <n-select
           :filterable="true"
           multiple

@@ -18,19 +18,26 @@
           placeholder="Enter Password"
         />
       </n-form-item-gi>
+      <n-form-item-gi :span="12" label="Confirm Password" path="password_confirmation">
+        <n-input
+          v-model:value="formValue.password_confirmation"
+          type="password"
+          showPasswordOn="click"
+          placeholder="Enter Password"
+        />
+      </n-form-item-gi>
       <n-form-item-gi :span="12" label="Status" path="status">
         <n-switch v-model:value="formValue.status" :checked-value="1" :unchecked-value="0" />
       </n-form-item-gi>
-      <n-form-item-gi :span="12" label="User Role" path="role_id">
+      <n-form-item-gi :span="12" label="User Role" path="roles">
         <n-select
           :filterable="true"
           multiple
           :tag="false"
           placeholder="Select Role"
-          v-model:value="formValue.role_id"
+          v-model:value="formValue.roles"
           clearable
           @focus="getRolesOnFocus"
-          @update:value="checkRole"
           :remote="true"
           :clear-filter-after-select="false"
           label-field="name"
@@ -76,22 +83,22 @@ const { roles, roleLoading, getRolesOnFocus } = useRolefilter();
 // const { tenants, tenantLoading, getTenantsOnFocus } = useTenantfilter();
 const formRef = ref<FormInst | null>(null);
 const formValue: any = ref({});
-const isCompanyAdmin: any = ref(false);
+// const isCompanyAdmin: any = ref(false);
 
-const checkRole = () => {
-  const names = formValue.value.role_id
-    .map((val: any) => {
-      const found = roles.value.find((item: any) => item.id === val);
-      return found ? found.name : null;
-    })
-    .filter(Boolean);
+// const checkRole = () => {
+//   const names = formValue.value.role_id
+//     .map((val: any) => {
+//       const found = roles.value.find((item: any) => item.id === val);
+//       return found ? found.name : null;
+//     })
+//     .filter(Boolean);
 
-  if (names.includes('company admin')) {
-    isCompanyAdmin.value = true;
-  } else {
-    isCompanyAdmin.value = false;
-  }
-};
+//   if (names.includes('company admin')) {
+//     isCompanyAdmin.value = true;
+//   } else {
+//     isCompanyAdmin.value = false;
+//   }
+// };
 
 const emits = defineEmits(['created']);
 

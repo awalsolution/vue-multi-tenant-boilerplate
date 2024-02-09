@@ -98,8 +98,12 @@ class Request {
       case ResponseStatusCode.CONFLICT:
         if (msg.errors?.name) {
           window['$message'].error(msg.errors?.name);
+        } else if (msg.errors?.password) {
+          window['$message'].error(msg.errors?.password);
+        } else {
+          window['$message'].error(msg.errors?.email);
         }
-        window['$message'].error(msg.errors?.email);
+
         break;
       case ResponseStatusCode.TOO_MANY_REQUESTS:
         window['$message'].error(msg.message);

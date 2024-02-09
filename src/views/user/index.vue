@@ -225,7 +225,7 @@
       </div>
     </template>
 
-    <n-modal style="width: 70%" v-model:show="showModal" preset="dialog">
+    <n-modal style="width: 40%" v-model:show="showModal" preset="dialog">
       <template #header>
         <div>Create New User</div>
       </template>
@@ -239,7 +239,7 @@
       </n-space>
     </n-modal>
 
-    <n-modal style="width: 70%" v-model:show="showEditModal" preset="dialog">
+    <n-modal style="width: 40%" v-model:show="showEditModal" preset="dialog">
       <template #header>
         <div>Update User</div>
       </template>
@@ -350,8 +350,9 @@ function deleteOperation() {
 
 const actionOperation = (item: any) => {
   if (selectedOption.value === 'assign_permission') {
+    console.log('user id ==>', item.id);
     router.push({
-      name: 'system_assing_permission',
+      name: 'user_assing_permission',
       query: { userId: item.id }
     });
   } else if (selectedOption.value === 'edit') {

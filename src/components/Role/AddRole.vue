@@ -3,22 +3,19 @@
     <n-form-item style="padding-top: 24px" label="Name" path="name">
       <n-input v-model:value="formValue.name" placeholder="Enter Name" />
     </n-form-item>
-    <!-- <n-form-item v-if="isSuperAdminUser()" :span="12" label="company Name" path="company_id">
+    <n-form-item :span="12" label="Role Type" path="type">
       <n-select
         :filterable="true"
         :tag="false"
-        placeholder="Select company"
-        v-model:value="formValue.company_id"
+        placeholder="Select Role Type"
+        v-model:value="formValue.type"
         clearable
-        @focus="getTenantsOnFocus"
-        :remote="true"
         :clear-filter-after-select="false"
-        label-field="company_name"
-        value-field="id"
-        :loading="tenantLoading"
-        :options="tenants"
+        label-field="label"
+        value-field="key"
+        :options="roleType"
       />
-    </n-form-item> -->
+    </n-form-item>
     <n-space justify="end">
       <n-form-item :theme-overrides="{ labelHeightSmall: '0', feedbackHeightSmall: '0' }">
         <n-button secondary type="info" @click="handleValidateClick"> Create </n-button>
@@ -32,10 +29,7 @@ import { ref } from 'vue';
 import { type FormInst } from 'naive-ui';
 import { createRecordApi } from '@src/api/endpoints';
 import { formRules } from '@src/rules/role_rules';
-// import { useTenantfilter } from '@src/filters/tenant';
-// import { isSuperAdminUser } from '@src/checks/isSuperAdmin';
 
-// const { tenants, tenantLoading, getTenantsOnFocus } = useTenantfilter();
 const formValue: any = ref({});
 const formRef = ref<FormInst | null>(null);
 const emits = defineEmits(['created']);
@@ -54,6 +48,11 @@ const handleValidateClick = (e: MouseEvent) => {
     }
   });
 };
+
+const roleType = [
+  { label: 'Public', key: 'public' },
+  { label: 'Private', key: 'private' }
+];
 </script>
 
 <style lang="scss" scoped></style>

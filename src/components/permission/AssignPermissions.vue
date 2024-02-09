@@ -58,8 +58,8 @@ onMounted(() => {
       updateEndpoint.value = '/user/assign-permission/' + route.query.userId;
     }
     getRecordApi(fetchEndpoint.value).then((res: any) => {
-      userData.value = res.result;
-      selectedPermissions.value = res.result.permissions.map((item: any) => {
+      userData.value = res.data;
+      selectedPermissions.value = res.data.permissions.map((item: any) => {
         return item.id;
       });
       window['$message'].success(res.message);

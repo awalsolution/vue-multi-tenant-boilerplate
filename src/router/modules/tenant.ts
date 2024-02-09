@@ -26,6 +26,15 @@ const routes: RouteRecordRaw[] = [
           permissions: ['can view tenant menu']
         },
         component: () => import('@src/views/tenant/index.vue')
+      },
+      {
+        path: 'list',
+        name: `${routeName}_list`,
+        meta: {
+          title: 'Tenant List',
+          permissions: ['can view tenant menu']
+        },
+        component: () => import('@src/views/tenant/index.vue')
       }
     ]
   }

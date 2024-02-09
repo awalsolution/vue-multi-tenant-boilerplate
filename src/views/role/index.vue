@@ -39,7 +39,7 @@
             <thead class="head">
               <tr>
                 <th class="th">Role Name</th>
-                <th class="th">Company Name</th>
+                <th class="th">Role Type</th>
                 <th class="th">Created At</th>
                 <th
                   class="sticky_el right-0 z-20"
@@ -61,7 +61,11 @@
               </tr>
               <tr v-else v-for="item in list" :key="item.id" class="body_tr">
                 <td class="td">{{ item?.name }}</td>
-                <td class="td">{{ item?.company?.company_name }}</td>
+                <td class="text-center td">
+                  <n-tag :bordered="false" :type="item.type === 'private' ? 'error' : 'info'">
+                    {{ item.type }}
+                  </n-tag>
+                </td>
                 <td class="td">{{ item?.created_at }}</td>
                 <td
                   class="sticky_el right-0 z-10"
@@ -233,7 +237,7 @@ function deleteOperation() {
 const actionOperation = (item: any) => {
   if (selectedOption.value === 'assign_permission') {
     router.push({
-      name: 'system_assing_permission',
+      name: 'role_assing_permission',
       query: { roleId: item.id }
     });
   } else if (selectedOption.value === 'edit') {

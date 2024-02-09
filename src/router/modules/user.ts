@@ -3,7 +3,7 @@ import { UsergroupAddOutlined } from '@vicons/antd';
 import { DashboardLayout } from '@src/router/constant';
 import { renderIcon } from '@src/utils/renderIcon';
 
-const routeName = 'User';
+const routeName = 'user';
 
 const routes: RouteRecordRaw[] = [
   {

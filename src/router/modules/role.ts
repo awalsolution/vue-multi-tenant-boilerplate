@@ -14,7 +14,7 @@ const routes: RouteRecordRaw[] = [
     meta: {
       title: 'Role',
       icon: renderIcon(PersonLock20Regular),
-      permissions: ['can view role menu'],
+      permissions: ['view role menu'],
       sort: 3
     },
     children: [
@@ -23,9 +23,19 @@ const routes: RouteRecordRaw[] = [
         name: `${routeName}_list`,
         meta: {
           title: 'Role List',
-          permissions: ['can view role menu']
+          permissions: ['view role menu']
         },
         component: () => import('@src/views/role/index.vue')
+      },
+      {
+        path: 'assing-permission',
+        name: `${routeName}_assing_permission`,
+        meta: {
+          title: 'Assing Permission',
+          permissions: ['assign permission'],
+          hidden: true
+        },
+        component: () => import('@src/components/permission/AssignPermissions.vue')
       }
     ]
   }
