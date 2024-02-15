@@ -14,7 +14,7 @@ const routes: RouteRecordRaw[] = [
     meta: {
       title: 'Tenant',
       icon: renderIcon(Organization16Regular),
-      permissions: ['can view tenant menu'],
+      permissions: ['view tenant menu'],
       sort: 1
     },
     children: [
@@ -23,18 +23,19 @@ const routes: RouteRecordRaw[] = [
         name: `${routeName}_list`,
         meta: {
           title: 'Tenant List',
-          permissions: ['can view tenant menu']
+          permissions: ['view tenant menu']
         },
         component: () => import('@src/views/tenant/index.vue')
       },
       {
-        path: 'list',
-        name: `${routeName}_list`,
+        path: 'insert-role',
+        name: `${routeName}_insert_role`,
         meta: {
-          title: 'Tenant List',
-          permissions: ['can view tenant menu']
+          title: 'Insert Role',
+          permissions: ['role tenant menu'],
+          hidden: true
         },
-        component: () => import('@src/views/tenant/index.vue')
+        component: () => import('@src/components/Role/RoleToTenantDB.vue')
       }
     ]
   }

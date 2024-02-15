@@ -180,6 +180,7 @@
 
 <script lang="ts" setup>
 import { ref, onMounted, computed } from 'vue';
+import { useRouter } from 'vue-router';
 import { NIcon, NPagination, useDialog } from 'naive-ui';
 import { MoreOutlined, EditOutlined, DeleteOutlined, SearchOutlined } from '@vicons/antd';
 import { deleteRecordApi } from '@src/api/endpoints';
@@ -193,6 +194,7 @@ import DataTableLayout from '@src/layouts/DataTableLayout/index.vue';
 import AddTenant from '@src/components/tenant/AddTenant.vue';
 import EditTenant from '@src/components/tenant/EditTenant.vue';
 
+const router = useRouter();
 // const { imgUrl } = useEnv();
 const isMobile = useMobile();
 const dialog = useDialog();
@@ -212,6 +214,12 @@ onMounted(() => {
 });
 
 const moreOptions = ref([
+  {
+    label: 'Insert Role',
+    key: 'insert',
+    icon: renderIcon(EditOutlined),
+    permission: hasPermission(['can view tenant update'])
+  },
   {
     label: 'Edit',
     key: 'edit',
@@ -259,7 +267,12 @@ function deleteOperation() {
 }
 
 const actionOperation = (item: any) => {
-  if (selectedOption.value === 'edit') {
+  if (selectedOption.value === 'insert') {
+    router.push({
+      name: 'tenant_insert_role',
+      query: { tenant_id: item.id }
+    });
+  } else if (selectedOption.value === 'edit') {
     showEditModal.value = true;
     selectedId.value = item.id;
     // router.push(`/roles/${item.id}`);
