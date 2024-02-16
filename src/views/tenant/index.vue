@@ -215,6 +215,12 @@ onMounted(() => {
 
 const moreOptions = ref([
   {
+    label: 'View',
+    key: 'view',
+    icon: renderIcon(EditOutlined),
+    permission: hasPermission(['can view tenant update'])
+  },
+  {
     label: 'Insert Role',
     key: 'insert',
     icon: renderIcon(EditOutlined),
@@ -267,7 +273,12 @@ function deleteOperation() {
 }
 
 const actionOperation = (item: any) => {
-  if (selectedOption.value === 'insert') {
+  if (selectedOption.value === 'view') {
+    router.push({
+      name: 'tenant_view',
+      query: { tenant_id: item.id }
+    });
+  } else if (selectedOption.value === 'insert') {
     router.push({
       name: 'tenant_insert_role',
       query: { tenant_id: item.id }

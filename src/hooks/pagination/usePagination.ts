@@ -8,12 +8,12 @@ export function usePagination(endpoint: any) {
   const emptyState = ref(false);
   const itemCount = ref(0);
   const pageSizes = ref([10, 20, 30, 40, 50, 100]);
-  const pageSize = ref(20);
+  const perPage = ref(20);
   const getList = () => {
     getRecordsApi(endpoint, {
       ...searchParams.value,
       page: page.value,
-      pageSize: pageSize.value
+      perPage: perPage.value
     }).then((res: any) => {
       console.log('record list => ', res);
       list.value = res.data.data;
@@ -23,7 +23,7 @@ export function usePagination(endpoint: any) {
       }
     });
   };
-  watch([page, pageSize], (value, oldValue) => {
+  watch([page, perPage], (value, oldValue) => {
     page.value = value[1] !== oldValue[1] ? 1 : page.value;
     getList();
   });
@@ -34,7 +34,7 @@ export function usePagination(endpoint: any) {
     page,
     pageSizes,
     itemCount,
-    pageSize,
+    perPage,
     searchParams
   };
 }

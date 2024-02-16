@@ -6,7 +6,7 @@
           <NCard content-style="padding-top: 0;" size="small" :bordered="false">
             <template #footer>
               <n-skeleton v-if="loading" size="medium" />
-              <router-link :to="item.link" class="cursor-pointer" v-else>
+              <router-link v-else :to="item.link" class="cursor-pointer">
                 <p class="flex justify-center">
                   <span>
                     <n-icon :size="item.size" class="flex-1" :class="item.colorClass">

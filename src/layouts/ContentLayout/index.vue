@@ -1,5 +1,5 @@
 <template>
-  <main class="flex h-[calc(100%-144px)] flex-col">
+  <main class="flex h-[calc(100%-144px)] flex-col p-3">
     <NCard
       class="!flex h-full"
       hoverable
