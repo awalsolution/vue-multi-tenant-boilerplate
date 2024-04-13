@@ -2,44 +2,41 @@ import { ref } from 'vue';
 import { getRecordsApi } from '@src/api/endpoints';
 import { isEmpty } from 'lodash';
 
-export function usefilterRole() {
-  const roles: any = ref([]);
-  const roleLoading = ref(false);
-  const rolesInitialized = ref(false);
+export function useUserfilter() {
+  const users: any = ref([]);
+  const userLoading = ref(false);
+  const usersInitialized = ref(false);
 
-  async function findRole(query: any) {
+  async function findUser(query: any) {
     if (isEmpty(query)) {
-      roles.value = [];
+      users.value = [];
     } else {
-      roleLoading.value = true;
-      const response: any = await getRecordsApi('/role', {
-        name: query
-      });
-      roles.value = response.data;
-      roleLoading.value = false;
+      userLoading.value = true;
+      const response: any = await getRecordsApi('/user', { name: query });
+      users.value = response.data?.data;
+      userLoading.value = false;
     }
   }
 
-  async function getRoles() {
-    roleLoading.value = true;
-    const response: any = await getRecordsApi('/role');
-    roles.value = response.data;
-    roleLoading.value = false;
+  async function getUsers() {
+    userLoading.value = true;
+    const response: any = await getRecordsApi('/user');
+    users.value = response.data?.data;
+    userLoading.value = false;
   }
 
-  async function getRolesOnFocus() {
-    if (!rolesInitialized.value) {
-      await getRoles();
-      rolesInitialized.value = true;
+  async function getUsersOnFocus() {
+    if (!usersInitialized.value) {
+      await getUsers();
+      usersInitialized.value = true;
     }
   }
-
   return {
-    roles,
-    roleLoading,
-    rolesInitialized,
-    findRole,
-    getRoles,
-    getRolesOnFocus
+    users,
+    userLoading,
+    usersInitialized,
+    findUser,
+    getUsers,
+    getUsersOnFocus
   };
 }

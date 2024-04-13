@@ -1,0 +1,34 @@
+import type { RouteRecordRaw } from 'vue-router';
+import { DollarCircleOutlined } from '@vicons/antd';
+import { DashboardLayout } from '@src/router/constant';
+import { renderIcon } from '@src/utils/renderIcon';
+
+const routeName = 'plan';
+
+const routes: RouteRecordRaw[] = [
+  {
+    path: '/plan',
+    name: routeName,
+    redirect: '/plan/list',
+    component: DashboardLayout,
+    meta: {
+      title: 'Plan',
+      icon: renderIcon(DollarCircleOutlined),
+      permissions: ['can view plan menu'],
+      sort: 2
+    },
+    children: [
+      {
+        path: 'list',
+        name: `${routeName}_list`,
+        meta: {
+          title: 'Plan List',
+          permissions: ['can view plan menu']
+        },
+        component: () => import('@src/views/plan/index.vue')
+      }
+    ]
+  }
+];
+
+export default routes;

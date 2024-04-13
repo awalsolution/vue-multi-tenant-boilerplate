@@ -1,19 +1,24 @@
 import { ref } from 'vue';
 
-export const postRules = ref({
-  title: {
+export const formRules = ref({
+  first_name: {
     required: true,
-    message: 'Please Enter title',
+    message: 'Please Enter First Name',
     trigger: 'blur'
   },
-  description: {
+  last_name: {
     required: true,
-    message: 'Please Enter description',
+    message: 'Please Enter last Name',
     trigger: 'blur'
   },
-  status: {
+  email: {
     required: true,
-    message: 'Please Enter status',
+    message: 'Please Enter email',
+    trigger: 'blur'
+  },
+  password: {
+    required: true,
+    message: 'Please Enter Password',
     trigger: 'blur'
   }
 });
