@@ -69,9 +69,9 @@ import { useDialog } from 'naive-ui';
 import { CloudUpload } from '@vicons/tabler';
 import { EyeOutlined, DeleteOutlined } from '@vicons/antd';
 import { useEnv } from '@src/hooks/useEnv';
-import { basicProps } from '@src/components/upload/MultiImageUploader/props';
-import { isString } from '@src/components/upload/MultiImageUploader/utils';
-import componentSetting from '@src/components/upload/MultiImageUploader/componentSetting';
+import { basicProps } from '@src/components/common/upload/MultiImageUploader/props';
+import { isString } from '@src/components/common/upload/MultiImageUploader/utils';
+import componentSetting from '@src/components/common/upload/MultiImageUploader/componentSetting';
 
 export default defineComponent({
   name: 'MultiImageUploader',

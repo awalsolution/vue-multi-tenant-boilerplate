@@ -58,9 +58,9 @@ import { useDialog } from 'naive-ui';
 import { CloudUpload } from '@vicons/tabler';
 import { EyeOutlined, DeleteOutlined } from '@vicons/antd';
 import { useEnv } from '@src/hooks/useEnv';
-import { basicProps } from '@src/components/upload/SingleImageUploader/props';
-import { isString } from '@src/components/upload/SingleImageUploader/utils';
-import componentSetting from '@src/components/upload/SingleImageUploader/componentSetting';
+import { basicProps } from '@src/components/common/upload/SingleImageUploader/props';
+import { isString } from '@src/components/common/upload/SingleImageUploader/utils';
+import componentSetting from '@src/components/common/upload/SingleImageUploader/componentSetting';
 
 export default defineComponent({
   name: 'SingleImageUploader',
