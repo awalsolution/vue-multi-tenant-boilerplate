@@ -17,8 +17,8 @@
 
 ```sh
 
-git clone https://github.com/awal-solution/awal-hrms-admin-dashbaord.git
-cd  awal-hrms-admin-dashbaord.git
+git clone https://github.com/awal-solution/awal-hr-admin-dashbaord.git
+cd  awal-hr-admin-dashbaord.git
 yarn
 ```
 

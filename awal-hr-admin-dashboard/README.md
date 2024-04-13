@@ -1,4 +1,4 @@
-# Awal Solution CMS
+# Awal HR Management System Admin Dashbaord
 
 ## Environments
 
@@ -17,8 +17,8 @@
 
 ```sh
 
-git clone https://github.com/awal-solution/awal-solution-cms.git
-cd awal-solution-cms
+git clone https://github.com/awal-solution/awal-hr-admin-dashbaord.git
+cd  awal-hr-admin-dashbaord.git
 yarn
 ```
 
