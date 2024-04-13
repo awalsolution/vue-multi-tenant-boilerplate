@@ -31,6 +31,7 @@
           Create
         </NButton>
       </div>
+
       <div class="table_content_container">
         <table class="table">
           <thead class="head">
