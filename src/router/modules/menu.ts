@@ -26,6 +26,26 @@ const routes: RouteRecordRaw[] = [
           permissions: ['can view menu menu']
         },
         component: () => import('@src/views/menu/index.vue')
+      },
+      {
+        path: 'add',
+        name: `${routeName}_add`,
+        meta: {
+          title: 'Add Menu',
+          permissions: ['can view create menu']
+        },
+        component: () => import('@src/components/menu/AddMenu.vue')
+      },
+      {
+        path: 'edit',
+        name: `${routeName}_edit`,
+        meta: {
+          title: 'Edit Menu',
+          permissions: ['can view update menu'],
+          hidden: true,
+          dismissTab: true
+        },
+        component: () => import('@src/components/menu/EditMenu.vue')
       }
     ]
   }

@@ -36,7 +36,25 @@ const routes: RouteRecordRaw[] = [
           hidden: true
         },
         component: () => import('@src/components/tenant/ViewTenantDetail.vue')
+      },
+      {
+        path: 'add',
+        name: `${routeName}_add`,
+        meta: {
+          title: 'Add Tenant',
+          permissions: ['can view create tenant']
+        },
+        component: () => import('@src/components/tenant/AddTenant.vue')
       }
+      // {
+      //   path: 'edit',
+      //   name: `${routeName}_edit`,
+      //   meta: {
+      //     title: 'Edit Tenant',
+      //     permissions: ['can view update tenant']
+      //   },
+      //   component: () => import('@src/components/tenant/EditTenant.vue')
+      // }
       // {
       //   path: 'insert-role',
       //   name: `${routeName}_insert_role`,
