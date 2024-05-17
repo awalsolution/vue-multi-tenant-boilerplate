@@ -5,7 +5,7 @@
     </n-form-item>
     <n-space justify="end">
       <n-form-item :theme-overrides="{ labelHeightSmall: '0', feedbackHeightSmall: '0' }">
-        <n-button secondary type="info" @click="handleValidateClick"> Create </n-button>
+        <n-button secondary type="info" @click="handleValidateClick"> Save </n-button>
       </n-form-item>
     </n-space>
   </n-form>
@@ -15,7 +15,7 @@
 import { ref } from 'vue';
 import { type FormInst } from 'naive-ui';
 import { getRecordApi, updateRecordApi } from '@src/api/endpoints';
-import { formRules } from '@src/rules/menu_rules';
+import { formRules } from '@src/rules/menu';
 
 const formRef = ref<FormInst | null>(null);
 const formValue: any = ref({});

@@ -1,6 +1,17 @@
 <template>
   <n-space :vertical="true">
     <n-card title="User List">
+      <template #header-extra>
+        <NButton
+          secondary
+          type="info"
+          size="small"
+          @click="router.push('add')"
+          v-permission="{ action: ['can view user create'] }"
+        >
+          Add User
+        </NButton>
+      </template>
       <div class="flex flex-col gap-2 lg:flex-row w-full">
         <n-input
           v-model:value="searchParams.name"
@@ -21,15 +32,6 @@
           <template #prefix> <NIcon :component="SearchOutlined" class="mr-1" /> </template>
         </n-input>
         <n-button secondary size="small" strong type="info" @click="fetchList"> Search </n-button>
-        <NButton
-          secondary
-          type="info"
-          size="small"
-          @click="showModal = true"
-          v-permission="{ action: ['can view user create'] }"
-        >
-          Create
-        </NButton>
       </div>
 
       <div class="table_content_container">
