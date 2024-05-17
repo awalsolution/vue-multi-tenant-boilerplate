@@ -24,7 +24,7 @@ import { onBeforeMount } from 'vue';
 import { useRouter } from 'vue-router';
 import { useEnv } from '@src/hooks/useEnv';
 import { useUserStore } from '@src/store/modules/user';
-import ThemeSwitchDevTool from '@src/components/ThemeSwitchDevTool/index.vue';
+import ThemeSwitchDevTool from '@src/components/common/ThemeSwitchDevTool/index.vue';
 import { ACCESS_TOKEN } from '@src/utils/storage/variables';
 import { storage } from '@src/utils/storage';
 

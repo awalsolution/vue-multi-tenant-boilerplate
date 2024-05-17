@@ -33,7 +33,7 @@ export const RedirectRoute: RouteRecordRaw = {
     {
       path: '/redirect/:path(.*)',
       name: RedirectName,
-      component: () => import('@src/views/redirect/index.vue'),
+      component: () => import('@src/views/common/redirect/index.vue'),
       meta: {
         title: RedirectName,
         dismissTab: true

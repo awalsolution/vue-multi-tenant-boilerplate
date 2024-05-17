@@ -15,7 +15,7 @@
 import { ref } from 'vue';
 import { type FormInst } from 'naive-ui';
 import { getRecordApi, updateRecordApi } from '@src/api/endpoints';
-import { formRules } from '@src/rules/menu_rules';
+import { formRules } from '@src/rules/menu';
 
 const formRef = ref<FormInst | null>(null);
 const formValue: any = ref({});
