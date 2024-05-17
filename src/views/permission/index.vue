@@ -1,6 +1,17 @@
 <template>
   <n-space :vertical="true">
     <n-card title="Permission List">
+      <template #header-extra>
+        <NButton
+          secondary
+          type="info"
+          size="small"
+          @click="router.push('add')"
+          v-permission="{ action: ['can view permission create'] }"
+        >
+          Add Plan
+        </NButton>
+      </template>
       <div class="flex flex-col gap-2 lg:flex-row w-full">
         <n-input
           v-model:value="searchParams.name"
@@ -12,15 +23,6 @@
           <template #prefix> <NIcon :component="SearchOutlined" class="mr-1" /> </template>
         </n-input>
         <n-button secondary size="small" strong type="info" @click="fetchList"> Search </n-button>
-        <NButton
-          secondary
-          type="info"
-          size="small"
-          @click="showModal = true"
-          v-permission="{ action: ['can view permission create'] }"
-        >
-          Create
-        </NButton>
       </div>
       <div class="table_content_container">
         <table class="table">
@@ -120,7 +122,8 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted, computed } from 'vue';
+import { ref, onMounted, computed, type Ref } from 'vue';
+import { useRouter } from 'vue-router';
 import { NIcon, NPagination, useDialog } from 'naive-ui';
 import { MoreOutlined, EditOutlined, DeleteOutlined, SearchOutlined } from '@vicons/antd';
 import { deleteRecordApi } from '@src/api/endpoints';
@@ -131,10 +134,11 @@ import EditPermission from '@src/components/permission/EditPermission.vue';
 import { renderIcon } from '@src/utils/renderIcon';
 
 const dialog = useDialog();
-const showModal = ref(false);
-const selectedOption: any = ref(null);
-const showEditModal = ref(false);
-const selectedId = ref();
+const router = useRouter();
+const showModal: Ref = ref(false);
+const selectedOption: Ref = ref(null);
+const showEditModal: Ref = ref(false);
+const selectedId: Ref = ref();
 const { hasPermission } = usePermission();
 
 const { getList, list, page, pageSizes, itemCount, pageSize, searchParams }: any =

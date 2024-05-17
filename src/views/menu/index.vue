@@ -1,6 +1,17 @@
 <template>
   <n-space :vertical="true">
     <n-card title="Menu List">
+      <template #header-extra>
+        <NButton
+          secondary
+          type="info"
+          size="small"
+          @click="router.push('add')"
+          v-permission="{ action: ['can view menu create'] }"
+        >
+          Add Menu
+        </NButton>
+      </template>
       <div class="flex flex-col gap-2 lg:flex-row w-full">
         <n-input
           v-model:value="searchParams.name"
@@ -13,17 +24,6 @@
         </n-input>
         <n-button secondary size="small" strong type="info" @click="fetchList"> Search </n-button>
       </div>
-      <template #header-extra>
-        <NButton
-          secondary
-          type="info"
-          size="small"
-          @click="router.push('add')"
-          v-permission="{ action: ['can view menu create'] }"
-        >
-          Add Menu
-        </NButton>
-      </template>
       <div class="table_content_container">
         <table class="table">
           <thead class="head">
@@ -87,7 +87,7 @@
         :show-quick-jumper="true"
         :show-size-picker="true"
       >
-        <template #prefix="{ itemCount }"> Total Roles: {{ itemCount }} </template>
+        <template #prefix="{ itemCount }"> Total Menu: {{ itemCount }} </template>
       </n-pagination>
     </n-card>
     <n-modal v-model:show="showModal" preset="dialog">

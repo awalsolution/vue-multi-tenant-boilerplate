@@ -36,17 +36,17 @@ const routes: RouteRecordRaw[] = [
           hidden: true
         },
         component: () => import('@src/components/tenant/ViewTenantDetail.vue')
-      },
-      {
-        path: 'insert-role',
-        name: `${routeName}_insert_role`,
-        meta: {
-          title: 'Insert Role',
-          permissions: ['role tenant menu'],
-          hidden: true
-        },
-        component: () => import('@src/components/Role/RoleToTenantDB.vue')
       }
+      // {
+      //   path: 'insert-role',
+      //   name: `${routeName}_insert_role`,
+      //   meta: {
+      //     title: 'Insert Role',
+      //     permissions: ['role tenant menu'],
+      //     hidden: true
+      //   },
+      //   component: () => import('@src/components/Role/RoleToTenantDB.vue')
+      // }
     ]
   }
 ];

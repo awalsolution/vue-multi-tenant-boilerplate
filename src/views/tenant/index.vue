@@ -1,6 +1,17 @@
 <template>
   <n-space :vertical="true">
     <n-card title="Tenant List">
+      <template #header-extra>
+        <NButton
+          secondary
+          type="info"
+          size="small"
+          @click="router.push('add')"
+          v-permission="{ action: ['can view tenant create'] }"
+        >
+          Add Tenant
+        </NButton>
+      </template>
       <div class="flex flex-col gap-2 lg:flex-row w-full">
         <n-input
           v-model:value="searchParams.company_name"
@@ -13,17 +24,6 @@
         </n-input>
         <n-button secondary size="small" strong type="info" @click="fetchList"> Search </n-button>
       </div>
-      <template #header-extra>
-        <NButton
-          secondary
-          type="info"
-          size="small"
-          @click="router.push('add')"
-          v-permission="{ action: ['can view tenant create'] }"
-        >
-          Add Tenant
-        </NButton>
-      </template>
       <div class="table_content_container">
         <table class="table">
           <thead class="head">
@@ -106,6 +106,7 @@
         <template #prefix="{ itemCount }"> Total Tenant: {{ itemCount }} </template>
       </n-pagination>
     </n-card>
+
     <n-modal style="width: 40%" v-model:show="showModal" preset="dialog">
       <template #header>
         <div>Create New Tenant</div>
