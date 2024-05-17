@@ -28,16 +28,6 @@ const routes: RouteRecordRaw[] = [
         component: () => import('@src/views/tenant/index.vue')
       },
       {
-        path: 'view',
-        name: `${routeName}_view`,
-        meta: {
-          title: 'Tenant Detail',
-          permissions: ['view tenant menu'],
-          hidden: true
-        },
-        component: () => import('@src/components/tenant/ViewTenantDetail.vue')
-      },
-      {
         path: 'add',
         name: `${routeName}_add`,
         meta: {

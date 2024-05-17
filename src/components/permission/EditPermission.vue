@@ -18,7 +18,7 @@
     </n-form-item>
     <n-space justify="end">
       <n-form-item :theme-overrides="{ labelHeightSmall: '0', feedbackHeightSmall: '0' }">
-        <n-button secondary type="info" @click="handleValidateClick"> Update </n-button>
+        <n-button secondary type="info" @click="handleValidateClick"> Save </n-button>
       </n-form-item>
     </n-space>
   </n-form>

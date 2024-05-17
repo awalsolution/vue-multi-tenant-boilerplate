@@ -1,47 +1,54 @@
 <template>
-  <n-form ref="formRef" :label-width="80" :model="formValue" :rules="rules" size="small">
-    <n-grid :span="24" :x-gap="24">
-      <n-form-item-gi :span="12" label="Email" path="email">
-        <n-input v-model:value="formValue.email" placeholder="Enter Email" />
-      </n-form-item-gi>
-      <n-form-item-gi :span="12" label="Status" path="status">
-        <n-select v-model:value="formValue.status" size="small" :options="status" />
-      </n-form-item-gi>
-      <n-form-item-gi :span="12" label="User Role" path="role_id">
-        <n-select
-          :filterable="true"
-          multiple
-          :tag="false"
-          placeholder="Select Role"
-          v-model:value="formValue.roles"
-          clearable
-          @focus="getRolesOnFocus"
-          :remote="true"
-          :clear-filter-after-select="false"
-          label-field="name"
-          value-field="id"
-          :loading="roleLoading"
-          :options="roles"
-        />
-      </n-form-item-gi>
-    </n-grid>
+  <n-form ref="formRef" :label-width="80" :model="formValue" :rules="formRules" size="small">
+    <n-row :gutter="[20, 8]">
+      <n-col :span="24">
+        <n-form-item label="Email" path="email">
+          <n-input v-model:value="formValue.email" placeholder="Enter Email" />
+        </n-form-item>
+      </n-col>
+      <n-col :span="24">
+        <n-form-item label="status" path="status">
+          <n-switch v-model:value="formValue.status" :checked-value="1" :unchecked-value="0" />
+        </n-form-item>
+      </n-col>
+      <n-col :span="24">
+        <n-form-item label="User Role" path="role_id">
+          <n-select
+            :filterable="true"
+            multiple
+            :tag="false"
+            placeholder="Select Role"
+            v-model:value="formValue.roles"
+            clearable
+            @focus="getRolesOnFocus"
+            :remote="true"
+            :clear-filter-after-select="false"
+            label-field="name"
+            value-field="id"
+            :loading="roleLoading"
+            :options="roles"
+          />
+        </n-form-item>
+      </n-col>
+    </n-row>
     <n-space justify="end">
       <n-form-item :theme-overrides="{ labelHeightSmall: '0', feedbackHeightSmall: '0' }">
-        <n-button secondary type="info" @click="handleValidateClick"> Update </n-button>
+        <n-button secondary type="info" @click="handleValidateClick"> Save </n-button>
       </n-form-item>
     </n-space>
   </n-form>
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue';
+import { ref, type Ref } from 'vue';
 import { type FormInst } from 'naive-ui';
 import { getRecordApi, updateRecordApi } from '@src/api/endpoints';
 import { usefilterRole } from '@src/filters/roles';
+import { formRules } from '@src/rules/user';
 
 const { roles, roleLoading, getRoles, getRolesOnFocus } = usefilterRole();
 const formRef = ref<FormInst | null>(null);
-const formValue: any = ref({});
+const formValue: Ref = ref({});
 
 const emits = defineEmits(['updated']);
 const props = defineProps({
@@ -71,40 +78,6 @@ const handleValidateClick = (e: MouseEvent) => {
     }
   });
 };
-
-const status = ref([
-  {
-    label: 'active',
-    value: 'active'
-  },
-  {
-    label: 'disabled',
-    value: 'disabled'
-  }
-]);
-
-const rules = ref({
-  first_name: {
-    required: true,
-    message: 'Please Enter First Name',
-    trigger: 'blur'
-  },
-  last_name: {
-    required: true,
-    message: 'Please Enter last Name',
-    trigger: 'blur'
-  },
-  email: {
-    required: true,
-    message: 'Please Enter email',
-    trigger: 'blur'
-  },
-  password: {
-    required: true,
-    message: 'Please Enter Password',
-    trigger: 'blur'
-  }
-});
 </script>
 
 <style lang="scss" scoped></style>

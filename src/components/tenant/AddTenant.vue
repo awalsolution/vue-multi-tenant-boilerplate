@@ -90,7 +90,7 @@
     </n-row>
     <n-space justify="end">
       <n-form-item :theme-overrides="{ labelHeightSmall: '0', feedbackHeightSmall: '0' }">
-        <n-button secondary type="info" @click="handleValidateClick"> Create </n-button>
+        <n-button secondary type="info" @click="handleValidateClick"> Save </n-button>
       </n-form-item>
     </n-space>
   </n-form>
@@ -100,7 +100,7 @@
 import { ref } from 'vue';
 import { type FormInst } from 'naive-ui';
 import { createRecordApi } from '@src/api/endpoints';
-import { formRules } from '@src/rules/tenant_rules';
+import { formRules } from '@src/rules/tenant';
 import { usePlanfilter } from '@src/filters/plan';
 // import { useRolefilter } from '@src/filters/role';
 
@@ -128,4 +128,3 @@ const handleValidateClick = (e: MouseEvent) => {
 </script>
 
 <style lang="scss" scoped></style>
-@src/rules/tenant_rules
