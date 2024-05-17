@@ -31,13 +31,11 @@ export const useUserStore = defineStore('app-user', () => {
 
   const login = async (params: any) => {
     const res: any = await loginApi(params);
-    const { result, code } = res;
+    const { data, code } = res;
     if (code === 200) {
       const ex = 7 * 24 * 60 * 60;
-      storage.set(ACCESS_TOKEN, result.token, ex);
-      storage.set(CURRENT_USER, result.user, ex);
-      setToken(result.token);
-      setCurrentUser(result.user);
+      storage.set(ACCESS_TOKEN, data.token, ex);
+      setToken(data.token);
     }
 
     return res;
@@ -45,16 +43,16 @@ export const useUserStore = defineStore('app-user', () => {
 
   const getCurrentUserWithApiRequest = async () => {
     const res: any = await getUserInfoApi();
-    if (res.result) {
-      const permissionsList = await allPermissions(res.result);
+    if (res.data) {
+      const permissionsList = await allPermissions(res.data);
       setPermissions(permissionsList);
-      setRoles(res.result.roles);
-      setCurrentUser(res.result);
+      setRoles(res.data.roles);
+      setCurrentUser(res.data);
     } else {
       throw new Error('api not responding correctly!');
     }
 
-    return res.result;
+    return res.data;
   };
 
   const allPermissions = async (user: any) => {

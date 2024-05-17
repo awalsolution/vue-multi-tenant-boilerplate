@@ -39,6 +39,7 @@
             <thead class="head">
               <tr>
                 <th class="th">Menu Name</th>
+                <th class="th">Status</th>
                 <th class="th">Created At</th>
                 <th
                   class="sticky_el right-0 z-20"
@@ -56,6 +57,11 @@
               </tr>
               <tr v-else v-for="item in list" :key="item.id" class="body_tr">
                 <td class="td">{{ item.menu_name }}</td>
+                <td class="td">
+                  <n-tag :bordered="false" :type="item.status === 'disabled' ? 'error' : 'info'">
+                    {{ item.status === 1 ? 'Active' : 'Disable' }}
+                  </n-tag>
+                </td>
                 <td class="td">{{ item.created_at }}</td>
                 <td
                   class="sticky_el right-0 z-10"
@@ -159,7 +165,7 @@ const [loading, loadingDispatcher] = useLoading(false);
 
 // fetch all records
 const { getList, list, page, pageSizes, itemCount, pageSize, searchParams }: any =
-  usePagination('/menus');
+  usePagination('/menu');
 
 onMounted(() => {
   getList();
@@ -196,9 +202,9 @@ function confirmationDialog() {
 
 function deleteOperation() {
   loadingDispatcher.start();
-  deleteRecordApi(`/menus/${selectedId.value}`)
+  deleteRecordApi(`/menu/${selectedId.value}`)
     .then((res: any) => {
-      window['$message'].success(res.message);
+      window['$message'].warning(res.message);
       getList();
       loadingDispatcher.end();
       dialog.destroyAll;

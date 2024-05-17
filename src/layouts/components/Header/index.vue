@@ -1,32 +1,6 @@
 <template>
   <header class="header_wrap">
     <div class="flex h-full items-center justify-start space-x-3">
-      <div
-        class="flex h-14 w-full select-none items-center justify-center"
-        @click="router.push('/')"
-      >
-        <img
-          class="animate-pulse cursor-pointer select-none"
-          width="36"
-          height="36"
-          src="@src/assets/images/bit_ocean.png"
-          alt=""
-          loading="eager"
-        />
-        <span
-          class="cursor-pointer whitespace-nowrap text-sm tracking-wide transition-all"
-          :class="[
-            sidebarStore.isDisplay
-              ? sidebarStore.isCollapse
-                ? 'ml-0 hidden'
-                : 'ml-3 w-auto'
-              : 'hidden'
-          ]"
-        >
-          {{ appTitle }}
-        </span>
-      </div>
-
       <NTooltip placement="bottom" trigger="hover">
         <template #trigger>
           <NIcon
@@ -119,8 +93,7 @@ import {
 import {
   // NotificationsCircleOutline,
   SunnyOutline,
-  MoonOutline,
-  SettingsOutline
+  MoonOutline
 } from '@vicons/ionicons5';
 import { useThemeStore } from '@src/store/modules/theme';
 import { useSidebarStore } from '@src/store/modules/sidebar';
@@ -129,7 +102,6 @@ import { useUserStore } from '@src/store/modules/user';
 import { useEnv } from '@src/hooks/useEnv';
 import { BrowserUtils } from '@src/utils/browser';
 import { renderIcon } from '@src/utils/renderIcon';
-import { isSuperAdminUser } from '@src/checks/isSuperAdmin';
 
 const { teamGitHubURL, imgUrl } = useEnv();
 const { openNewWindow } = BrowserUtils;
@@ -138,7 +110,6 @@ const themeStore = useThemeStore();
 const sidebarStore = useSidebarStore();
 const userStore = useUserStore();
 const router = useRouter();
-const { appTitle } = useEnv();
 // const { isFullscreen, toggle: toggleFullscreen } = useFullscreen();
 
 const logout = async () => {
@@ -151,7 +122,7 @@ const logout = async () => {
     .finally(() => location.reload());
 };
 
-type UserOptionKey = 'logout' | 'profile' | 'change-password' | 'company_setting';
+type UserOptionKey = 'logout' | 'profile' | 'change-password' | 'shop_setting';
 
 const selectUserOption = (key: UserOptionKey) => {
   switch (key) {
@@ -163,9 +134,6 @@ const selectUserOption = (key: UserOptionKey) => {
       break;
     case 'change-password':
       router.push('/change-password');
-      break;
-    case 'company_setting':
-      router.push({ name: 'system_company' });
       break;
     default:
       break;
@@ -189,12 +157,6 @@ const userOptions = [
     key: 'profile',
     icon: renderIcon(ProfileOutlined),
     accesses: true
-  },
-  {
-    label: () => 'Company Setting',
-    key: 'compant_setting',
-    icon: renderIcon(SettingsOutline),
-    accesses: isSuperAdminUser()
   },
   {
     label: () => 'Change Password',
@@ -253,7 +215,6 @@ function renderCustomHeader() {
 
 <style lang="scss" scoped>
 .header_wrap {
-  @apply bg-default-light dark:bg-default-dark sticky top-0 z-[101] flex h-14 w-full items-center justify-between shadow sm:p-4;
+  @apply bg-default-light dark:bg-default-dark sticky top-0 z-50 flex h-14 w-full items-center justify-between border-b border-gray-300 p-2 dark:border-gray-800 sm:p-4;
 }
-// border-b border-gray-300 p-2 dark:border-gray-800
 </style>

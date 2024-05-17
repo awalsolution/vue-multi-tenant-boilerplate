@@ -4,10 +4,10 @@
   </template>
   <template v-else>
     <main class="h-screen w-full overflow-hidden">
-      <Header />
       <div class="flex h-full w-full">
         <Sidebar />
-        <div class="relative h-full w-full md:w-[calc(100%-14rem)] lg:w-[calc(100%-14rem)]">
+        <div class="relative h-full flex-1 overflow-y-auto overflow-x-hidden">
+          <Header />
           <Tabs />
           <RouterView>
             <template #default="{ Component, route }">
@@ -15,7 +15,7 @@
                 <component
                   :is="Component"
                   :key="route.fullPath"
-                  class="relative min-h-[calc(100%-144px)] w-full"
+                  class="relative min-h-[calc(100%-144px)] w-full p-2 sm:p-4"
                 />
               </Transition>
             </template>

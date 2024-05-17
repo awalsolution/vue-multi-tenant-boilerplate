@@ -5,5 +5,5 @@ export const loginApi = (data: any) => {
 };
 
 export const getUserInfoApi = () => {
-  return Request.get('/users/authenticated');
+  return Request.get('/auth/authenticated');
 };

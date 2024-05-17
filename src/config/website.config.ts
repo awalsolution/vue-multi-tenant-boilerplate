@@ -2,8 +2,8 @@ import logoImage from '@src/assets/images/bit_ocean.png';
 import loginImage from '@src/assets/images/bit_ocean.png';
 
 export const websiteConfig = Object.freeze({
-  title: 'AbendSoft Private Limited Admin CRM',
+  title: 'Awal Solution Private Limited CMS',
   logo: logoImage,
   loginImage: loginImage,
-  loginDesc: 'AbendSoft Private Limited CRM Solution'
+  loginDesc: 'Awal Solution Private Limited CMS'
 });

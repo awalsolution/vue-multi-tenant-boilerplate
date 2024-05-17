@@ -1,10 +1,10 @@
 <template>
   <div
-    class="absolute inset-y-0 left-0 z-[100] h-full border-r border-gray-300 shadow-sm transition-[width] dark:border-gray-800 sm:static"
+    class="bg-default-light dark:bg-default-dark absolute inset-y-0 left-0 z-[100] h-full border-r border-gray-300 shadow-sm transition-[width] dark:border-gray-800 sm:static"
     :class="[sidebarStore.isDisplay ? (sidebarStore.isCollapse ? 'w-16' : 'w-56') : 'w-0']"
   >
     <!-- Header -->
-    <!-- <div class="flex h-14 w-full select-none items-center justify-center" @click="router.push('/')">
+    <div class="flex h-14 w-full select-none items-center justify-center" @click="router.push('/')">
       <img
         class="animate-pulse cursor-pointer select-none"
         width="36"
@@ -25,7 +25,7 @@
       >
         {{ appTitle }}
       </span>
-    </div> -->
+    </div>
 
     <div class="h-[calc(100%-96px)]">
       <NScrollbar :size="10">
@@ -62,13 +62,13 @@
 
 <script setup lang="ts">
 import { MenuFoldOutlined } from '@vicons/antd';
-// import { useRouter } from 'vue-router';
+import { useRouter } from 'vue-router';
 import { useSidebarStore } from '@src/store/modules/sidebar';
 import { SideBarItems } from '@src/layouts/components/menu';
-// import { useEnv } from '@src/hooks/useEnv';
+import { useEnv } from '@src/hooks/useEnv';
 
-// const router = useRouter();
-// const { appTitle } = useEnv();
+const router = useRouter();
+const { appTitle } = useEnv();
 const sidebarStore = useSidebarStore();
 </script>
 

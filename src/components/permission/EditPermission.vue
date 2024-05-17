@@ -1,23 +1,7 @@
 <template>
-  <n-form ref="formRef" :label-width="80" :model="formValue" :rules="formRules" size="small">
+  <n-form ref="formRef" :label-width="80" :model="formValue" :rules="rules" size="small">
     <n-form-item style="padding-top: 24px" label="Name" path="name">
       <n-input v-model:value="formValue.name" placeholder="Edit Name" />
-    </n-form-item>
-    <n-form-item :span="12" label="Menu Name" path="menu_id">
-      <n-select
-        :filterable="true"
-        :tag="false"
-        placeholder="Select Menu"
-        v-model:value="formValue.menu_id"
-        clearable
-        @focus="getMenusOnFocus"
-        :remote="true"
-        :clear-filter-after-select="false"
-        label-field="menu_name"
-        value-field="id"
-        :loading="menuLoading"
-        :options="menus"
-      />
     </n-form-item>
     <n-form-item :span="12" label="Permission Type" path="type">
       <n-select
@@ -44,13 +28,9 @@
 import { ref } from 'vue';
 import { type FormInst } from 'naive-ui';
 import { getRecordApi, updateRecordApi } from '@src/api/endpoints';
-import { usefilterMenu } from '@src/filters/menus';
-import { formRules } from '@src/rules/permission_rules';
 
-const { menus, menuLoading, getMenus, getMenusOnFocus } = usefilterMenu();
-const formValue: any = ref({});
 const formRef = ref<FormInst | null>(null);
-
+const formValue: any = ref({});
 const emits = defineEmits(['updated']);
 const props = defineProps({
   id: {
@@ -58,18 +38,25 @@ const props = defineProps({
   }
 });
 // get permission for update
-getRecordApi(`/permissions/${props.id}`).then((res: any) => {
-  formValue.value = res.result;
-  getMenus();
+getRecordApi(`/permission/${props.id}`).then((res: any) => {
+  formValue.value = res.data;
+});
+
+const rules = ref({
+  name: {
+    required: true,
+    message: 'Please Enter Name',
+    trigger: 'blur'
+  }
 });
 
 const handleValidateClick = (e: MouseEvent) => {
   e.preventDefault();
   formRef.value?.validate((errors) => {
     if (!errors) {
-      updateRecordApi(`/permissions/${formValue.value.id}`, formValue.value).then((res: any) => {
+      updateRecordApi(`/permission/${formValue.value.id}`, formValue.value).then((res: any) => {
         window['$message'].success(res.message);
-        emits('updated', res.result);
+        emits('updated', res.data);
       });
     } else {
       console.log(errors);
