@@ -19,27 +19,9 @@
           />
         </n-form-item>
       </n-col>
-      <!-- <n-col :span="12">
-        <n-form-item label="Role" path="role_id">
-          <n-select
-            :filterable="true"
-            :tag="false"
-            placeholder="Select Role"
-            v-model:value="formValue.role_id"
-            clearable
-            @focus="getRolesOnFocus"
-            :remote="true"
-            :clear-filter-after-select="false"
-            label-field="name"
-            value-field="id"
-            :loading="roleLoading"
-            :options="roles"
-          />
-        </n-form-item>
-      </n-col> -->
       <n-col :span="12">
-        <n-form-item label="Domain Name" path="domain">
-          <n-input v-model:value="formValue.domain" placeholder="Enter Domain Name" />
+        <n-form-item label="Domain Name" path="domain_name">
+          <n-input v-model:value="formValue.domain_name" placeholder="Enter Domain Name" />
         </n-form-item>
       </n-col>
       <n-col :span="12">
@@ -97,19 +79,21 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue';
+import { ref, type Ref } from 'vue';
+import { useRouter } from 'vue-router';
 import { type FormInst } from 'naive-ui';
 import { createRecordApi } from '@src/api/endpoints';
 import { formRules } from '@src/rules/tenant';
 import { usePlanfilter } from '@src/filters/plan';
 // import { useRolefilter } from '@src/filters/role';
 
-const formValue: any = ref({});
+const router = useRouter();
+const formValue: Ref = ref({});
 const formRef = ref<FormInst | null>(null);
 const { plans, planLoading, getPlansOnFocus } = usePlanfilter();
 // const { roles, roleLoading, getRolesOnFocus } = useRolefilter();
 
-const emits = defineEmits(['created']);
+// const emits = defineEmits(['created']);
 
 const handleValidateClick = (e: MouseEvent) => {
   e.preventDefault();
@@ -117,7 +101,10 @@ const handleValidateClick = (e: MouseEvent) => {
     if (!errors) {
       createRecordApi('/tenant', formValue.value).then((res: any) => {
         window['$message'].success(res.message);
-        emits('created', res.data);
+        router.push({
+          name: 'tenant_list'
+        });
+        // emits('created', res.data);
       });
     } else {
       console.log(errors);

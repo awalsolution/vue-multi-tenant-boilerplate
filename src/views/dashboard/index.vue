@@ -24,6 +24,9 @@
         </n-grid-item>
       </n-grid>
     </div>
+    <div>
+      <button @click="handleClickTenant1">Tenant 01</button>
+    </div>
   </div>
 </template>
 
@@ -39,12 +42,17 @@ import {
   TagsOutlined,
   SettingOutlined
 } from '@vicons/antd';
+import { getRecordApi } from '@src/api/endpoints';
 
 const loading = ref(true);
 const visits: any = ref({});
 const saleroom: any = ref({});
 const orderLarge: any = ref({});
 const volume: any = ref({});
+
+const handleClickTenant1 = () => {
+  getRecordApi('/users');
+};
 
 function getRandomFloat(
   min?: any,

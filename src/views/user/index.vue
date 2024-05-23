@@ -170,7 +170,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted, computed } from 'vue';
+import { ref, onMounted, computed, type Ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { NIcon, NPagination, useDialog } from 'naive-ui';
 import { MoreOutlined, EditOutlined, DeleteOutlined, SearchOutlined } from '@vicons/antd';
@@ -185,7 +185,7 @@ import EditUser from '@src/components/user/EditUser.vue';
 const { imgUrl } = useEnv();
 const router = useRouter();
 const dialog = useDialog();
-const selectedOption: any = ref(null);
+const selectedOption: Ref = ref(null);
 const showModal = ref(false);
 const showEditModal = ref(false);
 const selectedId = ref();
