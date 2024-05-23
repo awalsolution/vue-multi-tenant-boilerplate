@@ -28,14 +28,14 @@
         <table class="table">
           <thead class="head">
             <tr>
-              <th class="th">Tenant Name</th>
+              <th class="th">Domain</th>
+              <th class="th">Database Name</th>
+              <th class="th">Name</th>
               <th class="th">Email</th>
               <th class="th">Phone#</th>
-              <th class="th">Domain</th>
               <th class="th">Plan</th>
               <th class="th">Plan Type</th>
               <th class="th text-center">Status</th>
-              <th class="th">Database Name</th>
               <th class="th">Created At</th>
               <th
                 class="sticky_el right-0 z-20"
@@ -52,21 +52,17 @@
               <td colspan="9" class="data_placeholder">Record Not Exist</td>
             </tr>
             <tr v-else v-for="item in list" :key="item.id" class="body_tr">
+              <td class="td">{{ item.domain_name }}</td>
+              <td class="td">{{ item.db_name }}</td>
               <td class="td">{{ item.first_name + ' ' + item.last_name }}</td>
               <td class="td">{{ item.email }}</td>
               <td class="td">{{ item.phone_number }}</td>
-              <td class="td" v-for="subitem in item.domains" :key="subitem.id">
-                {{ subitem.domain }}
-              </td>
-              <td class="td">{{ item.plan.name }}</td>
-              <td class="td">{{ item.plan.type }}</td>
+              <td class="td">{{ item?.plan?.name }}</td>
+              <td class="td">{{ item?.plan?.type }}</td>
               <td class="td text-center">
                 <n-tag :bordered="false" :type="item.status === 'disabled' ? 'error' : 'info'">
                   {{ item.status === 1 ? 'Active' : 'Disable' }}
                 </n-tag>
-              </td>
-              <td class="td">
-                {{ item.tenancy_db_name }}
               </td>
               <td class="td">{{ item.created_at }}</td>
               <td

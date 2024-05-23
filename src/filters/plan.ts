@@ -13,7 +13,7 @@ export function usePlanfilter() {
     } else {
       planLoading.value = true;
       const response: any = await getRecordsApi('/plan', { name: query });
-      plans.value = response.data?.data;
+      plans.value = response.data;
       planLoading.value = false;
     }
   }
@@ -21,7 +21,8 @@ export function usePlanfilter() {
   async function getPlans() {
     planLoading.value = true;
     const response: any = await getRecordsApi('/plan');
-    plans.value = response.data?.data;
+    console.log('plan data =>', response);
+    plans.value = response.data;
     planLoading.value = false;
   }
 

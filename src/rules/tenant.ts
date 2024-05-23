@@ -1,9 +1,9 @@
 import { ref } from 'vue';
 
 export const formRules = ref({
-  company_name: {
+  domain_name: {
     required: true,
-    message: 'Please Enter Name',
+    message: 'Please Enter Domain Name',
     trigger: 'blur'
   },
   phone_number: {
@@ -11,34 +11,29 @@ export const formRules = ref({
     message: 'Please Enter Phone',
     trigger: 'blur'
   },
-  address: {
+  first_name: {
     required: true,
-    message: 'Please Enter Address',
+    message: 'Please Enter First Name',
     trigger: 'blur'
   },
-  city: {
+  last_name: {
     required: true,
-    message: 'Please Enter City',
+    message: 'Please Enter Last Name',
     trigger: 'blur'
   },
-  state: {
+  password: {
     required: true,
-    message: 'Please Enter State',
+    message: 'Please Enter Password',
     trigger: 'blur'
   },
-  country: {
+  password_confirmation: {
     required: true,
-    message: 'Please Enter Country',
+    message: 'Please Enter Password Confirmation',
     trigger: 'blur'
-  },
+  }
   // status: {
   //   required: true,
   //   message: 'Please Select Status',
   //   trigger: 'onchange'
   // },
-  logo: {
-    required: true,
-    message: 'Please Upload Logo',
-    trigger: 'blur'
-  }
 });
