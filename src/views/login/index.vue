@@ -25,7 +25,14 @@
         </n-input>
       </n-form-item>
       <n-form-item>
-        <n-button type="primary" @click="handleSubmit" size="large" :loading="loading" block>
+        <n-button
+          type="primary"
+          @click="handleSubmit"
+          size="large"
+          :loading="loading"
+          block
+          :disabled="isLoginButtonDisabled()"
+        >
           Login
         </n-button>
       </n-form-item>
@@ -54,6 +61,8 @@ const router = useRouter();
 const route = useRoute();
 const [loading, loadingDispatcher] = useLoading(false);
 const { centralDomain } = useEnv();
+const isHost = window.location.hostname;
+const tenantApiKey = storage.getTenantApiKey(TENANT_API_KEY);
 
 const formData = reactive({
   email: 'iqbal@gmail.com',
@@ -61,6 +70,14 @@ const formData = reactive({
 });
 
 const redirectUrl = computed(() => route.query.redirect as string);
+
+const isLoginButtonDisabled = () => {
+  if (isHost === centralDomain || (tenantApiKey !== 'null' && tenantApiKey !== null)) {
+    return false;
+  } else {
+    return true;
+  }
+};
 
 const handleSubmit = async () => {
   try {
@@ -123,8 +140,8 @@ onMounted(() => {
 });
 
 const verifyDomainName = async () => {
-  if (window.location.hostname !== centralDomain) {
-    verifyDomainNameApi(window.location.hostname).then((res: any) => {
+  if (isHost !== centralDomain) {
+    verifyDomainNameApi(isHost).then((res: any) => {
       const { data, code } = res;
       if (code === 200) {
         const ex = 7 * 24 * 60 * 60;
