@@ -103,9 +103,9 @@ const handleValidateClick = (e: MouseEvent) => {
     if (!errors) {
       createRecordApi('/tenant', formValue.value).then((res: any) => {
         window['$message'].success(res.message);
-        router.push({
-          name: 'tenant_list'
-        });
+        // router.push({
+        //   name: 'tenant_list'
+        // });
         // emits('created', res.data);
       });
     } else {

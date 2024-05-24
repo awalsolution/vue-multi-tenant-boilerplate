@@ -4,7 +4,7 @@ const { apiUrl, apiAdminPrefix, apiTenantPrefix, centralDomain } = useEnv();
 
 export const axiosConfig = {
   baseURL:
-    window.location.hostname !== centralDomain ? apiUrl + apiAdminPrefix : apiUrl + apiTenantPrefix,
+    window.location.hostname !== centralDomain ? apiUrl + apiTenantPrefix : apiUrl + apiAdminPrefix,
   timeout: 30000,
   withCredentials: true
 };

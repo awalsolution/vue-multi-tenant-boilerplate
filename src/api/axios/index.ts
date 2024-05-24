@@ -30,7 +30,7 @@ class Request {
         }
 
         if (window.location.hostname !== centralDomain) {
-          req.headers['X_Tenant_Key'] = storage.getTenantApiKey(TENANT_API_KEY);
+          req.headers['tenant_api_public_key'] = storage.getTenantApiKey(TENANT_API_KEY);
         }
         return req;
       },

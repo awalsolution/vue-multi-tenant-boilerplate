@@ -64,6 +64,7 @@ const { centralDomain } = useEnv();
 const isHost = window.location.hostname;
 const tenantApiKey = storage.getTenantApiKey(TENANT_API_KEY);
 
+console.log(isHost === centralDomain);
 const formData = reactive({
   email: 'iqbal@gmail.com',
   password: '123456'
@@ -71,6 +72,7 @@ const formData = reactive({
 
 const redirectUrl = computed(() => route.query.redirect as string);
 
+console.log('key', tenantApiKey);
 const isLoginButtonDisabled = () => {
   if (isHost === centralDomain || (tenantApiKey !== 'null' && tenantApiKey !== null)) {
     return false;
