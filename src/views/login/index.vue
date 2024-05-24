@@ -34,7 +34,7 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted, reactive, ref, computed } from 'vue';
+import { onMounted, onBeforeMount, reactive, ref, computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { type FormValidationError } from 'naive-ui';
 import { PersonOutline, LockClosedOutline } from '@vicons/ionicons5';
@@ -42,6 +42,10 @@ import { useUserStore } from '@src/store/modules/user';
 import { AuthUtils } from '@src/utils/auth';
 import { useLoading } from '@src/hooks/useLoading';
 import type { RememberedAccountData } from '@src/views/login/types';
+import { useEnv } from '@src/hooks/useEnv';
+import { verifyDomainNameApi } from '@src/api/auth';
+import { TENANT_API_KEY } from '@src/utils/storage/variables';
+import { storage } from '@src/utils/storage';
 
 const formRef = ref();
 const rememberPassword = ref(false);
@@ -49,6 +53,7 @@ const userStore = useUserStore();
 const router = useRouter();
 const route = useRoute();
 const [loading, loadingDispatcher] = useLoading(false);
+const { centralDomain } = useEnv();
 
 const formData = reactive({
   email: 'iqbal@gmail.com',
@@ -116,6 +121,22 @@ onMounted(() => {
     }
   }
 });
+
+const verifyDomainName = async () => {
+  if (window.location.hostname !== centralDomain) {
+    verifyDomainNameApi(window.location.hostname).then((res: any) => {
+      const { data, code } = res;
+      if (code === 200) {
+        const ex = 7 * 24 * 60 * 60;
+        storage.set(TENANT_API_KEY, data.tenant_api_key, ex);
+      }
+    });
+  } else {
+    storage.remove(TENANT_API_KEY);
+  }
+};
+
+onBeforeMount(() => verifyDomainName());
 
 const rules = {
   email: {

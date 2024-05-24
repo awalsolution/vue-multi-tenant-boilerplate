@@ -9,8 +9,10 @@ import type {
 import { router } from '@src/router';
 import { axiosConfig } from '@src/api/axios/config';
 import { ResponseStatusCode } from '@src/api/axios/statusCode';
-import { ACCESS_TOKEN } from '@src/utils/storage/variables';
+import { ACCESS_TOKEN, TENANT_API_KEY } from '@src/utils/storage/variables';
 import { storage } from '@src/utils/storage';
+import { useEnv } from '@src/hooks/useEnv';
+const { centralDomain } = useEnv();
 
 class Request {
   instance: AxiosInstance;
@@ -25,6 +27,10 @@ class Request {
         const { url } = req;
         if (storage.isAuthenticated(ACCESS_TOKEN) && url) {
           req.headers.Authorization = storage.getAuthorization(ACCESS_TOKEN);
+        }
+
+        if (window.location.hostname !== centralDomain) {
+          req.headers['X_Tenant_Key'] = storage.getTenantApiKey(TENANT_API_KEY);
         }
         return req;
       },
