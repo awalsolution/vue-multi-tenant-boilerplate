@@ -63,10 +63,10 @@
 import { ref, type Ref } from 'vue';
 import { type FormInst } from 'naive-ui';
 import { createRecordApi } from '@src/api/endpoints';
-import { usefilterRole } from '@src/filters/roles';
+import { useRolefilter } from '@src/filters/role';
 import { formRules } from '@src/rules/user';
 
-const { roles, roleLoading, getRolesOnFocus } = usefilterRole();
+const { roles, roleLoading, getRolesOnFocus } = useRolefilter();
 const formRef = ref<FormInst | null>(null);
 const formValue: Ref = ref({});
 // const isVendor: any = ref(false);

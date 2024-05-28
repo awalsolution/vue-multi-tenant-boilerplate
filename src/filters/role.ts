@@ -2,7 +2,7 @@ import { ref } from 'vue';
 import { getRecordsApi } from '@src/api/endpoints';
 import { isEmpty } from 'lodash';
 
-export function usefilterRole() {
+export function useRolefilter() {
   const roles: any = ref([]);
   const roleLoading = ref(false);
   const rolesInitialized = ref(false);

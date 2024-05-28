@@ -13,7 +13,7 @@ export function useMenufilter() {
     } else {
       menuLoading.value = true;
       const response: any = await getRecordsApi('/menu', { name: query });
-      menus.value = response.data?.data;
+      menus.value = response.data;
       menuLoading.value = false;
     }
   }
@@ -21,7 +21,7 @@ export function useMenufilter() {
   async function getMenus() {
     menuLoading.value = true;
     const response: any = await getRecordsApi('/menu');
-    menus.value = response.data?.data;
+    menus.value = response.data;
     menuLoading.value = false;
   }
 

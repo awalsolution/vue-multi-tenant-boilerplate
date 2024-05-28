@@ -54,13 +54,13 @@
 <script lang="ts" setup>
 import { onMounted, ref, type Ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import { usefilterPermission } from '@src/filters/permissions';
+import { usePermissionfilter } from '@src/filters/permission';
 // import { usefilterMenu } from '@src/filters/menus';
 // import ContentLayout from '@src/layouts/ContentLayout/index.vue';
 import { getRecordApi, updateRecordApi } from '@src/api/endpoints';
 
 // const { menus, getMenus } = usefilterMenu();
-const { permissions, getPermissions } = usefilterPermission();
+const { permissions, getPermissions } = usePermissionfilter();
 const route = useRoute();
 const router = useRouter();
 const userData: Ref = ref({});

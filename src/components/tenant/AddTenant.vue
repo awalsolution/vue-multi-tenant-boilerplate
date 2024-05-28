@@ -2,6 +2,7 @@
   <div>
     <div class="bg-white p-5">
       <n-form ref="formRef" :label-width="80" :model="formValue" :rules="formRules" size="small">
+        <h3 class="underline px-1 pb-4 text-xl">General Info</h3>
         <n-row :gutter="[20, 8]">
           <n-col :span="12">
             <n-form-item label="Plan Price" path="plan_id">
@@ -72,6 +73,7 @@
             </n-form-item>
           </n-col>
         </n-row>
+
         <n-space justify="end">
           <n-form-item :theme-overrides="{ labelHeightSmall: '0', feedbackHeightSmall: '0' }">
             <n-button secondary type="info" @click="handleValidateClick"> Save </n-button>
@@ -83,29 +85,35 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, type Ref } from 'vue';
+import { ref, type Ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { type FormInst } from 'naive-ui';
 import { createRecordApi } from '@src/api/endpoints';
 import { usePlanfilter } from '@src/filters/plan';
+import { useRolefilter } from '@src/filters/role';
+import { useMenufilter } from '@src/filters/menu';
 import { formRules } from '@src/rules/tenant';
 
 const router = useRouter();
-const formValue: Ref = ref({});
 const formRef = ref<FormInst | null>(null);
 const { plans, planLoading, getPlansOnFocus } = usePlanfilter();
+const { menus, getMenus } = useMenufilter();
+const { roles, getRoles } = useRolefilter();
 
-// const emits = defineEmits(['created']);
+const formValue: Ref = ref({
+  menus: [{ menu_name: '', permissions: [] }]
+});
 
 const handleValidateClick = (e: MouseEvent) => {
   e.preventDefault();
   formRef.value?.validate((errors) => {
+    console.log('after ssss', formValue);
     if (!errors) {
       createRecordApi('/tenant', formValue.value).then((res: any) => {
         window['$message'].success(res.message);
-        // router.push({
-        //   name: 'tenant_list'
-        // });
+        router.push({
+          name: 'tenant_list'
+        });
         // emits('created', res.data);
       });
     } else {
@@ -114,6 +122,11 @@ const handleValidateClick = (e: MouseEvent) => {
     }
   });
 };
+
+onMounted(() => {
+  getRoles();
+  getMenus();
+});
 </script>
 
 <style lang="scss" scoped></style>
