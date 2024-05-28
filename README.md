@@ -1,4 +1,4 @@
-# Awal HR Management System Admin Dashbaord
+# Awal Umrah Management System Dashbaord
 
 ## Environments
 
@@ -17,8 +17,8 @@
 
 ```sh
 
-git clone https://github.com/awal-solution/awal-hr-admin-dashbaord.git
-cd  awal-hr-admin-dashbaord.git
+git clone https://github.com/awal-solution/awal-umrah-dashbaord.git
+cd  awal-umrah-dashbaord.git
 yarn
 ```
 
