@@ -73,7 +73,8 @@ import {
   NH2,
   NH3,
   NFormItemGi,
-  NRadioButton
+  NRadioButton,
+  NTreeSelect
 } from 'naive-ui';
 
 // https://www.naiveui.com/en-US/os-theme/docs/import-on-demand
@@ -151,7 +152,8 @@ const naive = create({
     NTimePicker,
     NBackTop,
     NSkeleton,
-    NRadioButton
+    NRadioButton,
+    NTreeSelect
   ]
 });
 

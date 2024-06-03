@@ -72,6 +72,27 @@
               <n-switch v-model:value="formValue.status" :checked-value="1" :unchecked-value="0" />
             </n-form-item>
           </n-col>
+          <n-space :verical="true" item-class="w-full">
+            <n-card title="Permissions">
+              <n-checkbox-group class="mx-2" v-model:value="formValue.permissions">
+                <n-row>
+                  <n-col v-for="permission of permissions" :key="permission.id" :span="6">
+                    <n-checkbox :value="permission.name" :label="permission.name" />
+                  </n-col>
+                </n-row>
+              </n-checkbox-group>
+            </n-card>
+
+            <n-card title="Roles">
+              <n-checkbox-group v-model:value="formValue.roles">
+                <n-row>
+                  <n-col v-for="role of roles" :key="role.id" :span="6">
+                    <n-checkbox :value="role.name" :label="role.name" />
+                  </n-col>
+                </n-row>
+              </n-checkbox-group>
+            </n-card>
+          </n-space>
         </n-row>
 
         <n-space justify="end">
@@ -91,17 +112,18 @@ import { type FormInst } from 'naive-ui';
 import { createRecordApi } from '@src/api/endpoints';
 import { usePlanfilter } from '@src/filters/plan';
 import { useRolefilter } from '@src/filters/role';
-import { useMenufilter } from '@src/filters/menu';
+import { usePermissionfilter } from '@src/filters/permission';
 import { formRules } from '@src/rules/tenant';
 
 const router = useRouter();
 const formRef = ref<FormInst | null>(null);
 const { plans, planLoading, getPlansOnFocus } = usePlanfilter();
-const { menus, getMenus } = useMenufilter();
+const { permissions, getPermissions } = usePermissionfilter();
 const { roles, getRoles } = useRolefilter();
 
 const formValue: Ref = ref({
-  menus: [{ menu_name: '', permissions: [] }]
+  permissions: [],
+  roles: []
 });
 
 const handleValidateClick = (e: MouseEvent) => {
@@ -125,7 +147,7 @@ const handleValidateClick = (e: MouseEvent) => {
 
 onMounted(() => {
   getRoles();
-  getMenus();
+  getPermissions();
 });
 </script>
 
