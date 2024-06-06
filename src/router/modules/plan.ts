@@ -14,7 +14,7 @@ const routes: RouteRecordRaw[] = [
     meta: {
       title: 'Plan',
       icon: renderIcon(DollarCircleOutlined),
-      permissions: ['can view plan menu'],
+      permissions: ['plan menu'],
       sort: 2
     },
     children: [
@@ -23,7 +23,7 @@ const routes: RouteRecordRaw[] = [
         name: `${routeName}_list`,
         meta: {
           title: 'Plan List',
-          permissions: ['can view plan menu']
+          permissions: ['plan menu']
         },
         component: () => import('@src/views/plan/index.vue')
       },
@@ -32,7 +32,7 @@ const routes: RouteRecordRaw[] = [
         name: `${routeName}_add`,
         meta: {
           title: 'Add Plan',
-          permissions: ['can view create plan']
+          permissions: ['create plan']
         },
         component: () => import('@src/components/plan/AddPlan.vue')
       },
@@ -41,7 +41,7 @@ const routes: RouteRecordRaw[] = [
         name: `${routeName}_edit`,
         meta: {
           title: 'Edit Plan',
-          permissions: ['can view update plan'],
+          permissions: ['update plan'],
           hidden: true,
           dismissTab: true
         },

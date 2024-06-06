@@ -61,12 +61,12 @@
       <!-- :src="userStore.user.avatarUrl" -->
       <template v-if="userStore.hasData()">
         <NDropdown trigger="click" :options="filteredOptions" @select="selectUserOption">
-          <template v-if="userStore.currentUser.profile.profile_picture">
+          <template v-if="userStore.currentUser?.profile?.profile_picture">
             <NAvatar
               class="cursor-pointer select-none shadow-md !transition-all hover:opacity-90 active:opacity-70"
               round
               size="small"
-              :src="`${imgUrl}${userStore.currentUser.profile.profile_picture}`"
+              :src="`${imgUrl}${userStore.currentUser?.profile?.profile_picture}`"
             />
           </template>
           <template v-else>
@@ -186,7 +186,7 @@ function renderCustomHeader() {
       h(NAvatar, {
         round: true,
         style: 'margin-right: 12px;',
-        src: `${imgUrl}${userStore.currentUser.profile.profile_picture}`
+        src: `${imgUrl}${userStore.currentUser?.profile?.profile_picture}`
       }),
       h('div', null, [
         h('div', null, [

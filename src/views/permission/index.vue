@@ -7,7 +7,7 @@
           type="info"
           size="small"
           @click="router.push('add')"
-          v-permission="{ action: ['can view permission create'] }"
+          v-permission="{ action: ['permission create'] }"
         >
           Add Plan
         </NButton>
@@ -34,7 +34,7 @@
               <th
                 class="sticky_el right-0 z-20"
                 v-permission="{
-                  action: ['can view permission update', 'can view permission delete']
+                  action: ['permission update', 'permission delete']
                 }"
               >
                 Actions
@@ -56,7 +56,7 @@
               <td
                 class="sticky_el right-0 z-10"
                 v-permission="{
-                  action: ['can view permission update', 'can view permission delete']
+                  action: ['permission update', 'permission delete']
                 }"
               >
                 <n-dropdown
@@ -153,13 +153,13 @@ const moreOptions = ref([
     label: 'Edit',
     key: 'edit',
     icon: renderIcon(EditOutlined),
-    permission: hasPermission(['can view permission update'])
+    permission: hasPermission(['permission update'])
   },
   {
     label: 'Delete',
     key: 'delete',
     icon: renderIcon(DeleteOutlined),
-    permission: hasPermission(['can view permission delete'])
+    permission: hasPermission(['permission delete'])
   }
 ]);
 

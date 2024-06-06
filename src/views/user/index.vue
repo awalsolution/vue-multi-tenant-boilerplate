@@ -7,7 +7,7 @@
           type="info"
           size="small"
           @click="router.push('add')"
-          v-permission="{ action: ['can view user create'] }"
+          v-permission="{ action: ['user create'] }"
         >
           Add User
         </NButton>
@@ -49,11 +49,7 @@
               <th
                 class="sticky_el right-0 z-20"
                 v-permission="{
-                  action: [
-                    'can view user update',
-                    'can view user delete',
-                    'can view user assign permission'
-                  ]
+                  action: ['user update', 'user delete', 'user assign permission']
                 }"
               >
                 Actions
@@ -69,7 +65,7 @@
                 {{ item?.profile?.first_name + ' ' + item?.profile?.last_name }}
               </td>
               <td class="td text-center pt-2">
-                <n-avatar size="large" :src="`${imgUrl}${item?.profile.profile_picture}`" />
+                <n-avatar size="large" :src="`${imgUrl}${item?.profile?.profile_picture}`" />
               </td>
               <td class="td">{{ item?.email }}</td>
               <td class="td">
@@ -100,11 +96,7 @@
               <td
                 class="sticky_el right-0 z-10"
                 v-permission="{
-                  action: [
-                    'can view user update',
-                    'can view user delete',
-                    'can view user assign permission'
-                  ]
+                  action: ['user update', 'user delete', 'user assign permission']
                 }"
               >
                 <n-dropdown
@@ -204,19 +196,19 @@ const moreOptions = ref([
     label: 'Assign Permission',
     key: 'assign_permission',
     icon: renderIcon(EditOutlined),
-    permission: hasPermission(['can view user assign permission'])
+    permission: hasPermission(['user assign permission'])
   },
   {
     label: 'Edit',
     key: 'edit',
     icon: renderIcon(EditOutlined),
-    permission: hasPermission(['can view user update'])
+    permission: hasPermission(['user update'])
   },
   {
     label: 'Delete',
     key: 'delete',
     icon: renderIcon(DeleteOutlined),
-    permission: hasPermission(['can view user delete'])
+    permission: hasPermission(['user delete'])
   }
 ]);
 

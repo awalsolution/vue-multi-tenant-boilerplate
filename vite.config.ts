@@ -13,7 +13,7 @@ export default defineConfig(() => {
       }
     },
     build: {
-      outDir: '../laravel-apps/awal-hr-admin-dashboard'
+      outDir: '../../laravel-apps/awal-umrah-tenant-dashboard'
     }
   };
 });

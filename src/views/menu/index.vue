@@ -7,7 +7,7 @@
           type="info"
           size="small"
           @click="router.push('add')"
-          v-permission="{ action: ['can view menu create'] }"
+          v-permission="{ action: ['menu create'] }"
         >
           Add Menu
         </NButton>
@@ -34,7 +34,7 @@
               <th
                 class="sticky_el right-0 z-10"
                 v-permission="{
-                  action: ['can view menu update', 'can view menu delete']
+                  action: ['menu update', 'menu delete']
                 }"
               >
                 Actions
@@ -56,7 +56,7 @@
               <td
                 class="sticky_el right-0 z-10"
                 v-permission="{
-                  action: ['can view menu update', 'can view menu delete']
+                  action: ['menu update', 'menu delete']
                 }"
               >
                 <n-dropdown
@@ -154,13 +154,13 @@ const moreOptions = ref([
     label: 'Edit',
     key: 'edit',
     icon: renderIcon(EditOutlined),
-    permission: hasPermission(['can view menu update'])
+    permission: hasPermission(['menu update'])
   },
   {
     label: 'Delete',
     key: 'delete',
     icon: renderIcon(DeleteOutlined),
-    permission: hasPermission(['can view menu delete'])
+    permission: hasPermission(['menu delete'])
   }
 ]);
 

@@ -3,7 +3,7 @@
     <n-card title="Profile">
       <n-row>
         <n-col :span="8" class="text-center">
-          <n-avatar round :size="200" :src="`${imgUrl}${profileData.profile_picture}`" />
+          <n-avatar round :size="200" :src="`${imgUrl}${profileData?.profile_picture}`" />
         </n-col>
         <n-col :span="16">
           <n-space style="display: block" vertical>
@@ -111,7 +111,7 @@ const handleValidateClick = (e: MouseEvent) => {
 // console.log(profileData);
 
 onMounted(() => {
-  profileData.value = userStore.currentUser.profile;
+  profileData.value = userStore.currentUser?.profile;
 });
 </script>
 

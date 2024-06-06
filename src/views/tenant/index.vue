@@ -7,7 +7,7 @@
           type="info"
           size="small"
           @click="router.push('add')"
-          v-permission="{ action: ['can view tenant create'] }"
+          v-permission="{ action: ['tenant create'] }"
         >
           Add Tenant
         </NButton>
@@ -40,7 +40,7 @@
               <th
                 class="sticky_el right-0 z-20"
                 v-permission="{
-                  action: ['can view tenant update', 'can view tenant delete']
+                  action: ['tenant update', 'tenant delete']
                 }"
               >
                 Actions
@@ -65,10 +65,28 @@
                 </n-tag>
               </td>
               <td class="td">{{ item.created_at }}</td>
-              <td
+              <td class="td flex gap-2 justify-between">
+                <n-button
+                  strong
+                  secondary
+                  type="info"
+                  @click="
+                    router.push({
+                      name: 'tenant_view',
+                      query: { db_name: item.db_name }
+                    })
+                  "
+                >
+                  Details
+                </n-button>
+                <n-button strong secondary type="warning"> Edit </n-button>
+                <n-button strong secondary type="warning"> Assign Permission </n-button>
+                <n-button strong secondary type="error"> Delete </n-button>
+              </td>
+              <!-- <td
                 class="sticky_el right-0 z-10"
                 v-permission="{
-                  action: ['can view tenant update', 'can view tenant delete']
+                  action: ['tenant update', 'tenant delete']
                 }"
               >
                 <n-dropdown
@@ -83,7 +101,7 @@
                     </n-icon>
                   </n-button>
                 </n-dropdown>
-              </td>
+              </td> -->
             </tr>
           </tbody>
         </table>
@@ -169,25 +187,25 @@ const moreOptions = ref([
     label: 'View',
     key: 'view',
     icon: renderIcon(EditOutlined),
-    permission: hasPermission(['can view tenant update'])
+    permission: hasPermission(['tenant update'])
   },
   {
     label: 'Insert Role',
     key: 'insert',
     icon: renderIcon(EditOutlined),
-    permission: hasPermission(['can view tenant update'])
+    permission: hasPermission(['tenant update'])
   },
   {
     label: 'Edit',
     key: 'edit',
     icon: renderIcon(EditOutlined),
-    permission: hasPermission(['can view tenant update'])
+    permission: hasPermission(['tenant update'])
   },
   {
     label: 'Delete',
     key: 'delete',
     icon: renderIcon(DeleteOutlined),
-    permission: hasPermission(['can view tenant delete'])
+    permission: hasPermission(['tenant delete'])
   }
 ]);
 

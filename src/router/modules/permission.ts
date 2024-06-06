@@ -14,7 +14,7 @@ const routes: RouteRecordRaw[] = [
     meta: {
       title: 'Permission',
       icon: renderIcon(UnlockOutlined),
-      permissions: ['can view permission menu'],
+      permissions: ['permission menu'],
       sort: 9
     },
     children: [
@@ -23,7 +23,7 @@ const routes: RouteRecordRaw[] = [
         name: `${routeName}_list`,
         meta: {
           title: 'Permission List',
-          permissions: ['can view permission menu']
+          permissions: ['permission menu']
         },
         component: () => import('@src/views/permission/index.vue')
       },
@@ -32,7 +32,7 @@ const routes: RouteRecordRaw[] = [
         name: `${routeName}_add`,
         meta: {
           title: 'Add Permission',
-          permissions: ['can view create permission']
+          permissions: ['create permission']
         },
         component: () => import('@src/components/permission/AddPermission.vue')
       },
@@ -41,7 +41,7 @@ const routes: RouteRecordRaw[] = [
         name: `${routeName}_edit`,
         meta: {
           title: 'Edit Permission',
-          permissions: ['can view update permission'],
+          permissions: ['update permission'],
           hidden: true,
           dismissTab: true
         },

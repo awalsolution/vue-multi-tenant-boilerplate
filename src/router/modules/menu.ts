@@ -14,7 +14,7 @@ const routes: RouteRecordRaw[] = [
     meta: {
       title: 'Menu',
       icon: renderIcon(InfoCircleOutlined),
-      permissions: ['can view menu menu'],
+      permissions: ['menu menu'],
       sort: 5
     },
     children: [
@@ -23,7 +23,7 @@ const routes: RouteRecordRaw[] = [
         name: `${routeName}_list`,
         meta: {
           title: 'Menu List',
-          permissions: ['can view menu menu']
+          permissions: ['menu menu']
         },
         component: () => import('@src/views/menu/index.vue')
       },
@@ -32,7 +32,7 @@ const routes: RouteRecordRaw[] = [
         name: `${routeName}_add`,
         meta: {
           title: 'Add Menu',
-          permissions: ['can view create menu']
+          permissions: ['create menu']
         },
         component: () => import('@src/components/menu/AddMenu.vue')
       },
@@ -41,7 +41,7 @@ const routes: RouteRecordRaw[] = [
         name: `${routeName}_edit`,
         meta: {
           title: 'Edit Menu',
-          permissions: ['can view update menu'],
+          permissions: ['update menu'],
           hidden: true,
           dismissTab: true
         },
