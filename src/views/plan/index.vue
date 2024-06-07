@@ -6,7 +6,7 @@
           secondary
           type="info"
           size="small"
-          @click="router.push('add')"
+          @click="showModal = true"
           v-permission="{ action: ['plan create'] }"
         >
           Add Plan
@@ -87,7 +87,7 @@
         :show-quick-jumper="true"
         :show-size-picker="true"
       >
-        <template #prefix="{ itemCount }"> Total Roles: {{ itemCount }} </template>
+        <template #prefix="{ itemCount }"> Total Plans: {{ itemCount }} </template>
       </n-pagination>
     </n-card>
     <n-modal v-model:show="showModal" preset="dialog">
@@ -123,7 +123,6 @@
 
 <script lang="ts" setup>
 import { ref, onMounted, computed, type Ref } from 'vue';
-import { useRouter } from 'vue-router';
 import { NIcon, NPagination, useDialog } from 'naive-ui';
 import { MoreOutlined, EditOutlined, DeleteOutlined, SearchOutlined } from '@vicons/antd';
 import { deleteRecordApi } from '@src/api/endpoints';
@@ -134,7 +133,6 @@ import AddPlan from '@src/components/plan/AddPlan.vue';
 import EditPlan from '@src/components/plan/EditPlan.vue';
 
 const dialog = useDialog();
-const router = useRouter();
 const selectedOption: Ref = ref(null);
 const showModal: Ref = ref(false);
 const showEditModal: Ref = ref(false);

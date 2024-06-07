@@ -46,6 +46,16 @@ const routes: RouteRecordRaw[] = [
           dismissTab: true
         },
         component: () => import('@src/components/role/EditRole.vue')
+      },
+      {
+        path: 'assing-permission/:roleId',
+        name: `${routeName}_assing_permission`,
+        meta: {
+          title: 'Assing Permission',
+          permissions: ['assign permission'],
+          hidden: true
+        },
+        component: () => import('@src/components/permission/AssignPermissions.vue')
       }
     ]
   }

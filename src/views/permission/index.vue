@@ -6,10 +6,10 @@
           secondary
           type="info"
           size="small"
-          @click="router.push('add')"
+          @click="showModal = true"
           v-permission="{ action: ['permission create'] }"
         >
-          Add Plan
+          Add Permission
         </NButton>
       </template>
       <div class="flex flex-col gap-2 lg:flex-row w-full">
@@ -123,7 +123,6 @@
 
 <script lang="ts" setup>
 import { ref, onMounted, computed, type Ref } from 'vue';
-import { useRouter } from 'vue-router';
 import { NIcon, NPagination, useDialog } from 'naive-ui';
 import { MoreOutlined, EditOutlined, DeleteOutlined, SearchOutlined } from '@vicons/antd';
 import { deleteRecordApi } from '@src/api/endpoints';
@@ -134,7 +133,6 @@ import EditPermission from '@src/components/permission/EditPermission.vue';
 import { renderIcon } from '@src/utils/renderIcon';
 
 const dialog = useDialog();
-const router = useRouter();
 const showModal: Ref = ref(false);
 const selectedOption: Ref = ref(null);
 const showEditModal: Ref = ref(false);

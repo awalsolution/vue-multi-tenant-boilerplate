@@ -34,14 +34,14 @@ const fetchEndpoint: Ref = ref();
 const updateEndpoint: Ref = ref();
 
 onMounted(() => {
-  if (route.query && (route.query.roleId || route.query.userId)) {
+  if (route.params && (route.params.roleId || route.params.userId)) {
     getPermissions();
-    if (route.query.roleId) {
-      fetchEndpoint.value = `/role/${route.query.roleId}`;
-      updateEndpoint.value = '/role/assign-permission/' + route.query.roleId;
-    } else if (route.query.userId) {
-      fetchEndpoint.value = `/user/${route.query.userId}`;
-      updateEndpoint.value = '/user/assign-permission/' + route.query.userId;
+    if (route.params.roleId) {
+      fetchEndpoint.value = `/role/${route.params.roleId}`;
+      updateEndpoint.value = '/role/assign-permission/' + route.params.roleId;
+    } else if (route.params.userId) {
+      fetchEndpoint.value = `/user/${route.params.userId}`;
+      updateEndpoint.value = '/user/assign-permission/' + route.params.userId;
     }
     getRecordApi(fetchEndpoint.value).then((res: any) => {
       userData.value = res.data;

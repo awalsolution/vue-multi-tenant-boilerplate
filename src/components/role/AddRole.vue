@@ -1,18 +1,14 @@
 <template>
-  <div>
-    <n-card title="Add New Role">
-      <n-form ref="formRef" :label-width="80" :model="formValue" :rules="formRules" size="small">
-        <n-form-item style="padding-top: 24px" label="Name" path="name">
-          <n-input v-model:value="formValue.name" placeholder="Enter Name" />
-        </n-form-item>
-        <n-space justify="end">
-          <n-form-item :theme-overrides="{ labelHeightSmall: '0', feedbackHeightSmall: '0' }">
-            <n-button secondary type="info" @click="handleValidateClick"> Create </n-button>
-          </n-form-item>
-        </n-space>
-      </n-form>
-    </n-card>
-  </div>
+  <n-form ref="formRef" :label-width="80" :model="formValue" :rules="formRules" size="small">
+    <n-form-item style="padding-top: 24px" label="Name" path="name">
+      <n-input v-model:value="formValue.name" placeholder="Enter Name" />
+    </n-form-item>
+    <n-space justify="end">
+      <n-form-item :theme-overrides="{ labelHeightSmall: '0', feedbackHeightSmall: '0' }">
+        <n-button secondary type="info" @click="handleValidateClick"> Create </n-button>
+      </n-form-item>
+    </n-space>
+  </n-form>
 </template>
 
 <script lang="ts" setup>

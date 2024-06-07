@@ -6,7 +6,7 @@
           secondary
           type="info"
           size="small"
-          @click="router.push('add')"
+          @click="showModal = true"
           v-permission="{ action: ['role create'] }"
         >
           Add Role
@@ -196,8 +196,8 @@ function deleteOperation() {
 const actionOperation = (item: any) => {
   if (selectedOption.value === 'assign_permission') {
     router.push({
-      name: 'system_assing_permission',
-      query: { roleId: item.id }
+      name: 'role_assing_permission',
+      params: { roleId: item.id }
     });
   } else if (selectedOption.value === 'edit') {
     showEditModal.value = true;

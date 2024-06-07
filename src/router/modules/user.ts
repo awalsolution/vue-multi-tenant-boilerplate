@@ -58,7 +58,7 @@ const routes: RouteRecordRaw[] = [
         component: () => import('@src/views/user/Profile.vue')
       },
       {
-        path: 'assing-permission',
+        path: 'assing-permission/:userId',
         name: `${routeName}_assing_permission`,
         meta: {
           title: 'Assing Permission',
