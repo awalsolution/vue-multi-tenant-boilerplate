@@ -58,7 +58,7 @@
                     @click="
                       router.push({
                         name: 'tenant_edit_role',
-                        query: { roleId: item.id, dbName: route.params.db }
+                        params: { db: route.params.db, role_id: item.id }
                       })
                     "
                   >

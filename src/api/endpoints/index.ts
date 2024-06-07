@@ -7,7 +7,6 @@ export const getRecordsApi = (endpoint: any, params?: any) => {
 };
 
 export const getRecordApi = (endpoint: any, params?: any) => {
-  console.log(endpoint);
   return Request.get(endpoint, params);
 };
 

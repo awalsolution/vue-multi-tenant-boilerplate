@@ -66,7 +66,17 @@
               </td>
               <td class="td">{{ item.created_at }}</td>
               <td class="td flex gap-2 justify-center">
-                <n-button strong secondary type="info" @click="handleViewTenantDetail(item)">
+                <n-button
+                  strong
+                  secondary
+                  type="info"
+                  @click="
+                    router.push({
+                      name: 'tenant_view',
+                      params: { db: item.db_name }
+                    })
+                  "
+                >
                   Details
                 </n-button>
                 <n-button strong secondary type="warning"> Edit </n-button>
@@ -128,7 +138,6 @@ import { useRouter } from 'vue-router';
 import { NIcon, NPagination } from 'naive-ui';
 import { SearchOutlined } from '@vicons/antd';
 import { usePagination } from '@src/hooks/pagination/usePagination';
-import { useTenantStore } from '@src/store/modules/tenant';
 import AddTenant from '@src/components/tenant/AddTenant.vue';
 import EditTenant from '@src/components/tenant/EditTenant.vue';
 
@@ -136,7 +145,6 @@ const router = useRouter();
 const showModal = ref(false);
 const showEditModal = ref(false);
 const selectedId = ref();
-const tenantStore = useTenantStore();
 
 // fetch all records
 const { getList, list, page, pageSizes, itemCount, pageSize, searchParams }: any =
@@ -148,14 +156,6 @@ onMounted(() => {
 
 const fetchList = () => {
   getList(searchParams.value);
-};
-
-const handleViewTenantDetail = (item: any) => {
-  tenantStore.setTenant(item);
-  router.push({
-    name: 'tenant_view',
-    params: { db: item.db_name }
-  });
 };
 </script>
 

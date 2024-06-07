@@ -113,7 +113,6 @@ class Request {
   }
 
   get<T>(url: string, params?: Record<string, unknown>, config?: AxiosRequestConfig): Promise<T> {
-    console.log(params);
     return this.instance.get(url, { params, ...config });
   }
 

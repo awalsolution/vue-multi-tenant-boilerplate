@@ -48,7 +48,7 @@ const routes: RouteRecordRaw[] = [
         component: () => import('@src/components/tenant/ViewTenant.vue')
       },
       {
-        path: 'edit-role',
+        path: 'edit-role/:db/:role_id',
         name: `${routeName}_edit_role`,
         meta: {
           title: 'Assign Permission',

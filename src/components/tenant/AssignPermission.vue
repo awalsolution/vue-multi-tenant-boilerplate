@@ -33,9 +33,9 @@ const permissions: Ref = ref([]);
 const selectedPermissions: Ref = ref([]);
 
 onMounted(() => {
-  if (route.query && (route.query.roleId || route.query.dbName)) {
-    getRecordsApi(`/tenant/all-permission/${route.query.dbName}`, {
-      role_id: route.query.roleId
+  if (route.params && (route.params.role_id || route.params.db)) {
+    getRecordsApi(`/tenant/all-permission/${route.params.db}`, {
+      role_id: route.params.role_id
     }).then((res: any) => {
       permissions.value = res.data?.permissions;
       selectedPermissions.value = res.data?.role?.permissions.map((item: any) => {
@@ -48,8 +48,8 @@ onMounted(() => {
 });
 
 const handleAssignPermissions = () => {
-  updateRecordApi(`/tenant/assign-permission/${route.query.roleId}`, {
-    db_name: route.query.dbName,
+  updateRecordApi(`/tenant/assign-permission/${route.params.role_id}`, {
+    db_name: route.params.db,
     permissions: selectedPermissions.value
   }).then((res: any) => {
     window['$message'].success(res.message);
