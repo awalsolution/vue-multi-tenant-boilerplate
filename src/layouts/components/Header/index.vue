@@ -130,7 +130,7 @@ const selectUserOption = (key: UserOptionKey) => {
       logout();
       break;
     case 'profile':
-      router.push({ name: 'system_profile' });
+      router.push({ name: 'user_profile' });
       break;
     case 'change-password':
       router.push('/change-password');

@@ -1,30 +1,56 @@
 <template>
-  <n-space>
-    <n-card title="Profile">
-      <n-form ref="formRef" :label-width="80" :model="profileData" size="small">
-        <n-grid x-gap="10">
-          <n-form-item-gi :span="12" label="First Name" path="first_name">
-            <n-input v-model:value="profileData.first_name" placeholder="Enter First Name" />
-          </n-form-item-gi>
-          <n-form-item-gi :span="12" label="Last Name" path="last_name">
-            <n-input v-model:value="profileData.last_name" placeholder="Enter Last Name" />
-          </n-form-item-gi>
-          <n-form-item-gi :span="12" label="Phone Number" path="phone_number">
-            <n-input v-model:value="profileData.phone_number" placeholder="Enter Phone Number" />
-          </n-form-item-gi>
-          <n-form-item-gi :span="12" label="Address" path="address">
-            <n-input v-model:value="profileData.address" placeholder="Enter Address" />
-          </n-form-item-gi>
-          <n-form-item-gi :span="12" label="City" path="city">
-            <n-input v-model:value="profileData.city" placeholder="Enter City" />
-          </n-form-item-gi>
-          <n-form-item-gi :span="12" label="State" path="state">
-            <n-input v-model:value="profileData.state" placeholder="Enter State" />
-          </n-form-item-gi>
-          <n-form-item-gi :span="12" label="Country" path="country">
-            <n-input v-model:value="profileData.country" placeholder="Enter Country" />
-          </n-form-item-gi>
-          <n-form-item-gi :span="24" path="profile_picture">
+  <n-space :vertical="true">
+    <n-form ref="formRef" :label-width="80" :model="profileData" :rules="formRules" size="small">
+      <n-card title="Edit Profile">
+        <n-row gutter="12">
+          <n-col :span="8">
+            <n-form-item label="First Name" path="first_name">
+              <n-input
+                v-model:value="profileData.first_name"
+                placeholder="Enter First Name"
+                disabled
+              />
+            </n-form-item>
+          </n-col>
+          <n-col :span="8">
+            <n-form-item label="Last Name" path="last_name">
+              <n-input
+                v-model:value="profileData.last_name"
+                placeholder="Enter Last Name"
+                disabled
+              />
+            </n-form-item>
+          </n-col>
+          <n-col :span="8">
+            <n-form-item label="Phone Number" path="phone_number">
+              <n-input
+                v-model:value="profileData.phone_number"
+                placeholder="Enter Phone Number"
+                disabled
+              />
+            </n-form-item>
+          </n-col>
+          <n-col :span="8">
+            <n-form-item label="Address" path="address">
+              <n-input v-model:value="profileData.address" placeholder="Enter Address" disabled />
+            </n-form-item>
+          </n-col>
+          <n-col :span="8">
+            <n-form-item label="City" path="city">
+              <n-input v-model:value="profileData.city" placeholder="Enter City" disabled />
+            </n-form-item>
+          </n-col>
+          <n-col :span="8">
+            <n-form-item label="State" path="state">
+              <n-input v-model:value="profileData.state" placeholder="Enter State" disabled />
+            </n-form-item>
+          </n-col>
+          <n-col :span="24">
+            <n-form-item label="Country" path="country">
+              <n-input v-model:value="profileData.country" placeholder="Enter Country" />
+            </n-form-item>
+          </n-col>
+          <n-col :span="24">
             <SingleImageUploader
               :action="uploadUrl"
               :data="{ type: 0 }"
@@ -34,15 +60,15 @@
               @upload-change="uploadChange"
               v-model:value="profileData.profile_picture"
             />
-          </n-form-item-gi>
-        </n-grid>
-        <n-space justify="end">
-          <n-form-item :theme-overrides="{ labelHeightSmall: '0', feedbackHeightSmall: '0' }">
-            <n-button secondary type="info" @click="handleValidateClick"> Update</n-button>
-          </n-form-item>
-        </n-space>
-      </n-form>
-    </n-card>
+          </n-col>
+        </n-row>
+      </n-card>
+      <n-space justify="end">
+        <n-form-item :theme-overrides="{ labelHeightSmall: '0', feedbackHeightSmall: '0' }">
+          <n-button secondary type="info" @click="handleValidateClick"> Save</n-button>
+        </n-form-item>
+      </n-space>
+    </n-form>
   </n-space>
 </template>
 
@@ -53,6 +79,7 @@ import { updateRecordApi } from '@src/api/endpoints';
 import { SingleImageUploader } from '@src/components/common/upload';
 import { useUserStore } from '@src/store/modules/user';
 import { useEnv } from '@src/hooks/useEnv';
+import { formRules } from '@src/rules/profile';
 
 const { uploadUrl } = useEnv();
 const formRef = ref<FormInst | null>(null);

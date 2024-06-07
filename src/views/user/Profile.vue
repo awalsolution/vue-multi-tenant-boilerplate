@@ -47,12 +47,12 @@
                 </n-col>
                 <n-col :span="8">
                   <n-form-item label="City" path="city">
-                    <n-input v-model:value="profileData.city" placeholder="Enter City" disabled />
+                    <n-input v-model:value="profileData.city" placeholder="Enter City" />
                   </n-form-item>
                 </n-col>
                 <n-col :span="8">
                   <n-form-item label="State" path="state">
-                    <n-input v-model:value="profileData.state" placeholder="Enter State" disabled />
+                    <n-input v-model:value="profileData.state" placeholder="Enter State" />
                   </n-form-item>
                 </n-col>
                 <n-col :span="8">
