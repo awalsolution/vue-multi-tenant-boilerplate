@@ -58,7 +58,7 @@
                     @click="
                       router.push({
                         name: 'tenant_edit_role',
-                        query: { roleId: item.id, dbName: route.query.db_name }
+                        query: { roleId: item.id, dbName: route.params.db }
                       })
                     "
                   >
@@ -174,7 +174,7 @@ const selectedId: Ref = ref();
 const loading: Ref = ref(true);
 
 const getList = () => {
-  getRecordApi(`/tenant/detail/${route.query.db_name}`).then((res: any) => {
+  getRecordApi('/tenant/detail', { db_name: route.params.db }).then((res: any) => {
     permissions.value = res.data?.permissions;
     users.value = res.data?.users;
     roles.value = res.data?.roles;
@@ -198,7 +198,7 @@ function roleConfirmationDialog(item: { id: number }) {
 }
 
 function deleteOperation() {
-  deleteRecordApi(`/tenant/delete-role/${selectedId.value}`, { db_name: route.query.db_name })
+  deleteRecordApi(`/tenant/delete-role/${selectedId.value}`, { db_name: route.params.db })
     .then((res: any) => {
       window['$message'].success(res.message);
       getList();

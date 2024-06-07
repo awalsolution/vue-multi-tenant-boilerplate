@@ -65,55 +65,13 @@
                 </n-tag>
               </td>
               <td class="td">{{ item.created_at }}</td>
-              <td class="td flex gap-2 justify-between">
-                <n-button
-                  strong
-                  secondary
-                  type="info"
-                  @click="
-                    router.push({
-                      name: 'tenant_view',
-                      query: { db_name: item.db_name }
-                    })
-                  "
-                >
+              <td class="td flex gap-2 justify-center">
+                <n-button strong secondary type="info" @click="handleViewTenantDetail(item)">
                   Details
                 </n-button>
                 <n-button strong secondary type="warning"> Edit </n-button>
-                <n-button
-                  strong
-                  secondary
-                  type="warning"
-                  @click="
-                    router.push({
-                      name: 'tenant_assign',
-                      query: { tenant_id: item.id, dbName: item.db_name }
-                    })
-                  "
-                >
-                  Assign Permission
-                </n-button>
                 <n-button strong secondary type="error"> Delete </n-button>
               </td>
-              <!-- <td
-                class="sticky_el right-0 z-10"
-                v-permission="{
-                  action: ['tenant update', 'tenant delete']
-                }"
-              >
-                <n-dropdown
-                  @click="actionOperation(item)"
-                  :onSelect="selectedAction"
-                  trigger="click"
-                  :options="filteredOptions"
-                >
-                  <n-button size="small" :circle="true">
-                    <n-icon>
-                      <more-outlined />
-                    </n-icon>
-                  </n-button>
-                </n-dropdown>
-              </td> -->
             </tr>
           </tbody>
         </table>
@@ -165,37 +123,20 @@
 </template>
 
 <script lang="ts" setup>
-import {
-  ref,
-  onMounted
-  // computed
-} from 'vue';
+import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
-import {
-  NIcon,
-  NPagination
-  //  useDialog
-} from 'naive-ui';
-import {
-  // MoreOutlined, EditOutlined, DeleteOutlined,
-  SearchOutlined
-} from '@vicons/antd';
-// import { deleteRecordApi } from '@src/api/endpoints';
-// import { useEnv } from '@src/hooks/useEnv';
-// import { renderIcon } from '@src/utils/renderIcon';
-// import { usePermission } from '@src/hooks/permission/usePermission';
+import { NIcon, NPagination } from 'naive-ui';
+import { SearchOutlined } from '@vicons/antd';
 import { usePagination } from '@src/hooks/pagination/usePagination';
+import { useTenantStore } from '@src/store/modules/tenant';
 import AddTenant from '@src/components/tenant/AddTenant.vue';
 import EditTenant from '@src/components/tenant/EditTenant.vue';
 
 const router = useRouter();
-// const { imgUrl } = useEnv();
-// const dialog = useDialog();
-// const selectedOption: any = ref(null);
 const showModal = ref(false);
 const showEditModal = ref(false);
 const selectedId = ref();
-// const { hasPermission } = usePermission();
+const tenantStore = useTenantStore();
 
 // fetch all records
 const { getList, list, page, pageSizes, itemCount, pageSize, searchParams }: any =
@@ -205,87 +146,16 @@ onMounted(() => {
   getList();
 });
 
-// const moreOptions = ref([
-//   {
-//     label: 'View',
-//     key: 'view',
-//     icon: renderIcon(EditOutlined),
-//     permission: hasPermission(['tenant update'])
-//   },
-//   {
-//     label: 'Insert Role',
-//     key: 'insert',
-//     icon: renderIcon(EditOutlined),
-//     permission: hasPermission(['tenant update'])
-//   },
-//   {
-//     label: 'Edit',
-//     key: 'edit',
-//     icon: renderIcon(EditOutlined),
-//     permission: hasPermission(['tenant update'])
-//   },
-//   {
-//     label: 'Delete',
-//     key: 'delete',
-//     icon: renderIcon(DeleteOutlined),
-//     permission: hasPermission(['tenant delete'])
-//   }
-// ]);
-
-// const filteredOptions = computed(() => {
-//   return moreOptions.value.filter((option) => option.permission);
-// });
-
-// function confirmationDialog() {
-//   dialog.error({
-//     title: 'Confirmation',
-//     content: () => 'Are you sure you want to delete?',
-//     positiveText: 'Delete',
-//     negativeText: 'Cancel',
-//     onPositiveClick: deleteOperation
-//   });
-// }
-
-// function deleteOperation() {
-//   deleteRecordApi(`/tenant/${selectedId.value}`)
-//     .then((res: any) => {
-//       window['$message'].success(res.message);
-//       getList();
-//       dialog.destroyAll;
-//     })
-//     .catch((res: any) => {
-//       window['$message'].error(res.message);
-//       dialog.destroyAll;
-//     });
-//   selectedId.value = null;
-//   selectedOption.value = null;
-// }
-
-// const actionOperation = (item: any) => {
-//   if (selectedOption.value === 'view') {
-//     router.push({
-//       name: 'tenant_view',
-//       query: { tenant_id: item.id }
-//     });
-//   } else if (selectedOption.value === 'insert') {
-//     router.push({
-//       name: 'tenant_insert_role',
-//       query: { tenant_id: item.id }
-//     });
-//   } else if (selectedOption.value === 'edit') {
-//     showEditModal.value = true;
-//     selectedId.value = item.id;
-//     // router.push(`/roles/${item.id}`);
-//   } else if (selectedOption.value === 'delete') {
-//     selectedId.value = item.id;
-//     confirmationDialog();
-//   }
-// };
-// const selectedAction = (key: any) => {
-//   selectedOption.value = key;
-// };
 const fetchList = () => {
   getList(searchParams.value);
+};
+
+const handleViewTenantDetail = (item: any) => {
+  tenantStore.setTenant(item);
+  router.push({
+    name: 'tenant_view',
+    params: { db: item.db_name }
+  });
 };
 </script>
 

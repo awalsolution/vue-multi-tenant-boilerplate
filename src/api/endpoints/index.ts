@@ -6,8 +6,9 @@ export const getRecordsApi = (endpoint: any, params?: any) => {
   });
 };
 
-export const getRecordApi = (endpoint: any) => {
-  return Request.get(endpoint);
+export const getRecordApi = (endpoint: any, params?: any) => {
+  console.log(endpoint);
+  return Request.get(endpoint, params);
 };
 
 export const createRecordApi = (endpoint: any, data: any) => {

@@ -37,7 +37,7 @@ const routes: RouteRecordRaw[] = [
         component: () => import('@src/components/tenant/AddTenant.vue')
       },
       {
-        path: 'view',
+        path: 'view/:db',
         name: `${routeName}_view`,
         meta: {
           title: 'View Tenant',
