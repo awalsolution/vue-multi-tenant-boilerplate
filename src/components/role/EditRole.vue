@@ -1,14 +1,18 @@
 <template>
-  <n-form ref="formRef" :label-width="80" :model="formValue" :rules="rules" size="small">
-    <n-form-item label="Name" path="name">
-      <n-input v-model:value="formValue.name" placeholder="Edit Name" />
-    </n-form-item>
-    <n-space justify="end">
-      <n-form-item :theme-overrides="{ labelHeightSmall: '0', feedbackHeightSmall: '0' }">
-        <n-button secondary type="info" @click="handleValidateClick"> Update </n-button>
-      </n-form-item>
-    </n-space>
-  </n-form>
+  <div>
+    <n-card title="Edit Role">
+      <n-form ref="formRef" :label-width="80" :model="formValue" :rules="rules" size="small">
+        <n-form-item label="Name" path="name">
+          <n-input v-model:value="formValue.name" placeholder="Edit Name" />
+        </n-form-item>
+        <n-space justify="end">
+          <n-form-item :theme-overrides="{ labelHeightSmall: '0', feedbackHeightSmall: '0' }">
+            <n-button secondary type="info" @click="handleValidateClick"> Update </n-button>
+          </n-form-item>
+        </n-space>
+      </n-form>
+    </n-card>
+  </div>
 </template>
 
 <script lang="ts" setup>

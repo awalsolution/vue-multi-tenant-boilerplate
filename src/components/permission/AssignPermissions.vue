@@ -18,48 +18,13 @@
       </n-checkbox-group>
     </n-card>
   </n-space>
-  <!-- <ContentLayout>
-    <template #contentHeader>
-      <NCard embedded class="mb-2 px-3 py-2" :content-style="{ padding: 0 }">
-        <div class="flex flex-col items-center sm:flex-row sm:justify-between">
-          <h3 class="text-lg">Permissions List</h3>
-          <NButton secondary type="info" size="medium" @click="handleAssignPermissions">
-            Assign Permission
-          </NButton>
-        </div>
-      </NCard>
-    </template>
-     <n-tabs
-      type="card"
-      size="medium"
-      default-value="Dashboard"
-      pane-class="border-x border-b overflow-scroll h-full"
-      class="sticky top-0 h-full overflow-scroll"
-    >
-      <n-tab-pane v-for="item of menus" :key="item.id" :name="item.menu_name" :tab="item.menu_name">
-        <n-checkbox-group class="mx-2" v-model:value="selectedPermissions">
-          <n-row>
-            <n-col v-for="permission of item.permissions" :key="permission.id" :span="7">
-              <n-checkbox :value="permission.id" :label="permission.name" class="pb-1" />
-              <n-tag size="small" :type="permission.type === 'private' ? 'error' : 'success'">
-                {{ permission.type }}
-              </n-tag>
-            </n-col>
-          </n-row>
-        </n-checkbox-group>
-      </n-tab-pane>
-    </n-tabs> 
-  </ContentLayout> -->
 </template>
 <script lang="ts" setup>
 import { onMounted, ref, type Ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { usePermissionfilter } from '@src/filters/permission';
-// import { usefilterMenu } from '@src/filters/menus';
-// import ContentLayout from '@src/layouts/ContentLayout/index.vue';
 import { getRecordApi, updateRecordApi } from '@src/api/endpoints';
 
-// const { menus, getMenus } = usefilterMenu();
 const { permissions, getPermissions } = usePermissionfilter();
 const route = useRoute();
 const router = useRouter();

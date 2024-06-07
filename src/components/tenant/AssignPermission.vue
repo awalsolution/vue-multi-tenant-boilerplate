@@ -11,9 +11,9 @@
           <n-row>
             <n-col v-for="permission of permissions" :key="permission.id" :span="7">
               <n-checkbox :value="permission.id" :label="permission.name" class="pb-1" />
-              <!-- <n-tag size="small" :type="permission.type === 'private' ? 'error' : 'success'">
+              <n-tag size="small" :type="permission.type === 'private' ? 'error' : 'success'">
                 {{ permission.type }}
-              </n-tag> -->
+              </n-tag>
             </n-col>
           </n-row>
         </n-checkbox-group>

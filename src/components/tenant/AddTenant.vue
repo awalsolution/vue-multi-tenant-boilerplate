@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="bg-white p-5">
+    <n-card title="Add New Tenant">
       <n-form ref="formRef" :label-width="80" :model="formValue" :rules="formRules" size="small">
         <h3 class="underline px-1 pb-4 text-xl">General Info</h3>
         <n-row :gutter="[20, 8]">
@@ -101,7 +101,7 @@
           </n-form-item>
         </n-space>
       </n-form>
-    </div>
+    </n-card>
   </div>
 </template>
 

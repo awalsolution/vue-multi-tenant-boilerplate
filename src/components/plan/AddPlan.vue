@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="bg-white p-5">
+    <n-card title="Add New Plan">
       <n-form ref="formRef" :label-width="80" :model="formValue" :rules="formRules" size="small">
         <n-row :gutter="[20, 8]">
           <n-col :span="12">
@@ -44,7 +44,7 @@
           </n-form-item>
         </n-space>
       </n-form>
-    </div>
+    </n-card>
   </div>
 </template>
 
