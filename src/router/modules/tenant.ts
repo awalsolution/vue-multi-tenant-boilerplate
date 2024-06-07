@@ -46,16 +46,18 @@ const routes: RouteRecordRaw[] = [
           dismissTab: true
         },
         component: () => import('@src/components/tenant/ViewTenant.vue')
+      },
+      {
+        path: 'edit-role',
+        name: `${routeName}_edit_role`,
+        meta: {
+          title: 'Assign Permission',
+          permissions: ['update tenant'],
+          hidden: true,
+          dismissTab: true
+        },
+        component: () => import('@src/components/tenant/AssignPermission.vue')
       }
-      // {
-      //   path: 'edit',
-      //   name: `${routeName}_edit`,
-      //   meta: {
-      //     title: 'Edit Tenant',
-      //     permissions: ['update tenant']
-      //   },
-      //   component: () => import('@src/components/tenant/EditTenant.vue')
-      // }
     ]
   }
 ];

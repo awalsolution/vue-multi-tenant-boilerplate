@@ -20,6 +20,6 @@ export const updateRecordApi = (endpoint: any, data: any) => {
   });
 };
 
-export const deleteRecordApi = (endpoint: any) => {
-  return Request.delete(endpoint);
+export const deleteRecordApi = (endpoint: any, params?: any) => {
+  return Request.delete(endpoint, params);
 };

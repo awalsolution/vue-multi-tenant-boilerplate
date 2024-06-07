@@ -80,7 +80,19 @@
                   Details
                 </n-button>
                 <n-button strong secondary type="warning"> Edit </n-button>
-                <n-button strong secondary type="warning"> Assign Permission </n-button>
+                <n-button
+                  strong
+                  secondary
+                  type="warning"
+                  @click="
+                    router.push({
+                      name: 'tenant_assign',
+                      query: { tenant_id: item.id, dbName: item.db_name }
+                    })
+                  "
+                >
+                  Assign Permission
+                </n-button>
                 <n-button strong secondary type="error"> Delete </n-button>
               </td>
               <!-- <td
@@ -153,26 +165,37 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted, computed } from 'vue';
+import {
+  ref,
+  onMounted
+  // computed
+} from 'vue';
 import { useRouter } from 'vue-router';
-import { NIcon, NPagination, useDialog } from 'naive-ui';
-import { MoreOutlined, EditOutlined, DeleteOutlined, SearchOutlined } from '@vicons/antd';
-import { deleteRecordApi } from '@src/api/endpoints';
+import {
+  NIcon,
+  NPagination
+  //  useDialog
+} from 'naive-ui';
+import {
+  // MoreOutlined, EditOutlined, DeleteOutlined,
+  SearchOutlined
+} from '@vicons/antd';
+// import { deleteRecordApi } from '@src/api/endpoints';
 // import { useEnv } from '@src/hooks/useEnv';
-import { renderIcon } from '@src/utils/renderIcon';
-import { usePermission } from '@src/hooks/permission/usePermission';
+// import { renderIcon } from '@src/utils/renderIcon';
+// import { usePermission } from '@src/hooks/permission/usePermission';
 import { usePagination } from '@src/hooks/pagination/usePagination';
 import AddTenant from '@src/components/tenant/AddTenant.vue';
 import EditTenant from '@src/components/tenant/EditTenant.vue';
 
 const router = useRouter();
 // const { imgUrl } = useEnv();
-const dialog = useDialog();
-const selectedOption: any = ref(null);
+// const dialog = useDialog();
+// const selectedOption: any = ref(null);
 const showModal = ref(false);
 const showEditModal = ref(false);
 const selectedId = ref();
-const { hasPermission } = usePermission();
+// const { hasPermission } = usePermission();
 
 // fetch all records
 const { getList, list, page, pageSizes, itemCount, pageSize, searchParams }: any =
@@ -182,85 +205,85 @@ onMounted(() => {
   getList();
 });
 
-const moreOptions = ref([
-  {
-    label: 'View',
-    key: 'view',
-    icon: renderIcon(EditOutlined),
-    permission: hasPermission(['tenant update'])
-  },
-  {
-    label: 'Insert Role',
-    key: 'insert',
-    icon: renderIcon(EditOutlined),
-    permission: hasPermission(['tenant update'])
-  },
-  {
-    label: 'Edit',
-    key: 'edit',
-    icon: renderIcon(EditOutlined),
-    permission: hasPermission(['tenant update'])
-  },
-  {
-    label: 'Delete',
-    key: 'delete',
-    icon: renderIcon(DeleteOutlined),
-    permission: hasPermission(['tenant delete'])
-  }
-]);
+// const moreOptions = ref([
+//   {
+//     label: 'View',
+//     key: 'view',
+//     icon: renderIcon(EditOutlined),
+//     permission: hasPermission(['tenant update'])
+//   },
+//   {
+//     label: 'Insert Role',
+//     key: 'insert',
+//     icon: renderIcon(EditOutlined),
+//     permission: hasPermission(['tenant update'])
+//   },
+//   {
+//     label: 'Edit',
+//     key: 'edit',
+//     icon: renderIcon(EditOutlined),
+//     permission: hasPermission(['tenant update'])
+//   },
+//   {
+//     label: 'Delete',
+//     key: 'delete',
+//     icon: renderIcon(DeleteOutlined),
+//     permission: hasPermission(['tenant delete'])
+//   }
+// ]);
 
-const filteredOptions = computed(() => {
-  return moreOptions.value.filter((option) => option.permission);
-});
+// const filteredOptions = computed(() => {
+//   return moreOptions.value.filter((option) => option.permission);
+// });
 
-function confirmationDialog() {
-  dialog.error({
-    title: 'Confirmation',
-    content: () => 'Are you sure you want to delete?',
-    positiveText: 'Delete',
-    negativeText: 'Cancel',
-    onPositiveClick: deleteOperation
-  });
-}
+// function confirmationDialog() {
+//   dialog.error({
+//     title: 'Confirmation',
+//     content: () => 'Are you sure you want to delete?',
+//     positiveText: 'Delete',
+//     negativeText: 'Cancel',
+//     onPositiveClick: deleteOperation
+//   });
+// }
 
-function deleteOperation() {
-  deleteRecordApi(`/tenant/${selectedId.value}`)
-    .then((res: any) => {
-      window['$message'].success(res.message);
-      getList();
-      dialog.destroyAll;
-    })
-    .catch((res: any) => {
-      window['$message'].error(res.message);
-      dialog.destroyAll;
-    });
-  selectedId.value = null;
-  selectedOption.value = null;
-}
+// function deleteOperation() {
+//   deleteRecordApi(`/tenant/${selectedId.value}`)
+//     .then((res: any) => {
+//       window['$message'].success(res.message);
+//       getList();
+//       dialog.destroyAll;
+//     })
+//     .catch((res: any) => {
+//       window['$message'].error(res.message);
+//       dialog.destroyAll;
+//     });
+//   selectedId.value = null;
+//   selectedOption.value = null;
+// }
 
-const actionOperation = (item: any) => {
-  if (selectedOption.value === 'view') {
-    router.push({
-      name: 'tenant_view',
-      query: { tenant_id: item.id }
-    });
-  } else if (selectedOption.value === 'insert') {
-    router.push({
-      name: 'tenant_insert_role',
-      query: { tenant_id: item.id }
-    });
-  } else if (selectedOption.value === 'edit') {
-    showEditModal.value = true;
-    selectedId.value = item.id;
-    // router.push(`/roles/${item.id}`);
-  } else if (selectedOption.value === 'delete') {
-    selectedId.value = item.id;
-    confirmationDialog();
-  }
-};
-const selectedAction = (key: any) => {
-  selectedOption.value = key;
-};
+// const actionOperation = (item: any) => {
+//   if (selectedOption.value === 'view') {
+//     router.push({
+//       name: 'tenant_view',
+//       query: { tenant_id: item.id }
+//     });
+//   } else if (selectedOption.value === 'insert') {
+//     router.push({
+//       name: 'tenant_insert_role',
+//       query: { tenant_id: item.id }
+//     });
+//   } else if (selectedOption.value === 'edit') {
+//     showEditModal.value = true;
+//     selectedId.value = item.id;
+//     // router.push(`/roles/${item.id}`);
+//   } else if (selectedOption.value === 'delete') {
+//     selectedId.value = item.id;
+//     confirmationDialog();
+//   }
+// };
+// const selectedAction = (key: any) => {
+//   selectedOption.value = key;
+// };
 const fetchList = () => {
   getList(searchParams.value);
 };
