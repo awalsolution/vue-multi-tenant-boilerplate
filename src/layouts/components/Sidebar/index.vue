@@ -1,10 +1,13 @@
 <template>
   <div
-    class="bg-default-light dark:bg-default-dark absolute inset-y-0 left-0 z-[100] h-full border-r border-gray-300 shadow-sm transition-[width] dark:border-gray-800 sm:static"
+    class="bg-default-light dark:bg-default-dark absolute inset-y-0 left-0 z-[100] h-full border-r border-gray-300 shadow-sm transition-[width] dark:border-gray-800 sm:static mt-1"
     :class="[sidebarStore.isDisplay ? (sidebarStore.isCollapse ? 'w-16' : 'w-56') : 'w-0']"
   >
     <!-- Header -->
-    <div class="flex h-14 w-full select-none items-center justify-center" @click="router.push('/')">
+    <div
+      class="flex h-14 w-full select-none items-center justify-center flex-wrap"
+      @click="router.push('/')"
+    >
       <img
         class="animate-pulse cursor-pointer select-none"
         width="36"

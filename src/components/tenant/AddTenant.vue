@@ -2,7 +2,6 @@
   <div>
     <n-card title="Add New Tenant">
       <n-form ref="formRef" :label-width="80" :model="formValue" :rules="formRules" size="small">
-        <h3 class="px-1 pb-4 text-xl">General Info</h3>
         <n-row :gutter="[20, 8]">
           <n-col :span="12">
             <n-form-item label="Plan Price" path="plan_id">
@@ -87,7 +86,10 @@
               <n-checkbox-group class="mx-2" v-model:value="formValue.permissions">
                 <n-row>
                   <n-col v-for="permission of permissions" :key="permission.id" :span="6">
-                    <n-checkbox :value="permission.name" :label="permission.name" />
+                    <n-checkbox :value="permission.name" :label="permission.name" class="mb-2" />
+                    <n-tag size="small" :type="permission.type === 'private' ? 'error' : 'success'">
+                      {{ permission.type }}
+                    </n-tag>
                   </n-col>
                 </n-row>
               </n-checkbox-group>
@@ -95,7 +97,7 @@
           </n-space>
         </n-row>
 
-        <n-space justify="end">
+        <n-space justify="end" class="mt-5">
           <n-form-item :theme-overrides="{ labelHeightSmall: '0', feedbackHeightSmall: '0' }">
             <n-button secondary type="info" @click="handleValidateClick"> Save </n-button>
           </n-form-item>

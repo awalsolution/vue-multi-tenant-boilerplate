@@ -11,9 +11,6 @@ export default defineConfig(() => {
       alias: {
         '@src': fileURLToPath(new URL('./src', import.meta.url))
       }
-    },
-    build: {
-      outDir: '../../laravel-apps/awal-umrah-tenant-dashboard'
     }
   };
 });
