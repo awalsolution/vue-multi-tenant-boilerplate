@@ -26,26 +26,6 @@ const routes: RouteRecordRaw[] = [
           permissions: ['permission menu']
         },
         component: () => import('@src/views/permission/index.vue')
-      },
-      {
-        path: 'add',
-        name: `${routeName}_add`,
-        meta: {
-          title: 'Add Permission',
-          permissions: ['create permission']
-        },
-        component: () => import('@src/components/permission/AddPermission.vue')
-      },
-      {
-        path: 'edit',
-        name: `${routeName}_edit`,
-        meta: {
-          title: 'Edit Permission',
-          permissions: ['update permission'],
-          hidden: true,
-          dismissTab: true
-        },
-        component: () => import('@src/components/permission/EditPermission.vue')
       }
     ]
   }

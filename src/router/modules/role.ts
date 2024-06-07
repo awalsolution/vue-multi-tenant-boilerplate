@@ -28,26 +28,6 @@ const routes: RouteRecordRaw[] = [
         component: () => import('@src/views/role/index.vue')
       },
       {
-        path: 'add',
-        name: `${routeName}_add`,
-        meta: {
-          title: 'Add Role',
-          permissions: ['role create']
-        },
-        component: () => import('@src/components/role/AddRole.vue')
-      },
-      {
-        path: 'edit',
-        name: `${routeName}_edit`,
-        meta: {
-          title: 'Edit Role',
-          permissions: ['role update'],
-          hidden: true,
-          dismissTab: true
-        },
-        component: () => import('@src/components/role/EditRole.vue')
-      },
-      {
         path: 'assing-permission/:roleId',
         name: `${routeName}_assing_permission`,
         meta: {

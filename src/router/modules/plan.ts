@@ -26,26 +26,6 @@ const routes: RouteRecordRaw[] = [
           permissions: ['plan menu']
         },
         component: () => import('@src/views/plan/index.vue')
-      },
-      {
-        path: 'add',
-        name: `${routeName}_add`,
-        meta: {
-          title: 'Add Plan',
-          permissions: ['create plan']
-        },
-        component: () => import('@src/components/plan/AddPlan.vue')
-      },
-      {
-        path: 'edit',
-        name: `${routeName}_edit`,
-        meta: {
-          title: 'Edit Plan',
-          permissions: ['update plan'],
-          hidden: true,
-          dismissTab: true
-        },
-        component: () => import('@src/components/plan/EditPlan.vue')
       }
     ]
   }
