@@ -5,44 +5,32 @@
         <n-row gutter="12">
           <n-col :span="8">
             <n-form-item label="First Name" path="first_name">
-              <n-input
-                v-model:value="profileData.first_name"
-                placeholder="Enter First Name"
-                disabled
-              />
+              <n-input v-model:value="profileData.first_name" placeholder="Enter First Name" />
             </n-form-item>
           </n-col>
           <n-col :span="8">
             <n-form-item label="Last Name" path="last_name">
-              <n-input
-                v-model:value="profileData.last_name"
-                placeholder="Enter Last Name"
-                disabled
-              />
+              <n-input v-model:value="profileData.last_name" placeholder="Enter Last Name" />
             </n-form-item>
           </n-col>
           <n-col :span="8">
             <n-form-item label="Phone Number" path="phone_number">
-              <n-input
-                v-model:value="profileData.phone_number"
-                placeholder="Enter Phone Number"
-                disabled
-              />
+              <n-input v-model:value="profileData.phone_number" placeholder="Enter Phone Number" />
             </n-form-item>
           </n-col>
           <n-col :span="8">
             <n-form-item label="Address" path="address">
-              <n-input v-model:value="profileData.address" placeholder="Enter Address" disabled />
+              <n-input v-model:value="profileData.address" placeholder="Enter Address" />
             </n-form-item>
           </n-col>
           <n-col :span="8">
             <n-form-item label="City" path="city">
-              <n-input v-model:value="profileData.city" placeholder="Enter City" disabled />
+              <n-input v-model:value="profileData.city" placeholder="Enter City" />
             </n-form-item>
           </n-col>
           <n-col :span="8">
             <n-form-item label="State" path="state">
-              <n-input v-model:value="profileData.state" placeholder="Enter State" disabled />
+              <n-input v-model:value="profileData.state" placeholder="Enter State" />
             </n-form-item>
           </n-col>
           <n-col :span="24">
