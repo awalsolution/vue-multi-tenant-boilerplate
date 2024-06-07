@@ -1,7 +1,7 @@
 <template>
   <div>
     <n-card title="Edit Role">
-      <n-form ref="formRef" :label-width="80" :model="formValue" :rules="rules" size="small">
+      <n-form ref="formRef" :label-width="80" :model="formValue" :rules="formRules" size="small">
         <n-form-item label="Name" path="name">
           <n-input v-model:value="formValue.name" placeholder="Edit Name" />
         </n-form-item>
@@ -19,6 +19,7 @@
 import { ref } from 'vue';
 import { type FormInst } from 'naive-ui';
 import { getRecordApi, updateRecordApi } from '@src/api/endpoints';
+import { formRules } from '@src/rules/role';
 
 const formValue: any = ref({});
 const formRef = ref<FormInst | null>(null);
@@ -32,14 +33,6 @@ const props = defineProps({
 // fetch single Role  using id
 getRecordApi(`/role/${props.id}`).then((res: any) => {
   formValue.value = res.data;
-});
-
-const rules = ref({
-  name: {
-    required: true,
-    message: 'Please Enter Name',
-    trigger: 'blur'
-  }
 });
 
 const handleValidateClick = (e: MouseEvent) => {
