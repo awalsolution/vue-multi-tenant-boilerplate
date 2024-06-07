@@ -2,7 +2,7 @@
   <div>
     <n-card title="Add New Tenant">
       <n-form ref="formRef" :label-width="80" :model="formValue" :rules="formRules" size="small">
-        <h3 class="underline px-1 pb-4 text-xl">General Info</h3>
+        <h3 class="px-1 pb-4 text-xl">General Info</h3>
         <n-row :gutter="[20, 8]">
           <n-col :span="12">
             <n-form-item label="Plan Price" path="plan_id">

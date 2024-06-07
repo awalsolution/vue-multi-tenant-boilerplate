@@ -1,6 +1,6 @@
 <template>
   <div class="login_container flex items-center justify-center h-full">
-    <n-form ref="formRef" label-placement="left" size="large" :model="formData" :rules="rules">
+    <n-form ref="formRef" label-placement="left" size="large" :model="formData" :rules="formRules">
       <n-form-item path="email">
         <n-input v-model:value="formData.email" placeholder="Enter Email">
           <template #prefix>
@@ -53,6 +53,7 @@ import { useEnv } from '@src/hooks/useEnv';
 import { verifyDomainNameApi } from '@src/api/auth';
 import { TENANT_API_KEY } from '@src/utils/storage/variables';
 import { storage } from '@src/utils/storage';
+import { formRules } from '@src/rules/login';
 
 const formRef = ref();
 const rememberPassword = ref(false);
@@ -156,19 +157,6 @@ const verifyDomainName = async () => {
 };
 
 onBeforeMount(() => verifyDomainName());
-
-const rules = {
-  email: {
-    required: true,
-    message: 'Please Enter User Email',
-    trigger: 'blur'
-  },
-  password: {
-    required: true,
-    message: 'Please Enter Password',
-    trigger: 'blur'
-  }
-};
 </script>
 
 <style lang="scss" scoped>

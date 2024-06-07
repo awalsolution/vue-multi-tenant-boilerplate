@@ -31,9 +31,4 @@ export const formRules = ref({
     message: 'Please Enter Password Confirmation',
     trigger: 'blur'
   }
-  // status: {
-  //   required: true,
-  //   message: 'Please Select Status',
-  //   trigger: 'onchange'
-  // },
 });
