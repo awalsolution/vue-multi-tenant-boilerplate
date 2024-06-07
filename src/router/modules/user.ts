@@ -27,26 +27,6 @@ const routes: RouteRecordRaw[] = [
         },
         component: () => import('@src/views/user/index.vue')
       },
-      // {
-      //   path: 'add',
-      //   name: `${routeName}_add`,
-      //   meta: {
-      //     title: 'Add User',
-      //     permissions: ['user create']
-      //   },
-      //   component: () => import('@src/components/user/AddUser.vue')
-      // },
-      // {
-      //   path: 'edit',
-      //   name: `${routeName}_edit`,
-      //   meta: {
-      //     title: 'Add User',
-      //     permissions: ['user update'],
-      //     hidden: true,
-      //     dismissTab: true
-      //   },
-      //   component: () => import('@src/components/user/EditUser.vue')
-      // },
       {
         path: 'profile',
         name: `${routeName}_profile`,
