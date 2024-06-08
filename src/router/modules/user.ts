@@ -38,11 +38,11 @@ const routes: RouteRecordRaw[] = [
         component: () => import('@src/views/user/Profile.vue')
       },
       {
-        path: 'assing-permission/:userId',
-        name: `${routeName}_assing_permission`,
+        path: 'assign-permission/:userId',
+        name: `${routeName}_assign_permission`,
         meta: {
           title: 'Assing Permission',
-          permissions: ['assign permission'],
+          permissions: ['user assign permission'],
           hidden: true
         },
         component: () => import('@src/components/permission/AssignPermissions.vue')

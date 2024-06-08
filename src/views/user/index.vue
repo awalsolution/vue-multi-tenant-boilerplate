@@ -6,7 +6,7 @@
           secondary
           type="info"
           size="small"
-          @click="router.push('add')"
+          @click="showModal = true"
           v-permission="{ action: ['user create'] }"
         >
           Add User
@@ -244,7 +244,7 @@ function deleteOperation() {
 const actionOperation = (item: any) => {
   if (selectedOption.value === 'assign_permission') {
     router.push({
-      name: 'user_assing_permission',
+      name: 'user_assign_permission',
       params: { userId: item.id }
     });
   } else if (selectedOption.value === 'edit') {
