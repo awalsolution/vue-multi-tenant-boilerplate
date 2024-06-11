@@ -130,7 +130,7 @@
         <template #prefix="{ itemCount }"> Total Products: {{ itemCount }} </template>
       </n-pagination>
     </n-card>
-    <n-modal style="width: 70%" v-model:show="showModal" preset="dialog">
+    <n-modal style="width: 50%" v-model:show="showModal" preset="dialog">
       <template #header>
         <div>Create New User</div>
       </template>
