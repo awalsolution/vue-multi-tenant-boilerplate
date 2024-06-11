@@ -14,7 +14,7 @@ const routes: RouteRecordRaw[] = [
     meta: {
       title: 'Role',
       icon: renderIcon(PeopleLock20Regular),
-      permissions: ['can view role menu'],
+      permissions: ['role menu'],
       sort: 8
     },
     children: [
@@ -23,29 +23,19 @@ const routes: RouteRecordRaw[] = [
         name: `${routeName}_list`,
         meta: {
           title: 'Role List',
-          permissions: ['can view role menu']
+          permissions: ['role menu']
         },
         component: () => import('@src/views/role/index.vue')
       },
       {
-        path: 'add',
-        name: `${routeName}_add`,
+        path: 'assign-permission/:roleId',
+        name: `${routeName}_assign_permission`,
         meta: {
-          title: 'Add Role',
-          permissions: ['can view create role']
+          title: 'Assing Permission',
+          permissions: ['assign permission menu'],
+          hidden: true
         },
-        component: () => import('@src/components/role/AddRole.vue')
-      },
-      {
-        path: 'edit',
-        name: `${routeName}_edit`,
-        meta: {
-          title: 'Edit Role',
-          permissions: ['can view update role'],
-          hidden: true,
-          dismissTab: true
-        },
-        component: () => import('@src/components/role/EditRole.vue')
+        component: () => import('@src/components/permission/AssignPermissions.vue')
       }
     ]
   }

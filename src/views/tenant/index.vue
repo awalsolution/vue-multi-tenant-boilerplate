@@ -7,7 +7,7 @@
           type="info"
           size="small"
           @click="router.push('add')"
-          v-permission="{ action: ['can view tenant create'] }"
+          v-permission="{ action: ['tenant create'] }"
         >
           Add Tenant
         </NButton>
@@ -28,19 +28,19 @@
         <table class="table">
           <thead class="head">
             <tr>
-              <th class="th">Tenant Name</th>
+              <th class="th">Domain</th>
+              <th class="th">Database Name</th>
+              <th class="th">Name</th>
               <th class="th">Email</th>
               <th class="th">Phone#</th>
-              <th class="th">Domain</th>
               <th class="th">Plan</th>
               <th class="th">Plan Type</th>
               <th class="th text-center">Status</th>
-              <th class="th">Database Name</th>
               <th class="th">Created At</th>
               <th
                 class="sticky_el right-0 z-20"
                 v-permission="{
-                  action: ['can view tenant update', 'can view tenant delete']
+                  action: ['tenant update', 'tenant delete']
                 }"
               >
                 Actions
@@ -52,41 +52,35 @@
               <td colspan="9" class="data_placeholder">Record Not Exist</td>
             </tr>
             <tr v-else v-for="item in list" :key="item.id" class="body_tr">
+              <td class="td">{{ item.domain_name }}</td>
+              <td class="td">{{ item.db_name }}</td>
               <td class="td">{{ item.first_name + ' ' + item.last_name }}</td>
               <td class="td">{{ item.email }}</td>
               <td class="td">{{ item.phone_number }}</td>
-              <td class="td" v-for="subitem in item.domains" :key="subitem.id">
-                {{ subitem.domain }}
-              </td>
-              <td class="td">{{ item.plan.name }}</td>
-              <td class="td">{{ item.plan.type }}</td>
+              <td class="td">{{ item?.plan?.name }}</td>
+              <td class="td">{{ item?.plan?.type }}</td>
               <td class="td text-center">
                 <n-tag :bordered="false" :type="item.status === 'disabled' ? 'error' : 'info'">
                   {{ item.status === 1 ? 'Active' : 'Disable' }}
                 </n-tag>
               </td>
-              <td class="td">
-                {{ item.tenancy_db_name }}
-              </td>
               <td class="td">{{ item.created_at }}</td>
-              <td
-                class="sticky_el right-0 z-10"
-                v-permission="{
-                  action: ['can view tenant update', 'can view tenant delete']
-                }"
-              >
-                <n-dropdown
-                  @click="actionOperation(item)"
-                  :onSelect="selectedAction"
-                  trigger="click"
-                  :options="filteredOptions"
+              <td class="td flex gap-2 justify-center">
+                <n-button
+                  strong
+                  secondary
+                  type="info"
+                  @click="
+                    router.push({
+                      name: 'tenant_view',
+                      params: { db: item.db_name }
+                    })
+                  "
                 >
-                  <n-button size="small" :circle="true">
-                    <n-icon>
-                      <more-outlined />
-                    </n-icon>
-                  </n-button>
-                </n-dropdown>
+                  Details
+                </n-button>
+                <n-button strong secondary type="warning"> Edit </n-button>
+                <n-button strong secondary type="error"> Delete </n-button>
               </td>
             </tr>
           </tbody>
@@ -139,26 +133,18 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted, computed } from 'vue';
+import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
-import { NIcon, NPagination, useDialog } from 'naive-ui';
-import { MoreOutlined, EditOutlined, DeleteOutlined, SearchOutlined } from '@vicons/antd';
-import { deleteRecordApi } from '@src/api/endpoints';
-// import { useEnv } from '@src/hooks/useEnv';
-import { renderIcon } from '@src/utils/renderIcon';
-import { usePermission } from '@src/hooks/permission/usePermission';
+import { NIcon, NPagination } from 'naive-ui';
+import { SearchOutlined } from '@vicons/antd';
 import { usePagination } from '@src/hooks/pagination/usePagination';
 import AddTenant from '@src/components/tenant/AddTenant.vue';
 import EditTenant from '@src/components/tenant/EditTenant.vue';
 
 const router = useRouter();
-// const { imgUrl } = useEnv();
-const dialog = useDialog();
-const selectedOption: any = ref(null);
 const showModal = ref(false);
 const showEditModal = ref(false);
 const selectedId = ref();
-const { hasPermission } = usePermission();
 
 // fetch all records
 const { getList, list, page, pageSizes, itemCount, pageSize, searchParams }: any =
@@ -168,85 +154,6 @@ onMounted(() => {
   getList();
 });
 
-const moreOptions = ref([
-  {
-    label: 'View',
-    key: 'view',
-    icon: renderIcon(EditOutlined),
-    permission: hasPermission(['can view tenant update'])
-  },
-  {
-    label: 'Insert Role',
-    key: 'insert',
-    icon: renderIcon(EditOutlined),
-    permission: hasPermission(['can view tenant update'])
-  },
-  {
-    label: 'Edit',
-    key: 'edit',
-    icon: renderIcon(EditOutlined),
-    permission: hasPermission(['can view tenant update'])
-  },
-  {
-    label: 'Delete',
-    key: 'delete',
-    icon: renderIcon(DeleteOutlined),
-    permission: hasPermission(['can view tenant delete'])
-  }
-]);
-
-const filteredOptions = computed(() => {
-  return moreOptions.value.filter((option) => option.permission);
-});
-
-function confirmationDialog() {
-  dialog.error({
-    title: 'Confirmation',
-    content: () => 'Are you sure you want to delete?',
-    positiveText: 'Delete',
-    negativeText: 'Cancel',
-    onPositiveClick: deleteOperation
-  });
-}
-
-function deleteOperation() {
-  deleteRecordApi(`/tenant/${selectedId.value}`)
-    .then((res: any) => {
-      window['$message'].success(res.message);
-      getList();
-      dialog.destroyAll;
-    })
-    .catch((res: any) => {
-      window['$message'].error(res.message);
-      dialog.destroyAll;
-    });
-  selectedId.value = null;
-  selectedOption.value = null;
-}
-
-const actionOperation = (item: any) => {
-  if (selectedOption.value === 'view') {
-    router.push({
-      name: 'tenant_view',
-      query: { tenant_id: item.id }
-    });
-  } else if (selectedOption.value === 'insert') {
-    router.push({
-      name: 'tenant_insert_role',
-      query: { tenant_id: item.id }
-    });
-  } else if (selectedOption.value === 'edit') {
-    showEditModal.value = true;
-    selectedId.value = item.id;
-    // router.push(`/roles/${item.id}`);
-  } else if (selectedOption.value === 'delete') {
-    selectedId.value = item.id;
-    confirmationDialog();
-  }
-};
-const selectedAction = (key: any) => {
-  selectedOption.value = key;
-};
 const fetchList = () => {
   getList(searchParams.value);
 };

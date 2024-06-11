@@ -14,7 +14,7 @@ const routes: RouteRecordRaw[] = [
     meta: {
       title: 'User',
       icon: renderIcon(PeopleCommunityAdd20Regular),
-      permissions: ['can view user menu'],
+      permissions: ['user menu'],
       sort: 7
     },
     children: [
@@ -23,46 +23,26 @@ const routes: RouteRecordRaw[] = [
         name: `${routeName}_list`,
         meta: {
           title: 'User List',
-          permissions: ['can view user menu']
+          permissions: ['user menu']
         },
         component: () => import('@src/views/user/index.vue')
-      },
-      {
-        path: 'add',
-        name: `${routeName}_add`,
-        meta: {
-          title: 'Add User',
-          permissions: ['can view create user']
-        },
-        component: () => import('@src/components/user/AddUser.vue')
-      },
-      {
-        path: 'edit',
-        name: `${routeName}_edit`,
-        meta: {
-          title: 'Add User',
-          permissions: ['can view update user'],
-          hidden: true,
-          dismissTab: true
-        },
-        component: () => import('@src/components/user/EditUser.vue')
       },
       {
         path: 'profile',
         name: `${routeName}_profile`,
         meta: {
           title: 'Profile',
-          permissions: ['can view user profile'],
+          permissions: ['user profile'],
           hidden: true
         },
         component: () => import('@src/views/user/Profile.vue')
       },
       {
-        path: 'assing-permission',
-        name: `${routeName}_assing_permission`,
+        path: 'assign-permission/:userId',
+        name: `${routeName}_assign_permission`,
         meta: {
           title: 'Assing Permission',
-          permissions: ['can view assign permission'],
+          permissions: ['user assign permission'],
           hidden: true
         },
         component: () => import('@src/components/permission/AssignPermissions.vue')

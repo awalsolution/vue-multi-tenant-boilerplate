@@ -1,6 +1,6 @@
 <template>
   <div class="login_container flex items-center justify-center h-full">
-    <n-form ref="formRef" label-placement="left" size="large" :model="formData" :rules="rules">
+    <n-form ref="formRef" label-placement="left" size="large" :model="formData" :rules="formRules">
       <n-form-item path="email">
         <n-input v-model:value="formData.email" placeholder="Enter Email">
           <template #prefix>
@@ -25,7 +25,14 @@
         </n-input>
       </n-form-item>
       <n-form-item>
-        <n-button type="primary" @click="handleSubmit" size="large" :loading="loading" block>
+        <n-button
+          type="primary"
+          @click="handleSubmit"
+          size="large"
+          :loading="loading"
+          block
+          :disabled="isLoginButtonDisabled()"
+        >
           Login
         </n-button>
       </n-form-item>
@@ -34,7 +41,7 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted, reactive, ref, computed } from 'vue';
+import { onMounted, onBeforeMount, reactive, ref, computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { type FormValidationError } from 'naive-ui';
 import { PersonOutline, LockClosedOutline } from '@vicons/ionicons5';
@@ -42,6 +49,11 @@ import { useUserStore } from '@src/store/modules/user';
 import { AuthUtils } from '@src/utils/auth';
 import { useLoading } from '@src/hooks/useLoading';
 import type { RememberedAccountData } from '@src/views/login/types';
+import { useEnv } from '@src/hooks/useEnv';
+import { verifyDomainNameApi } from '@src/api/auth';
+import { TENANT_API_KEY } from '@src/utils/storage/variables';
+import { storage } from '@src/utils/storage';
+import { formRules } from '@src/rules/login';
 
 const formRef = ref();
 const rememberPassword = ref(false);
@@ -49,13 +61,26 @@ const userStore = useUserStore();
 const router = useRouter();
 const route = useRoute();
 const [loading, loadingDispatcher] = useLoading(false);
+const { centralDomain } = useEnv();
+const isHost = window.location.hostname;
+const tenantApiKey = storage.getTenantApiKey(TENANT_API_KEY);
 
+console.log(isHost === centralDomain);
 const formData = reactive({
   email: 'iqbal@gmail.com',
   password: '123456'
 });
 
 const redirectUrl = computed(() => route.query.redirect as string);
+
+console.log('key', tenantApiKey);
+const isLoginButtonDisabled = () => {
+  if (isHost === centralDomain || (tenantApiKey !== 'null' && tenantApiKey !== null)) {
+    return false;
+  } else {
+    return true;
+  }
+};
 
 const handleSubmit = async () => {
   try {
@@ -117,18 +142,21 @@ onMounted(() => {
   }
 });
 
-const rules = {
-  email: {
-    required: true,
-    message: 'Please Enter User Email',
-    trigger: 'blur'
-  },
-  password: {
-    required: true,
-    message: 'Please Enter Password',
-    trigger: 'blur'
+const verifyDomainName = async () => {
+  if (isHost !== centralDomain) {
+    verifyDomainNameApi(isHost).then((res: any) => {
+      const { data, code } = res;
+      if (code === 200) {
+        const ex = 7 * 24 * 60 * 60;
+        storage.set(TENANT_API_KEY, data.tenant_api_key, ex);
+      }
+    });
+  } else {
+    storage.remove(TENANT_API_KEY);
   }
 };
+
+onBeforeMount(() => verifyDomainName());
 </script>
 
 <style lang="scss" scoped>

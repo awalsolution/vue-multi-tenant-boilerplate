@@ -28,7 +28,11 @@
       </n-col>
       <n-col :span="24">
         <n-form-item label="Plan Description" path="description">
-          <n-input v-model:value="formValue.description" placeholder="Enter description" />
+          <n-input
+            type="textarea"
+            v-model:value="formValue.description"
+            placeholder="Enter description"
+          />
         </n-form-item>
       </n-col>
     </n-row>
@@ -41,15 +45,17 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue';
+import { ref, type Ref } from 'vue';
+import { useRouter } from 'vue-router';
 import { type FormInst } from 'naive-ui';
 import { createRecordApi } from '@src/api/endpoints';
 import { formRules } from '@src/rules/plan';
 
+const router = useRouter();
 const formRef = ref<FormInst | null>(null);
-const formValue: any = ref({});
+const formValue: Ref = ref({});
 
-const emits = defineEmits(['created']);
+// const emits = defineEmits(['created']);
 
 const handleValidateClick = (e: MouseEvent) => {
   e.preventDefault();
@@ -57,7 +63,10 @@ const handleValidateClick = (e: MouseEvent) => {
     if (!errors) {
       createRecordApi('/plan', formValue.value).then((res: any) => {
         window['$message'].success(res.message);
-        emits('created', res.data);
+        router.push({
+          name: 'plan_list'
+        });
+        // emits('created', res.data);
       });
     } else {
       console.log(errors);

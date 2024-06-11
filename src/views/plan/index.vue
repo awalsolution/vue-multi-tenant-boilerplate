@@ -6,8 +6,8 @@
           secondary
           type="info"
           size="small"
-          @click="router.push('add')"
-          v-permission="{ action: ['can view plan create'] }"
+          @click="showModal = true"
+          v-permission="{ action: ['plan create'] }"
         >
           Add Plan
         </NButton>
@@ -36,7 +36,7 @@
               <th
                 class="sticky_el right-0 z-20"
                 v-permission="{
-                  action: ['can view plan update', 'can view plan delete']
+                  action: ['plan update', 'plan delete']
                 }"
               >
                 Actions
@@ -56,7 +56,7 @@
               <td
                 class="sticky_el right-0 z-10"
                 v-permission="{
-                  action: ['can view plan update', 'can view plan delete']
+                  action: ['plan update', 'plan delete']
                 }"
               >
                 <n-dropdown
@@ -87,7 +87,7 @@
         :show-quick-jumper="true"
         :show-size-picker="true"
       >
-        <template #prefix="{ itemCount }"> Total Roles: {{ itemCount }} </template>
+        <template #prefix="{ itemCount }"> Total Plans: {{ itemCount }} </template>
       </n-pagination>
     </n-card>
     <n-modal v-model:show="showModal" preset="dialog">
@@ -123,7 +123,6 @@
 
 <script lang="ts" setup>
 import { ref, onMounted, computed, type Ref } from 'vue';
-import { useRouter } from 'vue-router';
 import { NIcon, NPagination, useDialog } from 'naive-ui';
 import { MoreOutlined, EditOutlined, DeleteOutlined, SearchOutlined } from '@vicons/antd';
 import { deleteRecordApi } from '@src/api/endpoints';
@@ -134,7 +133,6 @@ import AddPlan from '@src/components/plan/AddPlan.vue';
 import EditPlan from '@src/components/plan/EditPlan.vue';
 
 const dialog = useDialog();
-const router = useRouter();
 const selectedOption: Ref = ref(null);
 const showModal: Ref = ref(false);
 const showEditModal: Ref = ref(false);
@@ -154,13 +152,13 @@ const moreOptions = ref([
     label: 'Edit',
     key: 'edit',
     icon: renderIcon(EditOutlined),
-    permission: hasPermission(['can view plan update'])
+    permission: hasPermission(['plan update'])
   },
   {
     label: 'Delete',
     key: 'delete',
     icon: renderIcon(DeleteOutlined),
-    permission: hasPermission(['can view plan delete'])
+    permission: hasPermission(['plan delete'])
   }
 ]);
 

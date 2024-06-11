@@ -14,7 +14,7 @@ const routes: RouteRecordRaw[] = [
     meta: {
       title: 'Tenant',
       icon: renderIcon(Organization16Regular),
-      permissions: ['view tenant menu'],
+      permissions: ['tenant menu'],
       sort: 1
     },
     children: [
@@ -23,7 +23,7 @@ const routes: RouteRecordRaw[] = [
         name: `${routeName}_list`,
         meta: {
           title: 'Tenant List',
-          permissions: ['view tenant menu']
+          permissions: ['tenant menu']
         },
         component: () => import('@src/views/tenant/index.vue')
       },
@@ -32,29 +32,32 @@ const routes: RouteRecordRaw[] = [
         name: `${routeName}_add`,
         meta: {
           title: 'Add Tenant',
-          permissions: ['can view create tenant']
+          permissions: ['create tenant']
         },
         component: () => import('@src/components/tenant/AddTenant.vue')
+      },
+      {
+        path: 'view/:db',
+        name: `${routeName}_view`,
+        meta: {
+          title: 'View Tenant',
+          permissions: ['view tenant'],
+          hidden: true,
+          dismissTab: true
+        },
+        component: () => import('@src/components/tenant/ViewTenant.vue')
+      },
+      {
+        path: 'edit-role/:db/:role_id',
+        name: `${routeName}_edit_role`,
+        meta: {
+          title: 'Assign Permission',
+          permissions: ['update tenant'],
+          hidden: true,
+          dismissTab: true
+        },
+        component: () => import('@src/components/tenant/AssignPermission.vue')
       }
-      // {
-      //   path: 'edit',
-      //   name: `${routeName}_edit`,
-      //   meta: {
-      //     title: 'Edit Tenant',
-      //     permissions: ['can view update tenant']
-      //   },
-      //   component: () => import('@src/components/tenant/EditTenant.vue')
-      // }
-      // {
-      //   path: 'insert-role',
-      //   name: `${routeName}_insert_role`,
-      //   meta: {
-      //     title: 'Insert Role',
-      //     permissions: ['role tenant menu'],
-      //     hidden: true
-      //   },
-      //   component: () => import('@src/components/Role/RoleToTenantDB.vue')
-      // }
     ]
   }
 ];

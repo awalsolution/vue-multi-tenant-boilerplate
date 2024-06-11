@@ -6,8 +6,8 @@
           secondary
           type="info"
           size="small"
-          @click="router.push('add')"
-          v-permission="{ action: ['can view role create'] }"
+          @click="showModal = true"
+          v-permission="{ action: ['role create'] }"
         >
           Add Role
         </NButton>
@@ -33,11 +33,7 @@
               <th
                 class="sticky_el right-0 z-10"
                 v-permission="{
-                  action: [
-                    'can view role update',
-                    'can view role delete',
-                    'can view role assign permission'
-                  ]
+                  action: ['role update', 'role delete', 'role assign permission']
                 }"
               >
                 Actions
@@ -54,11 +50,7 @@
               <td
                 class="sticky_el right-0 z-10"
                 v-permission="{
-                  action: [
-                    'can view role update',
-                    'can view role delete',
-                    'can view role assign permission'
-                  ]
+                  action: ['role update', 'role delete', 'role assign permission']
                 }"
               >
                 <n-dropdown
@@ -156,19 +148,19 @@ const moreOptions = ref([
     label: 'Assign Permission',
     key: 'assign_permission',
     icon: renderIcon(EditOutlined),
-    permission: hasPermission(['can view role assign permission'])
+    permission: hasPermission(['role assign permission'])
   },
   {
     label: 'Edit',
     key: 'edit',
     icon: renderIcon(EditOutlined),
-    permission: hasPermission(['can view role update'])
+    permission: hasPermission(['role update'])
   },
   {
     label: 'Delete',
     key: 'delete',
     icon: renderIcon(DeleteOutlined),
-    permission: hasPermission(['can view role delete'])
+    permission: hasPermission(['role delete'])
   }
 ]);
 
@@ -204,8 +196,8 @@ function deleteOperation() {
 const actionOperation = (item: any) => {
   if (selectedOption.value === 'assign_permission') {
     router.push({
-      name: 'system_assing_permission',
-      query: { roleId: item.id }
+      name: 'role_assign_permission',
+      params: { roleId: item.id }
     });
   } else if (selectedOption.value === 'edit') {
     showEditModal.value = true;

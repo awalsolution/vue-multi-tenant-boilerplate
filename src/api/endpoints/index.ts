@@ -6,8 +6,8 @@ export const getRecordsApi = (endpoint: any, params?: any) => {
   });
 };
 
-export const getRecordApi = (endpoint: any) => {
-  return Request.get(endpoint);
+export const getRecordApi = (endpoint: any, params?: any) => {
+  return Request.get(endpoint, params);
 };
 
 export const createRecordApi = (endpoint: any, data: any) => {
@@ -20,6 +20,6 @@ export const updateRecordApi = (endpoint: any, data: any) => {
   });
 };
 
-export const deleteRecordApi = (endpoint: any) => {
-  return Request.delete(endpoint);
+export const deleteRecordApi = (endpoint: any, params?: any) => {
+  return Request.delete(endpoint, params);
 };

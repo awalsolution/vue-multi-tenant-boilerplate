@@ -17,6 +17,10 @@ export default class Storage {
     return `Bearer ${this.get(key)}`;
   }
 
+  getTenantApiKey(key: any) {
+    return `${this.get(key)}`;
+  }
+
   isAuthenticated(key: any): boolean {
     return !!localStorage.getItem(key);
   }

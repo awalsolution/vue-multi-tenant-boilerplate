@@ -6,8 +6,8 @@
           secondary
           type="info"
           size="small"
-          @click="router.push('add')"
-          v-permission="{ action: ['can view user create'] }"
+          @click="showModal = true"
+          v-permission="{ action: ['user create'] }"
         >
           Add User
         </NButton>
@@ -49,11 +49,7 @@
               <th
                 class="sticky_el right-0 z-20"
                 v-permission="{
-                  action: [
-                    'can view user update',
-                    'can view user delete',
-                    'can view user assign permission'
-                  ]
+                  action: ['user update', 'user delete', 'user assign permission']
                 }"
               >
                 Actions
@@ -69,7 +65,7 @@
                 {{ item?.profile?.first_name + ' ' + item?.profile?.last_name }}
               </td>
               <td class="td text-center pt-2">
-                <n-avatar size="large" :src="`${imgUrl}${item?.profile.profile_picture}`" />
+                <n-avatar size="large" :src="`${imgUrl}${item?.profile?.profile_picture}`" />
               </td>
               <td class="td">{{ item?.email }}</td>
               <td class="td">
@@ -100,11 +96,7 @@
               <td
                 class="sticky_el right-0 z-10"
                 v-permission="{
-                  action: [
-                    'can view user update',
-                    'can view user delete',
-                    'can view user assign permission'
-                  ]
+                  action: ['user update', 'user delete', 'user assign permission']
                 }"
               >
                 <n-dropdown
@@ -138,7 +130,7 @@
         <template #prefix="{ itemCount }"> Total Products: {{ itemCount }} </template>
       </n-pagination>
     </n-card>
-    <n-modal style="width: 70%" v-model:show="showModal" preset="dialog">
+    <n-modal style="width: 50%" v-model:show="showModal" preset="dialog">
       <template #header>
         <div>Create New User</div>
       </template>
@@ -170,7 +162,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted, computed } from 'vue';
+import { ref, onMounted, computed, type Ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { NIcon, NPagination, useDialog } from 'naive-ui';
 import { MoreOutlined, EditOutlined, DeleteOutlined, SearchOutlined } from '@vicons/antd';
@@ -185,7 +177,7 @@ import EditUser from '@src/components/user/EditUser.vue';
 const { imgUrl } = useEnv();
 const router = useRouter();
 const dialog = useDialog();
-const selectedOption: any = ref(null);
+const selectedOption: Ref = ref(null);
 const showModal = ref(false);
 const showEditModal = ref(false);
 const selectedId = ref();
@@ -204,19 +196,19 @@ const moreOptions = ref([
     label: 'Assign Permission',
     key: 'assign_permission',
     icon: renderIcon(EditOutlined),
-    permission: hasPermission(['can view user assign permission'])
+    permission: hasPermission(['user assign permission'])
   },
   {
     label: 'Edit',
     key: 'edit',
     icon: renderIcon(EditOutlined),
-    permission: hasPermission(['can view user update'])
+    permission: hasPermission(['user update'])
   },
   {
     label: 'Delete',
     key: 'delete',
     icon: renderIcon(DeleteOutlined),
-    permission: hasPermission(['can view user delete'])
+    permission: hasPermission(['user delete'])
   }
 ]);
 
@@ -252,8 +244,8 @@ function deleteOperation() {
 const actionOperation = (item: any) => {
   if (selectedOption.value === 'assign_permission') {
     router.push({
-      name: 'system_assing_permission',
-      query: { userId: item.id }
+      name: 'user_assign_permission',
+      params: { userId: item.id }
     });
   } else if (selectedOption.value === 'edit') {
     showEditModal.value = true;

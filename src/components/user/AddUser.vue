@@ -1,22 +1,22 @@
 <template>
   <n-form ref="formRef" :label-width="80" :model="formValue" :rules="formRules" size="small">
     <n-row :gutter="[20, 8]">
-      <n-col :span="24">
+      <n-col :span="12">
         <n-form-item label="First Name" path="first_name">
           <n-input v-model:value="formValue.first_name" placeholder="Enter First Name" />
         </n-form-item>
       </n-col>
-      <n-col :span="24">
+      <n-col :span="12">
         <n-form-item :span="12" label="Last Name" path="last_name">
           <n-input v-model:value="formValue.last_name" placeholder="Enter Last Name" />
         </n-form-item>
       </n-col>
-      <n-col :span="24">
+      <n-col :span="12">
         <n-form-item label="Email" path="email">
           <n-input v-model:value="formValue.email" placeholder="Enter Email" />
         </n-form-item>
       </n-col>
-      <n-col :span="24">
+      <n-col :span="12">
         <n-form-item :span="12" label="Password" path="password">
           <n-input
             v-model:value="formValue.password"
@@ -26,12 +26,12 @@
           />
         </n-form-item>
       </n-col>
-      <n-col :span="24">
+      <n-col :span="12">
         <n-form-item label="status" path="status">
           <n-switch v-model:value="formValue.status" :checked-value="1" :unchecked-value="0" />
         </n-form-item>
       </n-col>
-      <n-col :span="24">
+      <n-col :span="12">
         <n-form-item :span="12" label="User Role" path="role_id">
           <n-select
             :filterable="true"
@@ -63,10 +63,10 @@
 import { ref, type Ref } from 'vue';
 import { type FormInst } from 'naive-ui';
 import { createRecordApi } from '@src/api/endpoints';
-import { usefilterRole } from '@src/filters/roles';
+import { useRolefilter } from '@src/filters/role';
 import { formRules } from '@src/rules/user';
 
-const { roles, roleLoading, getRolesOnFocus } = usefilterRole();
+const { roles, roleLoading, getRolesOnFocus } = useRolefilter();
 const formRef = ref<FormInst | null>(null);
 const formValue: Ref = ref({});
 // const isVendor: any = ref(false);

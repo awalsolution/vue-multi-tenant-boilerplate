@@ -2,7 +2,7 @@ import { ref } from 'vue';
 import { getRecordsApi } from '@src/api/endpoints';
 import { isEmpty } from 'lodash';
 
-export function usefilterPermission() {
+export function useTenantPermissionfilter() {
   const permissions: any = ref([]);
   const permissionLoading = ref(false);
   const permissionsInitialized = ref(false);
