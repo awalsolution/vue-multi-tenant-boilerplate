@@ -39,7 +39,6 @@ class Request {
 
     this.instance.interceptors.response.use(
       (res: AxiosResponse) => {
-        console.log(res);
         return res.data;
       },
       (err: AxiosError) => {
