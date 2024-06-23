@@ -38,7 +38,10 @@ class Request {
     );
 
     this.instance.interceptors.response.use(
-      (res: AxiosResponse) => res.data,
+      (res: AxiosResponse) => {
+        console.log(res);
+        return res.data;
+      },
       (err: AxiosError) => {
         const { response } = err;
         const { data, status } = response || {};
