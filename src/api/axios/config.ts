@@ -1,10 +1,9 @@
 import { useEnv } from '@src/hooks/useEnv';
 
-const { apiUrl, apiAdminPrefix, apiTenantPrefix, centralDomain } = useEnv();
+const { apiUrl, apiPrefix } = useEnv();
 
 export const axiosConfig = {
-  baseURL:
-    window.location.hostname !== centralDomain ? apiUrl + apiTenantPrefix : apiUrl + apiAdminPrefix,
+  baseURL: apiUrl + apiPrefix,
   timeout: 30000,
   withCredentials: true
 };

@@ -65,7 +65,6 @@ const { centralDomain } = useEnv();
 const isHost = window.location.hostname;
 const tenantApiKey = storage.getTenantApiKey(TENANT_API_KEY);
 
-console.log(isHost === centralDomain);
 const formData = reactive({
   email: 'iqbal@gmail.com',
   password: '123456'
@@ -73,7 +72,7 @@ const formData = reactive({
 
 const redirectUrl = computed(() => route.query.redirect as string);
 
-console.log('key', tenantApiKey);
+console.log('tenant api key ==>', tenantApiKey);
 const isLoginButtonDisabled = () => {
   if (isHost === centralDomain || (tenantApiKey !== 'null' && tenantApiKey !== null)) {
     return false;
@@ -120,6 +119,7 @@ const handleSubmit = async () => {
       }
     })
     .catch((err: any) => {
+      console.log(err);
       if (err.message) {
         window['$message'].error(err.message);
       }
@@ -145,10 +145,9 @@ onMounted(() => {
 const verifyDomainName = async () => {
   if (isHost !== centralDomain) {
     verifyDomainNameApi(isHost).then((res: any) => {
-      const { data, code } = res;
-      if (code === 200) {
+      if (res?.code === 200) {
         const ex = 7 * 24 * 60 * 60;
-        storage.set(TENANT_API_KEY, data.tenant_api_key, ex);
+        storage.set(TENANT_API_KEY, res?.data.tenant_api_key, ex);
       }
     });
   } else {
