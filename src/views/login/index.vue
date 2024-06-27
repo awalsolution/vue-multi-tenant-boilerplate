@@ -31,7 +31,7 @@
           size="large"
           :loading="loading"
           block
-          :disabled="isLoginButtonDisabled()"
+          :disabled="loginButton"
         >
           Login
         </n-button>
@@ -57,6 +57,7 @@ import { formRules } from '@src/rules/login';
 
 const formRef = ref();
 const rememberPassword = ref(false);
+const loginButton = ref(false);
 const userStore = useUserStore();
 const router = useRouter();
 const route = useRoute();
@@ -66,20 +67,16 @@ const isHost = window.location.hostname;
 const tenantApiKey = storage.getTenantApiKey(TENANT_API_KEY);
 
 const formData = reactive({
-  email: 'iqbal@gmail.com',
-  password: '123456'
+  email: 't1@gmail.com',
+  password: '123'
 });
 
 const redirectUrl = computed(() => route.query.redirect as string);
 
 console.log('tenant api key ==>', tenantApiKey);
 const isLoginButtonDisabled = () => {
-  if (isHost === centralDomain || (tenantApiKey !== 'null' && tenantApiKey !== null)) {
-    return false;
-  } else {
-    return true;
-  }
-};
+  loginButton.value = !(window.location.hostname === centralDomain || (storage.getTenantApiKey(TENANT_API_KEY) !== 'null' && storage.getTenantApiKey(TENANT_API_KEY) !== null));
+};``
 
 const handleSubmit = async () => {
   try {
@@ -149,6 +146,7 @@ const verifyDomainName = async () => {
         const ex = 7 * 24 * 60 * 60;
         storage.set(TENANT_API_KEY, res?.data.tenant_api_key, ex);
       }
+      isLoginButtonDisabled();
     });
   } else {
     storage.remove(TENANT_API_KEY);
