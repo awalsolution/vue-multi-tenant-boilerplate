@@ -1,4 +1,4 @@
-# Awal Umrah Management System Dashbaord
+# Vue Multi Tenant Boilerplate Dashbaord
 
 ## Environments
 
@@ -17,8 +17,8 @@
 
 ```sh
 
-git clone https://github.com/awal-solution/awal-umrah-dashbaord.git
-cd  awal-umrah-dashbaord.git
+git clone https://github.com/awal-solution/vue-multi-tenant-boilerplate.git
+cd  vue-multi-tenant-boilerplate.git
 yarn
 ```
 
