@@ -19,7 +19,7 @@ setupNaive(app);
 
 setupStore(app);
 
-setupDirectives(app).then(r => {});
+setupDirectives(app);
 
 setupNaiveDiscreteApi();
 
