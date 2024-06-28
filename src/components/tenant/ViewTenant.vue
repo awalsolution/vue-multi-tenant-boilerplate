@@ -22,6 +22,14 @@
         </NCard>
       </n-grid-item>
     </n-grid>
+    <div class="flex justify-center py-3">
+      <div
+        class="text-white text-2xl p-3 rounded bg-gradient-to-r from-indigo-500 from-10% via-sky-500 via-30% to-emerald-500 to-90% font-bold"
+      >
+        Organization Details Information
+      </div>
+    </div>
+
     <div class="flex gap-2 mt-2">
       <n-card title="Role list">
         <div class="table_content_container">

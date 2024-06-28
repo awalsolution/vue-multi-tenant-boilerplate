@@ -3,7 +3,7 @@
     <n-card title="Edit Tenant">
       <n-form ref="formRef" :label-width="80" :model="formValue" :rules="formRules" size="small">
         <n-row :gutter="[20, 8]">
-          <n-col :span="12">
+          <n-col :span="8">
             <n-form-item label="Plan Price" path="plan_id">
               <n-select
                 :filterable="true"
@@ -21,45 +21,12 @@
               />
             </n-form-item>
           </n-col>
-          <n-col :span="12">
-            <n-form-item label="Domain Name" path="domain">
-              <n-input v-model:value="formValue.domain" placeholder="Enter Domain Name" />
+          <n-col :span="8">
+            <n-form-item label="Domain Name" path="domain_name">
+              <n-input v-model:value="formValue.domain_name" placeholder="Enter Domain Name" />
             </n-form-item>
           </n-col>
-          <n-col :span="12">
-            <n-form-item label="First Name" path="first_name">
-              <n-input v-model:value="formValue.first_name" placeholder="Enter First Name" />
-            </n-form-item>
-          </n-col>
-          <n-col :span="12">
-            <n-form-item label="Last Name" path="last_name">
-              <n-input v-model:value="formValue.last_name" placeholder="Enter Last Name" />
-            </n-form-item>
-          </n-col>
-          <n-col :span="12">
-            <n-form-item label="Email" path="email">
-              <n-input v-model:value="formValue.email" placeholder="Enter Email" />
-            </n-form-item>
-          </n-col>
-          <n-col :span="12">
-            <n-form-item label="Phone Number" path="phone_number">
-              <n-input v-model:value="formValue.phone_number" placeholder="Enter Phone Number" />
-            </n-form-item>
-          </n-col>
-          <n-col :span="12">
-            <n-form-item label="Password" path="password">
-              <n-input v-model:value="formValue.password" placeholder="Enter Password" />
-            </n-form-item>
-          </n-col>
-          <n-col :span="12">
-            <n-form-item label="Password Confirm" path="password_confirmation">
-              <n-input
-                v-model:value="formValue.password_confirmation"
-                placeholder="Enter Password"
-              />
-            </n-form-item>
-          </n-col>
-          <n-col :span="12">
+          <n-col :span="8">
             <n-form-item label="status" path="status">
               <n-switch v-model:value="formValue.status" :checked-value="1" :unchecked-value="0" />
             </n-form-item>
@@ -77,25 +44,22 @@
 
 <script lang="ts" setup>
 import { ref } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
 import { type FormInst } from 'naive-ui';
 import { getRecordApi, updateRecordApi } from '@src/api/endpoints';
 import { formRules } from '@src/rules/tenant';
 import { usePlanfilter } from '@src/filters/plan';
 
+const route = useRoute();
+const router = useRouter();
 const formRef = ref<FormInst | null>(null);
 const formValue: any = ref({});
-const { plans, planLoading, getPlansOnFocus } = usePlanfilter();
-
-const emits = defineEmits(['updated']);
-const props = defineProps({
-  id: {
-    type: Number
-  }
-});
+const { plans, planLoading, getPlansOnFocus, getPlans } = usePlanfilter();
 
 // fetch single tenant  using id
-getRecordApi(`/tenant/${props.id}`).then((res: any) => {
+getRecordApi(`/tenant/single/${route.params.id}`).then((res: any) => {
   formValue.value = res.data;
+  getPlans();
 });
 
 const handleValidateClick = (e: MouseEvent) => {
@@ -104,7 +68,9 @@ const handleValidateClick = (e: MouseEvent) => {
     if (!errors) {
       updateRecordApi(`/tenant/${formValue.value.id}`, formValue.value).then((res: any) => {
         window['$message'].success(res.message);
-        emits('updated', res.data);
+        router.push({
+          name: 'tenant_list'
+        });
       });
     } else {
       console.log(errors);

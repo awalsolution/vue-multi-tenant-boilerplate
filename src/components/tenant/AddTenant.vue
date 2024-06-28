@@ -169,14 +169,12 @@ const formValue: Ref = ref({
 const handleValidateClick = (e: MouseEvent) => {
   e.preventDefault();
   formRef.value?.validate((errors) => {
-    console.log('after ssss', formValue);
     if (!errors) {
       createRecordApi('/tenant', formValue.value).then((res: any) => {
         window['$message'].success(res.message);
         router.push({
           name: 'tenant_list'
         });
-        // emits('created', res.data);
       });
     } else {
       console.log(errors);

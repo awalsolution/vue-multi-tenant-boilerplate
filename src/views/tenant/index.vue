@@ -79,7 +79,19 @@
                 >
                   Details
                 </n-button>
-                <n-button strong secondary type="warning"> Edit </n-button>
+                <n-button
+                  strong
+                  secondary
+                  type="warning"
+                  @click="
+                    router.push({
+                      name: 'tenant_edit',
+                      params: { id: item.id }
+                    })
+                  "
+                >
+                  Edit
+                </n-button>
                 <n-button strong secondary type="error"> Delete </n-button>
               </td>
             </tr>

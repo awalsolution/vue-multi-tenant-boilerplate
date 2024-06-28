@@ -37,6 +37,17 @@ const routes: RouteRecordRaw[] = [
         component: () => import('@src/components/tenant/AddTenant.vue')
       },
       {
+        path: 'edit/:id',
+        name: `${routeName}_edit`,
+        meta: {
+          title: 'Edit Tenant',
+          permissions: ['update tenant'],
+          hidden: true,
+          dismissTab: true
+        },
+        component: () => import('@src/components/tenant/EditTenant.vue')
+      },
+      {
         path: 'view/:db',
         name: `${routeName}_view`,
         meta: {
