@@ -48,26 +48,62 @@ const routes: RouteRecordRaw[] = [
         component: () => import('@src/components/tenant/EditTenant.vue')
       },
       {
-        path: 'view/:db',
-        name: `${routeName}_view`,
+        path: 'organization-details/:db_name',
+        name: `${routeName}_details`,
         meta: {
           title: 'View Organization',
           permissions: ['view tenant'],
           hidden: true,
           dismissTab: true
         },
-        component: () => import('@src/components/tenant/ViewTenant.vue')
+        component: () => import('@src/components/tenant/TenantDetails.vue')
       },
+      // admin to tenant user operations
       {
-        path: 'edit-role/:db/:role_id',
-        name: `${routeName}_edit_role`,
+        path: 'edit-user-of-organization/:db_name/:user_id',
+        name: `${routeName}_edit_user`,
         meta: {
-          title: 'Assign Permission',
+          title: 'Edit User',
           permissions: ['update tenant'],
           hidden: true,
           dismissTab: true
         },
-        component: () => import('@src/components/tenant/AssignPermission.vue')
+        component: () => import('@src/components/tenant/EditUserOfTenant.vue')
+      },
+      // admin to tenant roles operations
+      {
+        path: 'insert-roles-of-organization/:db_name',
+        name: `${routeName}_insert_role`,
+        meta: {
+          title: 'Insert Role',
+          permissions: ['update tenant'],
+          hidden: true,
+          dismissTab: true
+        },
+        component: () => import('@src/components/tenant/InsertRolesOfTenant.vue')
+      },
+      {
+        path: 'edit-role-of-organization/:db_name/:role_id',
+        name: `${routeName}_edit_role`,
+        meta: {
+          title: 'Edit Role',
+          permissions: ['update tenant'],
+          hidden: true,
+          dismissTab: true
+        },
+        component: () => import('@src/components/tenant/AssignPermissionToTenantRole.vue')
+      },
+      // admin to tenant permission operations
+      {
+        path: 'insert-permissions-of-organization/:db_name',
+        name: `${routeName}_insert_permission`,
+        meta: {
+          title: 'Insert Permissions',
+          permissions: ['update tenant'],
+          hidden: true,
+          dismissTab: true
+        },
+        component: () => import('@src/components/tenant/InsertPermissionsOfTenant.vue')
       }
     ]
   }

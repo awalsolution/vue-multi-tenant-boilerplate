@@ -72,8 +72,8 @@
                   type="info"
                   @click="
                     router.push({
-                      name: 'organization_view',
-                      params: { db: item.db_name }
+                      name: 'organization_details',
+                      params: { db_name: item.db_name }
                     })
                   "
                 >
