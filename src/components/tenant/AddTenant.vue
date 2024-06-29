@@ -173,7 +173,7 @@ const handleValidateClick = (e: MouseEvent) => {
       createRecordApi('/tenant', formValue.value).then((res: any) => {
         window['$message'].success(res.message);
         router.push({
-          name: 'tenant_list'
+          name: 'organization_list'
         });
       });
     } else {

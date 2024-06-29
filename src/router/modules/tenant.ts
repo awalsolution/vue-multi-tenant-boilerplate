@@ -3,16 +3,16 @@ import { Organization16Regular } from '@vicons/fluent';
 import { DashboardLayout } from '@src/router/constant';
 import { renderIcon } from '@src/utils/renderIcon';
 
-const routeName = 'tenant';
+const routeName = 'organization';
 
 const routes: RouteRecordRaw[] = [
   {
-    path: '/tenant',
+    path: '/organization',
     name: routeName,
-    redirect: '/tenant/list',
+    redirect: '/organization/list',
     component: DashboardLayout,
     meta: {
-      title: 'Tenant',
+      title: 'Organization',
       icon: renderIcon(Organization16Regular),
       permissions: ['tenant menu'],
       sort: 1
@@ -22,7 +22,7 @@ const routes: RouteRecordRaw[] = [
         path: 'list',
         name: `${routeName}_list`,
         meta: {
-          title: 'Tenant List',
+          title: 'Organization List',
           permissions: ['tenant menu']
         },
         component: () => import('@src/views/tenant/index.vue')
@@ -31,7 +31,7 @@ const routes: RouteRecordRaw[] = [
         path: 'add',
         name: `${routeName}_add`,
         meta: {
-          title: 'Add Tenant',
+          title: 'Add Organization',
           permissions: ['create tenant']
         },
         component: () => import('@src/components/tenant/AddTenant.vue')
@@ -40,7 +40,7 @@ const routes: RouteRecordRaw[] = [
         path: 'edit/:id',
         name: `${routeName}_edit`,
         meta: {
-          title: 'Edit Tenant',
+          title: 'Edit Organization',
           permissions: ['update tenant'],
           hidden: true,
           dismissTab: true
@@ -51,7 +51,7 @@ const routes: RouteRecordRaw[] = [
         path: 'view/:db',
         name: `${routeName}_view`,
         meta: {
-          title: 'View Tenant',
+          title: 'View Organization',
           permissions: ['view tenant'],
           hidden: true,
           dismissTab: true
