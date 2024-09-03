@@ -1,43 +1,55 @@
 <template>
-  <div class="login_container flex items-center justify-center h-full">
-    <n-form ref="formRef" label-placement="left" size="large" :model="formData" :rules="formRules">
-      <n-form-item path="email">
-        <n-input v-model:value="formData.email" placeholder="Enter Email">
-          <template #prefix>
-            <n-icon size="18" color="#808695">
-              <PersonOutline />
-            </n-icon>
-          </template>
-        </n-input>
-      </n-form-item>
-      <n-form-item path="password">
-        <n-input
-          v-model:value="formData.password"
-          type="password"
-          showPasswordOn="click"
-          placeholder="Enter Password"
-        >
-          <template #prefix>
-            <n-icon size="18" color="#808695">
-              <LockClosedOutline />
-            </n-icon>
-          </template>
-        </n-input>
-      </n-form-item>
-      <n-form-item>
-        <n-button
-          type="primary"
-          @click="handleSubmit"
-          size="large"
-          :loading="loading"
-          block
-          :disabled="loginButton"
-        >
-          Login
-        </n-button>
-      </n-form-item>
-    </n-form>
-  </div>
+  <h2 class="text-3xl font-semibold text-gray-800 mb-6 intro-x">Login</h2>
+  <n-form ref="formRef" :model="formData" :rules="formRules" class="intro-x">
+    <n-form-item label="Email Address" path="email">
+      <n-input
+        v-model:value="formData.email"
+        placeholder="Enter Email"
+        size="large"
+        class="rounded-full"
+        :theme-overrides="{ border: 'transparent', borderRadius: '25px' }"
+      >
+        <template #prefix>
+          <n-icon size="18" color="#0081E6">
+            <PersonOutline />
+          </n-icon>
+        </template>
+      </n-input>
+    </n-form-item>
+    <n-form-item label="Password" path="password" class="mt-0">
+      <n-input
+        v-model:value="formData.password"
+        type="password"
+        showPasswordOn="click"
+        placeholder="Enter Password"
+        size="large"
+        class="rounded-full"
+        :theme-overrides="{ border: 'transparent', borderRadius: '25px' }"
+      >
+        <template #prefix>
+          <n-icon size="18" color="#0081E6">
+            <LockClosedOutline />
+          </n-icon>
+        </template>
+      </n-input>
+    </n-form-item>
+    <div class="flex items-center justify-between">
+      <label class="flex items-center text-sm text-gray-700">
+        <input type="checkbox" class="form-checkbox h-4 w-4 text-secondary" />
+        <span class="ml-2">Remember me</span>
+      </label>
+      <a href="#" class="text-sm text-secondary hover:underline">Forgot Password?</a>
+    </div>
+    <n-button
+      type="submit"
+      class="login_btn"
+      @click="handleSubmit"
+      :loading="loading"
+      :disabled="loginButton"
+    >
+      Login
+    </n-button>
+  </n-form>
 </template>
 
 <script lang="ts" setup>
@@ -163,12 +175,7 @@ onBeforeMount(() => verifyDomainName());
 </script>
 
 <style lang="scss" scoped>
-@media (min-width: 768px) {
-  .login_container {
-    background-image: url('../../assets/images/auth/login.svg');
-    background-repeat: no-repeat;
-    background-position: 50%;
-    background-size: 100%;
-  }
+.login_btn {
+  @apply w-full mt-4 py-5 px-4 bg-primary text-white rounded-full shadow hover:bg-info hover:text-white;
 }
 </style>

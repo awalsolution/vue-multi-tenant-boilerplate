@@ -9,17 +9,12 @@ export default {
       fontFamily: {
         default: [DEFAULT_FONTS]
       },
-      textColor: {
-        muted: '#999999'
-      },
-      backgroundColor: {
-        'layout-light': '#F5F6F7',
-        'layout-dark': '#0F0F0F',
-        'default-light': '#FEFEFE',
-        'default-dark': '#36393F'
+      colors: {
+        primary: '#004B85',
+        secondary: '#0081E6',
+        info: '#0169BE'
       }
     }
   },
-  plugins: [],
-  darkMode: ['class', '[data-theme="dark"]']
+  plugins: []
 };

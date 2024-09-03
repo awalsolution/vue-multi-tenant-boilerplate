@@ -1,21 +1,18 @@
 <template>
-  <main class="flex h-screen w-screen">
-    <div class="invisible relative w-0 bg-blue-200 dark:bg-gray-600 sm:visible sm:w-1/2">
-      <div
-        class="absolute inset-0 m-auto flex h-fit w-fit select-none flex-col space-y-2 text-center font-mono"
-      >
-        <img src="@src/assets/images/bit_ocean.png" width="180" height="180" loading="eager" />
-        <span class="text-xl font-semibold">{{ appTitle }}</span>
-        <span class="text-base">v{{ version }}</span>
+  <main class="container">
+    <div class="container_inner intro-y">
+      <div class="container_inner_left -intro-x">
+        <h2 class="text-4xl font-bold text-white mb-4 uppercase">Welcome Back</h2>
+        <h3 class="text-2xl text-white mb-4 font-bold">{{ appTitle }}</h3>
+        <h3 class="text-sm text-gray-200 mb-2">v{{ version }}</h3>
       </div>
+      <div class="container_inner_right">
+        <RouterView v-slot="{ Component }">
+          <component :is="Component" />
+        </RouterView>
+      </div>
+      <!-- <ThemeSwitchDevTool /> -->
     </div>
-
-    <div class="relative w-full bg-blue-300 dark:bg-gray-700 sm:w-1/2">
-      <RouterView v-slot="{ Component }">
-        <component :is="Component" class="animation-switch" />
-      </RouterView>
-    </div>
-    <ThemeSwitchDevTool />
   </main>
 </template>
 
@@ -24,7 +21,7 @@ import { onBeforeMount } from 'vue';
 import { useRouter } from 'vue-router';
 import { useEnv } from '@src/hooks/useEnv';
 import { useUserStore } from '@src/store/modules/user';
-import ThemeSwitchDevTool from '@src/components/common/ThemeSwitchDevTool/index.vue';
+// import ThemeSwitchDevTool from '@src/components/common/ThemeSwitchDevTool/index.vue';
 import { ACCESS_TOKEN } from '@src/utils/storage/variables';
 import { storage } from '@src/utils/storage';
 
@@ -46,23 +43,16 @@ onBeforeMount(() => checkLogin());
 </script>
 
 <style scoped lang="scss">
-.animation-switch {
-  animation: switch 1s;
+.container {
+  @apply flex items-center justify-center min-h-screen bg-gradient-to-t from-primary to-secondary;
 }
-
-@keyframes switch {
-  0% {
-    transform: translateY(-1000px);
-    opacity: 0;
-  }
-  50% {
-    transform: translateY(0px);
-  }
-  75% {
-    transform: translateY(-15px);
-  }
-  100% {
-    transform: translateY(0px);
-  }
+.container_inner {
+  @apply bg-[#E3F0FF] rounded-2xl shadow-lg max-w-4xl grid grid-cols-1 md:grid-cols-2 py-8 md:py-3;
+}
+.container_inner_left {
+  @apply flex flex-col justify-center p-10 bg-gradient-to-t from-primary to-secondary rounded-r-full text-center;
+}
+.container_inner_right {
+  @apply flex flex-col justify-center p-10;
 }
 </style>

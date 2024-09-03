@@ -1,34 +1,27 @@
 <template>
-  <div class="display-content bg-layout-light dark:bg-layout-dark">
-    <NConfigProvider
-      :theme="themeStore.theme"
-      :theme-overrides="themeStore.themeOverrides"
-      abstract
-      inline-theme-disabled
-    >
+  <div class="display-content">
+    <NConfigProvider :theme="themeStore.theme" :theme-overrides="themeStore.themeOverrides">
       <NLoadingBarProvider>
-        <n-dialog-provider>
+        <NDialogProvider>
           <NNotificationProvider>
             <NMessageProvider>
               <RouterView v-slot="{ Component }">
                 <template v-if="Component">
                   <Transition name="router" mode="out-in">
-                    <component :is="Component" class="text-base" />
+                    <component :is="Component" />
                   </Transition>
                 </template>
               </RouterView>
             </NMessageProvider>
           </NNotificationProvider>
-        </n-dialog-provider>
+        </NDialogProvider>
       </NLoadingBarProvider>
-      <NGlobalStyle />
     </NConfigProvider>
   </div>
 </template>
 
 <script setup lang="ts">
 import { useThemeStore } from '@src/store/modules/theme';
-import { NGlobalStyle } from 'naive-ui';
 
 const themeStore = useThemeStore();
 </script>
