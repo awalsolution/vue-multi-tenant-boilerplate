@@ -1,7 +1,5 @@
 <template>
-  <footer
-    class="bg-default-light dark:bg-default-dark z-50 flex h-10 w-full items-center justify-center space-x-2 border-t border-gray-300 text-xs shadow-sm dark:border-gray-950"
-  >
+  <footer class="layout_footer bg_gr">
     <span>{{ appTitle }} - v{{ version }}</span>
     <span>©</span>
     <img
@@ -24,3 +22,13 @@ const { appTitle, version, teamName, teamGitHubURL } = useEnv();
 
 const { openNewWindow } = BrowserUtils;
 </script>
+
+<style lang="scss" scoped>
+.layout_footer {
+  @apply z-50 flex h-10 w-full items-center justify-center space-x-2 text-xs text-white px-8 md:px-0;
+}
+
+.bg_gr {
+  @apply bg-secondary;
+}
+</style>

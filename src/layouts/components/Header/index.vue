@@ -17,7 +17,7 @@
     </div>
 
     <div class="flex h-full items-center justify-end space-x-4">
-      <NTooltip placement="bottom" trigger="hover">
+      <!-- <NTooltip placement="bottom" trigger="hover">
         <template #trigger>
           <NIcon
             class="cursor-pointer"
@@ -27,7 +27,7 @@
           />
         </template>
         GitHub
-      </NTooltip>
+      </NTooltip> -->
 
       <!-- <template v-if="true">
         <NTooltip placement="bottom" trigger="hover">
@@ -38,7 +38,7 @@
         </NTooltip>
       </template> -->
 
-      <NTooltip placement="bottom" trigger="hover">
+      <!-- <NTooltip placement="bottom" trigger="hover">
         <template #trigger>
           <NIcon
             class="cursor-pointer"
@@ -48,7 +48,7 @@
           />
         </template>
         SwitchTheme
-      </NTooltip>
+      </NTooltip> -->
 
       <!-- <template v-if="true">
         <NTooltip placement="bottom" trigger="hover">
@@ -82,7 +82,10 @@
 import { h, computed } from 'vue';
 import { useRouter } from 'vue-router';
 import { NAvatar, NText } from 'naive-ui';
-import { BrandGithub, UserCircle } from '@vicons/tabler';
+import {
+  // BrandGithub,
+  UserCircle
+} from '@vicons/tabler';
 import {
   MenuFoldOutlined,
   MenuUnfoldOutlined,
@@ -90,23 +93,26 @@ import {
   UnlockOutlined,
   LogoutOutlined
 } from '@vicons/antd';
-import {
-  // NotificationsCircleOutline,
-  SunnyOutline,
-  MoonOutline
-} from '@vicons/ionicons5';
-import { useThemeStore } from '@src/store/modules/theme';
+// import {
+//   NotificationsCircleOutline,
+//   SunnyOutline,
+//   MoonOutline
+// } from '@vicons/ionicons5';
+// import { useThemeStore } from '@src/store/modules/theme';
 import { useSidebarStore } from '@src/store/modules/sidebar';
 import { useUserStore } from '@src/store/modules/user';
 // import Breadcrumb from '@src/components/Breadcrumb/index.vue';
 import { useEnv } from '@src/hooks/useEnv';
-import { BrowserUtils } from '@src/utils/browser';
+// import { BrowserUtils } from '@src/utils/browser';
 import { renderIcon } from '@src/utils/renderIcon';
 
-const { teamGitHubURL, imgUrl } = useEnv();
-const { openNewWindow } = BrowserUtils;
+const {
+  // teamGitHubURL,
+  imgUrl
+} = useEnv();
+// const { openNewWindow } = BrowserUtils;
 
-const themeStore = useThemeStore();
+// const themeStore = useThemeStore();
 const sidebarStore = useSidebarStore();
 const userStore = useUserStore();
 const router = useRouter();
@@ -214,7 +220,8 @@ function renderCustomHeader() {
 </script>
 
 <style lang="scss" scoped>
+// bg-gradient-to-r from-secondary from-0% via-secondary via-50% to-info to-90%;
 .header_wrap {
-  @apply bg-default-light dark:bg-default-dark sticky top-0 z-50 flex h-14 w-full items-center justify-between border-b border-gray-300 p-2 dark:border-gray-800 sm:p-4;
+  @apply sticky top-0 z-50 flex h-14 w-full items-center justify-between p-2 sm:p-4;
 }
 </style>

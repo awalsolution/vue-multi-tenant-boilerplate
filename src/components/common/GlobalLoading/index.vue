@@ -6,7 +6,7 @@
       class="text-blue-200 dark:text-blue-400"
     />
     <span class="mb-1 mt-4 text-xl">{{ appTitle }}</span>
-    <NGradientText type="primary">Powered by AbendSoft</NGradientText>
+    <NGradientText type="primary">Powered by Awal Solution</NGradientText>
   </main>
 </template>
 

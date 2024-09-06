@@ -1,5 +1,6 @@
 <template>
   <div class="display-content">
+    <!-- <NThemeEditor> -->
     <NConfigProvider :theme="themeStore.theme" :theme-overrides="themeStore.themeOverrides">
       <NLoadingBarProvider>
         <NDialogProvider>
@@ -17,11 +18,13 @@
         </NDialogProvider>
       </NLoadingBarProvider>
     </NConfigProvider>
+    <!-- </NThemeEditor> -->
   </div>
 </template>
 
 <script setup lang="ts">
 import { useThemeStore } from '@src/store/modules/theme';
+// import { NThemeEditor } from 'naive-ui';
 
 const themeStore = useThemeStore();
 </script>

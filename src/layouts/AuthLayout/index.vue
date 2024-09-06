@@ -1,5 +1,5 @@
 <template>
-  <main class="container">
+  <main class="main_container">
     <div class="container_inner intro-y">
       <div class="container_inner_left -intro-x">
         <h2 class="text-4xl font-bold text-white mb-4 uppercase">Welcome Back</h2>
@@ -43,11 +43,11 @@ onBeforeMount(() => checkLogin());
 </script>
 
 <style scoped lang="scss">
-.container {
+.main_container {
   @apply flex items-center justify-center min-h-screen bg-gradient-to-t from-primary to-secondary;
 }
 .container_inner {
-  @apply bg-[#E3F0FF] rounded-2xl shadow-lg max-w-4xl grid grid-cols-1 md:grid-cols-2 py-8 md:py-3;
+  @apply bg-light rounded-2xl shadow-lg max-w-4xl grid grid-cols-1 md:grid-cols-2 py-8 md:py-3;
 }
 .container_inner_left {
   @apply flex flex-col justify-center p-10 bg-gradient-to-t from-primary to-secondary rounded-r-full text-center;

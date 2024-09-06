@@ -1,36 +1,30 @@
 <template>
-  <template v-if="loading">
-    <GlobalLoading />
-  </template>
-  <template v-else>
-    <main class="h-screen w-full overflow-hidden">
-      <div class="flex h-full w-full">
-        <Sidebar />
-        <div class="relative h-full flex-1 overflow-y-auto overflow-x-hidden">
-          <Header />
-          <Tabs />
-          <RouterView>
-            <template #default="{ Component, route }">
-              <Transition name="slide-fade" mode="out-in">
-                <component
-                  :is="Component"
-                  :key="route.fullPath"
-                  class="relative min-h-[calc(100%-144px)] w-full p-2 sm:p-4"
-                />
-              </Transition>
-            </template>
-          </RouterView>
-          <Footer />
-        </div>
+  <main class="h-screen w-full bg-primary py-6 pr-6 pl-2">
+    <div class="flex h-full w-full">
+      <Sidebar />
+      <div class="relative h-full flex-1 overflow-y-auto overflow-x-hidden bg-light rounded-[2rem]">
+        <Header />
+        <Tabs />
+        <RouterView>
+          <template #default="{ Component, route }">
+            <Transition name="slide-fade" mode="out-in">
+              <component
+                :is="Component"
+                :key="route.fullPath"
+                class="relative min-h-[calc(100%-144px)] w-full p-2 sm:p-4"
+              />
+            </Transition>
+          </template>
+        </RouterView>
+        <Footer />
       </div>
-    </main>
-  </template>
+    </div>
+  </main>
 </template>
 
 <script setup lang="ts">
 import { ref, onBeforeMount } from 'vue';
 import { useRouter } from 'vue-router';
-import GlobalLoading from '@src/components/common/GlobalLoading/index.vue';
 import Sidebar from '@src/layouts/components/Sidebar/index.vue';
 import Header from '@src/layouts/components/Header/index.vue';
 import Tabs from '@src/layouts/components/Tabs/index.vue';

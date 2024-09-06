@@ -10,9 +10,10 @@ export default {
         default: [DEFAULT_FONTS]
       },
       colors: {
-        primary: '#004B85',
-        secondary: '#0081E6',
-        info: '#0169BE'
+        primary: '#164e63',
+        secondary: '#155e75',
+        info: '#0169BE',
+        light: '#E3F0FF'
       }
     }
   },

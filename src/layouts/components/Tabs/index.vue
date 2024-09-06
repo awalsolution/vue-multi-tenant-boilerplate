@@ -1,7 +1,5 @@
 <template>
-  <main
-    class="bg-default-light dark:bg-default-dark flex h-12 w-full items-center justify-between border-b border-gray-300 px-2 py-1 shadow dark:border-gray-800 sm:px-4"
-  >
+  <main class="flex h-12 w-full items-center justify-between px-2 py-1 shadow-lg sm:px-4">
     <div
       ref="scrollbarRef"
       class="global_hide-scrollbar flex w-full items-center space-x-2 overflow-x-auto"

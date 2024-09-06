@@ -1,13 +1,10 @@
 <template>
   <div
-    class="bg-default-light dark:bg-default-dark absolute inset-y-0 left-0 z-[100] h-full border-r border-gray-300 shadow-sm transition-[width] dark:border-gray-800 sm:static mt-1"
-    :class="[sidebarStore.isDisplay ? (sidebarStore.isCollapse ? 'w-16' : 'w-56') : 'w-0']"
+    class="sidebar_container"
+    :class="[store.isDisplay ? (store.isCollapse ? 'w-16' : 'w-56') : 'w-0']"
   >
     <!-- Header -->
-    <div
-      class="flex h-14 w-full select-none items-center justify-center flex-wrap"
-      @click="router.push('/')"
-    >
+    <div class="sidebar_header" @click="router.push('/')">
       <img
         class="animate-pulse cursor-pointer select-none"
         width="36"
@@ -17,14 +14,8 @@
         loading="eager"
       />
       <span
-        class="cursor-pointer whitespace-nowrap text-sm tracking-wide transition-all"
-        :class="[
-          sidebarStore.isDisplay
-            ? sidebarStore.isCollapse
-              ? 'ml-0 hidden'
-              : 'ml-3 w-auto'
-            : 'hidden'
-        ]"
+        class="sidebar_logo"
+        :class="[store.isDisplay ? (store.isCollapse ? 'ml-0 hidden' : 'ml-3 w-auto') : 'hidden']"
       >
         {{ appTitle }}
       </span>
@@ -36,21 +27,18 @@
       </NScrollbar>
     </div>
 
-    <div v-if="sidebarStore.isDisplay" class="h-10 w-full p-1">
-      <div
-        class="hover-container flex h-full w-full cursor-pointer items-center justify-center rounded-sm transition-all"
-        @click="() => sidebarStore.toggleSidebarCollapse()"
-      >
+    <div v-if="store.isDisplay" class="h-10 w-full p-1 text-white">
+      <div class="hover-container" @click="() => store.toggleSidebarCollapse()">
         <NTooltip placement="bottom" trigger="hover">
           <template #trigger>
             <NIcon
               size="18"
               class="icon-animation transition-all"
-              :class="[sidebarStore.isCollapse ? '!rotate-180' : '!rotate-0']"
+              :class="[store.isCollapse ? '!rotate-180' : '!rotate-0']"
               :component="MenuFoldOutlined"
             />
           </template>
-          {{ sidebarStore.isCollapse ? 'Show' : 'Collapse' }}
+          {{ store.isCollapse ? 'Show' : 'Collapse' }}
         </NTooltip>
       </div>
     </div>
@@ -58,8 +46,8 @@
 
   <div
     class="absolute inset-0 z-[75] bg-black opacity-40 sm:hidden"
-    :class="sidebarStore.isDisplay ? 'block' : 'hidden'"
-    @click="sidebarStore.toggleSidebarDisplay()"
+    :class="store.isDisplay ? 'block' : 'hidden'"
+    @click="store.toggleSidebarDisplay()"
   ></div>
 </template>
 
@@ -72,10 +60,23 @@ import { useEnv } from '@src/hooks/useEnv';
 
 const router = useRouter();
 const { appTitle } = useEnv();
-const sidebarStore = useSidebarStore();
+const store = useSidebarStore();
 </script>
 
 <style scoped lang="scss">
+.sidebar_container {
+  @apply absolute inset-y-0 left-0 z-[100] transition-[width] sm:static;
+}
+.sidebar_header {
+  @apply flex h-14 w-full select-none items-center justify-center flex-wrap;
+}
+.sidebar_logo {
+  @apply cursor-pointer whitespace-nowrap text-sm tracking-wide transition-all text-white;
+}
+
+.hover-container {
+  @apply flex size-full cursor-pointer items-center justify-center rounded-sm transition-all;
+}
 .icon-animation {
   transition: all 0.3s ease-in-out;
 }

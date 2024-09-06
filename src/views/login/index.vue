@@ -176,6 +176,6 @@ onBeforeMount(() => verifyDomainName());
 
 <style lang="scss" scoped>
 .login_btn {
-  @apply w-full mt-4 py-5 px-4 bg-primary text-white rounded-full shadow hover:bg-info hover:text-white;
+  @apply w-full mt-4 py-5 px-4 bg-primary text-white rounded-full shadow hover:bg-secondary hover:text-white;
 }
 </style>

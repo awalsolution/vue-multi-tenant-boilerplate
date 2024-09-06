@@ -9,10 +9,28 @@
     :value="selectedKeys"
     @update:value="clickMenuItem"
     @update:expanded-keys="menuExpanded"
+    :theme-overrides="{
+      itemTextColor: '#E3F0FF',
+      itemIconColor: '#E3F0FF',
+      itemColorHover: '#E3F0FF',
+      itemIconColorCollapsed: '#E3F0FF',
+      itemColorActive: '#E3F0FF',
+      itemTextColorActive: '#155e75',
+      itemIconColorActive: '#155e75',
+      itemColorActiveCollapsed: '#E3F0FF',
+      itemColorActiveHover: '#E3F0FF',
+      itemTextColorActiveHover: '#0169BE',
+      itemIconColorActiveHover: '#0169BE',
+      arrowColor: '#E3F0FF',
+      arrowColorChildActive: '#E3F0FF',
+      borderRadius: '25px 0 0 25px',
+      itemHeight: '45px'
+    }"
   />
 </template>
 
 <script setup lang="ts">
+import { NMenu } from 'naive-ui';
 import { ref, onMounted, reactive, watch, unref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useAsyncRouteStore } from '@src/store/modules/asyncRoute';
@@ -83,3 +101,10 @@ onMounted(() => {
   updateMenu();
 });
 </script>
+
+<style lang="scss">
+.n-menu .n-menu-item-content.n-menu-item-content--selected::before,
+.n-menu .n-menu-item-content::before {
+  right: 0px !important;
+}
+</style>
