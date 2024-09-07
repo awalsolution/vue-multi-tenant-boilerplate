@@ -1,5 +1,70 @@
 <template>
-  <n-space :vertical="true">
+  <div>
+    <div class="flex justify-between mb-3">
+      <h2 class="text-xl">Permission List</h2>
+      <NButton
+        primary
+        type="primary"
+        size="medium"
+        :round="true"
+        @click="showModal = true"
+        v-permission="{ action: ['permission create'] }"
+      >
+        Add Permission
+      </NButton>
+    </div>
+    <!-- table filters start -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+      <n-input
+        v-model:value="searchParams.name"
+        clearable
+        placeholder="Search by name"
+        size="medium"
+        type="text"
+        :theme-overrides="{ border: 'transparent', borderRadius: '25px' }"
+      />
+      <n-input
+        v-model:value="searchParams.name"
+        clearable
+        placeholder="Search by name"
+        size="medium"
+        type="text"
+        :theme-overrides="{ border: 'transparent', borderRadius: '25px' }"
+      />
+      <n-input
+        v-model:value="searchParams.name"
+        clearable
+        placeholder="Search by name"
+        size="medium"
+        type="text"
+        :theme-overrides="{ border: 'transparent', borderRadius: '25px' }"
+      />
+      <n-input
+        v-model:value="searchParams.name"
+        clearable
+        placeholder="Search by name"
+        size="medium"
+        type="text"
+        :theme-overrides="{ border: 'transparent', borderRadius: '25px' }"
+      />
+      <n-input
+        v-model:value="searchParams.name"
+        clearable
+        placeholder="Search by name"
+        size="medium"
+        type="text"
+        :theme-overrides="{ border: 'transparent', borderRadius: '25px' }"
+      />
+      <div>
+        <NButton primary type="primary" size="medium" :round="true" @click="fetchList">
+          Search
+        </NButton>
+      </div>
+    </div>
+    <!-- table filters end -->
+  </div>
+
+  <!-- <n-space :vertical="true">
     <n-card title="Permission List">
       <template #header-extra>
         <NButton
@@ -118,12 +183,12 @@
         />
       </n-space>
     </n-modal>
-  </n-space>
+  </n-space> -->
 </template>
 
 <script lang="ts" setup>
 import { ref, onMounted, computed, type Ref } from 'vue';
-import { NIcon, NPagination, useDialog } from 'naive-ui';
+import { useDialog, NButton } from 'naive-ui';
 import { MoreOutlined, EditOutlined, DeleteOutlined, SearchOutlined } from '@vicons/antd';
 import { deleteRecordApi } from '@src/api/endpoints';
 import { usePermission } from '@src/hooks/permission/usePermission';
