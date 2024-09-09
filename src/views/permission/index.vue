@@ -63,7 +63,7 @@
     </div>
     <!-- table filters end -->
     <div class="table_content_container">
-      <n-table class="table rounded-lg" striped>
+      <n-table class="table" striped>
         <thead class="head">
           <tr>
             <th class="th">Permission Name</th>
@@ -115,11 +115,12 @@
       </n-table>
     </div>
     <n-pagination
+      class="mt-3"
       v-model:page="page"
       v-model:page-size="perPage"
       :item-count="itemCount"
       :page-sizes="pageSizes"
-      size="small"
+      size="medium"
       :show-quick-jumper="true"
       :show-size-picker="true"
     >
