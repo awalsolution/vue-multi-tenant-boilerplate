@@ -1,5 +1,5 @@
 <template>
-  <main class="h-screen w-full bg-primary py-6 pr-6 pl-2">
+  <main class="w-full bg-primary py-6 pr-6 pl-2">
     <div class="flex h-full w-full">
       <Sidebar />
       <div class="relative h-full flex-1 overflow-y-auto overflow-x-hidden bg-light rounded-[2rem]">
