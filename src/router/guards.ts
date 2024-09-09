@@ -6,7 +6,7 @@ import { PageEnum } from '@src/enums/pageEnum';
 import { ErrorPageRoute } from '@src/router/base';
 import { ACCESS_TOKEN } from '@src/utils/storage/variables';
 import { storage } from '@src/utils/storage';
-import { processRouteTag } from '@src/router/tabs';
+// import { processRouteTag } from '@src/router/tabs';
 
 const LOGIN_PATH = PageEnum.BASE_LOGIN;
 
@@ -16,8 +16,8 @@ export function createRouterGuards(router: Router) {
   const userStore = useUserStore();
   const asyncRouteStore = useAsyncRouteStore();
   router.beforeEach(async (to, from, next) => {
-    const Loading = window['$loading'] || null;
-    Loading && Loading.start();
+    // const Loading = window['$loading'] || null;
+    // Loading && Loading.start();
 
     if (from.path === LOGIN_PATH && to.name === 'errorPage') {
       next(PageEnum.BASE_HOME);
@@ -75,12 +75,12 @@ export function createRouterGuards(router: Router) {
     const nextData = to.path === redirect ? { ...to, replace: true } : { path: redirect };
     asyncRouteStore.setDynamicRouteAdded(true);
     next(nextData);
-    Loading && Loading.finish();
+    // Loading && Loading.finish();
   });
 
   router.afterEach((to, _, failure) => {
     document.title = (to?.meta?.title as string) || document.title;
-    processRouteTag(to);
+    // processRouteTag(to);
     if (isNavigationFailure(failure)) {
       //console.log('failed navigation', failure)
     }
@@ -98,8 +98,8 @@ export function createRouterGuards(router: Router) {
       }
     }
     asyncRouteStore.setKeepAliveComponents(keepAliveComponents);
-    const Loading = window['$loading'] || null;
-    Loading && Loading.finish();
+    // const Loading = window['$loading'] || null;
+    // Loading && Loading.finish();
   });
 
   router.onError((error) => {

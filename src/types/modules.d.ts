@@ -17,3 +17,7 @@ interface Window {
   $notification: any;
   $loading: any;
 }
+
+interface Document {
+  startViewTransition?: (callback: () => void) => void;
+}

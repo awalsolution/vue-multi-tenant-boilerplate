@@ -1,4 +1,9 @@
 <template>
+  <router-view />
+</template>
+<script setup lang="ts"></script>
+<style scoped></style>
+<!-- <template>
   <div class="display-content bg-layout-light dark:bg-layout-dark">
     <NConfigProvider
       :theme="themeStore.theme"
@@ -48,4 +53,4 @@ const themeStore = useThemeStore();
     display: none;
   }
 }
-</style>
+</style> -->

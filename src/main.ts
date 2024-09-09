@@ -10,6 +10,13 @@ import { setupNaiveDiscreteApi } from '@src/plugins/naiveDiscreteApi';
 import { setupStore } from '@src/store';
 import { setupRouter } from '@src/router';
 
+//
+import Aura from '@primevue/themes/aura';
+import PrimeVue from 'primevue/config';
+import ConfirmationService from 'primevue/confirmationservice';
+import ToastService from 'primevue/toastservice';
+import StyleClass from 'primevue/styleclass';
+
 const app = createApp(App);
 
 faviconLoader();
@@ -18,8 +25,20 @@ naiveUILoader();
 setupNaive(app);
 
 setupStore(app);
-
-setupDirectives(app).then(r => {});
+//
+app.use(PrimeVue, {
+  theme: {
+    preset: Aura,
+    options: {
+      darkModeSelector: '.app-dark'
+    }
+  }
+});
+app.use(ToastService);
+app.use(ConfirmationService);
+app.directive('styleclass', StyleClass);
+//
+setupDirectives(app).then((r) => {});
 
 setupNaiveDiscreteApi();
 
