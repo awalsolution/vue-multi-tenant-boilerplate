@@ -9,6 +9,7 @@ interface LayoutConfig {
 }
 
 interface LayoutState {
+  isAccountActive: boolean;
   staticMenuDesktopInactive: boolean;
   overlayMenuActive: boolean;
   profileSidebarVisible: boolean;
@@ -27,6 +28,7 @@ const layoutConfig: LayoutConfig = reactive({
 });
 
 const layoutState: LayoutState = reactive({
+  isAccountActive: false,
   staticMenuDesktopInactive: false,
   overlayMenuActive: false,
   profileSidebarVisible: false,
@@ -72,15 +74,22 @@ export function useLayout() {
   };
 
   const onMenuToggle = (): void => {
+    console.log('Hello ==>');
     if (layoutConfig.menuMode === 'overlay') {
+      console.log('Hello sidebar overlay toggle clicked ==>');
       layoutState.overlayMenuActive = !layoutState.overlayMenuActive;
     }
 
     if (window.innerWidth > 991) {
+      console.log('Hello sidebar 991 toggle clicked ==>');
       layoutState.staticMenuDesktopInactive = !layoutState.staticMenuDesktopInactive;
     } else {
       layoutState.staticMenuMobileActive = !layoutState.staticMenuMobileActive;
     }
+  };
+
+  const onAccountToggle = (): void => {
+    layoutState.isAccountActive = !layoutState.isAccountActive;
   };
 
   const resetMenu = (): void => {
@@ -102,6 +111,7 @@ export function useLayout() {
   return {
     layoutConfig: readonly(layoutConfig),
     layoutState: readonly(layoutState),
+    onAccountToggle,
     onMenuToggle,
     isSidebarActive,
     isDarkTheme,

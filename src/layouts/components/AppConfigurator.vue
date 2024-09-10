@@ -70,7 +70,7 @@
 </template>
 
 <script setup lang="ts">
-import { useLayout } from '@src/layouts/composables/layout';
+import { useLayout } from '@src/layouts/components/composables/layout';
 import SelectButton from 'primevue/selectbutton';
 import { $t, updatePreset, updateSurfacePalette } from '@primevue/themes';
 import Aura from '@primevue/themes/aura';

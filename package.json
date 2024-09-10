@@ -16,6 +16,7 @@
     "@primevue/themes": "^4.0.5",
     "@vueuse/core": "^10.9.0",
     "axios": "^1.6.8",
+    "chart.js": "^4.4.4",
     "dayjs": "^1.11.10",
     "pinia": "^2.1.7",
     "primeicons": "^7.0.0",

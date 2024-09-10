@@ -5,6 +5,7 @@ const routes: RouteRecordRaw[] = [
   {
     path: '/admin',
     component: DashboardLayout,
+    redirect: '/dashboard',
     meta: {
       title: 'Admin',
       sort: 2

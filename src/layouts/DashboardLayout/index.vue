@@ -11,32 +11,6 @@
     <div class="layout-mask animate-fadein"></div>
   </div>
   <Toast />
-  <!-- <template v-if="loading">
-  <GlobalLoading />
-  </template>
-  <template v-else>
-    <main class="h-screen w-full overflow-hidden">
-      <div class="flex h-full w-full">
-        <Sidebar />
-        <div class="relative h-full flex-1 overflow-y-auto overflow-x-hidden">
-          <Header />
-          <Tabs />
-          <RouterView>
-            <template #default="{ Component, route }">
-              <Transition name="slide-fade" mode="out-in">
-                <component
-                  :is="Component"
-                  :key="route.fullPath"
-                  class="relative min-h-[calc(100%-144px)] w-full p-2 sm:p-4"
-                />
-              </Transition>
-            </template>
-          </RouterView>
-          <Footer />
-        </div>
-      </div>
-    </main>
-  </template> -->
 </template>
 
 <script setup lang="ts">
@@ -44,18 +18,13 @@ import { onBeforeMount } from 'vue';
 import { useRouter } from 'vue-router';
 import Toast from 'primevue/toast';
 import { computed, ref, watch } from 'vue';
-import AppFooter from '../AppFooter.vue';
-import AppSidebar from '../AppSidebar.vue';
-import AppTopbar from '../AppTopbar.vue';
-import { useLayout } from '@src/layouts/composables/layout';
+import AppFooter from '@src/layouts/components/AppFooter.vue';
+import AppSidebar from '@src/layouts/components/AppSidebar.vue';
+import AppTopbar from '@src/layouts/components/AppTopbar.vue';
+import { useLayout } from '@src/layouts/components/composables/layout';
 import { useUserStore } from '@src/store/modules/user';
 import { ACCESS_TOKEN } from '@src/utils/storage/variables';
 import { storage } from '@src/utils/storage';
-// import GlobalLoading from '@src/components/common/GlobalLoading/index.vue';
-// import Sidebar from '@src/layouts/components/Sidebar/index.vue';
-// import Header from '@src/layouts/components/Header/index.vue';
-// import Tabs from '@src/layouts/components/Tabs/index.vue';
-// import Footer from '@src/layouts/components/Footer/index.vue';
 
 const loading = ref(true);
 const userStore = useUserStore();

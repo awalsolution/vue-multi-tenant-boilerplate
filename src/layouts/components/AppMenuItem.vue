@@ -42,7 +42,7 @@
 </template>
 
 <script setup lang="ts">
-import { useLayout } from '@src/layouts/composables/layout';
+import { useLayout } from '@src/layouts/components/composables/layout';
 import { onBeforeMount, ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
 
