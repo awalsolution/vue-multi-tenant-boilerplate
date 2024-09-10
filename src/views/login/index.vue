@@ -119,7 +119,6 @@ import { useEnv } from '@src/hooks/useEnv';
 import { verifyDomainNameApi } from '@src/api/auth';
 import { TENANT_API_KEY } from '@src/utils/storage/variables';
 import { storage } from '@src/utils/storage';
-import { toastMessage } from '@src/components/common/toast';
 
 const remember_me: Ref = ref(false);
 const loginButton: Ref = ref(false);
@@ -187,7 +186,7 @@ onMounted(() => {
       formData.password = password;
       formData.remember_me = remember_me;
     } catch {
-      window['$message'].error('Some thing went wrong try again');
+      window.toast('error', 'Error Message', 'Some thing went wrong try again');
     }
   }
 });

@@ -38,7 +38,7 @@ app.use(ToastService);
 app.use(ConfirmationService);
 app.directive('styleclass', StyleClass);
 //
-setupDirectives(app).then((r) => {});
+setupDirectives(app).then(() => {});
 
 setupNaiveDiscreteApi();
 
