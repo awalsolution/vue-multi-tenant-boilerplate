@@ -74,14 +74,11 @@ export function useLayout() {
   };
 
   const onMenuToggle = (): void => {
-    console.log('Hello ==>');
     if (layoutConfig.menuMode === 'overlay') {
-      console.log('Hello sidebar overlay toggle clicked ==>');
       layoutState.overlayMenuActive = !layoutState.overlayMenuActive;
     }
 
     if (window.innerWidth > 991) {
-      console.log('Hello sidebar 991 toggle clicked ==>');
       layoutState.staticMenuDesktopInactive = !layoutState.staticMenuDesktopInactive;
     } else {
       layoutState.staticMenuMobileActive = !layoutState.staticMenuMobileActive;

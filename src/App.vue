@@ -1,56 +1,32 @@
 <template>
+  <Toast
+    :pt="{
+      messageContent: () => ({
+        class: ['bg-green-500/20']
+      })
+    }"
+  />
   <router-view />
-</template>
-<script setup lang="ts"></script>
-<style scoped></style>
-<!-- <template>
-  <div class="display-content bg-layout-light dark:bg-layout-dark">
-    <NConfigProvider
-      :theme="themeStore.theme"
-      :theme-overrides="themeStore.themeOverrides"
-      abstract
-      inline-theme-disabled
-    >
-      <NLoadingBarProvider>
-        <n-dialog-provider>
-          <NNotificationProvider>
-            <NMessageProvider>
-              <RouterView v-slot="{ Component }">
-                <template v-if="Component">
-                  <Transition name="router" mode="out-in">
-                    <component :is="Component" class="text-base" />
-                  </Transition>
-                </template>
-              </RouterView>
-            </NMessageProvider>
-          </NNotificationProvider>
-        </n-dialog-provider>
-      </NLoadingBarProvider>
-      <NGlobalStyle />
-    </NConfigProvider>
-  </div>
 </template>
 
 <script setup lang="ts">
-import { useThemeStore } from '@src/store/modules/theme';
-import { NGlobalStyle } from 'naive-ui';
+import Toast from 'primevue/toast';
+import { useToast } from 'primevue/usetoast';
 
-const themeStore = useThemeStore();
+const toast = useToast();
+
+window.toast = (
+  type: 'success' | 'info' | 'warn' | 'error' | 'secondary' | 'contrast',
+  summary: string,
+  message: string
+) => {
+  toast.add({
+    severity: type,
+    summary: summary,
+    detail: message,
+    life: 3000
+  });
+};
 </script>
 
-<style scoped lang="scss">
-.router-enter-active,
-.router-leave-active {
-  transition: opacity 0.3s ease;
-}
-.router-enter-from,
-.router-leave-to {
-  opacity: 0;
-}
-
-@media print {
-  .display-content {
-    display: none;
-  }
-}
-</style> -->
+<style lang="scss" scoped></style>

@@ -21,3 +21,11 @@ interface Window {
 interface Document {
   startViewTransition?: (callback: () => void) => void;
 }
+
+interface Window {
+  toast: (
+    type: 'success' | 'info' | 'warn' | 'error' | 'secondary' | 'contrast',
+    summary: string,
+    message: string
+  ) => void;
+}

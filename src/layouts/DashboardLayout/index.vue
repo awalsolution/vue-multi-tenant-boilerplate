@@ -4,19 +4,17 @@
     <app-sidebar></app-sidebar>
     <div class="layout-main-container">
       <div class="layout-main">
-        <router-view></router-view>
+        <router-view> </router-view>
       </div>
       <app-footer></app-footer>
     </div>
     <div class="layout-mask animate-fadein"></div>
   </div>
-  <Toast />
 </template>
 
 <script setup lang="ts">
 import { onBeforeMount } from 'vue';
 import { useRouter } from 'vue-router';
-import Toast from 'primevue/toast';
 import { computed, ref, watch } from 'vue';
 import AppFooter from '@src/layouts/components/AppFooter.vue';
 import AppSidebar from '@src/layouts/components/AppSidebar.vue';
@@ -36,7 +34,7 @@ const checkLogin = async () => {
   if (storage.isAuthenticated(ACCESS_TOKEN)) {
     if (!userStore.hasData()) {
       await userStore.getCurrentUserWithApiRequest();
-      window['$message'].success('Current User Authenticated Successfully!');
+      window.toast('success', 'Success Message', 'Current User Authenticated Successfully!');
     }
     loading.value = false;
   } else {
