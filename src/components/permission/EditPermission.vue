@@ -1,37 +1,29 @@
 <template>
-  <n-form ref="formRef" :label-width="80" :model="formValue" :rules="formRules" size="small">
-    <n-form-item style="padding-top: 24px" label="Name" path="name">
-      <n-input v-model:value="formValue.name" placeholder="Edit Name" />
-    </n-form-item>
-    <n-form-item :span="12" label="Permission Type" path="type">
-      <n-select
-        :filterable="true"
-        :tag="false"
-        placeholder="Select Permisnon Type"
-        v-model:value="formValue.type"
-        clearable
-        :clear-filter-after-select="false"
-        label-field="label"
-        value-field="key"
+  <div class="flex flex-wrap gap-4">
+    <div class="flex flex-col grow basis-0 gap-2">
+      <label for="name">Name</label>
+      <InputText id="name" type="text" v-model="data.name" />
+    </div>
+    <div class="flex flex-wrap gap-2 w-full">
+      <label for="permission_type">Permission Type</label>
+      <Select
+        id="permission_type"
+        v-model="data.type"
         :options="permissionType"
-      />
-    </n-form-item>
-    <n-space justify="end">
-      <n-form-item :theme-overrides="{ labelHeightSmall: '0', feedbackHeightSmall: '0' }">
-        <n-button secondary type="info" @click="handleValidateClick"> Save </n-button>
-      </n-form-item>
-    </n-space>
-  </n-form>
+        optionLabel="key"
+        placeholder="Select Permisnon Type"
+        class="w-full"
+      ></Select>
+    </div>
+  </div>
+  <Button label="Save" :fluid="false" @click="handleFormSubmit"></Button>
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue';
-import { type FormInst } from 'naive-ui';
+import { ref, type Ref } from 'vue';
 import { getRecordApi, updateRecordApi } from '@src/api/endpoints';
-import { formRules } from '@src/rules/permission';
 
-const formRef = ref<FormInst | null>(null);
-const formValue: any = ref({});
+const data: Ref = ref({});
 const emits = defineEmits(['updated']);
 const props = defineProps({
   id: {
@@ -40,21 +32,14 @@ const props = defineProps({
 });
 // get permission for update
 getRecordApi(`/permission/${props.id}`).then((res: any) => {
-  formValue.value = res.data;
+  data.value = res.data;
 });
 
-const handleValidateClick = (e: MouseEvent) => {
+const handleFormSubmit = (e: MouseEvent) => {
   e.preventDefault();
-  formRef.value?.validate((errors) => {
-    if (!errors) {
-      updateRecordApi(`/permission/${formValue.value.id}`, formValue.value).then((res: any) => {
-        window['$message'].success(res.message);
-        emits('updated', res.data);
-      });
-    } else {
-      console.log(errors);
-      window['$message'].error('Invalid');
-    }
+  updateRecordApi(`/permission/${data.value.id}`, data.value).then((res: any) => {
+    window.toast('success', 'Success Message', res.message);
+    emits('updated', res.data);
   });
 };
 

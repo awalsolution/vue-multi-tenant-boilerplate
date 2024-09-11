@@ -1,52 +1,46 @@
 <template>
-  <n-form ref="formRef" :label-width="80" :model="formValue" :rules="formRules" size="small">
-    <n-form-item label="Name" path="name">
-      <n-input v-model:value="formValue.name" placeholder="Enter Name" />
-    </n-form-item>
-    <n-form-item :span="12" label="Permission Type" path="type">
-      <n-select
-        :filterable="true"
-        :tag="false"
-        placeholder="Select Permisnon Type"
-        v-model:value="formValue.type"
-        clearable
-        :clear-filter-after-select="false"
-        label-field="label"
-        value-field="key"
+  <div class="flex flex-wrap gap-4">
+    <div class="flex flex-col grow basis-0 gap-2">
+      <label for="name">Name</label>
+      <InputText id="name" type="text" v-model="data.name" />
+    </div>
+    <div class="flex flex-wrap gap-2 w-full">
+      <label for="permission_type">Permission Type</label>
+      <Select
+        id="permission_type"
+        v-model="data.type"
         :options="permissionType"
-      />
-    </n-form-item>
-    <n-space justify="end">
-      <n-form-item :theme-overrides="{ labelHeightSmall: '0', feedbackHeightSmall: '0' }">
-        <n-button secondary type="info" @click="handleValidateClick"> Save </n-button>
-      </n-form-item>
-    </n-space>
-  </n-form>
+        optionLabel="key"
+        placeholder="Select Permisnon Type"
+        class="w-full"
+      ></Select>
+    </div>
+  </div>
+  <!-- <Button label="Save" :fluid="false" @click="handleFormSubmit"></Button> -->
+  <Button label="Cancel" icon="pi pi-times" text @click="hideDialog" />
+  <Button label="Save" icon="pi pi-check" @click="handleFormSubmit" />
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue';
-import { type FormInst } from 'naive-ui';
+import { ref, type Ref } from 'vue';
+import InputText from 'primevue/inputtext';
+import Select from 'primevue/select';
+import Button from 'primevue/button';
 import { createRecordApi } from '@src/api/endpoints';
-import { formRules } from '@src/rules/permission';
 
-const formValue: any = ref({});
-const formRef = ref<FormInst | null>(null);
+const data: Ref = ref({});
 
-const emits = defineEmits(['created']);
+const emits = defineEmits(['created', 'cancle']);
 
-const handleValidateClick = (e: MouseEvent) => {
+const hideDialog = () => {
+  emits('cancle', false);
+};
+
+const handleFormSubmit = (e: MouseEvent) => {
   e.preventDefault();
-  formRef.value?.validate((errors) => {
-    if (!errors) {
-      createRecordApi('/permission', formValue.value).then((res: any) => {
-        window['$message'].success(res.message);
-        emits('created', res.data);
-      });
-    } else {
-      console.log(errors);
-      window['$message'].error('Please fill out required fields');
-    }
+  createRecordApi('/permission', data.value).then((res: any) => {
+    window.toast('success', 'Success Message', res.message);
+    emits('created', res.data);
   });
 };
 

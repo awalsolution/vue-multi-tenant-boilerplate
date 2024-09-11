@@ -1,19 +1,8 @@
 <template>
-  <div
-    class="bg-surface-50 dark:bg-surface-950 flex items-center justify-center min-h-screen min-w-[100vw] overflow-hidden"
-  >
+  <div class="login_container">
     <div class="flex flex-col items-center justify-center">
-      <div
-        style="
-          border-radius: 56px;
-          padding: 0.3rem;
-          background: linear-gradient(180deg, var(--primary-color) 10%, rgba(33, 150, 243, 0) 30%);
-        "
-      >
-        <div
-          class="w-full bg-surface-0 dark:bg-surface-900 py-20 px-8 sm:px-20"
-          style="border-radius: 53px"
-        >
+      <div style="" class="login_wrapper">
+        <div class="w-full bg-surface-0 dark:bg-surface-900 py-20 px-8 sm:px-20 rounded=[53px]">
           <div class="text-center mb-8">
             <svg
               viewBox="0 0 54 40"
@@ -55,11 +44,7 @@
           </div>
 
           <div>
-            <label
-              for="email1"
-              class="block text-surface-900 dark:text-surface-0 text-xl font-medium mb-2"
-              >Email</label
-            >
+            <label for="email1" class="input_label">Email</label>
             <InputText
               id="email1"
               type="text"
@@ -68,11 +53,7 @@
               v-model="formData.email"
             />
 
-            <label
-              for="password1"
-              class="block text-surface-900 dark:text-surface-0 font-medium text-xl mb-2"
-              >Password</label
-            >
+            <label for="password1" class="input_label">Password</label>
             <Password
               id="password1"
               v-model="formData.password"
@@ -93,9 +74,9 @@
                 ></Checkbox>
                 <label for="rememberme1">Remember me</label>
               </div>
-              <span class="font-medium no-underline ml-2 text-right cursor-pointer text-primary"
-                >Forgot password?</span
-              >
+              <span class="font-medium no-underline ml-2 text-right cursor-pointer text-primary">
+                Forgot password?
+              </span>
             </div>
             <Button type="button" label="Login" class="w-full" @click="handleSubmit"></Button>
           </div>
@@ -209,6 +190,17 @@ onBeforeMount(() => verifyDomainName());
 </script>
 
 <style lang="scss" scoped>
+.login_container {
+  @apply bg-surface-50 dark:bg-surface-950 flex items-center justify-center min-h-screen min-w-[100vw] overflow-hidden;
+}
+.login_wrapper {
+  border-radius: 56px;
+  padding: 0.3rem;
+  background: linear-gradient(180deg, var(--primary-color) 10%, rgba(33, 150, 243, 0) 30%);
+}
+.input_label {
+  @apply block text-surface-900 dark:text-surface-0 font-medium text-xl mb-2;
+}
 .pi-eye {
   transform: scale(1.6);
   margin-right: 1rem;
