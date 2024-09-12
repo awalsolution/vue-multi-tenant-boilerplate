@@ -75,7 +75,7 @@
         </template>
       </Column>
     </DataTable>
-    <Dialog v-model:visible="addDialog" class="w-1/3" header="Add Permission" :modal="true">
+    <Dialog v-model:visible="addDialog" class="w-1/3" :header="dialogHeader" :modal="true">
       <div class="flex flex-col gap-6">
         <div>
           <label for="name" class="block font-bold mb-3">Name</label>
@@ -139,6 +139,7 @@ const data: Ref = ref({});
 const submitted: Ref = ref({});
 const addDialog: Ref = ref(false);
 const delDialog: Ref = ref(false);
+const dialogHeader: Ref = ref();
 const delId: Ref = ref();
 
 const { getList, list, page, pageSizes, itemCount, perPage, searchParams }: any =
@@ -167,12 +168,14 @@ onMounted(() => {
 });
 
 function openAddPermissionDialog() {
+  dialogHeader.value = 'Add Permission';
   data.value = {};
   submitted.value = false;
   addDialog.value = true;
 }
 
 function openEditPermissionDialog(item: any) {
+  dialogHeader.value = 'Edit Permission';
   data.value = item;
   submitted.value = false;
   addDialog.value = true;
