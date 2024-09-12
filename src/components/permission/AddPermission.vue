@@ -1,24 +1,35 @@
 <template>
-  <div class="flex flex-wrap gap-4">
-    <div class="flex flex-col grow basis-0 gap-2">
-      <label for="name">Name</label>
-      <InputText id="name" type="text" v-model="data.name" />
+  <Dialog v-model:visible="addDialog" class="w-1/2" header="Add Permission" :modal="true">
+    <div class="flex flex-col gap-6">
+      <div>
+        <label for="name" class="block font-bold mb-3">Name</label>
+        <InputText
+          id="name"
+          v-model.trim="data.name"
+          required="true"
+          :invalid="submitted && !data.name"
+          fluid
+        />
+        <small v-if="submitted && !data.name" class="text-red-500">Name is required.</small>
+      </div>
+      <div>
+        <label for="permission_type" class="block font-bold mb-3">Permission Type</label>
+        <Select
+          id="permission_type"
+          v-model="data.type"
+          :options="permissionType"
+          optionLabel="label"
+          placeholder="Select Permission Type"
+          fluid
+        ></Select>
+      </div>
     </div>
-    <div class="flex flex-wrap gap-2 w-full">
-      <label for="permission_type">Permission Type</label>
-      <Select
-        id="permission_type"
-        v-model="data.type"
-        :options="permissionType"
-        optionLabel="key"
-        placeholder="Select Permisnon Type"
-        class="w-full"
-      ></Select>
-    </div>
-  </div>
-  <!-- <Button label="Save" :fluid="false" @click="handleFormSubmit"></Button> -->
-  <Button label="Cancel" icon="pi pi-times" text @click="hideDialog" />
-  <Button label="Save" icon="pi pi-check" @click="handleFormSubmit" />
+
+    <template #footer>
+      <Button label="Cancel" icon="pi pi-times" text @click="hideDialog" />
+      <Button label="Save" icon="pi pi-check" @click="handleFormSubmit" />
+    </template>
+  </Dialog>
 </template>
 
 <script lang="ts" setup>
@@ -29,19 +40,28 @@ import Button from 'primevue/button';
 import { createRecordApi } from '@src/api/endpoints';
 
 const data: Ref = ref({});
+const submitted: Ref = ref(false);
+const addDialog: Ref = ref(false);
 
-const emits = defineEmits(['created', 'cancle']);
+const emits = defineEmits(['created']);
 
-const hideDialog = () => {
-  emits('cancle', false);
-};
+// function openAddDialog() {
+//   data.value = {};
+//   submitted.value = false;
+// }
 
-const handleFormSubmit = (e: MouseEvent) => {
-  e.preventDefault();
+function hideDialog() {
+  addDialog.value = false;
+  submitted.value = false;
+}
+
+const handleFormSubmit = () => {
+  submitted.value = true;
   createRecordApi('/permission', data.value).then((res: any) => {
     window.toast('success', 'Success Message', res.message);
-    emits('created', res.data);
+    emits('created');
   });
+  data.value = {};
 };
 
 const permissionType = [
