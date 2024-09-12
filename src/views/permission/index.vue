@@ -2,7 +2,15 @@
   <div>
     <div class="flex items-center justify-between mb-5">
       <h1 class="text-2xl font-bold">Permission List</h1>
-      <Button @click="openAddDialog" severity="primary" label="Add Permission" icon="pi pi-plus" />
+      <Button
+        @click="openAddDialog"
+        severity="primary"
+        label="Add Permission"
+        icon="pi pi-plus"
+        v-permission="{
+          action: ['permission create']
+        }"
+      />
     </div>
     <DataTable
       class=""
@@ -51,15 +59,49 @@
           />
         </template>
       </Column>
-      <Column header="Actions">
+      <Column field="status" header="status">
         <template #body="{ data }">
-          <Button icon="pi pi-pencil" outlined rounded class="mr-2" @click="openEditDialog(data)" />
+          <Tag :value="data.status" :severity="data.status === 0 ? 'error' : 'info'">
+            {{ data.status === 1 ? 'Active' : 'Disable' }}
+          </Tag>
+        </template>
+      </Column>
+      <Column field="created_by" header="Auther">
+        <template #body="{ data }">
+          {{ data.created_by }}
+        </template>
+      </Column>
+      <Column field="created_at" header="Created At">
+        <template #body="{ data }">
+          {{ data.created_at }}
+        </template>
+      </Column>
+      <Column
+        header="Actions"
+        v-permission="{
+          action: ['permission update', 'permission delete']
+        }"
+      >
+        <template #body="{ data }">
+          <Button
+            icon="pi pi-pencil"
+            outlined
+            rounded
+            class="mr-2"
+            @click="openEditDialog(data)"
+            v-permission="{
+              action: ['permission update']
+            }"
+          />
           <Button
             icon="pi pi-trash"
             outlined
             rounded
             severity="danger"
             @click="openDeleteDialog(data)"
+            v-permission="{
+              action: ['permission delete']
+            }"
           />
         </template>
       </Column>
@@ -132,7 +174,7 @@ const dialogHeader: Ref = ref();
 const delId: Ref = ref();
 
 const { getList, list, page, pageSizes, itemCount, perPage, searchParams }: any =
-  usePagination('/permission');
+  usePagination('/permissions');
 
 const filters = ref({
   name: { value: null, matchMode: FilterMatchMode.CONTAINS },
@@ -184,12 +226,12 @@ const saveForm = () => {
   submitted.value = true;
   if (data?.value.name?.trim()) {
     if (data?.value.id) {
-      updateRecordApi(`/permission/${data.value.id}`, data.value).then((res: any) => {
+      updateRecordApi(`/permissions/${data.value.id}`, data.value).then((res: any) => {
         window.toast('success', 'Success Message', res.message);
         getList();
       });
     } else {
-      createRecordApi('/permission', data.value).then((res: any) => {
+      createRecordApi('/permissions', data.value).then((res: any) => {
         window.toast('success', 'Success Message', res.message);
         getList();
       });
@@ -200,7 +242,7 @@ const saveForm = () => {
 };
 
 function handleDelete() {
-  deleteRecordApi(`/permission/${delId.value}`)
+  deleteRecordApi(`/permissions/${delId.value}`)
     .then((res: any) => {
       window.toast('success', 'Success Message', res.message);
       getList();

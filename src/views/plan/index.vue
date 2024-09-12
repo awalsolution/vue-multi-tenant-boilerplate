@@ -2,7 +2,15 @@
   <div>
     <div class="flex items-center justify-between mb-5">
       <h1 class="text-2xl font-bold">Plan List</h1>
-      <Button @click="openAddDialog" severity="primary" label="Add Plan" icon="pi pi-plus" />
+      <Button
+        @click="openAddDialog"
+        severity="primary"
+        label="Add Plan"
+        icon="pi pi-plus"
+        v-permission="{
+          action: ['plan create']
+        }"
+      />
     </div>
     <DataTable
       class=""
@@ -59,15 +67,32 @@
           {{ data.created_at }}
         </template>
       </Column>
-      <Column header="Actions">
+      <Column
+        header="Actions"
+        v-permission="{
+          action: ['plan update', 'plan delete']
+        }"
+      >
         <template #body="{ data }">
-          <Button icon="pi pi-pencil" outlined rounded class="mr-2" @click="openEditDialog(data)" />
+          <Button
+            icon="pi pi-pencil"
+            outlined
+            rounded
+            class="mr-2"
+            @click="openEditDialog(data)"
+            v-permission="{
+              action: ['plan update']
+            }"
+          />
           <Button
             icon="pi pi-trash"
             outlined
             rounded
             severity="danger"
             @click="openDeleteDialog(data)"
+            v-permission="{
+              action: ['plan delete']
+            }"
           />
         </template>
       </Column>
@@ -154,7 +179,7 @@ const dialogHeader: Ref = ref();
 const delId: Ref = ref();
 
 const { getList, list, page, pageSizes, itemCount, perPage, searchParams }: any =
-  usePagination('/plan');
+  usePagination('/plans');
 
 const filters = ref({
   name: { value: null, matchMode: FilterMatchMode.CONTAINS },
@@ -206,12 +231,12 @@ const saveForm = () => {
   submitted.value = true;
   if (data?.value.name?.trim() && data?.value.price?.trim() && data?.value.type?.trim()) {
     if (data?.value.id) {
-      updateRecordApi(`/plan/${data.value.id}`, data.value).then((res: any) => {
+      updateRecordApi(`/plans/${data.value.id}`, data.value).then((res: any) => {
         window.toast('success', 'Success Message', res.message);
         getList();
       });
     } else {
-      createRecordApi('/plan', data.value).then((res: any) => {
+      createRecordApi('/plans', data.value).then((res: any) => {
         window.toast('success', 'Success Message', res.message);
         getList();
       });
@@ -222,7 +247,7 @@ const saveForm = () => {
 };
 
 function handleDelete() {
-  deleteRecordApi(`/plan/${delId.value}`)
+  deleteRecordApi(`/plans/${delId.value}`)
     .then((res: any) => {
       window.toast('success', 'Success Message', res.message);
       getList();
@@ -236,245 +261,3 @@ function handleDelete() {
 </script>
 
 <style lang="scss" scoped></style>
-
-<!-- <template>
-  <n-space :vertical="true">
-    <n-card title="Role List">
-      <template #header-extra>
-        <NButton
-          secondary
-          type="info"
-          size="small"
-          @click="showModal = true"
-          v-permission="{ action: ['plan create'] }"
-        >
-          Add Plan
-        </NButton>
-      </template>
-      <div class="flex flex-col gap-2 lg:flex-row w-full">
-        <n-input
-          v-model:value="searchParams.name"
-          clearable
-          placeholder="Search by name"
-          size="small"
-          type="text"
-        >
-          <template #prefix> <NIcon :component="SearchOutlined" class="mr-1" /> </template>
-        </n-input>
-        <n-button secondary size="small" strong type="info" @click="fetchList"> Search </n-button>
-      </div>
-      <div class="table_content_container">
-        <table class="table">
-          <thead class="head">
-            <tr>
-              <th class="th">Name</th>
-              <th class="th">Price</th>
-              <th class="th">Type</th>
-              <th class="th">Description</th>
-              <th class="th">Created At</th>
-              <th
-                class="sticky_el right-0 z-20"
-                v-permission="{
-                  action: ['plan update', 'plan delete']
-                }"
-              >
-                Actions
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-if="list.length === 0">
-              <td colspan="10" class="data_placeholder">Record Not Exist</td>
-            </tr>
-            <tr v-else v-for="item in list" :key="item.id" class="body_tr">
-              <td class="td">{{ item.name }}</td>
-              <td class="td">{{ item.price }}</td>
-              <td class="td">{{ item.type }}</td>
-              <td class="td">{{ item.description }}</td>
-              <td class="td">{{ item.created_at }}</td>
-              <td
-                class="sticky_el right-0 z-10"
-                v-permission="{
-                  action: ['plan update', 'plan delete']
-                }"
-              >
-                <n-dropdown
-                  @click="actionOperation(item)"
-                  :onSelect="selectedAction"
-                  trigger="click"
-                  :options="filteredOptions"
-                >
-                  <n-button size="small" :circle="true">
-                    <n-icon>
-                      <more-outlined />
-                    </n-icon>
-                  </n-button>
-                </n-dropdown>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </n-card>
-    <n-card>
-      <n-pagination
-        v-model:page="page"
-        v-model:page-size="perPage"
-        :item-count="itemCount"
-        :page-sizes="pageSizes"
-        size="small"
-        :show-quick-jumper="true"
-        :show-size-picker="true"
-      >
-        <template #prefix="{ itemCount }"> Total Plans: {{ itemCount }} </template>
-      </n-pagination>
-    </n-card>
-    <n-modal v-model:show="showModal" preset="dialog">
-      <template #header>
-        <div>Create New Plan</div>
-      </template>
-      <n-space :vertical="true">
-        <add-plan
-          @created="
-            getList();
-            showModal = false;
-          "
-        />
-      </n-space>
-    </n-modal>
-
-    <n-modal v-model:show="showEditModal" preset="dialog">
-      <template #header>
-        <div>Update Plan</div>
-      </template>
-      <n-space :vertical="true">
-        <edit-plan
-          :id="selectedId"
-          @updated="
-            getList();
-            showEditModal = false;
-          "
-        />
-      </n-space>
-    </n-modal>
-  </n-space>
-</template>
-
-<script lang="ts" setup>
-import { ref, onMounted, computed, type Ref } from 'vue';
-import { NIcon, NPagination, useDialog } from 'naive-ui';
-import { MoreOutlined, EditOutlined, DeleteOutlined, SearchOutlined } from '@vicons/antd';
-import { deleteRecordApi } from '@src/api/endpoints';
-import { renderIcon } from '@src/utils/renderIcon';
-import { usePermission } from '@src/hooks/permission/usePermission';
-import { usePagination } from '@src/hooks/pagination/usePagination';
-import AddPlan from '@src/components/plan/AddPlan.vue';
-import EditPlan from '@src/components/plan/EditPlan.vue';
-
-const dialog = useDialog();
-const selectedOption: Ref = ref(null);
-const showModal: Ref = ref(false);
-const showEditModal: Ref = ref(false);
-const selectedId: Ref = ref();
-const { hasPermission } = usePermission();
-
-// fetch all records
-const { getList, list, page, pageSizes, itemCount, perPage, searchParams }: any =
-  usePagination('/plan');
-
-onMounted(() => {
-  getList();
-});
-
-const moreOptions = ref([
-  {
-    label: 'Edit',
-    key: 'edit',
-    icon: renderIcon(EditOutlined),
-    permission: hasPermission(['plan update'])
-  },
-  {
-    label: 'Delete',
-    key: 'delete',
-    icon: renderIcon(DeleteOutlined),
-    permission: hasPermission(['plan delete'])
-  }
-]);
-
-const filteredOptions = computed(() => {
-  return moreOptions.value.filter((option) => option.permission);
-});
-
-function confirmationDialog() {
-  dialog.error({
-    title: 'Confirmation',
-    content: () => 'Are you sure you want to delete?',
-    positiveText: 'Delete',
-    negativeText: 'Cancel',
-    onPositiveClick: deleteOperation
-  });
-}
-
-function deleteOperation() {
-  deleteRecordApi(`/plan/${selectedId.value}`)
-    .then((res: any) => {
-      window['$message'].warning(res.message);
-      getList();
-      dialog.destroyAll;
-    })
-    .catch((res: any) => {
-      window['$message'].error(res.message);
-      dialog.destroyAll;
-    });
-  selectedId.value = null;
-  selectedOption.value = null;
-}
-
-const actionOperation = (item: any) => {
-  if (selectedOption.value === 'edit') {
-    showEditModal.value = true;
-    selectedId.value = item.id;
-    // router.push(`/roles/${item.id}`);
-  } else if (selectedOption.value === 'delete') {
-    selectedId.value = item.id;
-    confirmationDialog();
-  }
-};
-const selectedAction = (key: any) => {
-  selectedOption.value = key;
-};
-const fetchList = () => {
-  getList(searchParams.value);
-};
-</script>
-
-<style lang="scss" scoped>
-.table_content_container {
-  @apply relative overflow-x-auto border border-gray-200 dark:border-gray-800 mt-3;
-}
-.table {
-  @apply w-full text-sm text-left text-gray-500 dark:text-gray-400;
-}
-.head {
-  @apply sticky top-0 text-xs text-gray-700 bg-gray-50 dark:bg-gray-700 dark:text-gray-400 z-20;
-}
-.th {
-  @apply px-3 py-3 border-r border-b border-gray-200 dark:border-gray-800  whitespace-nowrap;
-}
-.body_tr {
-  @apply hover:bg-gray-50 dark:hover:bg-gray-600;
-}
-.td {
-  @apply px-3 py-3 border-r border-b border-gray-200 dark:border-gray-800 whitespace-nowrap;
-}
-.sticky_el {
-  @apply sticky bg-gray-50 dark:bg-gray-700 px-6 whitespace-nowrap text-center border border-gray-200 dark:border-gray-800;
-}
-.data_placeholder {
-  text-align: center;
-  color: gray;
-  padding: 20px 0;
-  font-size: 18px;
-  font-style: italic;
-}
-</style> -->
