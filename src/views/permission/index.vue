@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="flex items-center justify-between">
+    <div class="flex items-center justify-between mb-5">
       <h1 class="text-2xl font-bold">Permission List</h1>
       <Button
         @click="openAddPermissionDialog"
@@ -9,75 +9,72 @@
         icon="pi pi-plus"
       />
     </div>
-
-    <div class="table_content_container">
-      <DataTable
-        v-model:filters="filters"
-        :value="list"
-        dataKey="id"
-        filterDisplay="row"
-        stripedRows
-        paginator
-        :rows="20"
-        :rowsPerPageOptions="pageSizes"
-        paginatorTemplate="FirstPageLink PrevPageLink PageLinks  NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
-        :currentPageReportTemplate="`Showing ${page} to ${perPage} of ${itemCount} Permissions`"
+    <DataTable
+      class=""
+      :value="list"
+      stripedRows
+      dataKey="id"
+      v-model:filters="filters"
+      filterDisplay="row"
+      paginator
+      :rows="20"
+      :rowsPerPageOptions="pageSizes"
+      paginatorTemplate="FirstPageLink PrevPageLink PageLinks  NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
+      :currentPageReportTemplate="`Showing ${page} to ${perPage} of ${itemCount} Permissions`"
+    >
+      <template #empty> No permissions found. </template>
+      <Column field="name" header="Name" :show-filter-menu="false" :showClearButton="false">
+        <template #body="{ data }">
+          {{ data.name }}
+        </template>
+        <template #filter="{ filterModel, filterCallback }">
+          <InputText
+            v-model="filterModel.value"
+            type="text"
+            placeholder="Search by Name"
+            @input="filterCallback"
+            class="w-full"
+          />
+        </template>
+      </Column>
+      <Column
+        field="type"
+        header="Permission Type"
+        :show-filter-menu="false"
+        :showClearButton="false"
       >
-        <template #empty> No permissions found. </template>
-        <Column field="name" header="Name" :show-filter-menu="false" :showClearButton="false">
-          <template #body="{ data }">
-            {{ data.name }}
-          </template>
-          <template #filter="{ filterModel, filterCallback }">
-            <InputText
-              v-model="filterModel.value"
-              type="text"
-              placeholder="Search by Name"
-              @input="filterCallback"
-              class="w-full"
-            />
-          </template>
-        </Column>
-        <Column
-          field="type"
-          header="Permission Type"
-          :show-filter-menu="false"
-          :showClearButton="false"
-        >
-          <template #body="{ data }">
-            <Tag :value="data.type" :severity="data.type === 'private' ? 'danger' : 'info'" />
-          </template>
-          <template #filter="{ filterModel, filterCallback }">
-            <InputText
-              v-model="filterModel.value"
-              type="text"
-              @input="filterCallback()"
-              placeholder="Search by Type"
-              class="w-full"
-            />
-          </template>
-        </Column>
-        <Column header="Actions">
-          <template #body="{ data }">
-            <Button
-              icon="pi pi-pencil"
-              outlined
-              rounded
-              class="mr-2"
-              @click="openEditPermissionDialog(data)"
-            />
-            <Button
-              icon="pi pi-trash"
-              outlined
-              rounded
-              severity="danger"
-              @click="openDeletePermissionDialog(data)"
-            />
-          </template>
-        </Column>
-      </DataTable>
-    </div>
-
+        <template #body="{ data }">
+          <Tag :value="data.type" :severity="data.type === 'private' ? 'danger' : 'info'" />
+        </template>
+        <template #filter="{ filterModel, filterCallback }">
+          <InputText
+            v-model="filterModel.value"
+            type="text"
+            @input="filterCallback()"
+            placeholder="Search by Type"
+            class="w-full"
+          />
+        </template>
+      </Column>
+      <Column header="Actions">
+        <template #body="{ data }">
+          <Button
+            icon="pi pi-pencil"
+            outlined
+            rounded
+            class="mr-2"
+            @click="openEditPermissionDialog(data)"
+          />
+          <Button
+            icon="pi pi-trash"
+            outlined
+            rounded
+            severity="danger"
+            @click="openDeletePermissionDialog(data)"
+          />
+        </template>
+      </Column>
+    </DataTable>
     <Dialog v-model:visible="addDialog" class="w-1/3" header="Add Permission" :modal="true">
       <div class="flex flex-col gap-6">
         <div>
@@ -125,7 +122,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted, type Ref, watch, mergeProps } from 'vue';
+import { ref, onMounted, type Ref, watch } from 'vue';
 import { FilterMatchMode } from '@primevue/core/api';
 import Dialog from 'primevue/dialog';
 import Button from 'primevue/button';
@@ -229,8 +226,4 @@ const permissionType = [
 ];
 </script>
 
-<style lang="scss" scoped>
-.table_content_container {
-  @apply relative overflow-x-auto mt-5;
-}
-</style>
+<style lang="scss" scoped></style>
