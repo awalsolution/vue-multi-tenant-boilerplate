@@ -34,7 +34,7 @@ export const RootRoute: RouteRecordRaw = {
 export const LoginRoute: RouteRecordRaw = {
   path: '/login',
   name: 'Login',
-  component: () => import('@src/layouts/AuthLayout/index.vue'),
+  component: () => import('@src/layouts/AuthLayout.vue'),
   meta: {
     title: 'Login'
   },

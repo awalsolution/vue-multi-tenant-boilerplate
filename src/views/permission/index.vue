@@ -2,12 +2,7 @@
   <div>
     <div class="flex items-center justify-between mb-5">
       <h1 class="text-2xl font-bold">Permission List</h1>
-      <Button
-        @click="openAddPermissionDialog"
-        severity="primary"
-        label="Add Permission"
-        icon="pi pi-plus"
-      />
+      <Button @click="openAddDialog" severity="primary" label="Add Permission" icon="pi pi-plus" />
     </div>
     <DataTable
       class=""
@@ -58,19 +53,13 @@
       </Column>
       <Column header="Actions">
         <template #body="{ data }">
-          <Button
-            icon="pi pi-pencil"
-            outlined
-            rounded
-            class="mr-2"
-            @click="openEditPermissionDialog(data)"
-          />
+          <Button icon="pi pi-pencil" outlined rounded class="mr-2" @click="openEditDialog(data)" />
           <Button
             icon="pi pi-trash"
             outlined
             rounded
             severity="danger"
-            @click="openDeletePermissionDialog(data)"
+            @click="openDeleteDialog(data)"
           />
         </template>
       </Column>
@@ -102,8 +91,8 @@
         </div>
       </div>
       <template #footer>
-        <Button label="Cancel" icon="pi pi-times" text @click="hidePermissionDialog" />
-        <Button label="Save" icon="pi pi-check" @click="savePermissionForm" />
+        <Button label="Cancel" icon="pi pi-times" text @click="hideDialog" />
+        <Button label="Save" icon="pi pi-check" @click="saveForm" />
       </template>
     </Dialog>
     <Dialog v-model:visible="delDialog" class="w-1/3" header="Confirm" :modal="true">
@@ -115,7 +104,7 @@
       </div>
       <template #footer>
         <Button label="No" icon="pi pi-times" text @click="delDialog = false" />
-        <Button label="Yes" icon="pi pi-check" severity="danger" @click="handleDeletePermission" />
+        <Button label="Yes" icon="pi pi-check" severity="danger" @click="handleDelete" />
       </template>
     </Dialog>
   </div>
@@ -167,31 +156,31 @@ onMounted(() => {
   fetchList();
 });
 
-function openAddPermissionDialog() {
+function openAddDialog() {
   dialogHeader.value = 'Add Permission';
   data.value = {};
   submitted.value = false;
   addDialog.value = true;
 }
 
-function openEditPermissionDialog(item: any) {
+function openEditDialog(item: any) {
   dialogHeader.value = 'Edit Permission';
   data.value = item;
   submitted.value = false;
   addDialog.value = true;
 }
 
-function openDeletePermissionDialog(item: any) {
+function openDeleteDialog(item: any) {
   delId.value = item.id;
   delDialog.value = true;
 }
 
-function hidePermissionDialog() {
+function hideDialog() {
   addDialog.value = false;
   submitted.value = false;
 }
 
-const savePermissionForm = () => {
+const saveForm = () => {
   submitted.value = true;
   if (data?.value.name?.trim()) {
     if (data?.value.id) {
@@ -210,7 +199,7 @@ const savePermissionForm = () => {
   }
 };
 
-function handleDeletePermission() {
+function handleDelete() {
   deleteRecordApi(`/permission/${delId.value}`)
     .then((res: any) => {
       window.toast('success', 'Success Message', res.message);
