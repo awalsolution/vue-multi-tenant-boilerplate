@@ -7,9 +7,7 @@
         severity="primary"
         label="Add Permission"
         icon="pi pi-plus"
-        v-permission="{
-          action: ['permission create']
-        }"
+        v-permission="{ action: ['permission create'] }"
       />
     </div>
     <DataTable
@@ -78,9 +76,7 @@
       </Column>
       <Column
         header="Actions"
-        v-permission="{
-          action: ['permission update', 'permission delete']
-        }"
+        v-permission="{ action: ['permission update', 'permission delete'] }"
       >
         <template #body="{ data }">
           <Button
@@ -89,9 +85,7 @@
             rounded
             class="mr-2"
             @click="openEditDialog(data)"
-            v-permission="{
-              action: ['permission update']
-            }"
+            v-permission="{ action: ['permission update'] }"
           />
           <Button
             icon="pi pi-trash"
@@ -99,9 +93,7 @@
             rounded
             severity="danger"
             @click="openDeleteDialog(data)"
-            v-permission="{
-              action: ['permission delete']
-            }"
+            v-permission="{ action: ['permission delete'] }"
           />
         </template>
       </Column>

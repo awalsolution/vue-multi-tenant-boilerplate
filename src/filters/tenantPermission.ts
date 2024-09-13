@@ -12,7 +12,7 @@ export function useTenantPermissionfilter() {
       tenantPermissions.value = [];
     } else {
       tenantpermissionLoading.value = true;
-      const response: any = await getRecordsApi('/tenant/find-permissions-of-tenant', {
+      const response: any = await getRecordsApi('/tenants/find-permissions-of-tenant', {
         name: query,
         db_name: db_name
       });
@@ -23,7 +23,7 @@ export function useTenantPermissionfilter() {
 
   async function getTenantPermissions(db_name: any) {
     tenantpermissionLoading.value = true;
-    const response: any = await getRecordsApi('/tenant/find-permissions-of-tenant', {
+    const response: any = await getRecordsApi('/tenants/find-permissions-of-tenant', {
       db_name: db_name
     });
     tenantPermissions.value = response.data;

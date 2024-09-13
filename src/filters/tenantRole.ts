@@ -12,7 +12,7 @@ export function useTenantRolefilter() {
       roles.value = [];
     } else {
       roleLoading.value = true;
-      const response: any = await getRecordsApi('/tenant/find-roles-of-tenant', {
+      const response: any = await getRecordsApi('/tenants/find-roles-of-tenant', {
         name: query,
         db_name: db_name
       });
@@ -23,7 +23,9 @@ export function useTenantRolefilter() {
 
   async function getRoles(db_name: any) {
     roleLoading.value = true;
-    const response: any = await getRecordsApi('/tenant/find-roles-of-tenant', { db_name: db_name });
+    const response: any = await getRecordsApi('/tenants/find-roles-of-tenant', {
+      db_name: db_name
+    });
     roles.value = response.data;
     roleLoading.value = false;
   }

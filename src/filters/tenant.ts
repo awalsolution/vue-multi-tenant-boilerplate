@@ -12,7 +12,7 @@ export function useTenantfilter() {
       tenants.value = [];
     } else {
       tenantLoading.value = true;
-      const response: any = await getRecordsApi('/tenant', { name: query });
+      const response: any = await getRecordsApi('/tenants', { name: query });
       tenants.value = response.data?.data;
       tenantLoading.value = false;
     }
@@ -20,7 +20,7 @@ export function useTenantfilter() {
 
   async function getTenants() {
     tenantLoading.value = true;
-    const response: any = await getRecordsApi('/tenant');
+    const response: any = await getRecordsApi('/tenants');
     tenants.value = response.data?.data;
     tenantLoading.value = false;
   }

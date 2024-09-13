@@ -67,12 +67,7 @@
           {{ data.created_at }}
         </template>
       </Column>
-      <Column
-        header="Actions"
-        v-permission="{
-          action: ['plan update', 'plan delete']
-        }"
-      >
+      <Column header="Actions" v-permission="{ action: ['plan update', 'plan delete'] }">
         <template #body="{ data }">
           <Button
             icon="pi pi-pencil"

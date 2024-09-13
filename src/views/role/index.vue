@@ -23,7 +23,7 @@
       paginatorTemplate="FirstPageLink PrevPageLink PageLinks  NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
       :currentPageReportTemplate="`Showing ${page} to ${perPage} of ${itemCount} Roles`"
     >
-      <template #empty> No Users found. </template>
+      <template #empty> No Roles found. </template>
       <Column field="name" header="Name" :show-filter-menu="false" :showClearButton="false">
         <template #body="{ data }">
           {{ data.name }}
@@ -61,7 +61,7 @@
       >
         <template #body="{ data }">
           <Button
-            icon="pi pi-pencil"
+            icon="pi pi-lock"
             outlined
             rounded
             class="mr-2"
