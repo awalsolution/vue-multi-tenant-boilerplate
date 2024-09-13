@@ -206,6 +206,7 @@ function openEditDialog(item: any) {
 
 function openDeleteDialog(item: any) {
   delId.value = item.id;
+  data.value = item;
   delDialog.value = true;
 }
 
