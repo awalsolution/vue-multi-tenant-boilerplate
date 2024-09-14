@@ -41,23 +41,7 @@
         <InputText id="country" v-model="data.country" fluid autocomplete="off" />
       </div>
     </div>
-    <div class="flex gap-6 mt-4 items-start">
-      <FileUpload
-        mode="basic"
-        auto
-        severity="primary"
-        accept="image/*"
-        @upload="onUpload($event)"
-        :url="uploadUrl"
-        name="image"
-      />
-      <img
-        v-if="previewUrl"
-        :src="imgUrl + previewUrl"
-        alt="Image"
-        class="shadow-md rounded-xl size-16"
-      />
-    </div>
+    <ImageUploader v-model="data.profile_picture" />
     <div class="flex justify-end gap-2 mt-4">
       <Button type="button" label="Cancel" severity="info" @click="hideDialog" />
       <Button type="button" label="Save" severity="primary" @click="saveForm" />
@@ -71,16 +55,15 @@ import { useUserStore } from '@src/store/modules/user';
 import { updateRecordApi } from '@src/api/endpoints';
 import { useEnv } from '@src/hooks/useEnv';
 import InputText from 'primevue/inputtext';
-import FileUpload from 'primevue/fileupload';
 import Button from 'primevue/button';
 import Dialog from 'primevue/dialog';
+import { ImageUploader } from '@src/components/common/uploader';
 
-const { imgUrl, uploadUrl } = useEnv();
+const { imgUrl } = useEnv();
 const userStore = useUserStore();
 const editDialog: Ref = ref(false);
 const submitted: Ref = ref({});
 const data: Ref = ref({});
-const previewUrl = ref(null);
 
 const openEditDialog = () => {
   editDialog.value = true;
@@ -100,20 +83,6 @@ const saveForm = () => {
   editDialog.value = false;
   data.value = {};
   getProfileDataFromStore();
-};
-
-const onUpload = (e: any) => {
-  const response = e.xhr.response;
-  let res;
-  try {
-    res = JSON.parse(response);
-    data.value.profile_picture = res.data;
-    previewUrl.value = res.data;
-    window.toast('success', 'Success message', res.message);
-  } catch (error) {
-    console.error('Failed to parse JSON response:', error);
-    return;
-  }
 };
 
 const getProfileDataFromStore = () => {
