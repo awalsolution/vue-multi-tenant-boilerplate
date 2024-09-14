@@ -24,22 +24,27 @@
       paginatorTemplate="FirstPageLink PrevPageLink PageLinks  NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
       :currentPageReportTemplate="`Showing ${page} to ${perPage} of ${itemCount} Users`"
     >
-      <template #empty> No Users found. </template>
+      <template #empty> <div class="text-center">No Users found.</div> </template>
+      <Column field="name" header="Name" class="">
+        <template #body="{ data }">
+          <Avatar :image="imgUrl + data?.profile_picture" shape="circle" size="large" />
+        </template>
+      </Column>
       <Column
-        field="profile.first_name"
+        field="name"
         header="Name"
         class="whitespace-nowrap min-w-56"
         :show-filter-menu="false"
         :showClearButton="false"
       >
         <template #body="{ data }">
-          {{ data.profile.first_name + ' ' + data.profile.last_name }}
+          {{ data?.name }}
         </template>
         <template #filter="{ filterModel, filterCallback }">
           <InputText
             v-model="filterModel.value"
             type="text"
-            placeholder="Search by First Name"
+            placeholder="Search by Email"
             @input="filterCallback"
             class="w-full"
           />
@@ -53,13 +58,33 @@
         :showClearButton="false"
       >
         <template #body="{ data }">
-          {{ data.email }}
+          {{ data?.email }}
         </template>
         <template #filter="{ filterModel, filterCallback }">
           <InputText
             v-model="filterModel.value"
             type="text"
             placeholder="Search by Email"
+            @input="filterCallback"
+            class="w-full"
+          />
+        </template>
+      </Column>
+      <Column
+        field="phone_number"
+        header="Phone#"
+        class="whitespace-nowrap min-w-56"
+        :show-filter-menu="false"
+        :showClearButton="false"
+      >
+        <template #body="{ data }">
+          {{ data?.phone_number }}
+        </template>
+        <template #filter="{ filterModel, filterCallback }">
+          <InputText
+            v-model="filterModel.value"
+            type="text"
+            placeholder="Search by Phone"
             @input="filterCallback"
             class="w-full"
           />
@@ -72,38 +97,9 @@
           </Tag>
         </template>
       </Column>
-
-      <Column
-        field="profile.phone_number"
-        header="Phone#"
-        class="whitespace-nowrap min-w-56"
-        :show-filter-menu="false"
-        :showClearButton="false"
-      >
+      <Column field="address" header="Address" class="whitespace-nowrap">
         <template #body="{ data }">
-          {{ data?.profile?.phone_number }}
-        </template>
-        <template #filter="{ filterModel, filterCallback }">
-          <InputText
-            v-model="filterModel.value"
-            type="text"
-            placeholder="Search by Phone"
-            @input="filterCallback"
-            class="w-full"
-          />
-        </template>
-      </Column>
-      <Column field="profile" header="Address" class="whitespace-nowrap">
-        <template #body="{ data }">
-          {{
-            data?.profile?.address +
-            ' ' +
-            data?.profile?.city +
-            ' ' +
-            data?.profile?.state +
-            ' ' +
-            data?.profile?.country
-          }}
+          {{ data?.address + ' ' + data?.city + ' ' + data?.state + ' ' + data?.country }}
         </template>
       </Column>
 
@@ -116,12 +112,12 @@
       </Column>
       <Column field="created_by" header="Auther" class="whitespace-nowrap">
         <template #body="{ data }">
-          {{ data.created_by }}
+          {{ data?.created_by }}
         </template>
       </Column>
       <Column field="created_at" header="Created At" class="whitespace-nowrap">
         <template #body="{ data }">
-          {{ data.created_at }}
+          {{ data?.created_at }}
         </template>
       </Column>
       <Column
@@ -161,34 +157,19 @@
       <div class="flex flex-col gap-6">
         <div class="flex gap-5">
           <div class="w-full">
-            <label for="first_name" class="block font-bold mb-3">First Name</label>
+            <label for="name" class="block font-bold mb-3">Name</label>
             <InputText
-              id="first_name"
-              v-model.trim="data.profile.first_name"
+              id="name"
+              v-model.trim="data.name"
               :required="true"
-              :invalid="submitted && !data.profile.first_name"
-              placeholder="First Name"
+              :invalid="submitted && !data.name"
+              placeholder="Name"
               fluid
             />
-            <small v-if="submitted && !data.profile.first_name" class="text-red-500">
+            <small v-if="submitted && !data.first_name" class="text-red-500">
               First Name is required.
             </small>
           </div>
-          <div class="w-full">
-            <label for="last_name" class="block font-bold mb-3">Last Name</label>
-            <InputText
-              id="last_name"
-              v-model.trim="data.profile.last_name"
-              :invalid="submitted && !data.profile.last_name"
-              placeholder="Last Name"
-              fluid
-            />
-            <small v-if="submitted && !data.profile.last_name" class="text-red-500">
-              Last Name is required.
-            </small>
-          </div>
-        </div>
-        <div class="flex gap-5">
           <div class="w-full">
             <label for="email" class="block font-bold mb-3">Email</label>
             <InputText
@@ -203,6 +184,8 @@
               Last Name is required.
             </small>
           </div>
+        </div>
+        <div class="flex gap-5">
           <div class="w-full">
             <label for="password" class="block font-bold mb-3">Password</label>
             <Password
@@ -218,8 +201,6 @@
               Password is required.
             </small>
           </div>
-        </div>
-        <div class="flex gap-5">
           <div class="w-full">
             <label for="roles" class="block font-bold mb-3">Select Role</label>
             <MultiSelect
@@ -236,6 +217,8 @@
               @focus="getRolesOnFocus"
             />
           </div>
+        </div>
+        <div class="flex gap-5">
           <div class="w-full">
             <label for="status" class="block font-bold mb-3">Status</label>
             <ToggleSwitch id="status" v-model="data.status" :true-value="1" :false-value="0" />
@@ -274,11 +257,14 @@ import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
 import MultiSelect from 'primevue/multiselect';
 import Password from 'primevue/password';
+import Avatar from 'primevue/avatar';
 import { createRecordApi, deleteRecordApi, updateRecordApi } from '@src/api/endpoints';
 import { usePagination } from '@src/hooks/pagination/usePagination';
 import { debounce } from 'lodash-es';
 import { useRolefilter } from '@src/filters/role';
+import { useEnv } from '@src/hooks/useEnv';
 
+const { imgUrl } = useEnv();
 const data: Ref = ref({});
 const submitted: Ref = ref({});
 const addDialog: Ref = ref(false);
@@ -291,16 +277,16 @@ const { getList, list, page, pageSizes, itemCount, perPage, searchParams }: any 
   usePagination('/users');
 
 const filters = ref({
-  'profile.first_name': { value: null, matchMode: FilterMatchMode.CONTAINS },
+  name: { value: null, matchMode: FilterMatchMode.CONTAINS },
   email: { value: null, matchMode: FilterMatchMode.CONTAINS },
-  'profile.phone_number': { value: null, matchMode: FilterMatchMode.CONTAINS }
+  phone_number: { value: null, matchMode: FilterMatchMode.CONTAINS }
 });
 
 const fetchList = () => {
   searchParams.value = {
-    name: filters.value['profile.first_name'].value || '',
+    name: filters.value.name.value || '',
     email: filters.value.email.value || '',
-    phone: filters.value['profile.phone_number'].value || ''
+    phone: filters.value.phone_number.value || ''
   };
   getList(searchParams.value);
 };
