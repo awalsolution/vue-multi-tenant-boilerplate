@@ -65,7 +65,7 @@
             outlined
             rounded
             class="mr-2"
-            @click="openEditDialog(data)"
+            @click="router.push({ name: 'role_assign_permission', params: { roleId: data?.id } })"
             v-permission="{ action: ['role assign permission'] }"
           />
           <Button
@@ -91,6 +91,7 @@
         </template>
       </Column>
     </DataTable>
+    <!-- add edit form -->
     <Dialog v-model:visible="addDialog" class="w-1/3" :header="dialogHeader" :modal="true">
       <div class="flex flex-col gap-6">
         <div>
@@ -114,6 +115,7 @@
         <Button label="Save" icon="pi pi-check" @click="saveForm" />
       </template>
     </Dialog>
+    <!-- delete form  -->
     <Dialog v-model:visible="delDialog" class="w-1/3" header="Confirm" :modal="true">
       <div class="flex items-center gap-4">
         <i class="pi pi-exclamation-triangle !text-3xl" />
@@ -131,6 +133,7 @@
 
 <script lang="ts" setup>
 import { ref, onMounted, type Ref, watch } from 'vue';
+import { useRouter } from 'vue-router';
 import { FilterMatchMode } from '@primevue/core/api';
 import ToggleSwitch from 'primevue/toggleswitch';
 import Dialog from 'primevue/dialog';
@@ -143,6 +146,7 @@ import { createRecordApi, deleteRecordApi, updateRecordApi } from '@src/api/endp
 import { usePagination } from '@src/hooks/pagination/usePagination';
 import { debounce } from 'lodash-es';
 
+const router = useRouter();
 const data: Ref = ref({});
 const submitted: Ref = ref({});
 const addDialog: Ref = ref(false);

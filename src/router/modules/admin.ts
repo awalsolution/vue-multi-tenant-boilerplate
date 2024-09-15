@@ -125,7 +125,7 @@ const routes: RouteRecordRaw[] = [
         component: () => import('@src/views/user/Profile.vue')
       },
       {
-        path: '/user/assign-permission/:userId',
+        path: '/user/:userId/assign-permission',
         name: 'user_assign_permission',
         meta: {
           title: 'Assing Permission',
@@ -165,7 +165,7 @@ const routes: RouteRecordRaw[] = [
         component: () => import('@src/views/role/index.vue')
       },
       {
-        path: 'assign-permission/:roleId',
+        path: '/role/:roleId/assign-permission',
         name: 'role_assign_permission',
         meta: {
           title: 'Assing Permission',

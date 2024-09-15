@@ -92,7 +92,7 @@
       </Column>
       <Column field="roles" header="Role" class="whitespace-nowrap min-w-56">
         <template #body="{ data }">
-          <Tag v-for="role in data.roles" :key="role.id" severity="primary">
+          <Tag v-for="role in data.roles || []" :key="role.id" severity="primary">
             {{ role?.name }}
           </Tag>
         </template>
@@ -127,14 +127,17 @@
       >
         <template #body="{ data }">
           <Button
+            v-tooltip.top="'Assign Permissions'"
+            v-ripple
             icon="pi pi-lock"
             outlined
             rounded
             class="mr-2"
-            @click="openEditDialog(data)"
+            @click="router.push({ name: 'user_assign_permission', params: { userId: data?.id } })"
             v-permission="{ action: ['user assign permission'] }"
           />
           <Button
+            v-tooltip.top="'Edit User'"
             icon="pi pi-pencil"
             outlined
             rounded
@@ -143,6 +146,7 @@
             v-permission="{ action: ['user update'] }"
           />
           <Button
+            v-tooltip.top="'Delete User'"
             icon="pi pi-trash"
             outlined
             rounded
@@ -153,7 +157,14 @@
         </template>
       </Column>
     </DataTable>
-    <Dialog v-model:visible="addDialog" class="w-1/2" :header="dialogHeader" :modal="true">
+    <!-- add and update form -->
+    <Dialog
+      v-model:visible="addDialog"
+      class="w-1/2"
+      :header="dialogHeader"
+      :modal="true"
+      :closable="false"
+    >
       <div class="flex flex-col gap-6">
         <div class="flex gap-5">
           <div class="w-full">
@@ -230,6 +241,7 @@
         <Button label="Save" icon="pi pi-check" @click="saveForm" />
       </template>
     </Dialog>
+    <!-- delete form -->
     <Dialog v-model:visible="delDialog" class="w-1/3" header="Confirm" :modal="true">
       <div class="flex items-center gap-4">
         <i class="pi pi-exclamation-triangle !text-3xl" />
@@ -247,6 +259,7 @@
 
 <script lang="ts" setup>
 import { ref, onMounted, type Ref, watch } from 'vue';
+import { useRouter } from 'vue-router';
 import { FilterMatchMode } from '@primevue/core/api';
 import ToggleSwitch from 'primevue/toggleswitch';
 import Dialog from 'primevue/dialog';
@@ -265,6 +278,7 @@ import { useRolefilter } from '@src/filters/role';
 import { useEnv } from '@src/hooks/useEnv';
 
 const { imgUrl } = useEnv();
+const router = useRouter();
 const data: Ref = ref({});
 const submitted: Ref = ref({});
 const addDialog: Ref = ref(false);
@@ -325,6 +339,7 @@ function openDeleteDialog(item: any) {
 function hideDialog() {
   addDialog.value = false;
   submitted.value = false;
+  fetchList();
 }
 
 const saveForm = () => {
