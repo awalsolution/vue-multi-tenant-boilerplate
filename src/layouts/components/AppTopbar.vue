@@ -94,12 +94,12 @@
             aria-controls="overlay_menu"
           >
             <Avatar
-              v-if="userStore.currentUser?.profile?.profile_picture"
-              :image="`${imgUrl}${userStore.currentUser?.profile?.profile_picture}`"
+              v-if="userStore.currentUser?.profile_picture"
+              :image="`${imgUrl}${userStore.currentUser?.profile_picture}`"
               class="mr-2"
               shape="circle"
             />
-            <i v-if="!userStore.currentUser?.profile?.profile_picture" class="pi pi-user"></i>
+            <i v-if="!userStore.currentUser?.profile_picture" class="pi pi-user"></i>
           </button>
           <Menu ref="menu" id="overlay_menu" :model="items" :popup="true">
             <template #start>
@@ -137,17 +137,13 @@
                 class="relative overflow-hidden w-full border-0 bg-transparent flex items-center p-2 pl-4 hover:bg-surface-100 dark:hover:bg-surface-800 rounded-none cursor-pointer transition-colors duration-200"
               >
                 <Avatar
-                  v-if="userStore.currentUser?.profile?.profile_picture"
-                  :image="`${imgUrl}${userStore.currentUser?.profile?.profile_picture}`"
+                  v-if="userStore.currentUser?.profile_picture"
+                  :image="`${imgUrl}${userStore.currentUser?.profile_picture}`"
                   class="mr-2"
                   shape="circle"
                 />
                 <span class="inline-flex flex-col items-start">
-                  <span class="font-bold">{{
-                    userStore.currentUser?.profile?.first_name +
-                    ' ' +
-                    userStore.currentUser?.profile?.last_name
-                  }}</span>
+                  <span class="font-bold">{{ userStore.currentUser?.name }}</span>
                   <span class="text-sm">{{ userStore.currentUser?.email }}</span>
                 </span>
               </button>
@@ -192,7 +188,6 @@ const logout = async () => {
 type UserOptionKey = 'logout' | 'profile' | 'change-password';
 
 const selectUserOption = (key: UserOptionKey) => {
-  console.log(key);
   switch (key) {
     case 'logout':
       logout();

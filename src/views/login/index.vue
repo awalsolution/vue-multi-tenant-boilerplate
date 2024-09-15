@@ -1,8 +1,10 @@
 <template>
   <div class="login_container">
-    <div class="flex flex-col items-center justify-center">
+    <div class="flex flex-col items-center justify-center gap-10">
       <div style="" class="login_wrapper">
-        <div class="w-full bg-surface-0 dark:bg-surface-900 py-20 px-8 sm:px-20 rounded=[53px]">
+        <div
+          class="w-full bg-surface-0 dark:bg-surface-900 pt-20 pb-8 px-8 sm:px-20 rounded=[53px]"
+        >
           <div class="text-center mb-8">
             <svg
               viewBox="0 0 54 40"
@@ -78,7 +80,7 @@
                 Forgot password?
               </span>
             </div>
-            <Button type="button" label="Login" class="w-full" @click="handleSubmit"></Button>
+            <Button type="button" label="Login" fluid @click="handleSubmit"></Button>
           </div>
         </div>
       </div>

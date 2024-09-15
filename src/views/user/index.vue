@@ -25,11 +25,6 @@
       :currentPageReportTemplate="`Showing ${page} to ${perPage} of ${itemCount} Users`"
     >
       <template #empty> <div class="text-center">No Users found.</div> </template>
-      <Column field="name" header="Name" class="">
-        <template #body="{ data }">
-          <Avatar :image="imgUrl + data?.profile_picture" shape="circle" size="large" />
-        </template>
-      </Column>
       <Column
         field="name"
         header="Name"
@@ -90,24 +85,28 @@
           />
         </template>
       </Column>
-      <Column field="roles" header="Role" class="whitespace-nowrap min-w-56">
+      <Column field="profile_picture" header="Image">
+        <template #body="{ data }">
+          <Avatar :image="imgUrl + data?.profile_picture" shape="circle" size="small" />
+        </template>
+      </Column>
+      <Column field="roles" header="Role" class="whitespace-nowrap">
         <template #body="{ data }">
           <Tag v-for="role in data.roles || []" :key="role.id" severity="primary">
             {{ role?.name }}
           </Tag>
         </template>
       </Column>
-      <Column field="address" header="Address" class="whitespace-nowrap">
-        <template #body="{ data }">
-          {{ data?.address + ' ' + data?.city + ' ' + data?.state + ' ' + data?.country }}
-        </template>
-      </Column>
-
       <Column field="status" header="status" class="whitespace-nowrap">
         <template #body="{ data }">
           <Tag :value="data.status" :severity="data.status === 0 ? 'error' : 'info'">
             {{ data.status === 1 ? 'Active' : 'Disable' }}
           </Tag>
+        </template>
+      </Column>
+      <Column field="address" header="Address" class="whitespace-nowrap">
+        <template #body="{ data }">
+          {{ data?.address + ' ' + data?.city + ' ' + data?.state + ' ' + data?.country }}
         </template>
       </Column>
       <Column field="created_by" header="Auther" class="whitespace-nowrap">

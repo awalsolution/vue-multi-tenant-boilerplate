@@ -37,17 +37,17 @@ const routes: RouteRecordRaw[] = [
               icon: 'pi pi-fw pi-file',
               permissions: ['create tenant']
             },
-            component: () => import('@src/components/tenant/AddTenant.vue')
+            component: () => import('@src/components/tenant/CreateTenant.vue')
           },
           {
-            path: '/organization/edit/:id',
+            path: '/organization/:tenantId/edit',
             name: 'organization_edit',
             meta: {
               title: 'Edit Organization',
               permissions: ['update tenant'],
               hidden: true
             },
-            component: () => import('@src/components/tenant/EditTenant.vue')
+            component: () => import('@src/components/tenant/UpdateTenant.vue')
           },
           {
             path: '/organization/organization-details/:db_name',
@@ -59,7 +59,7 @@ const routes: RouteRecordRaw[] = [
             },
             component: () => import('@src/components/tenant/TenantDetails.vue')
           },
-          // admin to tenant user operations
+          // tenant user operations
           {
             path: '/organization/edit-user-of-organization/:db_name/:user_id',
             name: 'organization_edit_user',
@@ -70,7 +70,7 @@ const routes: RouteRecordRaw[] = [
             },
             component: () => import('@src/components/tenant/EditUserOfTenant.vue')
           },
-          // admin to tenant roles operations
+          // tenant roles operations
           {
             path: '/organization/insert-roles-of-organization/:db_name',
             name: 'organization_insert_role',
@@ -91,7 +91,7 @@ const routes: RouteRecordRaw[] = [
             },
             component: () => import('@src/components/tenant/AssignPermissionToTenantRole.vue')
           },
-          // admin to tenant permission operations
+          // tenant permission operations
           {
             path: '/organization/insert-permissions-of-organization/:db_name',
             name: 'organization_insert_permission',
