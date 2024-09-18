@@ -40,7 +40,7 @@ const routes: RouteRecordRaw[] = [
             component: () => import('@src/components/tenant/CreateTenant.vue')
           },
           {
-            path: '/organization/:tenantId/edit',
+            path: '/organization/:tenant_id/edit',
             name: 'organization_edit',
             meta: {
               title: 'Edit Organization',
@@ -50,14 +50,14 @@ const routes: RouteRecordRaw[] = [
             component: () => import('@src/components/tenant/UpdateTenant.vue')
           },
           {
-            path: '/organization/organization-details/:db_name',
+            path: '/organization/:db_name/organization-details',
             name: 'organization_details',
             meta: {
               title: 'View Organization',
               permissions: ['view tenant'],
               hidden: true
             },
-            component: () => import('@src/components/tenant/TenantDetails.vue')
+            component: () => import('@src/components/tenant/UpdateTenant.vue')
           },
           // tenant user operations
           {

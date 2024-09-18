@@ -6,7 +6,7 @@
         type="dotted"
         :dt="{ root: { borderColor: '{primary.color}' }, horizontal: { margin: '0 0 2rem 0' } }"
       >
-        <b class="text-xl">Add Organization</b>
+        <b class="text-xl">Organization Information</b>
       </Divider>
       <div class="grid grid-cols-3 gap-5">
         <div class="w-full">
@@ -29,11 +29,6 @@
             placeholder="Domain Name"
           />
         </div>
-
-        <div class="w-full">
-          <label for="email" class="block font-semibold mb-1">Email</label>
-          <InputText id="email" v-model="data.email" fluid autocomplete="off" placeholder="Email" />
-        </div>
         <div class="w-full">
           <label for="phone_number" class="block font-semibold mb-1">Phone#</label>
           <InputText
@@ -44,6 +39,28 @@
             placeholder="Phone#"
           />
         </div>
+        <div class="w-full">
+          <label for="email" class="block font-semibold mb-1">Email</label>
+          <InputText id="email" v-model="data.email" fluid autocomplete="off" placeholder="Email" />
+        </div>
+        <div class="w-full">
+          <label for="plan_id" class="block font-semibold mb-1">Plan</label>
+          <Select
+            id="plan_id"
+            v-model="data.plan_id"
+            :options="plans"
+            @focus="getPlansOnFocus"
+            option-label="name"
+            option-value="id"
+            placeholder="Select Plan"
+            class="w-full"
+            :loading="planLoading"
+          />
+        </div>
+        <!-- <div class="w-full">
+          <label for="status" class="block font-semibold mb-1">Status</label>
+          <ToggleSwitch id="status" v-model="data.status" :true-value="1" :false-value="0" />
+        </div> -->
       </div>
     </template>
     <template #footer>
@@ -56,19 +73,25 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, type Ref } from 'vue';
+import { onMounted, ref, type Ref } from 'vue';
 import { useRouter } from 'vue-router';
-import { createRecordApi } from '@src/api/endpoints';
+import { updateRecordApi } from '@src/api/endpoints';
+import Card from 'primevue/card';
+// import ToggleSwitch from 'primevue/toggleswitch';
 import InputText from 'primevue/inputtext';
 import Divider from 'primevue/divider';
 import Button from 'primevue/button';
-import Card from 'primevue/card';
+import Select from 'primevue/select';
+import { usePlanfilter } from '@src/filters/plan';
+
+const props = defineProps<{ tenantData: any }>();
 
 const router = useRouter();
+const { plans, planLoading, getPlansOnFocus } = usePlanfilter();
 const data: Ref = ref({});
 
 const saveForm = () => {
-  createRecordApi('/tenants', data.value).then((res: any) => {
+  updateRecordApi(`/tenants/edit-single-tenant/${data.value.id}`, data.value).then((res: any) => {
     window.toast('success', 'Organization Information', res.message);
     router.push({ name: 'organization_list' });
   });
@@ -78,6 +101,12 @@ const saveForm = () => {
 const handleCancel = () => {
   router.push({ name: 'organization_list' });
 };
+
+onMounted(() => {
+  // getPlans();
+  data.value = props.tenantData;
+  data.value.plan_id = props.tenantData.plan.id;
+});
 </script>
 
 <style lang="scss" scoped></style>

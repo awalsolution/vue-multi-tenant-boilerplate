@@ -1,11 +1,5 @@
 <template>
-  <Toast
-    :pt="{
-      messageContent: () => ({
-        class: ['bg-green-500/20']
-      })
-    }"
-  />
+  <Toast />
   <router-view />
 </template>
 

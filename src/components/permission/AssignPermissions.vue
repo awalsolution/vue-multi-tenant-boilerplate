@@ -83,6 +83,12 @@ const handleAssignPermissions = () => {
   updateRecordApi(updateEndpoint.value, {
     permissions: selectedPermissions.value
   }).then((res: any) => {
+    console.log(res);
+    if (route.params.roleId) {
+      router.replace({ name: 'role_list' });
+    } else {
+      router.replace({ name: 'user_list' });
+    }
     window.toast('success', 'Success Message', res.message);
   });
 };
@@ -116,4 +122,5 @@ const categorizePermissions = () => {
   groupedPermissions.value = categories;
 };
 </script>
+
 <style lang="scss" scoped></style>

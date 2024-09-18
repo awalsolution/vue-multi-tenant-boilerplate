@@ -31,7 +31,7 @@
       <Column field="tenant_name" header="Name" class="whitespace-nowrap">
         <template #body="{ data }">
           <RouterLink
-            :to="{ name: 'organization_edit', params: { tenantId: data?.id } }"
+            :to="{ name: 'organization_edit', params: { tenant_id: data?.id } }"
             class="text-primary"
           >
             {{ data?.tenant_name }}
@@ -89,12 +89,22 @@
       >
         <template #body="{ data }">
           <Button
+            v-tooltip.top="'Tenant Activation'"
+            icon="pi pi-pen-to-square"
+            outlined
+            rounded
+            severity="danger"
+            class="mr-2"
+            @click="openActivationDialog"
+            v-permission="{ action: ['tenant update'] }"
+          />
+          <Button
             v-tooltip.top="'Edit Tenant'"
             icon="pi pi-pencil"
             outlined
             rounded
             class="mr-2"
-            @click="router.push({ name: 'organization_edit', params: { tenantId: data?.id } })"
+            @click="router.push({ name: 'organization_edit', params: { tenant_id: data?.id } })"
             v-permission="{ action: ['tenant update'] }"
           />
           <Button
@@ -122,6 +132,42 @@
         <Button label="Yes" icon="pi pi-check" severity="danger" @click="handleDelete" />
       </template>
     </Dialog>
+
+    <!-- Activation Dialog -->
+    <Dialog
+      v-model:visible="showActivationDialog"
+      class="w-1/2"
+      header="Organization Activation "
+      :modal="true"
+      :closable="false"
+    >
+      <div class="flex gap-5">
+        <div class="w-full">
+          <label for="roles" class="block font-bold mb-3">Select Role</label>
+          <MultiSelect
+            id="roles"
+            v-model="data.roles"
+            :options="roles"
+            filter
+            display="chip"
+            placeholder="Select Roles"
+            optionLabel="name"
+            optionValue="id"
+            :loading="roleLoading"
+            class="w-full"
+            @focus="getRolesOnFocus"
+          />
+        </div>
+        <div class="w-full">
+          <label for="status" class="block font-bold mb-3">Status</label>
+          <ToggleSwitch id="status" v-model="data.status" :true-value="1" :false-value="0" />
+        </div>
+      </div>
+      <template #footer>
+        <Button label="Cancel" icon="pi pi-times" text @click="hideActivationDialog" />
+        <Button label="Save" icon="pi pi-check" @click="saveActivationForm" />
+      </template>
+    </Dialog>
   </div>
 </template>
 
@@ -129,12 +175,13 @@
 import { onMounted, ref, type Ref } from 'vue';
 import { RouterLink, useRouter } from 'vue-router';
 import { usePagination } from '@src/hooks/pagination/usePagination';
-import { deleteRecordApi } from '@src/api/endpoints';
+import { createRecordApi, deleteRecordApi } from '@src/api/endpoints';
+import { useRolefilter } from '@src/filters/role';
 import { useEnv } from '@src/hooks/useEnv';
 import DataTable from 'primevue/datatable';
-import Avatar from 'primevue/avatar';
 import Column from 'primevue/column';
 import Button from 'primevue/button';
+import Avatar from 'primevue/avatar';
 import Dialog from 'primevue/dialog';
 import Tag from 'primevue/tag';
 
@@ -142,6 +189,10 @@ const { imgUrl } = useEnv();
 const router = useRouter();
 const deleteId: Ref = ref();
 const showDeleteDialog: Ref = ref(false);
+const showActivationDialog: Ref = ref(false);
+const data: Ref = ref({});
+const tenantActivationId: Ref = ref();
+const { roles, roleLoading, getRolesOnFocus } = useRolefilter();
 
 // fetch all records
 const { getList, list, page, pageSizes, itemCount, perPage }: any = usePagination('/tenants');
@@ -167,6 +218,27 @@ function handleDelete() {
   showDeleteDialog.value = false;
   deleteId.value = null;
 }
+
+function hideActivationDialog() {
+  showActivationDialog.value = false;
+}
+function openActivationDialog(item: any) {
+  tenantActivationId.value = item.id;
+  showActivationDialog.value = true;
+}
+
+const saveActivationForm = () => {
+  if (data?.value.status) {
+    createRecordApi(`/tenants/tenant-activation/${tenantActivationId.value}`, data.value).then(
+      (res: any) => {
+        window.toast('success', 'Success Message', res.message);
+        getList();
+      }
+    );
+  }
+  showActivationDialog.value = false;
+  data.value = {};
+};
 </script>
 
 <style lang="scss" scoped></style>
