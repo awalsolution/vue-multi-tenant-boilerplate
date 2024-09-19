@@ -48,59 +48,6 @@ const routes: RouteRecordRaw[] = [
               hidden: true
             },
             component: () => import('@src/components/tenant/EditTenant.vue')
-          },
-          {
-            path: '/organization/:db_name/organization-details',
-            name: 'organization_details',
-            meta: {
-              title: 'View Organization',
-              permissions: ['view tenant'],
-              hidden: true
-            },
-            component: () => import('@src/components/tenant/EditTenant.vue')
-          },
-          // tenant user operations
-          {
-            path: '/organization/edit-user-of-organization/:db_name/:user_id',
-            name: 'organization_edit_user',
-            meta: {
-              title: 'Edit User',
-              permissions: ['update tenant'],
-              hidden: true
-            },
-            component: () => import('@src/components/tenant/EditUserOfTenant.vue')
-          },
-          // tenant roles operations
-          {
-            path: '/organization/insert-roles-of-organization/:db_name',
-            name: 'organization_insert_role',
-            meta: {
-              title: 'Insert Role',
-              permissions: ['update tenant'],
-              hidden: true
-            },
-            component: () => import('@src/components/tenant/InsertRolesOfTenant.vue')
-          },
-          {
-            path: '/organization/edit-role-of-organization/:db_name/:role_id',
-            name: 'organization_edit_role',
-            meta: {
-              title: 'Edit Role',
-              permissions: ['update tenant'],
-              hidden: true
-            },
-            component: () => import('@src/components/tenant/AssignPermissionToTenantRole.vue')
-          },
-          // tenant permission operations
-          {
-            path: '/organization/insert-permissions-of-organization/:db_name',
-            name: 'organization_insert_permission',
-            meta: {
-              title: 'Insert Permissions',
-              permissions: ['update tenant'],
-              hidden: true
-            },
-            component: () => import('@src/components/tenant/InsertPermissionsOfTenant.vue')
           }
         ]
       },
