@@ -53,11 +53,11 @@
 import { onMounted, ref, type Ref } from 'vue';
 import { useUserStore } from '@src/store/modules/user';
 import { updateRecordApi } from '@src/api/endpoints';
+import { ImageUploader } from '@src/components/upload';
 import { useEnv } from '@src/hooks/useEnv';
 import InputText from 'primevue/inputtext';
 import Button from 'primevue/button';
 import Dialog from 'primevue/dialog';
-import { ImageUploader } from '@src/components/common/uploader';
 
 const { imgUrl } = useEnv();
 const userStore = useUserStore();

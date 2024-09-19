@@ -4,23 +4,16 @@ declare module '*.vue' {
   export default Component;
 }
 
-declare module 'virtual:*' {
-  const result: any;
-  export default result;
-}
+// declare module 'virtual:*' {
+//   const result: any;
+//   export default result;
+// }
 
 declare type Recordable<T = any> = Record<string, T>;
 
-interface Window {
-  $message: any;
-  $dialog: any;
-  $notification: any;
-  $loading: any;
-}
-
-interface Document {
-  startViewTransition?: (callback: () => void) => void;
-}
+// interface Document {
+//   startViewTransition?: (callback: () => void) => void;
+// }
 
 interface Window {
   toast: (

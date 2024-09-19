@@ -3,10 +3,7 @@ import '@src/assets/styles/main.scss';
 import { createApp } from 'vue';
 import App from '@src/App.vue';
 import { faviconLoader } from '@src/constants/faviconLoader';
-import { naiveUILoader } from '@src/constants/naiveUILoader';
-import { setupNaive } from '@src/plugins/naive';
-import { setupDirectives } from '@src/plugins/directives';
-import { setupNaiveDiscreteApi } from '@src/plugins/naiveDiscreteApi';
+import { setupDirectives } from '@src/directives/directives';
 import { setupStore } from '@src/store';
 import { setupRouter } from '@src/router';
 
@@ -23,9 +20,6 @@ import Ripple from 'primevue/ripple';
 const app = createApp(App);
 
 faviconLoader();
-naiveUILoader();
-
-setupNaive(app);
 
 setupStore(app);
 //
@@ -45,8 +39,6 @@ app.directive('tooltip', Tooltip);
 app.directive('ripple', Ripple);
 //
 setupDirectives(app).then(() => {});
-
-setupNaiveDiscreteApi();
 
 setupRouter(app);
 
