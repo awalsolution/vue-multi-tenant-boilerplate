@@ -49,17 +49,12 @@
             id="plan_id"
             v-model="data.plan_id"
             :options="plans"
-            @focus="getPlansOnFocus"
             option-label="name"
             option-value="id"
             placeholder="Select Plan"
             class="w-full"
           />
         </div>
-        <!-- <div class="w-full">
-          <label for="status" class="block font-semibold mb-1">Status</label>
-          <ToggleSwitch id="status" v-model="data.status" :true-value="1" :false-value="0" />
-        </div> -->
       </div>
     </template>
     <template #footer>
@@ -76,7 +71,6 @@ import { onMounted, ref, type Ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { updateRecordApi } from '@src/api/endpoints';
 import Card from 'primevue/card';
-// import ToggleSwitch from 'primevue/toggleswitch';
 import InputText from 'primevue/inputtext';
 import Divider from 'primevue/divider';
 import Button from 'primevue/button';
@@ -86,7 +80,7 @@ import { usePlanfilter } from '@src/filters/plan';
 const props = defineProps<{ tenantData: any }>();
 
 const router = useRouter();
-const { plans, getPlansOnFocus } = usePlanfilter();
+const { plans, getPlans } = usePlanfilter();
 const data: Ref = ref({});
 
 const saveForm = () => {
@@ -102,7 +96,7 @@ const handleCancel = () => {
 };
 
 onMounted(() => {
-  // getPlans();
+  getPlans();
   data.value = props.tenantData;
   data.value.plan_id = props.tenantData.plan.id;
 });

@@ -4,32 +4,10 @@
       <!-- :rowsPerPageOptions="pageSizes"
       paginatorTemplate="FirstPageLink PrevPageLink PageLinks  NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
       :currentPageReportTemplate="`Showing ${page} to ${perPage} of ${itemCount} Organizations`" -->
-      <template #empty> <div class="text-center">No Organizations found.</div> </template>
-      <Column field="profile_picture" header="Image" class="">
-        <template #body="{ data }">
-          <Avatar :image="imgUrl + data?.profile_picture" shape="circle" size="large" />
-        </template>
-      </Column>
+      <template #empty> <div class="text-center">No Roles found.</div> </template>
       <Column field="name" header="Name" class="whitespace-nowrap">
         <template #body="{ data }">
           {{ data?.name }}
-        </template>
-      </Column>
-      <Column field="email" header="Email" class="whitespace-nowrap">
-        <template #body="{ data }">
-          {{ data?.email }}
-        </template>
-      </Column>
-      <Column field="phone_number" header="Phone#" class="whitespace-nowrap">
-        <template #body="{ data }">
-          {{ data?.phone_number }}
-        </template>
-      </Column>
-      <Column field="roles" header="Role" class="whitespace-nowrap">
-        <template #body="{ data }">
-          <Tag v-for="role in data.roles || []" :key="role.id" severity="primary">
-            {{ role?.name }}
-          </Tag>
         </template>
       </Column>
       <Column field="status" header="status" class="whitespace-nowrap">
@@ -37,11 +15,6 @@
           <Tag :severity="data.status === 0 ? 'error' : 'info'">
             {{ data.status === 1 ? 'Active' : 'Disable' }}
           </Tag>
-        </template>
-      </Column>
-      <Column field="address" header="Address" class="whitespace-nowrap">
-        <template #body="{ data }">
-          {{ data?.address + ' ' + data?.city + ' ' + data?.state + ' ' + data?.country }}
         </template>
       </Column>
       <Column field="created_by" header="Auther" class="whitespace-nowrap">
@@ -92,10 +65,7 @@ import { useEnv } from '@src/hooks/useEnv';
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
 import Button from 'primevue/button';
-import Avatar from 'primevue/avatar';
 import Tag from 'primevue/tag';
 
 defineProps<{ list: any }>();
-
-const { imgUrl } = useEnv();
 </script>

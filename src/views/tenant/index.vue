@@ -174,7 +174,7 @@
       </template>
     </Dialog>
     <!-- Deactivation Dialog -->
-    <ConfirmPopup></ConfirmPopup>
+    <ConfirmPopup />
   </div>
 </template>
 

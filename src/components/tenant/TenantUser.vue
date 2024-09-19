@@ -81,6 +81,7 @@
             @click="openDeleteDialog(data)"
             v-permission="{ action: ['tenant delete'] }"
           />
+          
         </template>
       </Column> -->
     </DataTable>

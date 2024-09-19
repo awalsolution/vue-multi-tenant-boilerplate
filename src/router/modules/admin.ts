@@ -37,7 +37,7 @@ const routes: RouteRecordRaw[] = [
               icon: 'pi pi-fw pi-file',
               permissions: ['create tenant']
             },
-            component: () => import('@src/components/tenant/CreateTenant.vue')
+            component: () => import('@src/components/tenant/AddTenant.vue')
           },
           {
             path: '/organization/:tenant_id/edit',
@@ -47,7 +47,7 @@ const routes: RouteRecordRaw[] = [
               permissions: ['update tenant'],
               hidden: true
             },
-            component: () => import('@src/components/tenant/UpdateTenant.vue')
+            component: () => import('@src/components/tenant/EditTenant.vue')
           },
           {
             path: '/organization/:db_name/organization-details',
@@ -57,7 +57,7 @@ const routes: RouteRecordRaw[] = [
               permissions: ['view tenant'],
               hidden: true
             },
-            component: () => import('@src/components/tenant/UpdateTenant.vue')
+            component: () => import('@src/components/tenant/EditTenant.vue')
           },
           // tenant user operations
           {
