@@ -54,7 +54,6 @@
             option-value="id"
             placeholder="Select Plan"
             class="w-full"
-            :loading="planLoading"
           />
         </div>
         <!-- <div class="w-full">
@@ -87,7 +86,7 @@ import { usePlanfilter } from '@src/filters/plan';
 const props = defineProps<{ tenantData: any }>();
 
 const router = useRouter();
-const { plans, planLoading, getPlansOnFocus } = usePlanfilter();
+const { plans, getPlansOnFocus } = usePlanfilter();
 const data: Ref = ref({});
 
 const saveForm = () => {

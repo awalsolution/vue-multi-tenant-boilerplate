@@ -50,7 +50,7 @@
       </Column>
       <Column field="status" header="status" class="whitespace-nowrap">
         <template #body="{ data }">
-          <Tag :severity="data.status === 0 ? 'error' : 'info'">
+          <Tag :severity="data.status === 0 ? 'danger' : 'info'">
             {{ data.status === 1 ? 'Active' : 'Disable' }}
           </Tag>
         </template>
@@ -89,13 +89,25 @@
       >
         <template #body="{ data }">
           <Button
-            v-tooltip.top="'Tenant Activation'"
+            v-if="data.status === 0"
+            label="Active"
+            icon="pi pi-pen-to-square"
+            outlined
+            rounded
+            severity="primary"
+            class="mr-2"
+            @click="openActivationDialog(data)"
+            v-permission="{ action: ['tenant update'] }"
+          />
+          <Button
+            v-else
+            label="Deactive"
             icon="pi pi-pen-to-square"
             outlined
             rounded
             severity="danger"
             class="mr-2"
-            @click="openActivationDialog"
+            @click="deactivationDialog($event, data)"
             v-permission="{ action: ['tenant update'] }"
           />
           <Button
@@ -136,7 +148,7 @@
     <!-- Activation Dialog -->
     <Dialog
       v-model:visible="showActivationDialog"
-      class="w-1/2"
+      class="w-1/3"
       header="Organization Activation "
       :modal="true"
       :closable="false"
@@ -144,23 +156,16 @@
       <div class="flex gap-5">
         <div class="w-full">
           <label for="roles" class="block font-bold mb-3">Select Role</label>
-          <MultiSelect
+          <Select
             id="roles"
-            v-model="data.roles"
+            v-model="data.role_id"
             :options="roles"
-            filter
-            display="chip"
             placeholder="Select Roles"
             optionLabel="name"
             optionValue="id"
-            :loading="roleLoading"
             class="w-full"
             @focus="getRolesOnFocus"
           />
-        </div>
-        <div class="w-full">
-          <label for="status" class="block font-bold mb-3">Status</label>
-          <ToggleSwitch id="status" v-model="data.status" :true-value="1" :false-value="0" />
         </div>
       </div>
       <template #footer>
@@ -168,6 +173,8 @@
         <Button label="Save" icon="pi pi-check" @click="saveActivationForm" />
       </template>
     </Dialog>
+    <!-- Deactivation Dialog -->
+    <ConfirmPopup></ConfirmPopup>
   </div>
 </template>
 
@@ -178,7 +185,10 @@ import { usePagination } from '@src/hooks/pagination/usePagination';
 import { createRecordApi, deleteRecordApi } from '@src/api/endpoints';
 import { useRolefilter } from '@src/filters/role';
 import { useEnv } from '@src/hooks/useEnv';
+import Select from 'primevue/select';
+import { useConfirm } from 'primevue/useconfirm';
 import DataTable from 'primevue/datatable';
+import ConfirmPopup from 'primevue/confirmpopup';
 import Column from 'primevue/column';
 import Button from 'primevue/button';
 import Avatar from 'primevue/avatar';
@@ -186,13 +196,14 @@ import Dialog from 'primevue/dialog';
 import Tag from 'primevue/tag';
 
 const { imgUrl } = useEnv();
+const confirm = useConfirm();
 const router = useRouter();
 const deleteId: Ref = ref();
 const showDeleteDialog: Ref = ref(false);
 const showActivationDialog: Ref = ref(false);
-const data: Ref = ref({});
+const data: Ref = ref({ status: 0 });
 const tenantActivationId: Ref = ref();
-const { roles, roleLoading, getRolesOnFocus } = useRolefilter();
+const { roles, getRolesOnFocus } = useRolefilter();
 
 // fetch all records
 const { getList, list, page, pageSizes, itemCount, perPage }: any = usePagination('/tenants');
@@ -228,15 +239,48 @@ function openActivationDialog(item: any) {
 }
 
 const saveActivationForm = () => {
-  if (data?.value.status) {
-    createRecordApi(`/tenants/tenant-activation/${tenantActivationId.value}`, data.value).then(
-      (res: any) => {
+  data.value.status = 1;
+  createRecordApi(`/tenants/tenant-activation/${tenantActivationId.value}`, data.value).then(
+    (res: any) => {
+      if (res.code === 409) {
+        window.toast('error', 'Error Message', res.message);
+      } else {
         window.toast('success', 'Success Message', res.message);
         getList();
       }
-    );
-  }
+    }
+  );
   showActivationDialog.value = false;
+  data.value = {};
+};
+
+const deactivationDialog = (event: any, item: any) => {
+  tenantActivationId.value = item.id;
+  confirm.require({
+    target: event.currentTarget,
+    message: 'Are you sure you want to proceed?',
+    icon: 'pi pi-exclamation-triangle',
+    rejectProps: {
+      label: 'Cancel',
+      severity: 'secondary',
+      outlined: true
+    },
+    acceptProps: {
+      label: 'Save'
+    },
+    accept: async () => {
+      await saveDeactivationForm();
+    }
+  });
+};
+const saveDeactivationForm = async () => {
+  data.value.status = 0;
+  createRecordApi(`/tenants/tenant-activation/${tenantActivationId.value}`, data.value).then(
+    (res: any) => {
+      window.toast('success', 'Success Message', res.message);
+      getList();
+    }
+  );
   data.value = {};
 };
 </script>
