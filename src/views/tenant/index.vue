@@ -111,6 +111,7 @@
             v-permission="{ action: ['tenant update'] }"
           />
           <Button
+          
             v-tooltip.top="'Edit Tenant'"
             icon="pi pi-pencil"
             outlined

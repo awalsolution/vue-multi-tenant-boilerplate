@@ -167,7 +167,7 @@ import { usePagination } from '@src/hooks/pagination/usePagination';
 import { debounce } from 'lodash-es';
 
 const data: Ref = ref({});
-const submitted: Ref = ref({});
+const submitted: Ref = ref(false);
 const addDialog: Ref = ref(false);
 const delDialog: Ref = ref(false);
 const dialogHeader: Ref = ref();

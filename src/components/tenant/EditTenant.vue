@@ -59,12 +59,14 @@ onMounted(async () => {
   if (route.params && route.params.tenant_id) {
     const res: any = await getRecordApi(`/tenants/find-single-tenant/${route.params.tenant_id}`);
     generalInfo.value = res?.data;
-    const tenantDetail: any = await getRecordApi(`/tenants/find-single-tenant-details`, {
+    if (generalInfo.value.activated === 1) {
+      const tenantDetail: any = await getRecordApi(`/tenants/find-single-tenant-details`, {
       db_name: generalInfo.value.db_name
     });
     permissionsList.value = tenantDetail.data.permissions;
     rolesList.value = tenantDetail.data.roles;
     usersList.value = tenantDetail.data.users;
+    }
   } else {
     window.toast('error', 'Error Message', 'Route Params is Wrong!');
     router.replace({ name: 'ErrorPageSon' });

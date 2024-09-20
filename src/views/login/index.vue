@@ -135,8 +135,6 @@ const handleSubmit = async () => {
   userStore
     .login(formData)
     .then((res: any) => {
-      console.log(res);
-
       if (res.message) {
         window.toast('success', 'Success Message', res.message);
       }
