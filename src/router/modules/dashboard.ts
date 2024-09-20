@@ -7,6 +7,7 @@ const routes: RouteRecordRaw[] = [
     component: DashboardLayout,
     meta: {
       title: 'Home',
+      permissions: ['dashboard menu'],
       sort: 1
     },
     children: [
