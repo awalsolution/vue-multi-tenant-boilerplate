@@ -8,6 +8,7 @@ const routes: RouteRecordRaw[] = [
     redirect: '/dashboard',
     meta: {
       title: 'Admin',
+      permissions: ['dashboard menu'],
       sort: 2
     },
     children: [
