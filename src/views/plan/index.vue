@@ -13,7 +13,7 @@
       />
     </div>
     <DataTable
-      class=""
+      v-model:expandedRows="expandedRows"
       :value="list"
       stripedRows
       dataKey="id"
@@ -26,6 +26,7 @@
       :currentPageReportTemplate="`Showing ${page} to ${perPage} of ${itemCount} Plans`"
     >
       <template #empty> No Plans found. </template>
+      <Column expander style="width: 5rem" />
       <Column field="name" header="Name" :show-filter-menu="false" :showClearButton="false">
         <template #body="{ data }">
           {{ data.name }}
@@ -70,6 +71,14 @@
       <Column header="Actions" v-permission="{ action: ['plan update', 'plan delete'] }">
         <template #body="{ data }">
           <Button
+            icon="pi pi-lock"
+            outlined
+            rounded
+            class="mr-2"
+            @click="router.push({ name: 'plan_assign_permission', params: { planId: data?.id } })"
+            v-permission="{ action: ['plan assign permission'] }"
+          />
+          <Button
             icon="pi pi-pencil"
             outlined
             rounded
@@ -91,6 +100,37 @@
           />
         </template>
       </Column>
+      <template #expansion="slotProps">
+        <DataTable :value="slotProps.data.permissions">
+          <Column field="name" header="Name">
+            <template #body="{ data }">
+              {{ data.name }}
+            </template>
+          </Column>
+          <Column field="type" header="Permission Type">
+            <template #body="{ data }">
+              <Tag :value="data.type" :severity="data.type === 'private' ? 'danger' : 'info'" />
+            </template>
+          </Column>
+          <Column field="status" header="status">
+            <template #body="{ data }">
+              <Tag :value="data.status" :severity="data.status === 0 ? 'error' : 'info'">
+                {{ data.status === 1 ? 'Active' : 'Disable' }}
+              </Tag>
+            </template>
+          </Column>
+          <Column field="created_by" header="Auther">
+            <template #body="{ data }">
+              {{ data.created_by }}
+            </template>
+          </Column>
+          <Column field="created_at" header="Created At">
+            <template #body="{ data }">
+              {{ data.created_at }}
+            </template>
+          </Column>
+        </DataTable>
+      </template>
     </DataTable>
     <Dialog v-model:visible="addDialog" class="w-1/3" :header="dialogHeader" :modal="true">
       <div class="flex flex-col gap-6">
@@ -154,6 +194,7 @@
 
 <script lang="ts" setup>
 import { ref, onMounted, type Ref, watch } from 'vue';
+import { useRouter } from 'vue-router';
 import { FilterMatchMode } from '@primevue/core/api';
 import ToggleSwitch from 'primevue/toggleswitch';
 import Dialog from 'primevue/dialog';
@@ -167,6 +208,8 @@ import { usePagination } from '@src/hooks/pagination/usePagination';
 import { debounce } from 'lodash-es';
 
 const data: Ref = ref({});
+const expandedRows = ref({});
+const router = useRouter();
 const submitted: Ref = ref(false);
 const addDialog: Ref = ref(false);
 const delDialog: Ref = ref(false);
