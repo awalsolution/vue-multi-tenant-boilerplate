@@ -279,7 +279,7 @@ import { useEnv } from '@src/hooks/useEnv';
 const { imgUrl } = useEnv();
 const router = useRouter();
 const data: Ref = ref({});
-const submitted: Ref = ref({});
+const submitted: Ref = ref(false);
 const addDialog: Ref = ref(false);
 const delDialog: Ref = ref(false);
 const dialogHeader: Ref = ref();

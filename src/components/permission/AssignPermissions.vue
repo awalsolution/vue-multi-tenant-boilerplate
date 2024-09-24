@@ -56,7 +56,7 @@ const fetchEndpoint: Ref = ref();
 const updateEndpoint: Ref = ref();
 
 onMounted(() => {
-  if (route.params && (route.params.roleId || route.params.userId)) {
+  if (route.params && (route.params.roleId || route.params.userId || route.params.planId)) {
     getPermissions().then(() => {
       categorizePermissions();
     });
@@ -66,6 +66,9 @@ onMounted(() => {
     } else if (route.params.userId) {
       fetchEndpoint.value = `/users/${route.params.userId}`;
       updateEndpoint.value = '/users/assign-permission/' + route.params.userId;
+    } else if (route.params.planId) {
+      fetchEndpoint.value = `/plans/${route.params.planId}`;
+      updateEndpoint.value = '/plans/assign-permission/' + route.params.planId;
     }
     getRecordApi(fetchEndpoint.value).then((res: any) => {
       userData.value = res.data;
@@ -83,9 +86,10 @@ const handleAssignPermissions = () => {
   updateRecordApi(updateEndpoint.value, {
     permissions: selectedPermissions.value
   }).then((res: any) => {
-    console.log(res);
     if (route.params.roleId) {
       router.replace({ name: 'role_list' });
+    } else if (route.params.planId) {
+      router.replace({ name: 'plan_list' });
     } else {
       router.replace({ name: 'user_list' });
     }

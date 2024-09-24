@@ -11,7 +11,7 @@
       />
     </div>
     <DataTable
-      class=""
+      v-model:expandedRows="expandedRows"
       :value="list"
       stripedRows
       dataKey="id"
@@ -24,6 +24,7 @@
       :currentPageReportTemplate="`Showing ${page} to ${perPage} of ${itemCount} Roles`"
     >
       <template #empty> No Roles found. </template>
+      <Column expander style="width: 5rem" />
       <Column field="name" header="Name" :show-filter-menu="false" :showClearButton="false">
         <template #body="{ data }">
           {{ data.name }}
@@ -90,6 +91,37 @@
           />
         </template>
       </Column>
+      <template #expansion="slotProps">
+        <DataTable :value="slotProps.data.permissions">
+          <Column field="name" header="Name">
+            <template #body="{ data }">
+              {{ data.name }}
+            </template>
+          </Column>
+          <Column field="type" header="Permission Type">
+            <template #body="{ data }">
+              <Tag :value="data.type" :severity="data.type === 'private' ? 'danger' : 'info'" />
+            </template>
+          </Column>
+          <Column field="status" header="status">
+            <template #body="{ data }">
+              <Tag :value="data.status" :severity="data.status === 0 ? 'error' : 'info'">
+                {{ data.status === 1 ? 'Active' : 'Disable' }}
+              </Tag>
+            </template>
+          </Column>
+          <Column field="created_by" header="Auther">
+            <template #body="{ data }">
+              {{ data.created_by }}
+            </template>
+          </Column>
+          <Column field="created_at" header="Created At">
+            <template #body="{ data }">
+              {{ data.created_at }}
+            </template>
+          </Column>
+        </DataTable>
+      </template>
     </DataTable>
     <!-- add edit form -->
     <Dialog v-model:visible="addDialog" class="w-1/3" :header="dialogHeader" :modal="true">
@@ -148,6 +180,7 @@ import { debounce } from 'lodash-es';
 
 const router = useRouter();
 const data: Ref = ref({});
+const expandedRows: Ref = ref({});
 const submitted: Ref = ref({});
 const addDialog: Ref = ref(false);
 const delDialog: Ref = ref(false);

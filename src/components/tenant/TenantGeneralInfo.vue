@@ -23,11 +23,27 @@
           <label for="domain_name" class="block font-semibold mb-1">Domain Name</label>
           <InputText
             id="domain_name"
-            v-model="data.domain_name"
+            v-model.trim="data.domain_name"
+            :required="true"
+            :invalid="submitted && !data.domain_name"
             fluid
-            autocomplete="off"
             placeholder="Domain Name"
           />
+          <small v-if="submitted && !data.domain_name" class="text-red-500"
+            >Domain Name is required.</small
+          >
+        </div>
+        <div class="w-full">
+          <label for="email" class="block font-semibold mb-1">Email</label>
+          <InputText
+            id="email"
+            v-model.trim="data.email"
+            :required="true"
+            :invalid="submitted && !data.email"
+            fluid
+            placeholder="Email"
+          />
+          <small v-if="submitted && !data.email" class="text-red-500">Email is required.</small>
         </div>
         <div class="w-full">
           <label for="phone_number" class="block font-semibold mb-1">Phone#</label>
@@ -38,10 +54,6 @@
             autocomplete="off"
             placeholder="Phone#"
           />
-        </div>
-        <div class="w-full">
-          <label for="email" class="block font-semibold mb-1">Email</label>
-          <InputText id="email" v-model="data.email" fluid autocomplete="off" placeholder="Email" />
         </div>
         <div class="w-full">
           <label for="plan_id" class="block font-semibold mb-1">Plan</label>
@@ -82,13 +94,17 @@ const props = defineProps<{ tenantData: any }>();
 const router = useRouter();
 const { plans, getPlans } = usePlanfilter();
 const data: Ref = ref({});
+const submitted: Ref = ref(false);
 
 const saveForm = () => {
-  updateRecordApi(`/tenants/edit-single-tenant/${data.value.id}`, data.value).then((res: any) => {
-    window.toast('success', 'Organization Information', res.message);
-    router.push({ name: 'organization_list' });
-  });
-  data.value = {};
+  submitted.value = true;
+  if (data?.value.domain_name?.trim() && data?.value.email?.trim()) {
+    updateRecordApi(`/tenants/edit-single-tenant/${data.value.id}`, data.value).then((res: any) => {
+      window.toast('success', 'Organization Information', res.message);
+      router.push({ name: 'organization_list' });
+    });
+    data.value = {};
+  }
 };
 
 const handleCancel = () => {

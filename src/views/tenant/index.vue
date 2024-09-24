@@ -242,12 +242,8 @@ const saveActivationForm = () => {
   data.value.status = 1;
   createRecordApi(`/tenants/tenant-activation/${tenantActivationId.value}`, data.value).then(
     (res: any) => {
-      if (res.code === 409) {
-        window.toast('error', 'Error Message', res.message);
-      } else {
-        window.toast('success', 'Success Message', res.message);
-        getList();
-      }
+      window.toast('success', 'Success Message', res.message);
+      getList();
     }
   );
   showActivationDialog.value = false;

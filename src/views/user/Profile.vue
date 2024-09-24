@@ -62,7 +62,7 @@ import Dialog from 'primevue/dialog';
 const { imgUrl } = useEnv();
 const userStore = useUserStore();
 const editDialog: Ref = ref(false);
-const submitted: Ref = ref({});
+const submitted: Ref = ref(false);
 const data: Ref = ref({});
 
 const openEditDialog = () => {

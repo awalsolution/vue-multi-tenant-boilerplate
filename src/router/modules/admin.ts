@@ -103,6 +103,16 @@ const routes: RouteRecordRaw[] = [
         component: () => import('@src/views/plan/index.vue')
       },
       {
+        path: '/plan/:planId/assign-permission',
+        name: 'plan_assign_permission',
+        meta: {
+          title: 'Assing Permission',
+          permissions: ['assign permission menu'],
+          hidden: true
+        },
+        component: () => import('@src/components/permission/AssignPermissions.vue')
+      },
+      {
         path: '/role/list',
         name: 'role_list',
         meta: {

@@ -47,10 +47,10 @@ class Request {
         if (response) {
           Request.handleCode(status as number, data as string);
         }
-        if (!window.navigator.onLine) {
-          router.replace('/404');
-          window.toast('error', 'Error Message', 'Network Error');
-        }
+        // if (!window.navigator.onLine) {
+        //   router.replace('/404');
+        //   window.toast('error', 'Error Message', 'Network Error');
+        // }
         return Promise.reject(data);
       }
     );
