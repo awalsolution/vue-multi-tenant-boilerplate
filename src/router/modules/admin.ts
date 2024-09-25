@@ -53,6 +53,16 @@ const routes: RouteRecordRaw[] = [
         ]
       },
       {
+        path: '/organization/profile',
+        name: 'tenant_profile',
+        meta: {
+          title: 'Organization Profile',
+          permissions: ['tenant profile'],
+          hidden: true
+        },
+        component: () => import('@src/components/tenant/TenantProfile.vue')
+      },
+      {
         path: '/user/list',
         name: 'user_list',
         meta: {
@@ -107,7 +117,7 @@ const routes: RouteRecordRaw[] = [
         name: 'plan_assign_permission',
         meta: {
           title: 'Assing Permission',
-          permissions: ['assign permission menu'],
+          permissions: ['plan assign permission'],
           hidden: true
         },
         component: () => import('@src/components/permission/AssignPermissions.vue')
@@ -127,7 +137,7 @@ const routes: RouteRecordRaw[] = [
         name: 'role_assign_permission',
         meta: {
           title: 'Assing Permission',
-          permissions: ['assign permission menu'],
+          permissions: ['role assign permission'],
           hidden: true
         },
         component: () => import('@src/components/permission/AssignPermissions.vue')

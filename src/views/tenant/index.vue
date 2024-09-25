@@ -11,7 +11,6 @@
       />
     </div>
     <DataTable
-      class=""
       :value="list"
       stripedRows
       dataKey="id"
@@ -89,6 +88,16 @@
       >
         <template #body="{ data }">
           <Button
+            label="Edit Plan"
+            icon="pi pi-pen-to-square"
+            outlined
+            rounded
+            severity="danger"
+            class="mr-2"
+            @click="editPlanDialog($event, data)"
+            v-permission="{ action: ['tenant update'] }"
+          />
+          <Button
             v-if="data.status === 0"
             label="Active"
             icon="pi pi-pen-to-square"
@@ -111,8 +120,8 @@
             v-permission="{ action: ['tenant update'] }"
           />
           <Button
-            v-tooltip.top="'Edit Tenant'"
-            icon="pi pi-pencil"
+            label="Edit"
+            icon="pi pi-pen-to-square"
             outlined
             rounded
             class="mr-2"
@@ -121,7 +130,7 @@
           />
           <Button
             disabled
-            v-tooltip.top="'Delete Tenant'"
+            label="Delete"
             icon="pi pi-trash"
             outlined
             rounded
@@ -175,6 +184,34 @@
     </Dialog>
     <!-- Deactivation Dialog -->
     <ConfirmPopup />
+    <!-- Edit plan Dialog -->
+    <ConfirmDialog group="headless" class="w-1/6">
+      <template #container="{ message, acceptCallback, rejectCallback }">
+        <div class="flex flex-col items-center p-8 bg-surface-0 dark:bg-surface-900 rounded">
+          <div class="edit_plan_box_inner">
+            <i class="pi pi-question text-5xl"></i>
+          </div>
+          <span class="font-bold text-2xl block mb-2 mt-6">{{ message.header }}</span>
+          <p class="mb-0">{{ message.message }}</p>
+          <div class="w-full">
+            <label for="plan_id" class="block font-semibold mb-1">Plan</label>
+            <Select
+              id="plan_id"
+              v-model="editPlanData.id"
+              :options="plans"
+              option-label="name"
+              option-value="id"
+              placeholder="Select Plan"
+              class="w-full"
+            />
+          </div>
+          <div class="flex items-center gap-2 mt-6">
+            <Button label="Save" @click="acceptCallback"></Button>
+            <Button label="Cancel" outlined @click="rejectCallback"></Button>
+          </div>
+        </div>
+      </template>
+    </ConfirmDialog>
   </div>
 </template>
 
@@ -182,11 +219,13 @@
 import { onMounted, ref, type Ref } from 'vue';
 import { RouterLink, useRouter } from 'vue-router';
 import { usePagination } from '@src/hooks/pagination/usePagination';
-import { createRecordApi, deleteRecordApi } from '@src/api/endpoints';
+import { createRecordApi, deleteRecordApi, updateRecordApi } from '@src/api/endpoints';
 import { useRolefilter } from '@src/filters/role';
+import { usePlanfilter } from '@src/filters/plan';
 import { useEnv } from '@src/hooks/useEnv';
 import Select from 'primevue/select';
 import { useConfirm } from 'primevue/useconfirm';
+import ConfirmDialog from 'primevue/confirmdialog';
 import DataTable from 'primevue/datatable';
 import ConfirmPopup from 'primevue/confirmpopup';
 import Column from 'primevue/column';
@@ -203,20 +242,24 @@ const showDeleteDialog: Ref = ref(false);
 const showActivationDialog: Ref = ref(false);
 const data: Ref = ref({ status: 0 });
 const tenantActivationId: Ref = ref();
+const editPlanData = ref();
+const tenantEditPlanId: Ref = ref({});
 const { roles, getRolesOnFocus } = useRolefilter();
+const { plans, getPlans } = usePlanfilter();
 
 // fetch all records
 const { getList, list, page, pageSizes, itemCount, perPage }: any = usePagination('/tenants');
 
 onMounted(() => {
   getList();
+  getPlans();
 });
 
+// tenant delete
 function openDeleteDialog(item: any) {
   deleteId.value = item.id;
   showDeleteDialog.value = true;
 }
-
 function handleDelete() {
   deleteRecordApi(`/tenants/${deleteId.value}`)
     .then((res: any) => {
@@ -230,6 +273,7 @@ function handleDelete() {
   deleteId.value = null;
 }
 
+// tenant activation
 function hideActivationDialog() {
   showActivationDialog.value = false;
 }
@@ -237,7 +281,6 @@ function openActivationDialog(item: any) {
   tenantActivationId.value = item.id;
   showActivationDialog.value = true;
 }
-
 const saveActivationForm = () => {
   data.value.status = 1;
   createRecordApi(`/tenants/tenant-activation/${tenantActivationId.value}`, data.value).then(
@@ -250,6 +293,7 @@ const saveActivationForm = () => {
   data.value = {};
 };
 
+// tenant deactivation
 const deactivationDialog = (event: any, item: any) => {
   tenantActivationId.value = item.id;
   confirm.require({
@@ -279,6 +323,33 @@ const saveDeactivationForm = async () => {
   );
   data.value = {};
 };
+
+// tenant edit plan
+const editPlanDialog = (event: any, item: any) => {
+  editPlanData.value = item.plan;
+  tenantEditPlanId.value = item.id;
+  confirm.require({
+    group: 'headless',
+    header: 'Are you sure?',
+    message: 'Please confirm to proceed.',
+    accept: async () => {
+      await editPlan();
+    }
+  });
+};
+const editPlan = async () => {
+  updateRecordApi(
+    `/tenants/edit-single-tenant-plan/${tenantEditPlanId.value}`,
+    editPlanData.value
+  ).then((res: any) => {
+    window.toast('success', 'Success Message', res.message);
+    getList();
+  });
+};
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.edit_plan_box_inner {
+  @apply rounded-full bg-primary text-primary-contrast inline-flex justify-center items-center h-24 w-24 -mt-20;
+}
+</style>

@@ -180,22 +180,25 @@ const logout = async () => {
     .replace('/login')
     .then(async () => {
       const res = await userStore.logout();
-      window['$message'].success(res.message);
+      window.toast('success', 'Success Message', res.message);
     })
     .finally(() => location.reload());
 };
 
-type UserOptionKey = 'logout' | 'profile' | 'change-password';
+type UserOptionKey = 'logout' | 'user_profile' | 'change_password' | 'tenant_profile';
 
 const selectUserOption = (key: UserOptionKey) => {
   switch (key) {
     case 'logout':
       logout();
       break;
-    case 'profile':
+    case 'user_profile':
       router.push({ name: 'user_profile' });
       break;
-    case 'change-password':
+    case 'tenant_profile':
+      router.push({ name: 'tenant_profile' });
+      break;
+    case 'change_password':
       router.push('/change-password');
       break;
     default:
@@ -211,14 +214,19 @@ const items = ref([
     label: 'Setting',
     items: [
       {
-        label: 'Profile',
-        key: 'profile',
-        icon: 'pi pi-cog'
+        label: 'User Profile',
+        key: 'user_profile',
+        icon: 'pi pi-user-edit'
+      },
+      {
+        label: 'Organization Profile',
+        key: 'tenant_profile',
+        icon: 'pi pi-check-circle'
       },
       {
         label: 'Change Password',
         key: 'change-password',
-        icon: 'pi pi-cog'
+        icon: 'pi pi-lock'
       },
       {
         label: 'Logout',
