@@ -11,7 +11,6 @@
       />
     </div>
     <DataTable
-      class=""
       :value="list"
       stripedRows
       dataKey="id"
@@ -189,9 +188,7 @@
     <ConfirmDialog group="headless" class="w-1/6">
       <template #container="{ message, acceptCallback, rejectCallback }">
         <div class="flex flex-col items-center p-8 bg-surface-0 dark:bg-surface-900 rounded">
-          <div
-            class="rounded-full bg-primary text-primary-contrast inline-flex justify-center items-center h-24 w-24 -mt-20"
-          >
+          <div class="edit_plan_box_inner">
             <i class="pi pi-question text-5xl"></i>
           </div>
           <span class="font-bold text-2xl block mb-2 mt-6">{{ message.header }}</span>
@@ -351,4 +348,8 @@ const editPlan = async () => {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.edit_plan_box_inner {
+  @apply rounded-full bg-primary text-primary-contrast inline-flex justify-center items-center h-24 w-24 -mt-20;
+}
+</style>

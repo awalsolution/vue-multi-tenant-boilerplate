@@ -19,6 +19,7 @@
       dataKey="id"
       v-model:filters="filters"
       filterDisplay="row"
+      scrollable
       paginator
       :rows="20"
       :rowsPerPageOptions="pageSizes"
@@ -48,30 +49,37 @@
       </Column>
       <Column field="type" header="Type">
         <template #body="{ data }">
-          {{ data.type }}
+          <Tag severity=" primary">
+            {{ data.type }}
+          </Tag>
         </template>
       </Column>
       <Column field="status" header="status">
         <template #body="{ data }">
-          <Tag :value="data.status" :severity="data.status === 0 ? 'error' : 'info'">
+          <Tag :severity="data.status === 0 ? 'danger' : 'primary'">
             {{ data.status === 1 ? 'Active' : 'Disable' }}
           </Tag>
         </template>
       </Column>
-      <Column field="created_by" header="Auther">
+      <Column field="created_by" header="Auther" class="whitespace-nowrap">
         <template #body="{ data }">
           {{ data.created_by }}
         </template>
       </Column>
-      <Column field="created_at" header="Created At">
+      <Column field="created_at" header="Created At" class="whitespace-nowrap">
         <template #body="{ data }">
           {{ data.created_at }}
         </template>
       </Column>
-      <Column header="Actions" v-permission="{ action: ['plan update', 'plan delete'] }">
+      <Column
+        header="Actions"
+        v-permission="{ action: ['plan update', 'plan delete'] }"
+        class="whitespace-nowrap"
+      >
         <template #body="{ data }">
           <Button
-            icon="pi pi-lock"
+            label="Assign Permission"
+            icon="pi pi-pen-to-square"
             outlined
             rounded
             class="mr-2"
@@ -79,7 +87,8 @@
             v-permission="{ action: ['plan assign permission'] }"
           />
           <Button
-            icon="pi pi-pencil"
+            label="Edit"
+            icon="pi pi-pen-to-square"
             outlined
             rounded
             class="mr-2"
@@ -141,6 +150,7 @@
             v-model.trim="data.name"
             required="true"
             :invalid="submitted && !data.name"
+            placeholder="Enter Plan Name"
             fluid
           />
           <small v-if="submitted && !data.name" class="text-red-500">Name is required.</small>
@@ -152,6 +162,7 @@
             v-model.trim="data.price"
             required="true"
             :invalid="submitted && !data.price"
+            placeholder="Enter Plan Price"
             fluid
           />
           <small v-if="submitted && !data.price" class="text-red-500">Price is required.</small>
@@ -163,6 +174,7 @@
             v-model.trim="data.type"
             required="true"
             :invalid="submitted && !data.type"
+            placeholder="Enter Plan Type"
             fluid
           />
           <small v-if="submitted && !data.type" class="text-red-500">Type is required.</small>

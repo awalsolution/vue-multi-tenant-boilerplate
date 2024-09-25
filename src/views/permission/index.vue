@@ -107,6 +107,7 @@
             v-model.trim="data.name"
             required="true"
             :invalid="submitted && !data.name"
+            placeholder="Enter permission name"
             fluid
           />
           <small v-if="submitted && !data.name" class="text-red-500">Name is required.</small>

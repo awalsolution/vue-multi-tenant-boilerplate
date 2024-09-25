@@ -55,7 +55,7 @@
             placeholder="Phone#"
           />
         </div>
-        <div class="w-full">
+        <!-- <div class="w-full">
           <label for="plan_id" class="block font-semibold mb-1">Plan</label>
           <Select
             id="plan_id"
@@ -66,7 +66,7 @@
             placeholder="Select Plan"
             class="w-full"
           />
-        </div>
+        </div> -->
       </div>
     </template>
     <template #footer>
@@ -86,13 +86,13 @@ import Card from 'primevue/card';
 import InputText from 'primevue/inputtext';
 import Divider from 'primevue/divider';
 import Button from 'primevue/button';
-import Select from 'primevue/select';
-import { usePlanfilter } from '@src/filters/plan';
+// import Select from 'primevue/select';
+// import { usePlanfilter } from '@src/filters/plan';
 
 const props = defineProps<{ tenantData: any }>();
 
 const router = useRouter();
-const { plans, getPlans } = usePlanfilter();
+// const { plans, getPlans } = usePlanfilter();
 const data: Ref = ref({});
 const submitted: Ref = ref(false);
 
@@ -112,7 +112,7 @@ const handleCancel = () => {
 };
 
 onMounted(() => {
-  getPlans();
+  // getPlans();
   data.value = props.tenantData;
   data.value.plan_id = props.tenantData.plan.id;
 });

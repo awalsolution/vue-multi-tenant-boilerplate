@@ -19,7 +19,11 @@
             />
           </TabPanel>
           <TabPanel :value="1">
-            <TenantPermissions v-if="permissionsList.length > 0" :list="permissionsList" />
+            <TenantPermissions
+              v-if="permissionsList.length > 0"
+              :list="permissionsList"
+              @deleted="findTenantDetail()"
+            />
           </TabPanel>
           <TabPanel :value="2">
             <TenantRoles v-if="rolesList.length > 0" :list="rolesList" />
@@ -55,18 +59,22 @@ const usersList: Ref = ref([]);
 const rolesList: Ref = ref([]);
 const permissionsList: Ref = ref([]);
 
-onMounted(async () => {
-  if (route.params && route.params.tenant_id) {
-    const res: any = await getRecordApi(`/tenants/find-single-tenant/${route.params.tenant_id}`);
-    generalInfo.value = res?.data;
-    if (generalInfo.value.activated === 1) {
-      const tenantDetail: any = await getRecordApi(`/tenants/find-single-tenant-details`, {
+const findTenantDetail = async () => {
+  const res: any = await getRecordApi(`/tenants/find-single-tenant/${route.params.tenant_id}`);
+  generalInfo.value = res?.data;
+  if (generalInfo.value.activated === 1) {
+    const tenantDetail: any = await getRecordApi(`/tenants/find-single-tenant-details`, {
       db_name: generalInfo.value.db_name
     });
     permissionsList.value = tenantDetail.data.permissions;
     rolesList.value = tenantDetail.data.roles;
     usersList.value = tenantDetail.data.users;
-    }
+  }
+};
+
+onMounted(async () => {
+  if (route.params && route.params.tenant_id) {
+    findTenantDetail();
   } else {
     window.toast('error', 'Error Message', 'Route Params is Wrong!');
     router.replace({ name: 'ErrorPageSon' });

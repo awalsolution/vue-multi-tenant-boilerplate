@@ -113,8 +113,8 @@ const isHost = window.location.hostname;
 const tenantApiKey = storage.getTenantApiKey(TENANT_API_KEY);
 
 const formData = reactive({
-  email: 'iqbal@gmail.com',
-  password: '123456',
+  email: 'admin@gmail.com',
+  password: 'admin@123',
   remember_me: false
 });
 
