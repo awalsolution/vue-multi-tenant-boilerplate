@@ -98,6 +98,8 @@
             }"
           />
           <Button
+            disabled
+            label="Delete"
             icon="pi pi-trash"
             outlined
             rounded

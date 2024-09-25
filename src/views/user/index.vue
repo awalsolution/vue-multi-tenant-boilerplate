@@ -126,9 +126,8 @@
       >
         <template #body="{ data }">
           <Button
-            v-tooltip.top="'Assign Permissions'"
-            v-ripple
-            icon="pi pi-lock"
+            label="Assign Permission"
+            icon="pi pi-pen-to-square"
             outlined
             rounded
             class="mr-2"
@@ -136,8 +135,8 @@
             v-permission="{ action: ['user assign permission'] }"
           />
           <Button
-            v-tooltip.top="'Edit User'"
-            icon="pi pi-pencil"
+            label="Edit"
+            icon="pi pi-pen-to-square"
             outlined
             rounded
             class="mr-2"
@@ -145,7 +144,7 @@
             v-permission="{ action: ['user update'] }"
           />
           <Button
-            v-tooltip.top="'Delete User'"
+            label="Delete"
             icon="pi pi-trash"
             outlined
             rounded

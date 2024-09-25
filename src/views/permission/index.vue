@@ -80,7 +80,8 @@
       >
         <template #body="{ data }">
           <Button
-            icon="pi pi-pencil"
+            label="Edit"
+            icon="pi pi-pen-to-square"
             outlined
             rounded
             class="mr-2"
@@ -88,6 +89,8 @@
             v-permission="{ action: ['permission update'] }"
           />
           <Button
+            disabled
+            label="Delete"
             icon="pi pi-trash"
             outlined
             rounded
