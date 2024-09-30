@@ -46,30 +46,30 @@
           </div>
 
           <div>
-            <label for="email1" class="input_label">Email</label>
+            <label for="email" class="input_label">Email</label>
             <InputText
-              id="email1"
+              id="email"
               type="text"
               placeholder="Email address"
               class="w-full md:w-[30rem] mb-8"
-              v-model="formData.email"
+              v-model="data.email"
             />
 
             <label for="password1" class="input_label">Password</label>
             <Password
               id="password1"
-              v-model="formData.password"
+              v-model="data.password"
               placeholder="Password"
               :toggleMask="true"
               class="mb-4"
               fluid
               :feedback="false"
-            ></Password>
+            />
 
             <div class="flex items-center justify-between mt-2 mb-8 gap-8">
               <div class="flex items-center">
                 <Checkbox
-                  v-model="formData.remember_me"
+                  v-model="data.remember_me"
                   id="rememberme1"
                   binary
                   class="mr-2"
@@ -80,7 +80,7 @@
                 Forgot password?
               </span>
             </div>
-            <Button type="button" label="Login" fluid @click="handleSubmit"></Button>
+            <Button type="button" label="Login" fluid @click="handleSubmit" />
           </div>
         </div>
       </div>
@@ -89,7 +89,7 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted, onBeforeMount, reactive, ref, computed, type Ref } from 'vue';
+import { onMounted, onBeforeMount, ref, computed, type Ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import InputText from 'primevue/inputtext';
 import Password from 'primevue/password';
@@ -103,7 +103,12 @@ import { verifyDomainNameApi } from '@src/api/auth';
 import { TENANT_API_KEY } from '@src/utils/storage/variables';
 import { storage } from '@src/utils/storage';
 
-const remember_me: Ref = ref(false);
+const data: Ref = ref({
+  email: '',
+  password: '',
+  remember_me: false
+});
+
 const loginButton: Ref = ref(false);
 const userStore = useUserStore();
 const router = useRouter();
@@ -111,12 +116,6 @@ const route = useRoute();
 const { centralDomain } = useEnv();
 const isHost = window.location.hostname;
 const tenantApiKey = storage.getTenantApiKey(TENANT_API_KEY);
-
-const formData = reactive({
-  email: 'admin@gmail.com',
-  password: 'admin@123',
-  remember_me: false
-});
 
 const redirectUrl = computed(() => route.query.redirect as string);
 
@@ -129,31 +128,32 @@ const isLoginButtonDisabled = () => {
       storage.getTenantApiKey(TENANT_API_KEY) !== null)
   );
 };
-``;
 
 const handleSubmit = async () => {
-  userStore
-    .login(formData)
-    .then((res: any) => {
-      if (res.message) {
-        window.toast('success', 'Success Message', res.message);
-      }
-      if (remember_me.value) {
-        AuthUtils.setRememberedAccount(JSON.stringify(formData));
-      } else {
-        AuthUtils.clearRememberedAccount();
-      }
+  const res = await userStore.login(data.value);
+  console.log(res);
 
-      if (redirectUrl.value) {
-        router.replace(redirectUrl.value);
-      } else {
-        router.replace('/');
-      }
-    })
-    .catch((err: any) => {
-      console.log(err);
-      formData.password = '';
-    });
+  if (res.message && res.data !== null) {
+    window.toast('success', 'Success Message', res.message);
+  }
+
+  if (res.message && res.data === null) {
+    window.toast('error', 'Error Message', res.message);
+  }
+
+  if (data.value.remember_me === true) {
+    console.log('true');
+    AuthUtils.setRememberedAccount(JSON.stringify(data.value));
+  } else {
+    console.log('false');
+    AuthUtils.clearRememberedAccount();
+  }
+
+  if (redirectUrl.value) {
+    router.replace(redirectUrl.value);
+  } else {
+    router.replace('/');
+  }
 };
 
 onMounted(() => {
@@ -163,11 +163,12 @@ onMounted(() => {
       const { email, password, remember_me } = JSON.parse(
         localStorageData
       ) as RememberedAccountData;
-      formData.email = email;
-      formData.password = password;
-      formData.remember_me = remember_me;
+      data.value.email = email;
+      data.value.password = password;
+      data.value.remember_me = remember_me;
     } catch {
       window.toast('error', 'Error Message', 'Some thing went wrong try again');
+      router.replace('/');
     }
   }
 });
