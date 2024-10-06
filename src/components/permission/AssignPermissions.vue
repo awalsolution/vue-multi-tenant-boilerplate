@@ -12,11 +12,11 @@
       </div>
     </template>
     <template #content>
-      <div v-for="(group, category) in groupedPermissions" :key="category" class="mb-5">
-        <h2 class="text-xl font-semibold mb-3 capitalize">{{ category }}</h2>
+      <div v-for="item in menus" :key="item.id" class="mb-5">
+        <h2 class="text-xl font-semibold mb-3 capitalize">{{ item.name }}</h2>
         <div class="grid grid-cols-3">
           <div
-            v-for="permission of group"
+            v-for="permission of item.permissions"
             :key="permission.id"
             class="flex items-center gap-3 mb-3"
           >
@@ -39,27 +39,23 @@
 <script lang="ts" setup>
 import { onMounted, ref, type Ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import { usePermissionfilter } from '@src/filters/permission';
+import { useMenufilter } from '@src/filters/menu';
 import { getRecordApi, updateRecordApi } from '@src/api/endpoints';
 import Tag from 'primevue/tag';
 import Card from 'primevue/card';
 import Checkbox from 'primevue/checkbox';
 import Button from 'primevue/button';
 
-const { permissions, getPermissions } = usePermissionfilter();
-const groupedPermissions: Ref = ref({});
+const { menus, getMenus } = useMenufilter();
 const route = useRoute();
 const router = useRouter();
-const userData: Ref = ref({});
 const selectedPermissions: Ref = ref([]);
 const fetchEndpoint: Ref = ref();
 const updateEndpoint: Ref = ref();
 
 onMounted(() => {
   if (route.params && (route.params.roleId || route.params.userId || route.params.planId)) {
-    getPermissions().then(() => {
-      categorizePermissions();
-    });
+    getMenus();
     if (route.params.roleId) {
       fetchEndpoint.value = `/roles/${route.params.roleId}`;
       updateEndpoint.value = '/roles/assign-permission/' + route.params.roleId;
@@ -71,7 +67,6 @@ onMounted(() => {
       updateEndpoint.value = '/plans/assign-permission/' + route.params.planId;
     }
     getRecordApi(fetchEndpoint.value).then((res: any) => {
-      userData.value = res.data;
       selectedPermissions.value = res.data.permissions.map((item: any) => {
         return item.id;
       });
@@ -95,35 +90,6 @@ const handleAssignPermissions = () => {
     }
     window.toast('success', 'Success Message', res.message);
   });
-};
-
-// modify data with labels
-const categorizePermissions = () => {
-  const categories: any = {
-    dashboard: [],
-    role: [],
-    user: [],
-    permission: [],
-    tenant: [],
-    plan: []
-  };
-
-  permissions.value.forEach((permission: { name: string }) => {
-    if (permission.name.includes('tenant')) {
-      categories.tenant.push(permission);
-    } else if (permission.name.includes('permission')) {
-      categories.permission.push(permission);
-    } else if (permission.name.includes('plan')) {
-      categories.plan.push(permission);
-    } else if (permission.name.includes('user')) {
-      categories.user.push(permission);
-    } else if (permission.name.includes('role')) {
-      categories.role.push(permission);
-    } else {
-      categories.dashboard.push(permission);
-    }
-  });
-  groupedPermissions.value = categories;
 };
 </script>
 

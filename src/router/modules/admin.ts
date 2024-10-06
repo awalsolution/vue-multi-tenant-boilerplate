@@ -141,6 +141,16 @@ const routes: RouteRecordRaw[] = [
           hidden: true
         },
         component: () => import('@src/components/permission/AssignPermissions.vue')
+      },
+      {
+        path: '/menu/list',
+        name: 'menu_list',
+        meta: {
+          title: 'Menus',
+          icon: 'pi pi-fw pi-objects-column',
+          permissions: ['menu menu']
+        },
+        component: () => import('@src/views/menu/index.vue')
       }
     ]
   }
