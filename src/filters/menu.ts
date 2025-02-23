@@ -1,6 +1,6 @@
 import { ref } from 'vue';
 import { getRecordsApi } from '@src/api/endpoints';
-import { isEmpty } from 'lodash';
+import { isEmpty } from 'lodash-es';
 
 export function useMenufilter() {
   const menus: any = ref([]);

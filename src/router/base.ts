@@ -23,7 +23,7 @@ export const ErrorPageRoute: RouteRecordRaw = {
 
 export const RedirectRoute: RouteRecordRaw = {
   path: '/redirect',
-  name: RedirectName,
+  name: 'redirect-layout',
   component: DashboardLayout,
   meta: {
     title: RedirectName,
@@ -32,10 +32,10 @@ export const RedirectRoute: RouteRecordRaw = {
   children: [
     {
       path: '/redirect/:path(.*)',
-      name: RedirectName,
+      name: 'redirect',
       component: () => import('@src/views/common/redirect/index.vue'),
       meta: {
-        title: RedirectName,
+        title: 'Redirect',
         dismissTab: true
       }
     }
