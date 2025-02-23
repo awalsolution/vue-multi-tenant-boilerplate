@@ -2,26 +2,13 @@
   <div>
     <div class="flex items-center justify-between mb-5">
       <h1 class="text-2xl font-bold">Organization List</h1>
-      <Button
-        @click="router.push({ name: 'organization_add' })"
-        severity="primary"
-        label="Add Organization"
-        icon="pi pi-plus"
-        v-permission="{ action: ['tenant create'] }"
-      />
+      <Button @click="router.push({ name: 'organization_add' })" severity="primary" label="Add Organization"
+        icon="pi pi-plus" v-permission="{ action: ['tenant create'] }" />
     </div>
-    <DataTable
-      :value="list"
-      stripedRows
-      dataKey="id"
-      scrollable
-      paginator
-      :rows="20"
-      :rowsPerPageOptions="pageSizes"
-      paginatorTemplate="FirstPageLink PrevPageLink PageLinks  NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
-      :currentPageReportTemplate="`Showing ${page} to ${perPage} of ${itemCount} Organizations`"
-    >
-      <template #empty> <div class="text-center">No Organizations found.</div> </template>
+    <DataTable :value="list" stripedRows dataKey="id" scrollable>
+      <template #empty>
+        <div class="text-center">No Organizations found.</div>
+      </template>
       <Column field="logo" header="Logo" class="">
         <template #body="{ data }">
           <Avatar :image="imgUrl + data?.logo" shape="circle" size="large" />
@@ -29,10 +16,7 @@
       </Column>
       <Column field="tenant_name" header="Name" class="whitespace-nowrap">
         <template #body="{ data }">
-          <RouterLink
-            :to="{ name: 'organization_edit', params: { tenant_id: data?.id } }"
-            class="text-primary"
-          >
+          <RouterLink :to="{ name: 'organization_edit', params: { tenant_id: data?.id } }" class="text-primary">
             {{ data?.tenant_name }}
           </RouterLink>
         </template>
@@ -81,67 +65,25 @@
           {{ data?.created_at }}
         </template>
       </Column>
-      <Column
-        header="Actions"
-        v-permission="{ action: ['tenant update', 'tenant delete'] }"
-        class="whitespace-nowrap"
-      >
+      <Column header="Actions" v-permission="{ action: ['tenant update', 'tenant delete'] }" class="whitespace-nowrap">
         <template #body="{ data }">
-          <Button
-            label="Edit Plan"
-            icon="pi pi-pen-to-square"
-            outlined
-            rounded
-            severity="danger"
-            class="mr-2"
-            @click="editPlanDialog($event, data)"
-            v-permission="{ action: ['tenant update'] }"
-          />
-          <Button
-            v-if="data.status === 0"
-            label="Active"
-            icon="pi pi-pen-to-square"
-            outlined
-            rounded
-            severity="primary"
-            class="mr-2"
-            @click="openActivationDialog(data)"
-            v-permission="{ action: ['tenant update'] }"
-          />
-          <Button
-            v-else
-            label="Deactive"
-            icon="pi pi-pen-to-square"
-            outlined
-            rounded
-            severity="danger"
-            class="mr-2"
-            @click="deactivationDialog($event, data)"
-            v-permission="{ action: ['tenant update'] }"
-          />
-          <Button
-            label="Edit"
-            icon="pi pi-pen-to-square"
-            outlined
-            rounded
-            class="mr-2"
+          <Button label="Edit Plan" icon="pi pi-pen-to-square" outlined rounded severity="danger" class="mr-2"
+            @click="editPlanDialog($event, data)" v-permission="{ action: ['tenant update'] }" />
+          <Button v-if="data.status === 0" label="Active" icon="pi pi-pen-to-square" outlined rounded severity="primary"
+            class="mr-2" @click="openActivationDialog(data)" v-permission="{ action: ['tenant update'] }" />
+          <Button v-else label="Deactive" icon="pi pi-pen-to-square" outlined rounded severity="danger" class="mr-2"
+            @click="deactivationDialog($event, data)" v-permission="{ action: ['tenant update'] }" />
+          <Button label="Edit" icon="pi pi-pen-to-square" outlined rounded class="mr-2"
             @click="router.push({ name: 'organization_edit', params: { tenant_id: data?.id } })"
-            v-permission="{ action: ['tenant update'] }"
-          />
-          <Button
-            disabled
-            label="Delete"
-            icon="pi pi-trash"
-            outlined
-            rounded
-            severity="danger"
-            @click="openDeleteDialog(data)"
-            v-permission="{ action: ['tenant delete'] }"
-          />
+            v-permission="{ action: ['tenant update'] }" />
+          <Button disabled label="Delete" icon="pi pi-trash" outlined rounded severity="danger"
+            @click="openDeleteDialog(data)" v-permission="{ action: ['tenant delete'] }" />
         </template>
       </Column>
     </DataTable>
-
+    <Paginator :rows="limit" :totalRecords="itemCount" :rowsPerPageOptions="pageSizes" @page="handlePageChange"
+      template="FirstPageLink PrevPageLink PageLinks  NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown JumpToPageDropdown"
+      currentPageReportTemplate="Showing {first} to {last} of {totalRecords} Users" />
     <!-- delete form -->
     <Dialog v-model:visible="showDeleteDialog" class="w-1/3" header="Confirm" :modal="true">
       <div class="flex items-center gap-4">
@@ -155,26 +97,13 @@
     </Dialog>
 
     <!-- Activation Dialog -->
-    <Dialog
-      v-model:visible="showActivationDialog"
-      class="w-1/3"
-      header="Organization Activation "
-      :modal="true"
-      :closable="false"
-    >
+    <Dialog v-model:visible="showActivationDialog" class="w-1/3" header="Organization Activation " :modal="true"
+      :closable="false">
       <div class="flex gap-5">
         <div class="w-full">
           <label for="roles" class="block font-bold mb-3">Select Role</label>
-          <Select
-            id="roles"
-            v-model="data.role_id"
-            :options="roles"
-            placeholder="Select Roles"
-            optionLabel="name"
-            optionValue="id"
-            class="w-full"
-            @focus="getRolesOnFocus"
-          />
+          <Select id="roles" v-model="data.role_id" :options="roles" placeholder="Select Roles" optionLabel="name"
+            optionValue="id" class="w-full" @focus="getRolesOnFocus" />
         </div>
       </div>
       <template #footer>
@@ -195,15 +124,8 @@
           <p class="mb-0">{{ message.message }}</p>
           <div class="w-full">
             <label for="plan_id" class="block font-semibold mb-1">Plan</label>
-            <Select
-              id="plan_id"
-              v-model="editPlanData.id"
-              :options="plans"
-              option-label="name"
-              option-value="id"
-              placeholder="Select Plan"
-              class="w-full"
-            />
+            <Select id="plan_id" v-model="editPlanData.id" :options="plans" option-label="name" option-value="id"
+              placeholder="Select Plan" class="w-full" />
           </div>
           <div class="flex items-center gap-2 mt-6">
             <Button label="Save" @click="acceptCallback"></Button>
@@ -218,21 +140,22 @@
 <script lang="ts" setup>
 import { onMounted, ref, type Ref } from 'vue';
 import { RouterLink, useRouter } from 'vue-router';
+import {
+  Avatar,
+  Column,
+  DataTable,
+  Tag,
+  Dialog,
+  Button,
+  Paginator,
+  ConfirmDialog,
+  ConfirmPopup, useConfirm, Select
+} from 'primevue';
 import { usePagination } from '@src/hooks/pagination/usePagination';
 import { createRecordApi, deleteRecordApi, updateRecordApi } from '@src/api/endpoints';
 import { useRolefilter } from '@src/filters/role';
 import { usePlanfilter } from '@src/filters/plan';
 import { useEnv } from '@src/hooks/useEnv';
-import Select from 'primevue/select';
-import { useConfirm } from 'primevue/useconfirm';
-import ConfirmDialog from 'primevue/confirmdialog';
-import DataTable from 'primevue/datatable';
-import ConfirmPopup from 'primevue/confirmpopup';
-import Column from 'primevue/column';
-import Button from 'primevue/button';
-import Avatar from 'primevue/avatar';
-import Dialog from 'primevue/dialog';
-import Tag from 'primevue/tag';
 
 const { imgUrl } = useEnv();
 const confirm = useConfirm();
@@ -248,7 +171,7 @@ const { roles, getRolesOnFocus } = useRolefilter();
 const { plans, getPlans } = usePlanfilter();
 
 // fetch all records
-const { getList, list, page, pageSizes, itemCount, perPage }: any = usePagination('/tenants');
+const { getList, list, pageSizes, itemCount, limit, handlePageChange } = usePagination('/tenants');
 
 onMounted(() => {
   getList();

@@ -2,87 +2,41 @@
   <div>
     <div class="flex items-center justify-between mb-5">
       <h1 class="text-2xl font-bold">User List</h1>
-      <Button
-        @click="openAddDialog"
-        severity="primary"
-        label="Add User"
-        icon="pi pi-plus"
-        v-permission="{ action: ['user create'] }"
-      />
+      <Button @click="openAddDialog" severity="primary" label="Add User" icon="pi pi-plus"
+        v-permission="{ action: ['user create'] }" />
     </div>
-    <DataTable
-      class=""
-      :value="list"
-      stripedRows
-      dataKey="id"
-      scrollable
-      v-model:filters="filters"
-      filterDisplay="row"
-      paginator
-      :rows="20"
-      :rowsPerPageOptions="pageSizes"
-      paginatorTemplate="FirstPageLink PrevPageLink PageLinks  NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
-      :currentPageReportTemplate="`Showing ${page} to ${perPage} of ${itemCount} Users`"
-    >
-      <template #empty> <div class="text-center">No Users found.</div> </template>
-      <Column
-        field="name"
-        header="Name"
-        class="whitespace-nowrap min-w-56"
-        :show-filter-menu="false"
-        :showClearButton="false"
-      >
+    <DataTable :value="list" stripedRows dataKey="id" scrollable v-model:filters="filters" filterDisplay="row">
+      <template #empty>
+        <div class="text-center">No Users found.</div>
+      </template>
+      <Column field="name" header="Name" class="whitespace-nowrap min-w-56" :show-filter-menu="false"
+        :showClearButton="false">
         <template #body="{ data }">
           {{ data?.name }}
         </template>
         <template #filter="{ filterModel, filterCallback }">
-          <InputText
-            v-model="filterModel.value"
-            type="text"
-            placeholder="Search by Email"
-            @input="filterCallback"
-            class="w-full"
-          />
+          <InputText v-model="filterModel.value" type="text" placeholder="Search by Email" @input="filterCallback"
+            class="w-full" />
         </template>
       </Column>
-      <Column
-        field="email"
-        header="Email"
-        class="whitespace-nowrap min-w-56"
-        :show-filter-menu="false"
-        :showClearButton="false"
-      >
+      <Column field="email" header="Email" class="whitespace-nowrap min-w-56" :show-filter-menu="false"
+        :showClearButton="false">
         <template #body="{ data }">
           {{ data?.email }}
         </template>
         <template #filter="{ filterModel, filterCallback }">
-          <InputText
-            v-model="filterModel.value"
-            type="text"
-            placeholder="Search by Email"
-            @input="filterCallback"
-            class="w-full"
-          />
+          <InputText v-model="filterModel.value" type="text" placeholder="Search by Email" @input="filterCallback"
+            class="w-full" />
         </template>
       </Column>
-      <Column
-        field="phone_number"
-        header="Phone#"
-        class="whitespace-nowrap min-w-56"
-        :show-filter-menu="false"
-        :showClearButton="false"
-      >
+      <Column field="phone_number" header="Phone#" class="whitespace-nowrap min-w-56" :show-filter-menu="false"
+        :showClearButton="false">
         <template #body="{ data }">
           {{ data?.phone_number }}
         </template>
         <template #filter="{ filterModel, filterCallback }">
-          <InputText
-            v-model="filterModel.value"
-            type="text"
-            placeholder="Search by Phone"
-            @input="filterCallback"
-            class="w-full"
-          />
+          <InputText v-model="filterModel.value" type="text" placeholder="Search by Phone" @input="filterCallback"
+            class="w-full" />
         </template>
       </Column>
       <Column field="profile_picture" header="Image">
@@ -119,76 +73,38 @@
           {{ data?.created_at }}
         </template>
       </Column>
-      <Column
-        header="Actions"
-        v-permission="{ action: ['user update', 'user delete', 'user assign permission'] }"
-        class="whitespace-nowrap"
-      >
+      <Column header="Actions" v-permission="{ action: ['user update', 'user delete', 'user assign permission'] }"
+        class="whitespace-nowrap">
         <template #body="{ data }">
-          <Button
-            label="Assign Permission"
-            icon="pi pi-pen-to-square"
-            outlined
-            rounded
-            class="mr-2"
+          <Button label="Assign Permission" icon="pi pi-pen-to-square" outlined rounded class="mr-2"
             @click="router.push({ name: 'user_assign_permission', params: { userId: data?.id } })"
-            v-permission="{ action: ['user assign permission'] }"
-          />
-          <Button
-            label="Edit"
-            icon="pi pi-pen-to-square"
-            outlined
-            rounded
-            class="mr-2"
-            @click="openEditDialog(data)"
-            v-permission="{ action: ['user update'] }"
-          />
-          <Button
-            label="Delete"
-            icon="pi pi-trash"
-            outlined
-            rounded
-            severity="danger"
-            @click="openDeleteDialog(data)"
-            v-permission="{ action: ['user delete'] }"
-          />
+            v-permission="{ action: ['user assign permission'] }" />
+          <Button label="Edit" icon="pi pi-pen-to-square" outlined rounded class="mr-2" @click="openEditDialog(data)"
+            v-permission="{ action: ['user update'] }" />
+          <Button label="Delete" icon="pi pi-trash" outlined rounded severity="danger" @click="openDeleteDialog(data)"
+            v-permission="{ action: ['user delete'] }" />
         </template>
       </Column>
     </DataTable>
+    <Paginator :rows="limit" :totalRecords="itemCount" :rowsPerPageOptions="pageSizes" @page="handlePageChange"
+      template="FirstPageLink PrevPageLink PageLinks  NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown JumpToPageDropdown"
+      currentPageReportTemplate="Showing {first} to {last} of {totalRecords} Users" />
     <!-- add and update form -->
-    <Dialog
-      v-model:visible="addDialog"
-      class="w-1/2"
-      :header="dialogHeader"
-      :modal="true"
-      :closable="false"
-    >
+    <Dialog v-model:visible="addDialog" class="w-1/2" :header="dialogHeader" :modal="true" :closable="false">
       <div class="flex flex-col gap-6">
         <div class="flex gap-5">
           <div class="w-full">
             <label for="name" class="block font-bold mb-3">Name</label>
-            <InputText
-              id="name"
-              v-model.trim="data.name"
-              :required="true"
-              :invalid="submitted && !data.name"
-              placeholder="Name"
-              fluid
-            />
+            <InputText id="name" v-model.trim="data.name" :required="true" :invalid="submitted && !data.name"
+              placeholder="Name" fluid />
             <small v-if="submitted && !data.first_name" class="text-red-500">
               First Name is required.
             </small>
           </div>
           <div class="w-full">
             <label for="email" class="block font-bold mb-3">Email</label>
-            <InputText
-              id="email"
-              v-model.trim="data.email"
-              :required="true"
-              :invalid="submitted && !data.email"
-              placeholder="Email"
-              fluid
-            />
+            <InputText id="email" v-model.trim="data.email" :required="true" :invalid="submitted && !data.email"
+              placeholder="Email" fluid />
             <small v-if="submitted && !data.last_name" class="text-red-500">
               Last Name is required.
             </small>
@@ -197,34 +113,17 @@
         <div class="flex gap-5">
           <div class="w-full">
             <label for="password" class="block font-bold mb-3">Password</label>
-            <Password
-              id="password"
-              v-model.trim="data.password"
-              :required="true"
-              :invalid="submitted && !data.password"
-              placeholder="Password"
-              toggleMask
-              fluid
-            />
+            <Password id="password" v-model.trim="data.password" :required="true" :invalid="submitted && !data.password"
+              placeholder="Password" toggleMask fluid />
             <small v-if="submitted && !data.password" class="text-red-500">
               Password is required.
             </small>
           </div>
           <div class="w-full">
             <label for="roles" class="block font-bold mb-3">Select Role</label>
-            <MultiSelect
-              id="roles"
-              v-model="data.roles"
-              :options="roles"
-              filter
-              display="chip"
-              placeholder="Select Roles"
-              optionLabel="name"
-              optionValue="id"
-              :loading="roleLoading"
-              class="w-full"
-              @focus="getRolesOnFocus"
-            />
+            <MultiSelect id="roles" v-model="data.roles" :options="roles" filter display="chip"
+              placeholder="Select Roles" optionLabel="name" optionValue="id" :loading="roleLoading" class="w-full"
+              @focus="getRolesOnFocus" />
           </div>
         </div>
         <div class="flex gap-5">
@@ -259,16 +158,19 @@
 import { ref, onMounted, type Ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import { FilterMatchMode } from '@primevue/core/api';
-import ToggleSwitch from 'primevue/toggleswitch';
-import Dialog from 'primevue/dialog';
-import Button from 'primevue/button';
-import InputText from 'primevue/inputtext';
-import Tag from 'primevue/tag';
-import DataTable from 'primevue/datatable';
-import Column from 'primevue/column';
-import MultiSelect from 'primevue/multiselect';
-import Password from 'primevue/password';
-import Avatar from 'primevue/avatar';
+import {
+  Avatar,
+  Password,
+  MultiSelect,
+  Column,
+  DataTable,
+  Tag,
+  Dialog,
+  Button,
+  InputText,
+  ToggleSwitch,
+  Paginator
+} from 'primevue';
 import { createRecordApi, deleteRecordApi, updateRecordApi } from '@src/api/endpoints';
 import { usePagination } from '@src/hooks/pagination/usePagination';
 import { debounce } from 'lodash-es';
@@ -285,8 +187,7 @@ const dialogHeader: Ref = ref();
 const delId: Ref = ref();
 const { roles, roleLoading, getRolesOnFocus, getRoles } = useRolefilter();
 
-const { getList, list, page, pageSizes, itemCount, perPage, searchParams }: any =
-  usePagination('/users');
+const { getList, list, pageSizes, itemCount, limit, handlePageChange, searchParams } = usePagination('/users');
 
 const filters = ref({
   name: { value: null, matchMode: FilterMatchMode.CONTAINS },
