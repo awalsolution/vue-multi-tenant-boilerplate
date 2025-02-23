@@ -1,5 +1,12 @@
-import { ref, watch } from 'vue';
+import { ref } from 'vue';
 import { getRecordsApi } from '@src/api/endpoints';
+
+interface PageEvent {
+  page: number;
+  first: number;
+  rows: number;
+  pageCount: number;
+}
 
 export function usePagination(endpoint: any) {
   const list = ref([]);
@@ -8,12 +15,12 @@ export function usePagination(endpoint: any) {
   const emptyState = ref(false);
   const itemCount = ref(0);
   const pageSizes = ref([10, 20, 30, 40, 50, 100]);
-  const perPage = ref(50);
+  const limit = ref(10);
   const getList = () => {
     getRecordsApi(endpoint, {
       ...searchParams.value,
       page: page.value,
-      perPage: perPage.value
+      limit: limit.value
     }).then((res: any) => {
       console.log('record list => ', res);
       list.value = res.data.data;
@@ -23,18 +30,21 @@ export function usePagination(endpoint: any) {
       }
     });
   };
-  watch([page, perPage], (value, oldValue) => {
-    page.value = value[1] !== oldValue[1] ? 1 : page.value;
+
+  const handlePageChange = (e: PageEvent) => {
+    page.value = e.page + 1;
+    limit.value = e.rows;
     getList();
-  });
+  };
+
   return {
     getList,
     emptyState,
     list,
-    page,
     pageSizes,
     itemCount,
-    perPage,
+    limit,
+    handlePageChange,
     searchParams
   };
 }

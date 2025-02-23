@@ -1,6 +1,6 @@
 import { ref } from 'vue';
 import { getRecordsApi } from '@src/api/endpoints';
-import { isEmpty } from 'lodash';
+import { isEmpty } from 'lodash-es';
 
 export function useUserfilter() {
   const users: any = ref([]);

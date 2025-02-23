@@ -17,11 +17,6 @@
       dataKey="id"
       v-model:filters="filters"
       filterDisplay="row"
-      paginator
-      :rows="20"
-      :rowsPerPageOptions="pageSizes"
-      paginatorTemplate="FirstPageLink PrevPageLink PageLinks  NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
-      :currentPageReportTemplate="`Showing ${page} to ${perPage} of ${itemCount} Menus`"
     >
       <template #empty> No Menus found. </template>
       <Column expander style="width: 5rem" />
@@ -119,6 +114,14 @@
         </DataTable>
       </template>
     </DataTable>
+    <Paginator
+      :rows="limit"
+      :totalRecords="itemCount"
+      :rowsPerPageOptions="pageSizes"
+      @page="handlePageChange"
+      template="FirstPageLink PrevPageLink PageLinks  NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown JumpToPageDropdown"
+      currentPageReportTemplate="Showing {first} to {last} of {totalRecords} Menus"
+    />
 
     <!-- add edit form -->
     <Dialog v-model:visible="addDialog" class="w-1/3" :header="dialogHeader" :modal="true">
@@ -175,14 +178,17 @@
 <script lang="ts" setup>
 import { ref, onMounted, type Ref, watch } from 'vue';
 import { FilterMatchMode } from '@primevue/core/api';
-import ToggleSwitch from 'primevue/toggleswitch';
-import Dialog from 'primevue/dialog';
-import Button from 'primevue/button';
-import InputText from 'primevue/inputtext';
-import Tag from 'primevue/tag';
-import DataTable from 'primevue/datatable';
-import Column from 'primevue/column';
-import Select from 'primevue/select';
+import {
+  Select,
+  Column,
+  DataTable,
+  Tag,
+  Dialog,
+  Button,
+  InputText,
+  ToggleSwitch,
+  Paginator
+} from 'primevue';
 import { createRecordApi, deleteRecordApi, updateRecordApi } from '@src/api/endpoints';
 import { usePagination } from '@src/hooks/pagination/usePagination';
 import { debounce } from 'lodash-es';
@@ -195,7 +201,7 @@ const delDialog: Ref = ref(false);
 const dialogHeader: Ref = ref();
 const delId: Ref = ref();
 
-const { getList, list, page, pageSizes, itemCount, perPage, searchParams }: any =
+const { getList, list, pageSizes, itemCount, limit, handlePageChange, searchParams } =
   usePagination('/menus');
 
 const filters = ref({

@@ -3,7 +3,7 @@ import { ref } from 'vue';
 import { ACCESS_TOKEN, CURRENT_USER } from '@src/utils/storage/variables';
 import { storage } from '@src/utils/storage';
 import { loginApi, getUserInfoApi } from '@src/api/auth';
-import _ from 'lodash';
+import { uniq } from 'lodash-es';
 
 export const useUserStore = defineStore('app-user', () => {
   const token = ref(storage.get(ACCESS_TOKEN, ''));
@@ -67,7 +67,7 @@ export const useUserStore = defineStore('app-user', () => {
 
     const userPermissions = user?.permissions.map((permission: any) => permission.name) || [];
 
-    return _.uniq([...userPermissions, ...rolePermissions]);
+    return uniq([...userPermissions, ...rolePermissions]);
   };
 
   const logout = async () => {

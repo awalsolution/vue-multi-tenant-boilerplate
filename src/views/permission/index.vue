@@ -17,11 +17,6 @@
       dataKey="id"
       v-model:filters="filters"
       filterDisplay="row"
-      paginator
-      :rows="20"
-      :rowsPerPageOptions="pageSizes"
-      paginatorTemplate="FirstPageLink PrevPageLink PageLinks  NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
-      :currentPageReportTemplate="`Showing ${page} to ${perPage} of ${itemCount} Permissions`"
     >
       <template #empty> No permissions found. </template>
       <Column field="name" header="Name" :show-filter-menu="false" :showClearButton="false">
@@ -101,6 +96,15 @@
         </template>
       </Column>
     </DataTable>
+    <Paginator
+      :rows="limit"
+      :totalRecords="itemCount"
+      :rowsPerPageOptions="pageSizes"
+      @page="handlePageChange"
+      template="FirstPageLink PrevPageLink PageLinks  NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown JumpToPageDropdown"
+      currentPageReportTemplate="Showing {first} to {last} of {totalRecords} Permissions"
+    />
+
     <Dialog v-model:visible="addDialog" class="w-1/3" :header="dialogHeader" :modal="true">
       <div class="flex flex-col gap-6">
         <div>
@@ -151,13 +155,7 @@
 <script lang="ts" setup>
 import { ref, onMounted, type Ref, watch } from 'vue';
 import { FilterMatchMode } from '@primevue/core/api';
-import Dialog from 'primevue/dialog';
-import Button from 'primevue/button';
-import InputText from 'primevue/inputtext';
-import Select from 'primevue/select';
-import Tag from 'primevue/tag';
-import DataTable from 'primevue/datatable';
-import Column from 'primevue/column';
+import { Column, DataTable, Tag, Dialog, Button, InputText, Paginator, Select } from 'primevue';
 import { createRecordApi, deleteRecordApi, updateRecordApi } from '@src/api/endpoints';
 import { usePagination } from '@src/hooks/pagination/usePagination';
 import { debounce } from 'lodash-es';
@@ -169,7 +167,7 @@ const delDialog: Ref = ref(false);
 const dialogHeader: Ref = ref();
 const delId: Ref = ref();
 
-const { getList, list, page, pageSizes, itemCount, perPage, searchParams }: any =
+const { getList, list, pageSizes, itemCount, limit, handlePageChange, searchParams } =
   usePagination('/permissions');
 
 const filters = ref({
