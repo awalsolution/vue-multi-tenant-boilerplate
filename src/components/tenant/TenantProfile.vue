@@ -46,11 +46,11 @@
 
 <script lang="ts" setup>
 import { onMounted, ref, type Ref } from 'vue';
-import { getRecordApi, updateRecordApi } from '@src/api/endpoints';
-import { TENANT_API_KEY } from '@src/utils/storage/variables';
-import { storage } from '@src/utils/storage';
-import { ImageUploader } from '@src/components/upload';
-import { useEnv } from '@src/hooks/useEnv';
+import { getRecordApi, updateRecordApi } from '@/api/endpoints';
+import { TENANT_API_KEY } from '@/utils/storage/variables';
+import { storage } from '@/utils/storage';
+import { ImageUploader } from '@/components/upload';
+import { useEnv } from '@/hooks/useEnv';
 import InputText from 'primevue/inputtext';
 import Button from 'primevue/button';
 import Dialog from 'primevue/dialog';
@@ -72,11 +72,9 @@ function hideDialog() {
 
 const saveForm = () => {
   submitted.value = true;
-  updateRecordApi(`/tenants/edit-single-tenant-profile/${data.value.id}`, data.value).then(
-    (res: any) => {
-      window.toast('success', 'Profile Information', res.message);
-    }
-  );
+  updateRecordApi(`/tenants/edit-single-tenant-profile/${data.value.id}`, data.value).then((res: any) => {
+    window.toast('success', 'Profile Information', res.message);
+  });
   data.value = {};
   editDialog.value = false;
   getProfileData();
@@ -93,4 +91,4 @@ onMounted(() => {
 });
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="css" scoped></style>

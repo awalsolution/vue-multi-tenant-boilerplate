@@ -9,8 +9,8 @@
 
 <script setup lang="ts">
 import { onMounted, ref, type Ref } from 'vue';
-import { useAsyncRouteStore } from '@src/store/modules/asyncRoute';
-import { generatorMenu } from '@src/utils/router/sidebarGenerator';
+import { useAsyncRouteStore } from '@/store/modules/asyncRoute';
+import { generatorMenu } from '@/utils/router/sidebarGenerator';
 import AppMenuItem from './AppMenuItem.vue';
 
 const asyncRouteStore = useAsyncRouteStore();
@@ -25,4 +25,4 @@ onMounted(() => {
 });
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="css" scoped></style>

@@ -11,13 +11,7 @@
       <div class="grid grid-cols-3 gap-5">
         <div class="w-full">
           <label for="tenant_name" class="block font-semibold mb-1">Name</label>
-          <InputText
-            id="tenant_name"
-            v-model="data.tenant_name"
-            fluid
-            autocomplete="off"
-            placeholder="Name"
-          />
+          <InputText id="tenant_name" v-model="data.tenant_name" fluid autocomplete="off" placeholder="Name" />
         </div>
         <div class="w-full">
           <label for="domain_name" class="block font-semibold mb-1">Domain Name</label>
@@ -29,9 +23,7 @@
             fluid
             placeholder="Domain Name"
           />
-          <small v-if="submitted && !data.domain_name" class="text-red-500"
-            >Domain Name is required.</small
-          >
+          <small v-if="submitted && !data.domain_name" class="text-red-500">Domain Name is required.</small>
         </div>
         <div class="w-full">
           <label for="email" class="block font-semibold mb-1">Email</label>
@@ -47,13 +39,7 @@
         </div>
         <div class="w-full">
           <label for="phone_number" class="block font-semibold mb-1">Phone#</label>
-          <InputText
-            id="phone_number"
-            v-model="data.phone_number"
-            fluid
-            autocomplete="off"
-            placeholder="Phone#"
-          />
+          <InputText id="phone_number" v-model="data.phone_number" fluid autocomplete="off" placeholder="Phone#" />
         </div>
         <!-- <div class="w-full">
           <label for="plan_id" class="block font-semibold mb-1">Plan</label>
@@ -81,7 +67,7 @@
 <script lang="ts" setup>
 import { onMounted, ref, type Ref } from 'vue';
 import { useRouter } from 'vue-router';
-import { updateRecordApi } from '@src/api/endpoints';
+import { updateRecordApi } from '@/api/endpoints';
 import Card from 'primevue/card';
 import InputText from 'primevue/inputtext';
 import Divider from 'primevue/divider';
@@ -118,4 +104,4 @@ onMounted(() => {
 });
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="css" scoped></style>

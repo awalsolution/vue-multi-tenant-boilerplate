@@ -1,20 +1,17 @@
 import type { App } from 'vue';
 import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router';
-import { RedirectRoute } from '@src/router/base';
-import { PageEnum } from '@src/enums/pageEnum';
-import { createRouterGuards } from '@src/router/guards';
-import type { IModuleType } from '@src/router/types';
+import { RedirectRoute } from '@/router/base';
+import { PageEnum } from '@/enums/pageEnum';
+import { createRouterGuards } from '@/router/guards';
+import type { IModuleType } from '@/router/types';
 
 const modules = import.meta.glob<IModuleType>('./modules/**/*.ts', { eager: true });
 
-const routeModuleList: RouteRecordRaw[] = Object.keys(modules).reduce(
-  (list: RouteRecordRaw[], key) => {
-    const mod = modules[key].default ?? {};
-    const modList = Array.isArray(mod) ? [...mod] : [mod];
-    return [...list, ...modList];
-  },
-  []
-);
+const routeModuleList: RouteRecordRaw[] = Object.keys(modules).reduce((list: RouteRecordRaw[], key) => {
+  const mod = modules[key].default ?? {};
+  const modList = Array.isArray(mod) ? [...mod] : [mod];
+  return [...list, ...modList];
+}, []);
 
 function sortRoute(a: any, b: any) {
   return (a.meta?.sort ?? 0) - (b.meta?.sort ?? 0);
@@ -27,35 +24,35 @@ export const RootRoute: RouteRecordRaw = {
   name: 'root',
   redirect: PageEnum.BASE_HOME,
   meta: {
-    title: 'Root'
-  }
+    title: 'Root',
+  },
 };
 
 export const constantRoute: RouteRecordRaw = {
   path: '/login',
   name: 'Login',
-  component: () => import('@src/layouts/AuthLayout.vue'),
+  component: () => import('@/layouts/AuthLayout.vue'),
   meta: {
-    title: 'Login'
+    title: 'Login',
   },
   children: [
     {
       path: '',
       name: 'login',
       meta: {
-        title: 'Login'
+        title: 'Login',
       },
-      component: () => import('@src/views/auth/login.vue')
+      component: () => import('@/views/auth/login.vue'),
     },
     {
       path: '/forget-password',
       name: 'forget-password',
       meta: {
-        title: 'Forget Password'
+        title: 'Forget Password',
       },
-      component: () => import('@src/views/auth/forget-password.vue')
-    }
-  ]
+      component: () => import('@/views/auth/forget-password.vue'),
+    },
+  ],
 };
 
 export const asyncRoutes = [...routeModuleList];
@@ -66,7 +63,7 @@ export const router = createRouter({
   history: createWebHistory(),
   routes: constantRouter,
   strict: true,
-  scrollBehavior: () => ({ left: 0, top: 0 })
+  scrollBehavior: () => ({ left: 0, top: 0 }),
 });
 
 export function setupRouter(app: App) {

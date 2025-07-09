@@ -1,4 +1,4 @@
-import { appSetting } from '@src/hooks/useAppSetting';
+import { appSetting } from '@/hooks/useAppSetting';
 
 export const faviconLoader = () => {
   const { favicon } = appSetting;

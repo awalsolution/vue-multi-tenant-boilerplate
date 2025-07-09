@@ -1,5 +1,5 @@
 import { ref } from 'vue';
-import { getRecordsApi } from '@src/api/endpoints';
+import { getRecordsApi } from '@/api/endpoints';
 
 interface PageEvent {
   page: number;
@@ -20,7 +20,7 @@ export function usePagination(endpoint: any) {
     getRecordsApi(endpoint, {
       ...searchParams.value,
       page: page.value,
-      limit: limit.value
+      limit: limit.value,
     }).then((res: any) => {
       console.log('record list => ', res);
       list.value = res.data.data;
@@ -45,6 +45,6 @@ export function usePagination(endpoint: any) {
     itemCount,
     limit,
     handlePageChange,
-    searchParams
+    searchParams,
   };
 }

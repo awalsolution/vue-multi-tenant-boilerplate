@@ -1,1 +1,1 @@
-export * from '@src/utils/browser/private/types';
+export * from '@/utils/browser/private/types';

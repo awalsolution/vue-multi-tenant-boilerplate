@@ -1,8 +1,8 @@
-import Request from '@src/api/axios';
+import Request from '@/api/axios';
 
 export const getRecordsApi = (endpoint: any, params?: any) => {
   return Request.get(endpoint, {
-    ...params
+    ...params,
   });
 };
 
@@ -16,7 +16,7 @@ export const createRecordApi = (endpoint: any, data: any) => {
 
 export const updateRecordApi = (endpoint: any, data: any) => {
   return Request.put(endpoint, {
-    ...data
+    ...data,
   });
 };
 

@@ -10,14 +10,7 @@
         v-permission="{ action: ['permission create'] }"
       />
     </div>
-    <DataTable
-      class=""
-      :value="list"
-      stripedRows
-      dataKey="id"
-      v-model:filters="filters"
-      filterDisplay="row"
-    >
+    <DataTable class="" :value="list" stripedRows dataKey="id" v-model:filters="filters" filterDisplay="row">
       <template #empty> No permissions found. </template>
       <Column field="name" header="Name" :show-filter-menu="false" :showClearButton="false">
         <template #body="{ data }">
@@ -33,12 +26,7 @@
           />
         </template>
       </Column>
-      <Column
-        field="type"
-        header="Permission Type"
-        :show-filter-menu="false"
-        :showClearButton="false"
-      >
+      <Column field="type" header="Permission Type" :show-filter-menu="false" :showClearButton="false">
         <template #body="{ data }">
           <Tag :value="data.type" :severity="data.type === 'private' ? 'danger' : 'info'" />
         </template>
@@ -69,10 +57,7 @@
           {{ data.created_at }}
         </template>
       </Column>
-      <Column
-        header="Actions"
-        v-permission="{ action: ['permission update', 'permission delete'] }"
-      >
+      <Column header="Actions" v-permission="{ action: ['permission update', 'permission delete'] }">
         <template #body="{ data }">
           <Button
             label="Edit"
@@ -156,8 +141,8 @@
 import { ref, onMounted, type Ref, watch } from 'vue';
 import { FilterMatchMode } from '@primevue/core/api';
 import { Column, DataTable, Tag, Dialog, Button, InputText, Paginator, Select } from 'primevue';
-import { createRecordApi, deleteRecordApi, updateRecordApi } from '@src/api/endpoints';
-import { usePagination } from '@src/hooks/pagination/usePagination';
+import { createRecordApi, deleteRecordApi, updateRecordApi } from '@/api/endpoints';
+import { usePagination } from '@/hooks/pagination/usePagination';
 import { debounce } from 'lodash-es';
 
 const data: Ref = ref({});
@@ -167,18 +152,17 @@ const delDialog: Ref = ref(false);
 const dialogHeader: Ref = ref();
 const delId: Ref = ref();
 
-const { getList, list, pageSizes, itemCount, limit, handlePageChange, searchParams } =
-  usePagination('/permissions');
+const { getList, list, pageSizes, itemCount, limit, handlePageChange, searchParams } = usePagination('/permissions');
 
 const filters = ref({
   name: { value: null, matchMode: FilterMatchMode.CONTAINS },
-  type: { value: null, matchMode: FilterMatchMode.CONTAINS }
+  type: { value: null, matchMode: FilterMatchMode.CONTAINS },
 });
 
 const fetchList = () => {
   searchParams.value = {
     name: filters.value.name.value || '',
-    type: filters.value.type.value || ''
+    type: filters.value.type.value || '',
   };
   getList(searchParams.value);
 };
@@ -251,8 +235,8 @@ function handleDelete() {
 
 const permissionType = [
   { label: 'Public', key: 'public' },
-  { label: 'Private', key: 'private' }
+  { label: 'Private', key: 'private' },
 ];
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="css" scoped></style>

@@ -2,8 +2,13 @@
   <div>
     <div class="flex items-center justify-between mb-5">
       <h1 class="text-2xl font-bold">Organization List</h1>
-      <Button @click="router.push({ name: 'organization_add' })" severity="primary" label="Add Organization"
-        icon="pi pi-plus" v-permission="{ action: ['tenant create'] }" />
+      <Button
+        @click="router.push({ name: 'organization_add' })"
+        severity="primary"
+        label="Add Organization"
+        icon="pi pi-plus"
+        v-permission="{ action: ['tenant create'] }"
+      />
     </div>
     <DataTable :value="list" stripedRows dataKey="id" scrollable>
       <template #empty>
@@ -67,23 +72,68 @@
       </Column>
       <Column header="Actions" v-permission="{ action: ['tenant update', 'tenant delete'] }" class="whitespace-nowrap">
         <template #body="{ data }">
-          <Button label="Edit Plan" icon="pi pi-pen-to-square" outlined rounded severity="danger" class="mr-2"
-            @click="editPlanDialog($event, data)" v-permission="{ action: ['tenant update'] }" />
-          <Button v-if="data.status === 0" label="Active" icon="pi pi-pen-to-square" outlined rounded severity="primary"
-            class="mr-2" @click="openActivationDialog(data)" v-permission="{ action: ['tenant update'] }" />
-          <Button v-else label="Deactive" icon="pi pi-pen-to-square" outlined rounded severity="danger" class="mr-2"
-            @click="deactivationDialog($event, data)" v-permission="{ action: ['tenant update'] }" />
-          <Button label="Edit" icon="pi pi-pen-to-square" outlined rounded class="mr-2"
+          <Button
+            label="Edit Plan"
+            icon="pi pi-pen-to-square"
+            outlined
+            rounded
+            severity="danger"
+            class="mr-2"
+            @click="editPlanDialog($event, data)"
+            v-permission="{ action: ['tenant update'] }"
+          />
+          <Button
+            v-if="data.status === 0"
+            label="Active"
+            icon="pi pi-pen-to-square"
+            outlined
+            rounded
+            severity="primary"
+            class="mr-2"
+            @click="openActivationDialog(data)"
+            v-permission="{ action: ['tenant update'] }"
+          />
+          <Button
+            v-else
+            label="Deactive"
+            icon="pi pi-pen-to-square"
+            outlined
+            rounded
+            severity="danger"
+            class="mr-2"
+            @click="deactivationDialog($event, data)"
+            v-permission="{ action: ['tenant update'] }"
+          />
+          <Button
+            label="Edit"
+            icon="pi pi-pen-to-square"
+            outlined
+            rounded
+            class="mr-2"
             @click="router.push({ name: 'organization_edit', params: { tenant_id: data?.id } })"
-            v-permission="{ action: ['tenant update'] }" />
-          <Button disabled label="Delete" icon="pi pi-trash" outlined rounded severity="danger"
-            @click="openDeleteDialog(data)" v-permission="{ action: ['tenant delete'] }" />
+            v-permission="{ action: ['tenant update'] }"
+          />
+          <Button
+            disabled
+            label="Delete"
+            icon="pi pi-trash"
+            outlined
+            rounded
+            severity="danger"
+            @click="openDeleteDialog(data)"
+            v-permission="{ action: ['tenant delete'] }"
+          />
         </template>
       </Column>
     </DataTable>
-    <Paginator :rows="limit" :totalRecords="itemCount" :rowsPerPageOptions="pageSizes" @page="handlePageChange"
+    <Paginator
+      :rows="limit"
+      :totalRecords="itemCount"
+      :rowsPerPageOptions="pageSizes"
+      @page="handlePageChange"
       template="FirstPageLink PrevPageLink PageLinks  NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown JumpToPageDropdown"
-      currentPageReportTemplate="Showing {first} to {last} of {totalRecords} Users" />
+      currentPageReportTemplate="Showing {first} to {last} of {totalRecords} Users"
+    />
     <!-- delete form -->
     <Dialog v-model:visible="showDeleteDialog" class="w-1/3" header="Confirm" :modal="true">
       <div class="flex items-center gap-4">
@@ -97,13 +147,26 @@
     </Dialog>
 
     <!-- Activation Dialog -->
-    <Dialog v-model:visible="showActivationDialog" class="w-1/3" header="Organization Activation " :modal="true"
-      :closable="false">
+    <Dialog
+      v-model:visible="showActivationDialog"
+      class="w-1/3"
+      header="Organization Activation "
+      :modal="true"
+      :closable="false"
+    >
       <div class="flex gap-5">
         <div class="w-full">
           <label for="roles" class="block font-bold mb-3">Select Role</label>
-          <Select id="roles" v-model="data.role_id" :options="roles" placeholder="Select Roles" optionLabel="name"
-            optionValue="id" class="w-full" @focus="getRolesOnFocus" />
+          <Select
+            id="roles"
+            v-model="data.role_id"
+            :options="roles"
+            placeholder="Select Roles"
+            optionLabel="name"
+            optionValue="id"
+            class="w-full"
+            @focus="getRolesOnFocus"
+          />
         </div>
       </div>
       <template #footer>
@@ -124,8 +187,15 @@
           <p class="mb-0">{{ message.message }}</p>
           <div class="w-full">
             <label for="plan_id" class="block font-semibold mb-1">Plan</label>
-            <Select id="plan_id" v-model="editPlanData.id" :options="plans" option-label="name" option-value="id"
-              placeholder="Select Plan" class="w-full" />
+            <Select
+              id="plan_id"
+              v-model="editPlanData.id"
+              :options="plans"
+              option-label="name"
+              option-value="id"
+              placeholder="Select Plan"
+              class="w-full"
+            />
           </div>
           <div class="flex items-center gap-2 mt-6">
             <Button label="Save" @click="acceptCallback"></Button>
@@ -149,13 +219,15 @@ import {
   Button,
   Paginator,
   ConfirmDialog,
-  ConfirmPopup, useConfirm, Select
+  ConfirmPopup,
+  useConfirm,
+  Select,
 } from 'primevue';
-import { usePagination } from '@src/hooks/pagination/usePagination';
-import { createRecordApi, deleteRecordApi, updateRecordApi } from '@src/api/endpoints';
-import { useRolefilter } from '@src/filters/role';
-import { usePlanfilter } from '@src/filters/plan';
-import { useEnv } from '@src/hooks/useEnv';
+import { usePagination } from '@/hooks/pagination/usePagination';
+import { createRecordApi, deleteRecordApi, updateRecordApi } from '@/api/endpoints';
+import { useRolefilter } from '@/filters/role';
+import { usePlanfilter } from '@/filters/plan';
+import { useEnv } from '@/hooks/useEnv';
 
 const { imgUrl } = useEnv();
 const confirm = useConfirm();
@@ -206,12 +278,10 @@ function openActivationDialog(item: any) {
 }
 const saveActivationForm = () => {
   data.value.status = 1;
-  createRecordApi(`/tenants/tenant-activation/${tenantActivationId.value}`, data.value).then(
-    (res: any) => {
-      window.toast('success', 'Success Message', res.message);
-      getList();
-    }
-  );
+  createRecordApi(`/tenants/tenant-activation/${tenantActivationId.value}`, data.value).then((res: any) => {
+    window.toast('success', 'Success Message', res.message);
+    getList();
+  });
   showActivationDialog.value = false;
   data.value = {};
 };
@@ -226,24 +296,22 @@ const deactivationDialog = (event: any, item: any) => {
     rejectProps: {
       label: 'Cancel',
       severity: 'secondary',
-      outlined: true
+      outlined: true,
     },
     acceptProps: {
-      label: 'Save'
+      label: 'Save',
     },
     accept: async () => {
       await saveDeactivationForm();
-    }
+    },
   });
 };
 const saveDeactivationForm = async () => {
   data.value.status = 0;
-  createRecordApi(`/tenants/tenant-activation/${tenantActivationId.value}`, data.value).then(
-    (res: any) => {
-      window.toast('success', 'Success Message', res.message);
-      getList();
-    }
-  );
+  createRecordApi(`/tenants/tenant-activation/${tenantActivationId.value}`, data.value).then((res: any) => {
+    window.toast('success', 'Success Message', res.message);
+    getList();
+  });
   data.value = {};
 };
 
@@ -257,21 +325,18 @@ const editPlanDialog = (event: any, item: any) => {
     message: 'Please confirm to proceed.',
     accept: async () => {
       await editPlan();
-    }
+    },
   });
 };
 const editPlan = async () => {
-  updateRecordApi(
-    `/tenants/edit-single-tenant-plan/${tenantEditPlanId.value}`,
-    editPlanData.value
-  ).then((res: any) => {
+  updateRecordApi(`/tenants/edit-single-tenant-plan/${tenantEditPlanId.value}`, editPlanData.value).then((res: any) => {
     window.toast('success', 'Success Message', res.message);
     getList();
   });
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="css" scoped>
 .edit_plan_box_inner {
   @apply rounded-full bg-primary text-primary-contrast inline-flex justify-center items-center h-24 w-24 -mt-20;
 }

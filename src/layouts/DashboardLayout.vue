@@ -16,13 +16,13 @@
 import { onBeforeMount } from 'vue';
 import { useRouter } from 'vue-router';
 import { computed, ref, watch } from 'vue';
-import AppFooter from '@src/layouts/components/AppFooter.vue';
-import AppSidebar from '@src/layouts/components/AppSidebar.vue';
-import AppTopbar from '@src/layouts/components/AppTopbar.vue';
-import { useLayout } from '@src/layouts/components/composables/layout';
-import { useUserStore } from '@src/store/modules/user';
-import { ACCESS_TOKEN } from '@src/utils/storage/variables';
-import { storage } from '@src/utils/storage';
+import AppFooter from '@/layouts/components/AppFooter.vue';
+import AppSidebar from '@/layouts/components/AppSidebar.vue';
+import AppTopbar from '@/layouts/components/AppTopbar.vue';
+import { useLayout } from '@/layouts/components/composables/layout';
+import { useUserStore } from '@/store/modules/user';
+import { ACCESS_TOKEN } from '@/utils/storage/variables';
+import { storage } from '@/utils/storage';
 
 const loading = ref(true);
 const userStore = useUserStore();
@@ -40,7 +40,7 @@ const checkLogin = async () => {
   } else {
     userStore.logout();
     router.replace({
-      path: '/login'
+      path: '/login',
     });
     loading.value = false;
   }
@@ -61,10 +61,9 @@ const containerClass = computed(() => {
   return {
     'layout-overlay': layoutConfig.menuMode === 'overlay',
     'layout-static': layoutConfig.menuMode === 'static',
-    'layout-static-inactive':
-      layoutState.staticMenuDesktopInactive && layoutConfig.menuMode === 'static',
+    'layout-static-inactive': layoutState.staticMenuDesktopInactive && layoutConfig.menuMode === 'static',
     'layout-overlay-active': layoutState.overlayMenuActive,
-    'layout-mobile-active': layoutState.staticMenuMobileActive
+    'layout-mobile-active': layoutState.staticMenuMobileActive,
   };
 });
 
@@ -99,7 +98,7 @@ function isOutsideClicked(event: any) {
 }
 </script>
 
-<style scoped lang="scss">
+<style scoped lang="css">
 .slide-fade-enter-active {
   transition: all 0.3s ease-out;
 }

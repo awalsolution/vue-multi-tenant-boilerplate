@@ -1,4 +1,4 @@
-import { PageEnum } from '@src/enums/pageEnum';
+import { PageEnum } from '@/enums/pageEnum';
 
 /**
  * Recursive assembly menu format
@@ -10,7 +10,7 @@ export function generatorMenu(routerMap: Array<any>) {
     const currentMenu: any = {
       label: item.meta?.title,
       to: item.path,
-      icon: item.meta?.icon
+      icon: item.meta?.icon,
     };
 
     // Recursively handle children, if they exist
@@ -47,10 +47,7 @@ export function generatorMenu(routerMap: Array<any>) {
  * Determine the root route Router
  * */
 function isRootRouter(item: any) {
-  return (
-    item.meta?.alwaysShow != true &&
-    item?.children?.filter((item: any) => !item?.meta?.hidden)?.length === 1
-  );
+  return item.meta?.alwaysShow != true && item?.children?.filter((item: any) => !item?.meta?.hidden)?.length === 1;
 }
 
 /**

@@ -1,5 +1,5 @@
 import { ref } from 'vue';
-import { getRecordsApi } from '@src/api/endpoints';
+import { getRecordsApi } from '@/api/endpoints';
 import { isEmpty } from 'lodash-es';
 
 export function useMenufilter() {
@@ -13,7 +13,7 @@ export function useMenufilter() {
     } else {
       menuLoading.value = true;
       const response: any = await getRecordsApi('/menus', {
-        name: query
+        name: query,
       });
       menus.value = response.data;
       menuLoading.value = false;
@@ -40,6 +40,6 @@ export function useMenufilter() {
     menusInitialized,
     findMenu,
     getMenus,
-    getMenusOnFocus
+    getMenusOnFocus,
   };
 }

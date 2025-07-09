@@ -52,10 +52,10 @@
 
 <script lang="ts" setup>
 import { onMounted, ref, type Ref } from 'vue';
-import { useUserStore } from '@src/store/modules/user';
-import { updateRecordApi } from '@src/api/endpoints';
-import { ImageUploader } from '@src/components/upload';
-import { useEnv } from '@src/hooks/useEnv';
+import { useUserStore } from '@/store/modules/user';
+import { updateRecordApi } from '@/api/endpoints';
+import { ImageUploader } from '@/components/upload';
+import { useEnv } from '@/hooks/useEnv';
 import InputText from 'primevue/inputtext';
 import Button from 'primevue/button';
 import Dialog from 'primevue/dialog';
@@ -95,4 +95,4 @@ onMounted(() => {
 });
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="css" scoped></style>

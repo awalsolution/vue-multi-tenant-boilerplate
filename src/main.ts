@@ -1,4 +1,4 @@
-import '@/assets/styles/main.scss';
+import '@/assets/styles/style.css';
 import { createApp } from 'vue';
 import App from '@/App.vue';
 import { faviconLoader } from '@/constants/faviconLoader';

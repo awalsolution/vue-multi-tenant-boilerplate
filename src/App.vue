@@ -12,15 +12,15 @@ const toast = useToast();
 window.toast = (
   type: 'success' | 'info' | 'warn' | 'error' | 'secondary' | 'contrast',
   summary: string,
-  message: string
+  message: string,
 ) => {
   toast.add({
     severity: type,
     summary: summary,
     detail: message,
-    life: 3000
+    life: 3000,
   });
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="css" scoped></style>

@@ -3,23 +3,14 @@
     <template #title>
       <div class="flex justify-between items-center">
         <h1 class="text-2xl">Permissions List</h1>
-        <Button
-          label="Assign Permission"
-          @click="handleAssignPermissions"
-          severity="primary"
-          icon="pi pi-lock"
-        />
+        <Button label="Assign Permission" @click="handleAssignPermissions" severity="primary" icon="pi pi-lock" />
       </div>
     </template>
     <template #content>
       <div v-for="item in menus" :key="item.id" class="mb-5">
         <h2 class="text-xl font-semibold mb-3 capitalize">{{ item.name }}</h2>
         <div class="grid grid-cols-3">
-          <div
-            v-for="permission of item.permissions"
-            :key="permission.id"
-            class="flex items-center gap-3 mb-3"
-          >
+          <div v-for="permission of item.permissions" :key="permission.id" class="flex items-center gap-3 mb-3">
             <Checkbox
               v-model="selectedPermissions"
               :inputId="permission.name"
@@ -39,8 +30,8 @@
 <script lang="ts" setup>
 import { onMounted, ref, type Ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import { useMenufilter } from '@src/filters/menu';
-import { getRecordApi, updateRecordApi } from '@src/api/endpoints';
+import { useMenufilter } from '@/filters/menu';
+import { getRecordApi, updateRecordApi } from '@/api/endpoints';
 import Tag from 'primevue/tag';
 import Card from 'primevue/card';
 import Checkbox from 'primevue/checkbox';
@@ -79,7 +70,7 @@ onMounted(() => {
 
 const handleAssignPermissions = () => {
   updateRecordApi(updateEndpoint.value, {
-    permissions: selectedPermissions.value
+    permissions: selectedPermissions.value,
   }).then((res: any) => {
     if (route.params.roleId) {
       router.replace({ name: 'role_list' });

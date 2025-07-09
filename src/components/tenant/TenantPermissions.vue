@@ -30,11 +30,7 @@
           {{ data?.created_at }}
         </template>
       </Column>
-      <Column
-        header="Actions"
-        v-permission="{ action: ['tenant update', 'tenant delete'] }"
-        class="whitespace-nowrap"
-      >
+      <Column header="Actions" v-permission="{ action: ['tenant update', 'tenant delete'] }" class="whitespace-nowrap">
         <template #body="{ data }">
           <Button
             label="Delete"
@@ -76,7 +72,7 @@ import Button from 'primevue/button';
 import Tag from 'primevue/tag';
 import ConfirmDialog from 'primevue/confirmdialog';
 import { useConfirm } from 'primevue/useconfirm';
-import { deleteRecordApi } from '@src/api/endpoints';
+import { deleteRecordApi } from '@/api/endpoints';
 
 defineProps<{ list: any }>();
 
@@ -95,12 +91,12 @@ const deletePermissionDialog = (event: any, item: any) => {
     message: 'Please confirm to proceed.',
     accept: async () => {
       await deletePermission();
-    }
+    },
   });
 };
 const deletePermission = async () => {
   deleteRecordApi(`/tenants/delete-permission-of-tenant/${tenantPermissionId.value}`, {
-    tenant_id: route.params.tenant_id
+    tenant_id: route.params.tenant_id,
   }).then((res: any) => {
     window.toast('success', 'Success Message', res.message);
     emits('deleted', res.data);
@@ -108,7 +104,7 @@ const deletePermission = async () => {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="css" scoped>
 .edit_plan_box_inner {
   @apply rounded-full bg-primary text-primary-contrast inline-flex justify-center items-center h-24 w-24 -mt-20;
 }

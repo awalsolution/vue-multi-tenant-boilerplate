@@ -1,4 +1,4 @@
-import { ErrorPage, RedirectName, DashboardLayout } from '@src/router/constant';
+import { ErrorPage, RedirectName, DashboardLayout } from '@/router/constant';
 import type { RouteRecordRaw } from 'vue-router';
 
 // 404 on a page
@@ -7,7 +7,7 @@ export const ErrorPageRoute: RouteRecordRaw = {
   name: 'ErrorPage',
   component: DashboardLayout,
   meta: {
-    title: 'Error Page'
+    title: 'Error Page',
   },
   children: [
     {
@@ -15,10 +15,10 @@ export const ErrorPageRoute: RouteRecordRaw = {
       name: 'ErrorPageSon',
       component: ErrorPage,
       meta: {
-        title: 'Error Page'
-      }
-    }
-  ]
+        title: 'Error Page',
+      },
+    },
+  ],
 };
 
 export const RedirectRoute: RouteRecordRaw = {
@@ -27,17 +27,17 @@ export const RedirectRoute: RouteRecordRaw = {
   component: DashboardLayout,
   meta: {
     title: RedirectName,
-    dismissTab: true
+    dismissTab: true,
   },
   children: [
     {
       path: '/redirect/:path(.*)',
       name: 'redirect',
-      component: () => import('@src/views/common/redirect/index.vue'),
+      component: () => import('@/views/common/redirect/index.vue'),
       meta: {
         title: 'Redirect',
-        dismissTab: true
-      }
-    }
-  ]
+        dismissTab: true,
+      },
+    },
+  ],
 };

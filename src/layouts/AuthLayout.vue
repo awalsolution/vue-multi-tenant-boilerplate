@@ -5,9 +5,9 @@
 <script setup lang="ts">
 import { onBeforeMount } from 'vue';
 import { useRouter } from 'vue-router';
-import { useUserStore } from '@src/store/modules/user';
-import { ACCESS_TOKEN } from '@src/utils/storage/variables';
-import { storage } from '@src/utils/storage';
+import { useUserStore } from '@/store/modules/user';
+import { ACCESS_TOKEN } from '@/utils/storage/variables';
+import { storage } from '@/utils/storage';
 
 const usersStore = useUserStore();
 const router = useRouter();

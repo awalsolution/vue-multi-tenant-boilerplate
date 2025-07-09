@@ -66,7 +66,7 @@
             class="mr-2"
             @click="openEditDialog(data)"
             v-permission="{
-              action: ['menu update']
+              action: ['menu update'],
             }"
           />
           <Button
@@ -77,7 +77,7 @@
             severity="danger"
             @click="openDeleteDialog(data)"
             v-permission="{
-              action: ['menu delete']
+              action: ['menu delete'],
             }"
           />
         </template>
@@ -128,13 +128,7 @@
       <div class="flex flex-col gap-6">
         <div>
           <label for="name" class="block font-bold mb-3">Name</label>
-          <InputText
-            id="name"
-            v-model.trim="data.name"
-            :required="true"
-            :invalid="submitted && !data.name"
-            fluid
-          />
+          <InputText id="name" v-model.trim="data.name" :required="true" :invalid="submitted && !data.name" fluid />
           <small v-if="submitted && !data.name" class="text-red-500">Name is required.</small>
         </div>
         <div>
@@ -178,19 +172,9 @@
 <script lang="ts" setup>
 import { ref, onMounted, type Ref, watch } from 'vue';
 import { FilterMatchMode } from '@primevue/core/api';
-import {
-  Select,
-  Column,
-  DataTable,
-  Tag,
-  Dialog,
-  Button,
-  InputText,
-  ToggleSwitch,
-  Paginator
-} from 'primevue';
-import { createRecordApi, deleteRecordApi, updateRecordApi } from '@src/api/endpoints';
-import { usePagination } from '@src/hooks/pagination/usePagination';
+import { Select, Column, DataTable, Tag, Dialog, Button, InputText, ToggleSwitch, Paginator } from 'primevue';
+import { createRecordApi, deleteRecordApi, updateRecordApi } from '@/api/endpoints';
+import { usePagination } from '@/hooks/pagination/usePagination';
 import { debounce } from 'lodash-es';
 
 const data: Ref = ref({});
@@ -201,16 +185,15 @@ const delDialog: Ref = ref(false);
 const dialogHeader: Ref = ref();
 const delId: Ref = ref();
 
-const { getList, list, pageSizes, itemCount, limit, handlePageChange, searchParams } =
-  usePagination('/menus');
+const { getList, list, pageSizes, itemCount, limit, handlePageChange, searchParams } = usePagination('/menus');
 
 const filters = ref({
-  name: { value: null, matchMode: FilterMatchMode.CONTAINS }
+  name: { value: null, matchMode: FilterMatchMode.CONTAINS },
 });
 
 const fetchList = () => {
   searchParams.value = {
-    name: filters.value.name.value || ''
+    name: filters.value.name.value || '',
   };
   getList(searchParams.value);
 };
@@ -282,8 +265,8 @@ function handleDelete() {
 }
 const menuType = [
   { label: 'Public', key: 'public' },
-  { label: 'Private', key: 'private' }
+  { label: 'Private', key: 'private' },
 ];
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="css" scoped></style>

@@ -1,4 +1,4 @@
-import { useUserStore } from '@src/store/modules/user';
+import { useUserStore } from '@/store/modules/user';
 
 // check for all super admins users to access some thing or not
 export const isSuperAdminUser = () => {

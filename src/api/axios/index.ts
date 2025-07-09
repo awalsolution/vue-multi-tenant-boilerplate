@@ -1,17 +1,12 @@
 import axios from 'axios';
-import type {
-  AxiosError,
-  AxiosInstance,
-  AxiosRequestConfig,
-  AxiosResponse,
-  InternalAxiosRequestConfig
-} from 'axios';
-import { router } from '@src/router';
-import { axiosConfig } from '@src/api/axios/config';
-import { ResponseStatusCode } from '@src/api/axios/statusCode';
-import { ACCESS_TOKEN, TENANT_API_KEY } from '@src/utils/storage/variables';
-import { storage } from '@src/utils/storage';
-import { useEnv } from '@src/hooks/useEnv';
+import type { AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse, InternalAxiosRequestConfig } from 'axios';
+import { router } from '@/router';
+import { axiosConfig } from '@/api/axios/config';
+import { ResponseStatusCode } from '@/api/axios/statusCode';
+import { ACCESS_TOKEN, TENANT_API_KEY } from '@/utils/storage/variables';
+import { storage } from '@/utils/storage';
+import { useEnv } from '@/hooks/useEnv';
+
 const { centralDomain } = useEnv();
 
 class Request {
@@ -34,7 +29,7 @@ class Request {
         }
         return req;
       },
-      (err: AxiosError) => Promise.reject(err)
+      (err: AxiosError) => Promise.reject(err),
     );
 
     this.instance.interceptors.response.use(
@@ -52,7 +47,7 @@ class Request {
         //   window.toast('error', 'Error Message', 'Network Error');
         // }
         return Promise.reject(data);
-      }
+      },
     );
   }
 
@@ -67,8 +62,8 @@ class Request {
             router.replace({
               path: '/login',
               query: {
-                redirect: router.currentRoute.value.fullPath
-              }
+                redirect: router.currentRoute.value.fullPath,
+              },
             });
           } else {
             router.replace('/login');
@@ -126,11 +121,7 @@ class Request {
     return this.instance.put(url, data, config);
   }
 
-  delete<T>(
-    url: string,
-    params?: Record<string, unknown>,
-    config?: AxiosRequestConfig
-  ): Promise<T> {
+  delete<T>(url: string, params?: Record<string, unknown>, config?: AxiosRequestConfig): Promise<T> {
     return this.instance.delete(url, { params, ...config });
   }
 

@@ -89,10 +89,9 @@
 </template>
 
 <script lang="ts" setup>
-import { useEnv } from '@src/hooks/useEnv';
+import { useEnv } from '@/hooks/useEnv';
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
-import Button from 'primevue/button';
 import Avatar from 'primevue/avatar';
 import Tag from 'primevue/tag';
 

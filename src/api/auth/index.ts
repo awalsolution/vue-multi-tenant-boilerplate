@@ -1,8 +1,8 @@
 import axios from 'axios';
-import Request from '@src/api/axios';
-import { useEnv } from '@src/hooks/useEnv';
-import { TENANT_API_KEY } from '@src/utils/storage/variables';
-import { storage } from '@src/utils/storage';
+import Request from '@/api/axios';
+import { useEnv } from '@/hooks/useEnv';
+import { TENANT_API_KEY } from '@/utils/storage/variables';
+import { storage } from '@/utils/storage';
 
 const { apiUrl } = useEnv();
 

@@ -2,16 +2,9 @@
   <div class="login_container">
     <div class="flex flex-col items-center justify-center gap-10">
       <div style="" class="login_wrapper">
-        <div
-          class="w-full bg-surface-0 dark:bg-surface-900 pt-20 pb-8 px-8 sm:px-20 rounded=[53px]"
-        >
+        <div class="w-full bg-surface-0 dark:bg-surface-900 pt-20 pb-8 px-8 sm:px-20 rounded=[53px]">
           <div class="text-center mb-8">
-            <svg
-              viewBox="0 0 54 40"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-              class="mb-8 w-16 shrink-0 mx-auto"
-            >
+            <svg viewBox="0 0 54 40" fill="none" xmlns="http://www.w3.org/2000/svg" class="mb-8 w-16 shrink-0 mx-auto">
               <path
                 fill-rule="evenodd"
                 clip-rule="evenodd"
@@ -39,9 +32,7 @@
                 />
               </g>
             </svg>
-            <div class="text-surface-900 dark:text-surface-0 text-3xl font-medium mb-4">
-              Welcome to Awal Solution!
-            </div>
+            <div class="text-surface-900 dark:text-surface-0 text-3xl font-medium mb-4">Welcome to Awal Solution!</div>
             <span class="text-muted-color font-medium">Login to continue</span>
           </div>
 
@@ -89,18 +80,18 @@
 import { onMounted, onBeforeMount, ref, computed, type Ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { InputText, Password, Checkbox, Button } from 'primevue';
-import { useUserStore } from '@src/store/modules/user';
-import { AuthUtils } from '@src/utils/auth';
-import type { RememberedAccountData } from '@src/views/login/types';
-import { useEnv } from '@src/hooks/useEnv';
-import { verifyDomainNameApi } from '@src/api/auth';
-import { TENANT_API_KEY } from '@src/utils/storage/variables';
-import { storage } from '@src/utils/storage';
+import { useUserStore } from '@/store/modules/user';
+import { AuthUtils } from '@/utils/auth';
+import type { RememberedAccountData } from '@/views/login/types';
+import { useEnv } from '@/hooks/useEnv';
+import { verifyDomainNameApi } from '@/api/auth';
+import { TENANT_API_KEY } from '@/utils/storage/variables';
+import { storage } from '@/utils/storage';
 
 const data: Ref = ref({
   email: '',
   password: '',
-  remember_me: false
+  remember_me: false,
 });
 
 const loginButton: Ref = ref(false);
@@ -118,8 +109,7 @@ console.log('tenant api key ==>', tenantApiKey);
 const isLoginButtonDisabled = () => {
   loginButton.value = !(
     window.location.hostname === centralDomain ||
-    (storage.getTenantApiKey(TENANT_API_KEY) !== 'null' &&
-      storage.getTenantApiKey(TENANT_API_KEY) !== null)
+    (storage.getTenantApiKey(TENANT_API_KEY) !== 'null' && storage.getTenantApiKey(TENANT_API_KEY) !== null)
   );
 };
 
@@ -154,9 +144,7 @@ onMounted(() => {
   const localStorageData = AuthUtils.getRememberedAccount();
   if (localStorageData) {
     try {
-      const { email, password, remember_me } = JSON.parse(
-        localStorageData
-      ) as RememberedAccountData;
+      const { email, password, remember_me } = JSON.parse(localStorageData) as RememberedAccountData;
       data.value.email = email;
       data.value.password = password;
       data.value.remember_me = remember_me;
@@ -184,7 +172,7 @@ const verifyDomainName = async () => {
 onBeforeMount(() => verifyDomainName());
 </script>
 
-<style lang="scss" scoped>
+<style lang="css" scoped>
 .login_container {
   @apply bg-surface-50 dark:bg-surface-950 flex items-center justify-center min-h-screen min-w-[100vw] overflow-hidden;
 }

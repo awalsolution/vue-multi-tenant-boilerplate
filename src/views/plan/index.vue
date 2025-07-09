@@ -8,7 +8,7 @@
         label="Add Plan"
         icon="pi pi-plus"
         v-permission="{
-          action: ['plan create']
+          action: ['plan create'],
         }"
       />
     </div>
@@ -66,11 +66,7 @@
           {{ data.created_at }}
         </template>
       </Column>
-      <Column
-        header="Actions"
-        v-permission="{ action: ['plan update', 'plan delete'] }"
-        class="whitespace-nowrap"
-      >
+      <Column header="Actions" v-permission="{ action: ['plan update', 'plan delete'] }" class="whitespace-nowrap">
         <template #body="{ data }">
           <Button
             label="Assign Permission"
@@ -89,7 +85,7 @@
             class="mr-2"
             @click="openEditDialog(data)"
             v-permission="{
-              action: ['plan update']
+              action: ['plan update'],
             }"
           />
           <Button
@@ -101,7 +97,7 @@
             severity="danger"
             @click="openDeleteDialog(data)"
             v-permission="{
-              action: ['plan delete']
+              action: ['plan delete'],
             }"
           />
         </template>
@@ -214,18 +210,9 @@
 import { ref, onMounted, type Ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import { FilterMatchMode } from '@primevue/core/api';
-import {
-  Column,
-  DataTable,
-  Tag,
-  Dialog,
-  Button,
-  InputText,
-  ToggleSwitch,
-  Paginator
-} from 'primevue';
-import { createRecordApi, deleteRecordApi, updateRecordApi } from '@src/api/endpoints';
-import { usePagination } from '@src/hooks/pagination/usePagination';
+import { Column, DataTable, Tag, Dialog, Button, InputText, ToggleSwitch, Paginator } from 'primevue';
+import { createRecordApi, deleteRecordApi, updateRecordApi } from '@/api/endpoints';
+import { usePagination } from '@/hooks/pagination/usePagination';
 import { debounce } from 'lodash-es';
 
 const data: Ref = ref({});
@@ -237,18 +224,17 @@ const delDialog: Ref = ref(false);
 const dialogHeader: Ref = ref();
 const delId: Ref = ref();
 
-const { getList, list, pageSizes, itemCount, limit, handlePageChange, searchParams } =
-  usePagination('/plans');
+const { getList, list, pageSizes, itemCount, limit, handlePageChange, searchParams } = usePagination('/plans');
 
 const filters = ref({
   name: { value: null, matchMode: FilterMatchMode.CONTAINS },
-  price: { value: null, matchMode: FilterMatchMode.CONTAINS }
+  price: { value: null, matchMode: FilterMatchMode.CONTAINS },
 });
 
 const fetchList = () => {
   searchParams.value = {
     name: filters.value.name.value || '',
-    price: filters.value.price.value || ''
+    price: filters.value.price.value || '',
   };
   getList(searchParams.value);
 };
@@ -320,4 +306,4 @@ function handleDelete() {
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="css" scoped></style>

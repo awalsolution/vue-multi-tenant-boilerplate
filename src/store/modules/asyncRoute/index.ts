@@ -1,9 +1,9 @@
 import { defineStore } from 'pinia';
 import { toRaw } from 'vue';
 import type { RouteRecordRaw } from 'vue-router';
-import { asyncRoutes, constantRouter } from '@src/router';
+import { asyncRoutes, constantRouter } from '@/router';
 import { ref, computed } from 'vue';
-import { isSuperAdmin } from '@src/checks/isSuperAdmin';
+import { isSuperAdmin } from '@/checks/isSuperAdmin';
 
 interface TreeHelperConfig {
   id: string;
@@ -14,7 +14,7 @@ interface TreeHelperConfig {
 const DEFAULT_CONFIG: TreeHelperConfig = {
   id: 'id',
   children: 'children',
-  pid: 'pid'
+  pid: 'pid',
 };
 
 const getConfig = (config: Partial<TreeHelperConfig>) => Object.assign({}, DEFAULT_CONFIG, config);
@@ -30,7 +30,7 @@ export interface IAsyncRouteState {
 async function RouteFilter<T = any>(
   tree: T[],
   func: (n: T) => boolean,
-  config: Partial<TreeHelperConfig> = {}
+  config: Partial<TreeHelperConfig> = {},
 ): Promise<T[]> {
   config = getConfig(config);
   const children = config.children as string;
@@ -103,6 +103,6 @@ export const useAsyncRouteStore = defineStore('app-route', () => {
     setDynamicRouteAdded,
     keepAliveComponents,
     setKeepAliveComponents,
-    generateRoutes
+    generateRoutes,
   };
 });

@@ -1,5 +1,5 @@
 import { ref } from 'vue';
-import { getRecordsApi } from '@src/api/endpoints';
+import { getRecordsApi } from '@/api/endpoints';
 import { isEmpty } from 'lodash-es';
 
 export function usePlanfilter() {
@@ -38,6 +38,6 @@ export function usePlanfilter() {
     plansInitialized,
     findPlan,
     getPlans,
-    getPlansOnFocus
+    getPlansOnFocus,
   };
 }

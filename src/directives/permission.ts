@@ -1,5 +1,5 @@
 import type { ObjectDirective } from 'vue';
-import { usePermission } from '@src/hooks/permission/usePermission';
+import { usePermission } from '@/hooks/permission/usePermission';
 
 export const permission: ObjectDirective = {
   mounted(el: HTMLButtonElement, binding) {
@@ -9,5 +9,5 @@ export const permission: ObjectDirective = {
     if (!hasPermission(action)) {
       el.remove();
     }
-  }
+  },
 };

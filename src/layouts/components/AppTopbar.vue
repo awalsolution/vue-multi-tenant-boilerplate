@@ -121,9 +121,7 @@
                     fill="var(--p-text-color)"
                   />
                 </svg>
-                <span class="text-xl font-semibold"
-                  >Account<span class="text-primary"> Setting</span></span
-                >
+                <span class="text-xl font-semibold">Account<span class="text-primary"> Setting</span></span>
               </span>
             </template>
             <template #item="{ item, props }">
@@ -160,9 +158,9 @@ import { ref, type Ref } from 'vue';
 import { useRouter } from 'vue-router';
 import Menu from 'primevue/menu';
 import Avatar from 'primevue/avatar';
-import { useLayout } from '@src/layouts/components/composables/layout';
-import { useUserStore } from '@src/store/modules/user';
-import { useEnv } from '@src/hooks/useEnv';
+import { useLayout } from '@/layouts/components/composables/layout';
+import { useUserStore } from '@/store/modules/user';
+import { useEnv } from '@/hooks/useEnv';
 // import AppConfigurator from './AppConfigurator.vue';
 
 const { imgUrl } = useEnv();
@@ -208,7 +206,7 @@ const selectUserOption = (key: UserOptionKey) => {
 
 const items = ref([
   {
-    separator: true
+    separator: true,
   },
   {
     label: 'Setting',
@@ -216,27 +214,27 @@ const items = ref([
       {
         label: 'User Profile',
         key: 'user_profile',
-        icon: 'pi pi-user-edit'
+        icon: 'pi pi-user-edit',
       },
       {
         label: 'Organization Profile',
         key: 'tenant_profile',
-        icon: 'pi pi-check-circle'
+        icon: 'pi pi-check-circle',
       },
       {
         label: 'Change Password',
         key: 'change-password',
-        icon: 'pi pi-lock'
+        icon: 'pi pi-lock',
       },
       {
         label: 'Logout',
         key: 'logout',
-        icon: 'pi pi-sign-out'
-      }
-    ]
+        icon: 'pi pi-sign-out',
+      },
+    ],
   },
   {
-    separator: true
-  }
+    separator: true,
+  },
 ]);
 </script>

@@ -13,10 +13,7 @@
         </TabList>
         <TabPanels>
           <TabPanel :value="0">
-            <TenantGeneralInfo
-              v-if="Object.keys(generalInfo).length > 0"
-              :tenantData="generalInfo"
-            />
+            <TenantGeneralInfo v-if="Object.keys(generalInfo).length > 0" :tenantData="generalInfo" />
           </TabPanel>
           <TabPanel :value="1">
             <TenantPermissions
@@ -40,17 +37,17 @@
 <script setup lang="ts">
 import { onMounted, ref, type Ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import { getRecordApi } from '@src/api/endpoints';
+import { getRecordApi } from '@/api/endpoints';
 import Tabs from 'primevue/tabs';
 import TabList from 'primevue/tablist';
 import Tab from 'primevue/tab';
 import TabPanels from 'primevue/tabpanels';
 import TabPanel from 'primevue/tabpanel';
 import Card from 'primevue/card';
-import TenantGeneralInfo from '@src/components/tenant/TenantGeneralInfo.vue';
-import TenantUser from '@src/components/tenant/TenantUser.vue';
-import TenantRoles from '@src/components/tenant/TenantRoles.vue';
-import TenantPermissions from '@src/components/tenant/TenantPermissions.vue';
+import TenantGeneralInfo from '@/components/tenant/TenantGeneralInfo.vue';
+import TenantUser from '@/components/tenant/TenantUser.vue';
+import TenantRoles from '@/components/tenant/TenantRoles.vue';
+import TenantPermissions from '@/components/tenant/TenantPermissions.vue';
 
 const route = useRoute();
 const router = useRouter();
@@ -64,7 +61,7 @@ const findTenantDetail = async () => {
   generalInfo.value = res?.data;
   if (generalInfo.value.activated === 1) {
     const tenantDetail: any = await getRecordApi(`/tenants/find-single-tenant-details`, {
-      db_name: generalInfo.value.db_name
+      db_name: generalInfo.value.db_name,
     });
     permissionsList.value = tenantDetail.data.permissions;
     rolesList.value = tenantDetail.data.roles;
@@ -82,4 +79,4 @@ onMounted(async () => {
 });
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="css" scoped></style>

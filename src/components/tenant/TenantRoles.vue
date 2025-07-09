@@ -61,10 +61,8 @@
 </template>
 
 <script lang="ts" setup>
-import { useEnv } from '@src/hooks/useEnv';
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
-import Button from 'primevue/button';
 import Tag from 'primevue/tag';
 
 defineProps<{ list: any }>();

@@ -115,9 +115,7 @@
         <ul class="list-none p-0 m-0">
           <li class="flex flex-col md:flex-row md:items-center md:justify-between mb-6">
             <div>
-              <span class="text-surface-900 dark:text-surface-0 font-medium mr-2 mb-1 md:mb-0"
-                >Space T-Shirt</span
-              >
+              <span class="text-surface-900 dark:text-surface-0 font-medium mr-2 mb-1 md:mb-0">Space T-Shirt</span>
               <div class="mt-1 text-muted-color">Clothing</div>
             </div>
             <div class="mt-2 md:mt-0 flex items-center">
@@ -132,9 +130,7 @@
           </li>
           <li class="flex flex-col md:flex-row md:items-center md:justify-between mb-6">
             <div>
-              <span class="text-surface-900 dark:text-surface-0 font-medium mr-2 mb-1 md:mb-0"
-                >Portal Sticker</span
-              >
+              <span class="text-surface-900 dark:text-surface-0 font-medium mr-2 mb-1 md:mb-0">Portal Sticker</span>
               <div class="mt-1 text-muted-color">Accessories</div>
             </div>
             <div class="mt-2 md:mt-0 ml-0 md:ml-20 flex items-center">
@@ -149,9 +145,7 @@
           </li>
           <li class="flex flex-col md:flex-row md:items-center md:justify-between mb-6">
             <div>
-              <span class="text-surface-900 dark:text-surface-0 font-medium mr-2 mb-1 md:mb-0"
-                >Supernova Sticker</span
-              >
+              <span class="text-surface-900 dark:text-surface-0 font-medium mr-2 mb-1 md:mb-0">Supernova Sticker</span>
               <div class="mt-1 text-muted-color">Accessories</div>
             </div>
             <div class="mt-2 md:mt-0 ml-0 md:ml-20 flex items-center">
@@ -166,9 +160,7 @@
           </li>
           <li class="flex flex-col md:flex-row md:items-center md:justify-between mb-6">
             <div>
-              <span class="text-surface-900 dark:text-surface-0 font-medium mr-2 mb-1 md:mb-0"
-                >Wonders Notebook</span
-              >
+              <span class="text-surface-900 dark:text-surface-0 font-medium mr-2 mb-1 md:mb-0">Wonders Notebook</span>
               <div class="mt-1 text-muted-color">Office</div>
             </div>
             <div class="mt-2 md:mt-0 ml-0 md:ml-20 flex items-center">
@@ -183,9 +175,7 @@
           </li>
           <li class="flex flex-col md:flex-row md:items-center md:justify-between mb-6">
             <div>
-              <span class="text-surface-900 dark:text-surface-0 font-medium mr-2 mb-1 md:mb-0"
-                >Mat Black Case</span
-              >
+              <span class="text-surface-900 dark:text-surface-0 font-medium mr-2 mb-1 md:mb-0">Mat Black Case</span>
               <div class="mt-1 text-muted-color">Accessories</div>
             </div>
             <div class="mt-2 md:mt-0 ml-0 md:ml-20 flex items-center">
@@ -200,9 +190,7 @@
           </li>
           <li class="flex flex-col md:flex-row md:items-center md:justify-between mb-6">
             <div>
-              <span class="text-surface-900 dark:text-surface-0 font-medium mr-2 mb-1 md:mb-0"
-                >Robots T-Shirt</span
-              >
+              <span class="text-surface-900 dark:text-surface-0 font-medium mr-2 mb-1 md:mb-0">Robots T-Shirt</span>
               <div class="mt-1 text-muted-color">Clothing</div>
             </div>
             <div class="mt-2 md:mt-0 ml-0 md:ml-20 flex items-center">
@@ -247,8 +235,7 @@
             <span class="text-surface-900 dark:text-surface-0 leading-normal"
               >Richard Jones
               <span class="text-surface-700 dark:text-surface-100"
-                >has purchased a blue t-shirt for
-                <span class="text-primary font-bold">$79.00</span></span
+                >has purchased a blue t-shirt for <span class="text-primary font-bold">$79.00</span></span
               >
             </span>
           </li>
@@ -259,8 +246,8 @@
               <i class="pi pi-download !text-xl text-orange-500"></i>
             </div>
             <span class="text-surface-700 dark:text-surface-100 leading-normal"
-              >Your request for withdrawal of
-              <span class="text-primary font-bold">$2500.00</span> has been initiated.</span
+              >Your request for withdrawal of <span class="text-primary font-bold">$2500.00</span> has been
+              initiated.</span
             >
           </li>
         </ul>
@@ -276,8 +263,7 @@
             <span class="text-surface-900 dark:text-surface-0 leading-normal"
               >Keyser Wick
               <span class="text-surface-700 dark:text-surface-100"
-                >has purchased a black jacket for
-                <span class="text-primary font-bold">$59.00</span></span
+                >has purchased a black jacket for <span class="text-primary font-bold">$59.00</span></span
               >
             </span>
           </li>
@@ -289,9 +275,7 @@
             </div>
             <span class="text-surface-900 dark:text-surface-0 leading-normal"
               >Jane Davis
-              <span class="text-surface-700 dark:text-surface-100"
-                >has posted a new questions about your product.</span
-              >
+              <span class="text-surface-700 dark:text-surface-100">has posted a new questions about your product.</span>
             </span>
           </li>
         </ul>
@@ -314,8 +298,7 @@
               <i class="pi pi-heart !text-xl text-purple-500"></i>
             </div>
             <span class="text-surface-900 dark:text-surface-0 leading-normal"
-              ><span class="text-primary font-bold">12</span> users have added your products to
-              their wishlist.</span
+              ><span class="text-primary font-bold">12</span> users have added your products to their wishlist.</span
             >
           </li>
         </ul>
@@ -331,8 +314,8 @@ import Menu from 'primevue/menu';
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
 import Chart from 'primevue/chart';
-import { useLayout } from '@src/layouts/components/composables/layout';
-import { ProductService } from '@src/service/ProductService';
+import { useLayout } from '@/layouts/components/composables/layout';
+import { ProductService } from '@/service/ProductService';
 
 const { getPrimary, getSurface, isDarkTheme } = useLayout();
 
@@ -342,7 +325,7 @@ const chartOptions = ref(null);
 
 const items = ref([
   { label: 'Add New', icon: 'pi pi-fw pi-plus' },
-  { label: 'Remove', icon: 'pi pi-fw pi-trash' }
+  { label: 'Remove', icon: 'pi pi-fw pi-trash' },
 ]);
 
 onMounted(() => {
@@ -362,14 +345,14 @@ function setChartData() {
         label: 'Subscriptions',
         backgroundColor: documentStyle.getPropertyValue('--p-primary-400'),
         data: [4000, 10000, 15000, 4000],
-        barThickness: 32
+        barThickness: 32,
       },
       {
         type: 'bar',
         label: 'Advertising',
         backgroundColor: documentStyle.getPropertyValue('--p-primary-300'),
         data: [2100, 8400, 2400, 7500],
-        barThickness: 32
+        barThickness: 32,
       },
       {
         type: 'bar',
@@ -378,12 +361,12 @@ function setChartData() {
         data: [4100, 5200, 3400, 7400],
         borderRadius: {
           topLeft: 8,
-          topRight: 8
+          topRight: 8,
         },
         borderSkipped: true,
-        barThickness: 32
-      }
-    ]
+        barThickness: 32,
+      },
+    ],
   };
 }
 
@@ -399,25 +382,25 @@ function setChartOptions() {
       x: {
         stacked: true,
         ticks: {
-          color: textMutedColor
+          color: textMutedColor,
         },
         grid: {
           color: 'transparent',
-          borderColor: 'transparent'
-        }
+          borderColor: 'transparent',
+        },
       },
       y: {
         stacked: true,
         ticks: {
-          color: textMutedColor
+          color: textMutedColor,
         },
         grid: {
           color: borderColor,
           borderColor: 'transparent',
-          drawTicks: false
-        }
-      }
-    }
+          drawTicks: false,
+        },
+      },
+    },
   };
 }
 
