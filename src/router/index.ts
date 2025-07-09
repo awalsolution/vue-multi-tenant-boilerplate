@@ -31,7 +31,7 @@ export const RootRoute: RouteRecordRaw = {
   }
 };
 
-export const LoginRoute: RouteRecordRaw = {
+export const constantRoute: RouteRecordRaw = {
   path: '/login',
   name: 'Login',
   component: () => import('@src/layouts/AuthLayout.vue'),
@@ -45,14 +45,22 @@ export const LoginRoute: RouteRecordRaw = {
       meta: {
         title: 'Login'
       },
-      component: () => import('@src/views/login/index.vue')
+      component: () => import('@src/views/auth/login.vue')
+    },
+    {
+      path: '/forget-password',
+      name: 'forget-password',
+      meta: {
+        title: 'Forget Password'
+      },
+      component: () => import('@src/views/auth/forget-password.vue')
     }
   ]
 };
 
 export const asyncRoutes = [...routeModuleList];
 
-export const constantRouter: RouteRecordRaw[] = [LoginRoute, RootRoute, RedirectRoute];
+export const constantRouter: RouteRecordRaw[] = [constantRoute, RootRoute, RedirectRoute];
 
 export const router = createRouter({
   history: createWebHistory(),
