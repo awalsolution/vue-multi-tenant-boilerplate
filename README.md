@@ -46,7 +46,7 @@ yarn build
 
 - [pinia](https://pinia.vuejs.org/)
 
-- [NaiveUI](https://www.naiveui.com/en-US/os-theme)
+- [Prime Vue](https://primevue.org/)
 
 - [axios](https://axios-http.com/docs/intro)
 

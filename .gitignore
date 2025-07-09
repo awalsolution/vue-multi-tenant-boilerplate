@@ -1,5 +1,4 @@
 # Logs
-.github
 .vscode
 logs
 *.log
@@ -10,22 +9,28 @@ pnpm-debug.log*
 lerna-debug.log*
 
 node_modules
+.DS_Store
 dist
-build
 dist-ssr
+coverage
 *.local
-package-lock.json
-yarn.lock
-pnpm-lock.yaml
-.env
+
+/cypress/videos/
+/cypress/screenshots/
 
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
 .idea
-.DS_Store
 *.suo
 *.ntvs*
 *.njsproj
 *.sln
 *.sw?
+
+*.tsbuildinfo
+
+yarn.lock
+package-lock.json
+pnpm-lock.yaml
+.env
