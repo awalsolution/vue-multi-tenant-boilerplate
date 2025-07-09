@@ -9,7 +9,7 @@ import { storage } from '@src/utils/storage';
 
 const LOGIN_PATH = PageEnum.BASE_LOGIN;
 
-const whitePathList = [LOGIN_PATH];
+const whitePathList = [LOGIN_PATH, '/forget-password'];
 
 export function createRouterGuards(router: Router) {
   const userStore = useUserStore();
