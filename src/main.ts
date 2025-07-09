@@ -1,14 +1,12 @@
-import '@src/assets/styles/main.scss';
-
+import '@/assets/styles/main.scss';
 import { createApp } from 'vue';
-import App from '@src/App.vue';
-import { faviconLoader } from '@src/constants/faviconLoader';
-import { setupDirectives } from '@src/directives/directives';
-import { setupStore } from '@src/store';
-import { setupRouter } from '@src/router';
+import App from '@/App.vue';
+import { faviconLoader } from '@/constants/faviconLoader';
+import { setupDirectives } from '@/directives/directives';
+import { setupStore } from '@/store';
+import { setupRouter } from '@/router';
 
 //
-import Aura from '@primevue/themes/aura';
 import PrimeVue from 'primevue/config';
 import ConfirmationService from 'primevue/confirmationservice';
 import ToastService from 'primevue/toastservice';
@@ -23,14 +21,7 @@ faviconLoader();
 
 setupStore(app);
 //
-app.use(PrimeVue, {
-  theme: {
-    preset: Aura,
-    options: {
-      darkModeSelector: '.app-dark'
-    }
-  }
-});
+app.use(PrimeVue, { unstyled: true });
 app.use(ToastService);
 app.use(ConfirmationService);
 app.directive('styleclass', StyleClass);
