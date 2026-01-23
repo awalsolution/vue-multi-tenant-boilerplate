@@ -1,5 +1,4 @@
 # Logs
-.vscode
 logs
 *.log
 npm-debug.log*
@@ -15,9 +14,6 @@ dist-ssr
 coverage
 *.local
 
-/cypress/videos/
-/cypress/screenshots/
-
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
@@ -30,7 +26,16 @@ coverage
 
 *.tsbuildinfo
 
-yarn.lock
+.eslintcache
+
+# Cypress
+/cypress/videos/
+/cypress/screenshots/
+
+# Vitest
+__screenshots__/
+
+
 package-lock.json
+yarn.lock
 pnpm-lock.yaml
-.env

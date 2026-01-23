@@ -1,61 +1,48 @@
-# Vue Multi Tenant Boilerplate Dashbaord
+# vue-multi-tenant-boilerplate
 
-## Environments
+This template should help get you started developing with Vue 3 in Vite.
 
-```
-1. Production
+## Recommended IDE Setup
 
-==> Branch Name: main
+[VS Code](https://code.visualstudio.com/) + [Vue (Official)](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
 
-2. Development
+## Recommended Browser Setup
 
-==> Branch Name: develop
+- Chromium-based browsers (Chrome, Edge, Brave, etc.):
+  - [Vue.js devtools](https://chromewebstore.google.com/detail/vuejs-devtools/nhdogjmejiglipccpnnnanhbledajbpd)
+  - [Turn on Custom Object Formatter in Chrome DevTools](http://bit.ly/object-formatters)
+- Firefox:
+  - [Vue.js devtools](https://addons.mozilla.org/en-US/firefox/addon/vue-js-devtools/)
+  - [Turn on Custom Object Formatter in Firefox DevTools](https://fxdx.dev/firefox-devtools-custom-object-formatters/)
 
-```
+## Type Support for `.vue` Imports in TS
 
-## Install
+TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) to make the TypeScript language service aware of `.vue` types.
 
-```sh
+## Customize configuration
 
-git clone https://github.com/awal-solution/vue-multi-tenant-boilerplate.git
-cd  vue-multi-tenant-boilerplate.git
-yarn
-```
+See [Vite Configuration Reference](https://vite.dev/config/).
 
-## Start development
-
-```sh
-yarn dev
-```
-
-## Build for production
+## Project Setup
 
 ```sh
-yarn build
+npm install
 ```
 
-## Resources
+### Compile and Hot-Reload for Development
 
-### Languages & tools
+```sh
+npm run dev
+```
 
-- [yarn](https://yarnpkg.com/)
+### Type-Check, Compile and Minify for Production
 
-- [Typescript](https://www.typescriptlang.org/)
+```sh
+npm run build
+```
 
-- [vue3](https://vuejs.org/)
+### Lint with [ESLint](https://eslint.org/)
 
-- [pinia](https://pinia.vuejs.org/)
-
-- [Prime Vue](https://primevue.org/)
-
-- [axios](https://axios-http.com/docs/intro)
-
-- [vue-router](https://router.vuejs.org/)
-
-- [TailwindCSS](https://tailwindcss.com/)
-
-- [Node](http://nodejs.org/)
-
-- [git](https://git-scm.com/)
-
-- [Vite](https://vitejs.dev/)
+```sh
+npm run lint
+```
