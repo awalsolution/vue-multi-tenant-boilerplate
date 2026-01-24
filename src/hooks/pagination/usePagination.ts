@@ -5,7 +5,7 @@ interface PageEvent {
   page: number;
   first: number;
   rows: number;
-  pageCount: number;
+  pageCount?: number;
 }
 
 export function usePagination(endpoint: any) {
