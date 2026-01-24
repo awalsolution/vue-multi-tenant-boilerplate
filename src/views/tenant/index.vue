@@ -137,7 +137,7 @@
     <!-- delete form -->
     <Dialog v-model:visible="showDeleteDialog" class="w-1/3" header="Confirm" :modal="true">
       <div class="flex items-center gap-4">
-        <i class="pi pi-exclamation-triangle !text-3xl" />
+        <i class="pi pi-exclamation-triangle text-3xl!" />
         <span> Are you sure you want to delete ? </span>
       </div>
       <template #footer>
@@ -337,6 +337,7 @@ const editPlan = async () => {
 </script>
 
 <style lang="css" scoped>
+@reference "../../assets/css/main.css";
 .edit_plan_box_inner {
   @apply rounded-full bg-primary text-primary-contrast inline-flex justify-center items-center h-24 w-24 -mt-20;
 }

@@ -173,7 +173,7 @@ onBeforeMount(() => verifyDomainName());
 </script>
 
 <style lang="css" scoped>
-@reference "../../assets/styles/style.css";
+@reference "../../assets/css/main.css";
 
 .login_container {
   @apply bg-surface-50 dark:bg-surface-950 flex items-center justify-center min-h-screen min-w-screen overflow-hidden;
