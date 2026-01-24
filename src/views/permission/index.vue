@@ -26,14 +26,14 @@
       @page-change="handlePageChange"
     />
 
-    <AddPermissionDialog
+    <AddPermission
       v-model:visible="addDialog"
       :data="selectedPermission"
       :isEdit="isEdit"
       @saved="handleSaved"
     />
 
-    <DeletePermissionDialog
+    <DeletePermission
       v-model:visible="delDialog"
       :permissionId="deleteId"
       :permissionName="selectedPermission?.name"
@@ -48,8 +48,8 @@ import { Tag, Button } from 'primevue';
 import { usePagination } from '@/hooks/pagination/usePagination';
 import { DataTable } from '@/components/ui/data-table';
 import type { ColumnDefinition, ActionButton } from '@/components/ui/data-table';
-import AddPermissionDialog from './components/AddPermissionDialog.vue';
-import DeletePermissionDialog from './components/DeletePermissionDialog.vue';
+import AddPermission from './components/AddPermission.vue';
+import DeletePermission from './components/DeletePermission.vue';
 
 const addDialog: Ref<boolean> = ref(false);
 const delDialog: Ref<boolean> = ref(false);

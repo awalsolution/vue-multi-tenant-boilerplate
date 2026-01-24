@@ -143,66 +143,19 @@
       currentPageReportTemplate="Showing {first} to {last} of {totalRecords} Users"
     />
 
-    <Dialog v-model:visible="addDialog" class="w-1/3" :header="dialogHeader" :modal="true">
-      <div class="flex flex-col gap-6">
-        <div>
-          <label for="name" class="block font-bold mb-3">Name</label>
-          <InputText
-            id="name"
-            v-model.trim="data.name"
-            required="true"
-            :invalid="submitted && !data.name"
-            placeholder="Enter Plan Name"
-            fluid
-          />
-          <small v-if="submitted && !data.name" class="text-red-500">Name is required.</small>
-        </div>
-        <div>
-          <label for="price" class="block font-bold mb-3">Price</label>
-          <InputText
-            id="price"
-            v-model.trim="data.price"
-            required="true"
-            :invalid="submitted && !data.price"
-            placeholder="Enter Plan Price"
-            fluid
-          />
-          <small v-if="submitted && !data.price" class="text-red-500">Price is required.</small>
-        </div>
-        <div>
-          <label for="type" class="block font-bold mb-3">Type</label>
-          <InputText
-            id="type"
-            v-model.trim="data.type"
-            required="true"
-            :invalid="submitted && !data.type"
-            placeholder="Enter Plan Type"
-            fluid
-          />
-          <small v-if="submitted && !data.type" class="text-red-500">Type is required.</small>
-        </div>
-        <div>
-          <label for="type" class="block font-bold mb-3">Status</label>
-          <ToggleSwitch v-model="data.status" :true-value="1" :false-value="0" />
-        </div>
-      </div>
-      <template #footer>
-        <Button label="Cancel" icon="pi pi-times" text @click="hideDialog" />
-        <Button label="Save" icon="pi pi-check" @click="saveForm" />
-      </template>
-    </Dialog>
-    <Dialog v-model:visible="delDialog" class="w-1/3" header="Confirm" :modal="true">
-      <div class="flex items-center gap-4">
-        <i class="pi pi-exclamation-triangle !text-3xl" />
-        <span v-if="data">
-          Are you sure you want to delete <b>{{ data.name }} </b>?
-        </span>
-      </div>
-      <template #footer>
-        <Button label="No" icon="pi pi-times" text @click="delDialog = false" />
-        <Button label="Yes" icon="pi pi-check" severity="danger" @click="handleDelete" />
-      </template>
-    </Dialog>
+    <AddPlan
+      v-model:visible="addDialog"
+      :data="selectedPlan"
+      :isEdit="isEdit"
+      @saved="handleSaved"
+    />
+
+    <DeletePlan
+      v-model:visible="delDialog"
+      :planId="deleteId"
+      :planName="selectedPlan?.name"
+      @deleted="handleDeleted"
+    />
   </div>
 </template>
 
@@ -210,19 +163,19 @@
 import { ref, onMounted, type Ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import { FilterMatchMode } from '@primevue/core/api';
-import { Column, DataTable, Tag, Dialog, Button, InputText, ToggleSwitch, Paginator } from 'primevue';
-import { createRecordApi, deleteRecordApi, updateRecordApi } from '@/api/endpoints';
+import { Column, DataTable, Tag, Button, InputText, Paginator } from 'primevue';
 import { usePagination } from '@/hooks/pagination/usePagination';
 import { debounce } from 'lodash-es';
+import AddPlan from './components/AddPlan.vue';
+import DeletePlan from './components/DeletePlan.vue';
 
-const data: Ref = ref({});
 const expandedRows = ref({});
 const router = useRouter();
-const submitted: Ref = ref(false);
-const addDialog: Ref = ref(false);
-const delDialog: Ref = ref(false);
-const dialogHeader: Ref = ref();
-const delId: Ref = ref();
+const addDialog: Ref<boolean> = ref(false);
+const delDialog: Ref<boolean> = ref(false);
+const deleteId: Ref<number | undefined> = ref();
+const selectedPlan: Ref<any> = ref(null);
+const isEdit: Ref<boolean> = ref(false);
 
 const { getList, list, pageSizes, itemCount, limit, handlePageChange, searchParams } = usePagination('/plans');
 
@@ -236,9 +189,10 @@ const fetchList = () => {
     name: filters.value.name.value || '',
     price: filters.value.price.value || '',
   };
-  getList(searchParams.value);
+  getList();
 };
-// Debounce fetchList by 2 seconds
+
+// Debounce fetchList by 1 second
 const debouncedFetchList = debounce(fetchList, 1000);
 
 // Watch filters and call the debounced function when they change
@@ -249,60 +203,31 @@ onMounted(() => {
 });
 
 function openAddDialog() {
-  dialogHeader.value = 'Add Plan';
-  data.value = {};
-  submitted.value = false;
+  isEdit.value = false;
+  selectedPlan.value = null;
   addDialog.value = true;
 }
 
 function openEditDialog(item: any) {
-  dialogHeader.value = 'Edit Plan';
-  data.value = item;
-  submitted.value = false;
+  isEdit.value = true;
+  selectedPlan.value = item;
   addDialog.value = true;
 }
 
 function openDeleteDialog(item: any) {
-  delId.value = item.id;
-  data.value = item;
+  deleteId.value = item.id;
+  selectedPlan.value = item;
   delDialog.value = true;
 }
 
-function hideDialog() {
-  addDialog.value = false;
-  submitted.value = false;
+function handleSaved() {
+  getList();
 }
 
-const saveForm = () => {
-  submitted.value = true;
-  if (data?.value.name?.trim() && data?.value.price?.trim() && data?.value.type?.trim()) {
-    if (data?.value.id) {
-      updateRecordApi(`/plans/${data.value.id}`, data.value).then((res: any) => {
-        window.toast('success', 'Success Message', res.message);
-        getList();
-      });
-    } else {
-      createRecordApi('/plans', data.value).then((res: any) => {
-        window.toast('success', 'Success Message', res.message);
-        getList();
-      });
-    }
-    addDialog.value = false;
-    data.value = {};
-  }
-};
-
-function handleDelete() {
-  deleteRecordApi(`/plans/${delId.value}`)
-    .then((res: any) => {
-      window.toast('success', 'Success Message', res.message);
-      getList();
-    })
-    .catch((res) => {
-      window.toast('error', 'Error Message', res.message);
-    });
-  delDialog.value = false;
-  delId.value = null;
+function handleDeleted() {
+  getList();
+  deleteId.value = undefined;
+  selectedPlan.value = null;
 }
 </script>
 
