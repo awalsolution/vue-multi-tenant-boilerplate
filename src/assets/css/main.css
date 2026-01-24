@@ -1,0 +1,15 @@
+@import 'tailwindcss';
+@import 'tailwindcss-primeui';
+@import 'primeicons/primeicons.css';
+
+/* custome css */
+@import './modules/variables.css';
+@import './modules/preloading.css';
+@import './modules/core.css';
+@import './modules/layout.css';
+@import './modules/topbar.css';
+@import './modules/menu.css';
+@import './modules/footer.css';
+@import './modules/responsive.css';
+@import './modules/utils.css';
+@import './modules/typography.css';

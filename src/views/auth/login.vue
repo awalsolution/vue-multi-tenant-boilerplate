@@ -42,7 +42,7 @@
               id="email"
               type="text"
               placeholder="Email address"
-              class="w-full md:w-[30rem] mb-8"
+              class="w-full md:w-120 mb-8"
               v-model="data.email"
             />
 
@@ -173,8 +173,10 @@ onBeforeMount(() => verifyDomainName());
 </script>
 
 <style lang="css" scoped>
+@reference "../../assets/styles/style.css";
+
 .login_container {
-  @apply bg-surface-50 dark:bg-surface-950 flex items-center justify-center min-h-screen min-w-[100vw] overflow-hidden;
+  @apply bg-surface-50 dark:bg-surface-950 flex items-center justify-center min-h-screen min-w-screen overflow-hidden;
 }
 .login_wrapper {
   border-radius: 56px;

@@ -1,4 +1,4 @@
-import '@/assets/styles/style.css';
+import '@/assets/css/main.css';
 import { createApp } from 'vue';
 import App from '@/App.vue';
 import { faviconLoader } from '@/constants/faviconLoader';
@@ -8,6 +8,7 @@ import { setupRouter } from '@/router';
 
 //
 import PrimeVue from 'primevue/config';
+import Aura from '@primeuix/themes/aura';
 import ConfirmationService from 'primevue/confirmationservice';
 import ToastService from 'primevue/toastservice';
 import StyleClass from 'primevue/styleclass';
@@ -21,7 +22,16 @@ faviconLoader();
 
 setupStore(app);
 //
-app.use(PrimeVue, { unstyled: true });
+app.use(PrimeVue, {
+  theme: {
+    preset: Aura,
+    options: {
+      prefix: 'p',
+      darkModeSelector: 'system',
+      cssLayer: false,
+    },
+  },
+});
 app.use(ToastService);
 app.use(ConfirmationService);
 app.directive('styleclass', StyleClass);
