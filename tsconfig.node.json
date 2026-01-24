@@ -6,7 +6,8 @@
     "cypress.config.*",
     "nightwatch.conf.*",
     "playwright.config.*",
-    "eslint.config.*"
+    "eslint.config.*",
+     "src/**/*.d.ts"
   ],
   "compilerOptions": {
     "noEmit": true,
@@ -17,3 +18,5 @@
     "types": ["node"]
   }
 }
+
+
