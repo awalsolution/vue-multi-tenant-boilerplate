@@ -12,9 +12,9 @@ const LOGIN_PATH = PageEnum.BASE_LOGIN;
 const whitePathList = [LOGIN_PATH, '/forget-password'];
 
 export function createRouterGuards(router: Router) {
-  const userStore = useUserStore();
-  const asyncRouteStore = useAsyncRouteStore();
   router.beforeEach(async (to, from, next) => {
+    const userStore = useUserStore();
+    const asyncRouteStore = useAsyncRouteStore();
     if (from.path === LOGIN_PATH && to.name === 'errorPage') {
       next(PageEnum.BASE_HOME);
       return;

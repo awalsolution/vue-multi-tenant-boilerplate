@@ -1,49 +1,43 @@
 <template>
-  <Dialog :visible="visible" @update:visible="emit('update:visible', $event)" class="w-1/3" :header="header" :modal="true">
-    <div class="flex flex-col gap-6">
-      <div>
-        <label for="name" class="block font-bold mb-3">Name</label>
-        <InputText
-          id="name"
-          v-model.trim="formData.name"
-          required="true"
-          :invalid="submitted && !formData.name"
-          placeholder="Enter permission name"
-          fluid
-        />
-        <small v-if="submitted && !formData.name" class="text-red-500">Name is required.</small>
-      </div>
-      <div>
-        <label for="permission_type" class="block font-bold mb-3">Permission Type</label>
-        <Select
-          id="permission_type"
-          v-model="formData.type"
-          :options="permissionType"
-          optionLabel="label"
-          optionValue="key"
-          placeholder="Select Permission Type"
-          fluid
-        >
-        </Select>
-      </div>
-    </div>
+  <Dialog
+    :visible="visible"
+    @update:visible="emit('update:visible', $event)"
+    class="w-1/3"
+    :header="header"
+    :modal="true"
+  >
+    <Form
+      :schema="permissionSchema"
+      :fields="formFields"
+      :modelValue="formData"
+      :loading="loading"
+      :showCancel="false"
+      :showSubmit="false"
+      @submit="handleSave"
+    />
+
     <template #footer>
       <Button label="Cancel" icon="pi pi-times" text @click="handleCancel" />
-      <Button label="Save" icon="pi pi-check" @click="handleSave" />
+      <Button label="Save" icon="pi pi-check" @click="handleSaveClick" :loading="loading" />
     </template>
   </Dialog>
 </template>
 
 <script lang="ts" setup>
-import { ref, watch, type Ref } from 'vue';
-import { Dialog, Button, InputText, Select } from 'primevue';
+import { ref, watch, computed, type Ref } from 'vue';
+import { z } from 'zod';
+import { Dialog, Button } from 'primevue';
 import { createRecordApi, updateRecordApi } from '@/api/endpoints';
+import { Form } from '@/components/ui/form';
+import type { FormField } from '@/components/ui/form';
 
-interface PermissionFormData {
-  id?: number;
-  name?: string;
-  type?: string;
-}
+const permissionSchema = z.object({
+  id: z.number().optional(),
+  name: z.string().min(1, 'Name is required'),
+  type: z.enum(['public', 'private']),
+});
+
+type PermissionFormData = z.infer<typeof permissionSchema>;
 
 interface Props {
   visible: boolean;
@@ -61,14 +55,33 @@ const emit = defineEmits<{
   saved: [];
 }>();
 
-const formData: Ref<PermissionFormData> = ref({});
-const submitted: Ref<boolean> = ref(false);
+const formData: Ref<PermissionFormData> = ref({
+  name: '',
+  type: 'public',
+});
 
-const header = ref('Add Permission');
+const loading: Ref<boolean> = ref(false);
+const formRef = ref();
 
-const permissionType = [
-  { label: 'Public', key: 'public' },
-  { label: 'Private', key: 'private' },
+const header = computed(() => (props.isEdit ? 'Edit Permission' : 'Add Permission'));
+
+const formFields: FormField[] = [
+  {
+    name: 'name',
+    label: 'Name',
+    type: 'text',
+    placeholder: 'Enter permission name',
+  },
+  {
+    name: 'type',
+    label: 'Permission Type',
+    type: 'select',
+    placeholder: 'Select Permission Type',
+    options: [
+      { label: 'Public', value: 'public' },
+      { label: 'Private', value: 'private' },
+    ],
+  },
 ];
 
 watch(
@@ -76,39 +89,43 @@ watch(
   (newVal) => {
     if (newVal) {
       if (props.isEdit && props.data) {
-        header.value = 'Edit Permission';
         formData.value = { ...props.data };
       } else {
-        header.value = 'Add Permission';
-        formData.value = {};
+        formData.value = {
+          name: '',
+          type: 'public',
+        };
       }
-      submitted.value = false;
     }
   },
 );
 
 const handleCancel = () => {
   emit('update:visible', false);
-  submitted.value = false;
 };
 
-const handleSave = () => {
-  submitted.value = true;
-  if (formData.value.name?.trim()) {
-    if (formData.value.id) {
-      updateRecordApi(`/permissions/${formData.value.id}`, formData.value).then((res: any) => {
-        window.toast('success', 'Success Message', res.message);
-        emit('saved');
-        emit('update:visible', false);
-      });
+const handleSave = async (values: PermissionFormData) => {
+  loading.value = true;
+
+  try {
+    if (values.id) {
+      const res: any = await updateRecordApi(`/permissions/${values.id}`, values);
+      window.toast('success', 'Success Message', res.message);
     } else {
-      createRecordApi('/permissions', formData.value).then((res: any) => {
-        window.toast('success', 'Success Message', res.message);
-        emit('saved');
-        emit('update:visible', false);
-      });
+      const res: any = await createRecordApi('/permissions', values);
+      window.toast('success', 'Success Message', res.message);
     }
-    formData.value = {};
+    emit('saved');
+    emit('update:visible', false);
+  } finally {
+    loading.value = false;
+  }
+};
+
+const handleSaveClick = () => {
+  const result = permissionSchema.safeParse(formData.value);
+  if (result.success) {
+    handleSave(formData.value);
   }
 };
 </script>
