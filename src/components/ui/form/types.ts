@@ -19,10 +19,12 @@ export interface FormField {
   placeholder?: string;
   disabled?: boolean;
   readonly?: boolean;
+  loading?: boolean;
 
   options?: Array<Record<string, any>>;
   optionLabel?: string;
   optionValue?: string;
+  selectAllLabel?: string;
 
   rows?: number;
   autoResize?: boolean;

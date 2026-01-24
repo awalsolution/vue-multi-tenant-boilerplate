@@ -90,7 +90,7 @@ const routes: RouteRecordRaw[] = [
           permissions: ['user assign permission'],
           hidden: true,
         },
-        component: () => import('@/components/permission/AssignPermissions.vue'),
+        component: () => import('@/views/permission/components/AssignPermissions.vue'),
       },
       {
         path: '/permission/list',
@@ -120,7 +120,7 @@ const routes: RouteRecordRaw[] = [
           permissions: ['plan assign permission'],
           hidden: true,
         },
-        component: () => import('@/components/permission/AssignPermissions.vue'),
+        component: () => import('@/views/permission/components/AssignPermissions.vue'),
       },
       {
         path: '/role/list',
@@ -140,7 +140,7 @@ const routes: RouteRecordRaw[] = [
           permissions: ['role assign permission'],
           hidden: true,
         },
-        component: () => import('@/components/permission/AssignPermissions.vue'),
+        component: () => import('@/views/permission/components/AssignPermissions.vue'),
       },
       {
         path: '/menu/list',

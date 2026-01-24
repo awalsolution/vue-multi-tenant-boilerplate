@@ -55,6 +55,7 @@
           :optionValue="field.optionValue || 'value'"
           :placeholder="field.placeholder"
           :disabled="field.disabled || loading"
+          :loading="field.loading"
           :invalid="$field.invalid"
           fluid
         />
@@ -67,6 +68,8 @@
           :optionValue="field.optionValue || 'value'"
           :placeholder="field.placeholder"
           :disabled="field.disabled || loading"
+          :loading="field.loading"
+          :selectAllLabel="field.selectAllLabel"
           :invalid="$field.invalid"
           display="chip"
           fluid
@@ -100,11 +103,7 @@
         />
 
         <div v-else-if="field.type === 'radio'" class="flex flex-wrap gap-3">
-          <div
-            v-for="option in field.options"
-            :key="option[field.optionValue || 'value']"
-            class="flex items-center"
-          >
+          <div v-for="option in field.options" :key="option[field.optionValue || 'value']" class="flex items-center">
             <RadioButton
               :id="`${field.name}-${option[field.optionValue || 'value']}`"
               :name="field.name"
@@ -112,10 +111,7 @@
               :disabled="field.disabled || loading"
               :invalid="$field.invalid"
             />
-            <label
-              :for="`${field.name}-${option[field.optionValue || 'value']}`"
-              class="ml-2"
-            >
+            <label :for="`${field.name}-${option[field.optionValue || 'value']}`" class="ml-2">
               {{ option[field.optionLabel || 'label'] }}
             </label>
           </div>
@@ -147,13 +143,7 @@
         @click="handleCancel"
         :disabled="loading"
       />
-      <Button
-        v-if="showSubmit"
-        type="submit"
-        :label="submitLabel || 'Save'"
-        icon="pi pi-check"
-        :loading="loading"
-      />
+      <Button v-if="showSubmit" type="submit" :label="submitLabel || 'Save'" icon="pi pi-check" :loading="loading" />
     </div>
   </Form>
 </template>
