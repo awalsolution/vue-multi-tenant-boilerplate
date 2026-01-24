@@ -68,17 +68,10 @@
 import { onMounted, ref, type Ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { updateRecordApi } from '@/api/endpoints';
-import Card from 'primevue/card';
-import InputText from 'primevue/inputtext';
-import Divider from 'primevue/divider';
-import Button from 'primevue/button';
-// import Select from 'primevue/select';
-// import { usePlanfilter } from '@src/filters/plan';
 
 const props = defineProps<{ tenantData: any }>();
 
 const router = useRouter();
-// const { plans, getPlans } = usePlanfilter();
 const data: Ref = ref({});
 const submitted: Ref = ref(false);
 

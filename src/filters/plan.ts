@@ -21,7 +21,6 @@ export function usePlanfilter() {
   async function getPlans() {
     planLoading.value = true;
     const response: any = await getRecordsApi('/plans');
-    console.log('plan data =>', response);
     plans.value = response.data;
     planLoading.value = false;
   }

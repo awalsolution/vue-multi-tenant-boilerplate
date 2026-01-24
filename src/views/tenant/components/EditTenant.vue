@@ -38,16 +38,10 @@
 import { onMounted, ref, type Ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { getRecordApi } from '@/api/endpoints';
-import Tabs from 'primevue/tabs';
-import TabList from 'primevue/tablist';
-import Tab from 'primevue/tab';
-import TabPanels from 'primevue/tabpanels';
-import TabPanel from 'primevue/tabpanel';
-import Card from 'primevue/card';
-import TenantGeneralInfo from '@/components/tenant/TenantGeneralInfo.vue';
-import TenantUser from '@/components/tenant/TenantUser.vue';
-import TenantRoles from '@/components/tenant/TenantRoles.vue';
-import TenantPermissions from '@/components/tenant/TenantPermissions.vue';
+import TenantGeneralInfo from './TenantGeneralInfo.vue';
+import TenantUser from './TenantUser.vue';
+import TenantRoles from './TenantRoles.vue';
+import TenantPermissions from './TenantPermissions.vue';
 
 const route = useRoute();
 const router = useRouter();
@@ -79,4 +73,4 @@ onMounted(async () => {
 });
 </script>
 
-<style lang="css" scoped></style>
+<style scoped></style>

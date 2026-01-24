@@ -210,24 +210,13 @@
 <script lang="ts" setup>
 import { onMounted, ref, type Ref } from 'vue';
 import { RouterLink, useRouter } from 'vue-router';
-import {
-  Avatar,
-  Column,
-  DataTable,
-  Tag,
-  Dialog,
-  Button,
-  Paginator,
-  ConfirmDialog,
-  ConfirmPopup,
-  useConfirm,
-  Select,
-} from 'primevue';
+import { DataTable, Column } from 'primevue';
 import { usePagination } from '@/hooks/pagination/usePagination';
 import { createRecordApi, deleteRecordApi, updateRecordApi } from '@/api/endpoints';
 import { useRolefilter } from '@/filters/role';
 import { usePlanfilter } from '@/filters/plan';
 import { useEnv } from '@/hooks/useEnv';
+import { useConfirm } from 'primevue/useconfirm';
 
 const { imgUrl } = useEnv();
 const confirm = useConfirm();
