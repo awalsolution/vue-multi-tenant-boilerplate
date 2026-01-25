@@ -9,6 +9,7 @@
 @import './modules/layout.css';
 @import './modules/topbar.css';
 @import './modules/menu.css';
+@import './modules/sidebar-collapsed.css';
 @import './modules/footer.css';
 @import './modules/responsive.css';
 @import './modules/utils.css';

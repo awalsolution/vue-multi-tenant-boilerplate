@@ -1,13 +1,14 @@
 .layout-main-container {
     display: flex;
     flex-direction: column;
-    min-height: 100vh;
+    height: 100vh;
     justify-content: space-between;
-    padding: 6rem 2rem 0 2rem;
+    padding: 5rem 1rem 5rem 1rem;
     transition: margin-left var(--layout-section-transition-duration);
 }
 
 .layout-main {
     flex: 1 1 auto;
-    padding-bottom: 2rem;
+    overflow-y: auto;
+    @apply [scrollbar-width:none] [&::-webkit-scrollbar]:hidden;
 }

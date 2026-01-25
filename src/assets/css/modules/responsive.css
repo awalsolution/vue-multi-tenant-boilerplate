@@ -26,21 +26,24 @@
     }
 
     .layout-wrapper.layout-static .layout-main-container {
-        margin-left: 22rem;
+        margin-left: 18rem;
     }
 
     .layout-wrapper.layout-static.layout-static-inactive .layout-sidebar {
-        transform: translateX(-100%);
-        left: 0;
+        width: 4rem;
+        padding: 0.5rem 0.75rem;
     }
 
     .layout-wrapper.layout-static.layout-static-inactive .layout-main-container {
-        margin-left: 0;
-        padding-left: 2rem;
+        margin-left: 4rem;
     }
 
     .layout-wrapper .layout-mask {
         display: none;
+    }
+
+    .layout-wrapper.layout-static.layout-static-inactive .layout-footer {
+        margin-left: 4rem;
     }
 }
 
@@ -51,7 +54,6 @@
 
     .layout-wrapper .layout-main-container {
         margin-left: 0;
-        padding-left: 2rem;
     }
 
     .layout-wrapper .layout-sidebar {
@@ -83,5 +85,9 @@
 
     .layout-wrapper.layout-mobile-active .layout-mask {
         display: block;
+    }
+
+    .layout-footer {
+        margin-left: 0;
     }
 }

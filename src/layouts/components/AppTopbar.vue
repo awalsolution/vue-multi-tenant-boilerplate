@@ -43,7 +43,7 @@
         <button type="button" class="layout-topbar-action" @click="toggleDarkMode">
           <i :class="['pi', { 'pi-moon': isDarkTheme, 'pi-sun': !isDarkTheme }]"></i>
         </button>
-        <!-- <div class="relative">
+        <div class="relative">
           <button
             v-styleclass="{
               selector: '@next',
@@ -51,15 +51,15 @@
               enterActiveClass: 'animate-scalein',
               leaveToClass: 'hidden',
               leaveActiveClass: 'animate-fadeout',
-              hideOnOutsideClick: true
+              hideOnOutsideClick: true,
             }"
             type="button"
-            class="layout-topbar-action layout-topbar-action-highlight"
+            class="layout-topbar-action"
           >
             <i class="pi pi-palette"></i>
           </button>
           <AppConfigurator />
-        </div> -->
+        </div>
       </div>
 
       <!-- <button
@@ -125,7 +125,7 @@
               </span>
             </template>
             <template #item="{ item, props }">
-              <button v-bind="props.action" @click="selectUserOption(item.key)">
+              <button v-bind="props.action" @click="item.key && selectUserOption(item.key as UserOptionKey)">
                 <span :class="item.icon" />
                 <span class="ml-2">{{ item.label }}</span>
               </button>
@@ -161,7 +161,7 @@ import Avatar from 'primevue/avatar';
 import { useLayout } from '@/layouts/components/composables/layout';
 import { useUserStore } from '@/store/modules/user';
 import { useEnv } from '@/hooks/useEnv';
-// import AppConfigurator from './AppConfigurator.vue';
+import AppConfigurator from './AppConfigurator.vue';
 
 const { imgUrl } = useEnv();
 const userStore = useUserStore();

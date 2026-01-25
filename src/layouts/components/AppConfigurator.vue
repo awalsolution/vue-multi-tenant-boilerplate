@@ -1,47 +1,47 @@
 <template>
   <div
-    class="config-panel hidden absolute top-[3.25rem] right-0 w-64 p-4 bg-surface-0 dark:bg-surface-900 border border-surface rounded-border origin-top shadow-[0px_3px_5px_rgba(0,0,0,0.02),0px_0px_2px_rgba(0,0,0,0.05),0px_1px_4px_rgba(0,0,0,0.08)]"
+    class="config-panel hidden absolute top-13 right-0 w-64 p-4 bg-surface-0 dark:bg-surface-900 border border-surface rounded-border origin-top shadow-[0px_3px_5px_rgba(0,0,0,0.02),0px_0px_2px_rgba(0,0,0,0.05),0px_1px_4px_rgba(0,0,0,0.08)]"
   >
     <div class="flex flex-col gap-4">
       <div>
-        <span class="text-sm text-muted-color font-semibold">Primary</span>
+        <span class="text-sm text-surface-600 dark:text-surface-400 font-semibold">Primary</span>
         <div class="pt-2 flex gap-2 flex-wrap justify-between">
           <button
-            v-for="primaryColor of primaryColors"
-            :key="primaryColor.name"
+            v-for="pc of primaryColors"
+            :key="pc.name"
             type="button"
-            :title="primaryColor.name"
-            @click="updateColors('primary', primaryColor)"
+            :title="pc.name"
+            @click="updateColors('primary', pc)"
             :class="[
-              'border-none w-5 h-5 rounded-full p-0 cursor-pointer outline-none outline-offset-1',
-              { 'outline-primary': layoutConfig.primary === primaryColor.name },
+              'border-none w-5 h-5 rounded-full p-0 cursor-pointer focus:outline-none focus:ring-2 focus:ring-offset-2',
+              { 'ring-2 ring-primary ring-offset-2': layoutConfig.primary === pc.name },
             ]"
             :style="{
-              backgroundColor: `${primaryColor.name === 'noir' ? 'var(--text-color)' : primaryColor.palette['500']}`,
+              backgroundColor: `${pc.name === 'noir' ? 'var(--text-color)' : pc.palette['500']}`,
             }"
           ></button>
         </div>
       </div>
       <div>
-        <span class="text-sm text-muted-color font-semibold">Surface</span>
+        <span class="text-sm text-surface-600 dark:text-surface-400 font-semibold">Surface</span>
         <div class="pt-2 flex gap-2 flex-wrap justify-between">
           <button
-            v-for="surface of surfaces"
-            :key="surface.name"
+            v-for="s of surfaces"
+            :key="s.name"
             type="button"
-            :title="surface.name"
-            @click="updateColors('surface', surface)"
+            :title="s.name"
+            @click="updateColors('surface', s)"
             :class="[
-              'border-none w-5 h-5 rounded-full p-0 cursor-pointer outline-none outline-offset-1',
+              'border-none w-5 h-5 rounded-full p-0 cursor-pointer focus:outline-none focus:ring-2 focus:ring-offset-2',
               {
-                'outline-primary': layoutConfig.surface
-                  ? layoutConfig.surface === surface.name
+                'ring-2 ring-primary ring-offset-2': layoutConfig.surface
+                  ? layoutConfig.surface === s.name
                   : isDarkTheme
-                    ? surface.name === 'zinc'
-                    : surface.name === 'slate',
+                    ? s.name === 'zinc'
+                    : s.name === 'slate',
               },
             ]"
-            :style="{ backgroundColor: `${surface.palette['500']}` }"
+            :style="{ backgroundColor: `${s.palette['500']}` }"
           ></button>
         </div>
       </div>
@@ -66,10 +66,9 @@
 
 <script setup lang="ts">
 import { useLayout } from '@/layouts/components/composables/layout';
-import SelectButton from 'primevue/selectbutton';
-import { $t, updatePreset, updateSurfacePalette } from '@primevue/themes';
-import Aura from '@primevue/themes/aura';
-import Lara from '@primevue/themes/lara';
+import { usePreset, updatePrimaryPalette, updateSurfacePalette, updatePreset } from '@primeuix/themes';
+import Aura from '@primeuix/themes/aura';
+import Lara from '@primeuix/themes/lara';
 import { ref } from 'vue';
 
 const { layoutConfig, setPrimary, setSurface, setPreset, isDarkTheme, setMenuMode } = useLayout();
@@ -135,6 +134,22 @@ const primaryColors: any = ref([
       800: '#3f6212',
       900: '#365314',
       950: '#1a2e05',
+    },
+  },
+  {
+    name: 'red',
+    palette: {
+      50: '#fef2f2',
+      100: '#fee2e2',
+      200: '#fecaca',
+      300: '#fca5a5',
+      400: '#f87171',
+      500: '#ef4444',
+      600: '#dc2626',
+      700: '#b91c1c',
+      800: '#991b1b',
+      900: '#7f1d1d',
+      950: '#450a0a',
     },
   },
   {
@@ -588,7 +603,11 @@ function updateColors(type: any, color: any) {
 
 function applyTheme(type: any, color: any) {
   if (type === 'primary') {
-    updatePreset(getPresetExt());
+    if (color.name === 'noir') {
+      updatePreset(getPresetExt());
+    } else {
+      updatePrimaryPalette(color.palette);
+    }
   } else if (type === 'surface') {
     updateSurfacePalette(color.palette);
   }
@@ -597,9 +616,15 @@ function applyTheme(type: any, color: any) {
 function onPresetChange() {
   setPreset(preset.value);
   const presetValue = presets[preset.value];
-  const surfacePalette = surfaces.value.find((s: any) => s.name === layoutConfig.surface)?.palette;
+  usePreset(presetValue);
 
-  $t().preset(presetValue).preset(getPresetExt()).surfacePalette(surfacePalette).use({ useDefaultOptions: true });
+  const primaryColor = primaryColors.value.find((c: any) => c.name === layoutConfig.primary);
+  const surfaceColor = surfaces.value.find(
+    (s: any) => s.name === (layoutConfig.surface || (isDarkTheme.value ? 'zinc' : 'slate')),
+  );
+
+  if (primaryColor) applyTheme('primary', primaryColor);
+  if (surfaceColor) applyTheme('surface', surfaceColor);
 }
 
 function onMenuModeChange() {

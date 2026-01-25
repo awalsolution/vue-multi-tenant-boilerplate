@@ -6,9 +6,9 @@
       <div class="layout-main">
         <router-view> </router-view>
       </div>
-      <app-footer></app-footer>
     </div>
-    <div class="layout-mask animate-fadein"></div>
+    <app-footer></app-footer>
+    <!-- <div class="layout-mask animate-fadein"></div> -->
   </div>
 </template>
 

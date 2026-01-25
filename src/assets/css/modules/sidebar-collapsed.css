@@ -1,0 +1,18 @@
+.layout-wrapper.layout-static-inactive .layout-sidebar .layout-menuitem-text,
+.layout-wrapper.layout-static-inactive .layout-sidebar .layout-submenu-toggler,
+.layout-wrapper.layout-static-inactive .layout-sidebar .layout-root-menuitem>.layout-menuitem-root-text {
+    display: none;
+}
+
+.layout-wrapper.layout-static-inactive .layout-sidebar .layout-menu ul a {
+    justify-content: center;
+    padding: 0.75rem;
+}
+
+.layout-wrapper.layout-static-inactive .layout-sidebar .layout-menu ul a .layout-menuitem-icon {
+    margin-right: 0;
+}
+
+.layout-wrapper.layout-static-inactive .layout-sidebar .layout-menu ul ul {
+    display: none;
+}

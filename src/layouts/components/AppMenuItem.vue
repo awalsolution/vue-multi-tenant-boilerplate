@@ -10,6 +10,18 @@
       :class="item.class"
       :target="item.target"
       tabindex="0"
+      v-tooltip.right="{
+        value: item.label,
+        disabled: !layoutState.staticMenuDesktopInactive,
+        pt: {
+          arrow: {
+            style: {
+              borderRightColor: 'var(--p-primary-color)',
+            },
+          },
+          text: 'bg-primary! text-primary-contrast!',
+        },
+      }"
     >
       <i :class="item.icon" class="layout-menuitem-icon"></i>
       <span class="layout-menuitem-text">{{ item.label }}</span>
@@ -21,6 +33,18 @@
       :class="[item.class, { 'active-route': checkActiveRoute(item) }]"
       tabindex="0"
       :to="item.to"
+      v-tooltip.right="{
+        value: item.label,
+        disabled: !layoutState.staticMenuDesktopInactive,
+        pt: {
+          arrow: {
+            style: {
+              borderRightColor: 'var(--p-primary-color)',
+            },
+          },
+          text: 'bg-primary! text-primary-contrast!',
+        },
+      }"
     >
       <i :class="item.icon" class="layout-menuitem-icon"></i>
       <span class="layout-menuitem-text">{{ item.label }}</span>
@@ -31,7 +55,7 @@
         <app-menu-item
           v-for="(child, i) in item.items"
           :key="child"
-          :index="i"
+          :index="Number(i)"
           :item="child"
           :parentItemKey="itemKey"
           :root="false"
