@@ -3,7 +3,13 @@
     <template #title>
       <div class="flex justify-between items-center">
         <h1 class="text-2xl">Permissions List</h1>
-        <Button label="Assign Permission" @click="handleAssignPermissions" severity="primary" icon="pi pi-lock" />
+        <Button
+          label="Assign Permission"
+          @click="handleAssignPermissions"
+          variant="outlined"
+          severity="success"
+          icon="pi pi-lock"
+        />
       </div>
     </template>
     <template #content>

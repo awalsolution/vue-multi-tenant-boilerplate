@@ -17,8 +17,15 @@
     />
 
     <template #footer>
-      <Button label="Cancel" icon="pi pi-times" text @click="handleCancel" />
-      <Button label="Save" icon="pi pi-check" @click="handleSaveClick" :loading="loading" />
+      <Button label="Cancel" icon="pi pi-times" variant="outlined" severity="danger" @click="handleCancel" />
+      <Button
+        label="Save"
+        icon="pi pi-save"
+        variant="outlined"
+        severity="success"
+        @click="handleSaveClick"
+        :loading="loading"
+      />
     </template>
   </Dialog>
 </template>

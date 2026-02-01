@@ -54,8 +54,20 @@
           <span class="font-bold text-2xl block mb-2 mt-6">{{ message.header }}</span>
           <p class="mb-0">{{ message.message }}</p>
           <div class="flex items-center gap-2 mt-6">
-            <Button label="Save" @click="acceptCallback"></Button>
-            <Button label="Cancel" outlined @click="rejectCallback"></Button>
+            <Button
+              label="Save"
+              icon="pi pi-save"
+              variant="outlined"
+              severity="success"
+              @click="acceptCallback"
+            ></Button>
+            <Button
+              label="Cancel"
+              icon="pi pi-times"
+              variant="outlined"
+              severity="danger"
+              @click="rejectCallback"
+            ></Button>
           </div>
         </div>
       </template>
@@ -105,6 +117,7 @@ const deletePermission = async () => {
 </script>
 
 <style lang="css" scoped>
+@reference "../../../assets/css/main.css";
 .edit_plan_box_inner {
   @apply rounded-full bg-primary text-primary-contrast inline-flex justify-center items-center h-24 w-24 -mt-20;
 }

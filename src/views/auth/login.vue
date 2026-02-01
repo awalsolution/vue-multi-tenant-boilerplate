@@ -1,7 +1,7 @@
 <template>
   <div class="login_container">
     <div class="flex flex-col items-center justify-center gap-10">
-      <div style="" class="login_wrapper">
+      <div class="login_wrapper">
         <div class="w-full bg-surface-0 dark:bg-surface-900 pt-20 pb-8 px-8 sm:px-20 rounded=[53px]">
           <div class="text-center mb-8">
             <svg viewBox="0 0 54 40" fill="none" xmlns="http://www.w3.org/2000/svg" class="mb-8 w-16 shrink-0 mx-auto">
@@ -197,6 +197,7 @@ onBeforeMount(() => verifyDomainName());
 .login_container {
   @apply bg-surface-50 dark:bg-surface-950 flex items-center justify-center min-h-screen min-w-screen overflow-hidden;
 }
+
 .login_wrapper {
   border-radius: 56px;
   padding: 0.3rem;

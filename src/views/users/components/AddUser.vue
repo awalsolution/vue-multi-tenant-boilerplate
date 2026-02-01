@@ -20,8 +20,15 @@
     />
 
     <template #footer>
-      <Button label="Cancel" icon="pi pi-times" text @click="handleCancel" />
-      <Button label="Save" icon="pi pi-check" @click="handleSaveClick" :loading="loading" />
+      <Button label="Cancel" icon="pi pi-times" variant="outlined" severity="danger" @click="handleCancel" />
+      <Button
+        label="Save"
+        icon="pi pi-save"
+        variant="outlined"
+        severity="success"
+        @click="handleSaveClick"
+        :loading="loading"
+      />
     </template>
   </Dialog>
 </template>
@@ -29,7 +36,6 @@
 <script lang="ts" setup>
 import { ref, watch, computed, type Ref } from 'vue';
 import { z } from 'zod';
-import { Dialog, Button } from 'primevue';
 import { createRecordApi, updateRecordApi } from '@/api/endpoints';
 import { Form } from '@/components/ui/form';
 import type { FormField } from '@/components/ui/form';

@@ -138,12 +138,21 @@
         v-if="showCancel"
         type="button"
         :label="cancelLabel || 'Cancel'"
+        variant="outlined"
         icon="pi pi-times"
-        text
+        severity="danger"
         @click="handleCancel"
         :disabled="loading"
       />
-      <Button v-if="showSubmit" type="submit" :label="submitLabel || 'Save'" icon="pi pi-check" :loading="loading" />
+      <Button
+        v-if="showSubmit"
+        type="submit"
+        :label="submitLabel || 'Save'"
+        variant="outlined"
+        severity="success"
+        icon="pi pi-save"
+        :loading="loading"
+      />
     </div>
   </Form>
 </template>

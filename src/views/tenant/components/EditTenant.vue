@@ -73,4 +73,6 @@ onMounted(async () => {
 });
 </script>
 
-<style scoped></style>
+<style lang="css" scoped>
+@reference "../../../assets/css/main.css";
+</style>

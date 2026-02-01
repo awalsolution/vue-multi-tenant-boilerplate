@@ -170,8 +170,8 @@
         </div>
       </div>
       <template #footer>
-        <Button label="Cancel" icon="pi pi-times" text @click="hideActivationDialog" />
-        <Button label="Save" icon="pi pi-check" @click="saveActivationForm" />
+        <Button label="Cancel" icon="pi pi-times" variant="outlined" severity="warn" @click="hideActivationDialog" />
+        <Button label="Save" icon="pi pi-check" severity="success" variant="outlined" @click="saveActivationForm" />
       </template>
     </Dialog>
     <!-- Deactivation Dialog -->
@@ -199,7 +199,7 @@
           </div>
           <div class="flex items-center gap-2 mt-6">
             <Button label="Save" @click="acceptCallback"></Button>
-            <Button label="Cancel" outlined @click="rejectCallback"></Button>
+            <Button label="Cancel" variant="outlined" @click="rejectCallback"></Button>
           </div>
         </div>
       </template>

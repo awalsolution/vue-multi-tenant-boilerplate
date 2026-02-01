@@ -61,8 +61,8 @@
           <Button
             label="Edit"
             icon="pi pi-pen-to-square"
-            outlined
-            rounded
+            variant="outlined"
+            severity="success"
             class="mr-2"
             @click="openEditDialog(data)"
             v-permission="{
@@ -72,8 +72,7 @@
           <Button
             label="Delete"
             icon="pi pi-trash"
-            outlined
-            rounded
+            variant="outlined"
             severity="danger"
             @click="openDeleteDialog(data)"
             v-permission="{
@@ -123,12 +122,7 @@
       currentPageReportTemplate="Showing {first} to {last} of {totalRecords} Menus"
     />
 
-    <AddMenu
-      v-model:visible="addDialog"
-      :data="selectedMenu"
-      :isEdit="isEdit"
-      @saved="handleSaved"
-    />
+    <AddMenu v-model:visible="addDialog" :data="selectedMenu" :isEdit="isEdit" @saved="handleSaved" />
 
     <DeleteMenu
       v-model:visible="delDialog"

@@ -6,35 +6,36 @@
           <div class="flex flex-col items-center text-center">
             <div class="relative mb-4">
               <Avatar
-                v-if="data?.logo"
-                :image="imgUrl + data?.logo"
-                shape="square"
+                :image="imgUrl + data?.profile_picture"
+                shape="circle"
                 size="xlarge"
-                class="w-32 h-32 border-4 border-primary shadow-lg p-2 bg-white flex items-center justify-center overflow-hidden"
+                class="w-32 h-32 border-4 border-primary shadow-lg"
               />
-              <div
-                v-else
-                class="w-32 h-32 border-4 border-surface-200 rounded-lg flex items-center justify-center bg-surface-50"
-              >
-                <i class="pi pi-building text-4xl text-surface-400" />
-              </div>
             </div>
             <h1 class="text-2xl font-bold text-surface-900 mb-1">{{ data?.name }}</h1>
-            <p class="text-surface-500 mb-6">{{ data?.tenant_api_key }}</p>
+            <p class="text-surface-500 mb-4">{{ data?.email }}</p>
+            <div class="flex flex-wrap justify-center gap-2 mb-6">
+              <Tag v-for="role in data?.roles" :key="role.id" severity="primary">
+                {{ role.name }}
+              </Tag>
+            </div>
             <Button
-              label="Edit Organization"
-              icon="pi pi-building-edit"
-              class="w-full rounded"
+              label="Edit Profile"
+              icon="pi pi-user-edit"
+              variant="outlined"
+              severity="success"
               @click="openEditDialog"
             />
           </div>
         </div>
 
         <div class="bg-surface-card p-6 rounded shadow-sm border border-surface-200">
-          <h3 class="text-lg font-semibold text-surface-900 mb-4">Organization Detail</h3>
+          <h3 class="text-lg font-semibold text-surface-900 mb-4">Account Status</h3>
           <div class="flex items-center justify-between py-2 border-b border-surface-100">
-            <span class="text-surface-600">ID</span>
-            <span class="text-surface-900 font-medium font-mono">{{ data?.id }}</span>
+            <span class="text-surface-600">Status</span>
+            <Tag :severity="data?.status === 1 ? 'success' : 'warn'">
+              {{ data?.status === 1 ? 'Active' : 'Inactive' }}
+            </Tag>
           </div>
           <div class="flex items-center justify-between py-2">
             <span class="text-surface-600">Created At</span>
@@ -45,20 +46,22 @@
 
       <div class="w-full md:w-2/3">
         <div class="bg-surface-card p-8 rounded shadow-sm border border-surface-200 h-full">
-          <h2 class="text-xl font-bold text-surface-900 mb-6 pb-2 border-b border-surface-100">
-            Organization Profile Information
-          </h2>
+          <h2 class="text-xl font-bold text-surface-900 mb-6 pb-2 border-b border-surface-100">Profile Information</h2>
 
           <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div class="space-y-1">
-              <label class="text-sm font-semibold text-surface-500 uppercase tracking-wider">Organization Name</label>
+              <label class="text-sm font-semibold text-surface-500 uppercase tracking-wider">Full Name</label>
               <p class="text-lg text-surface-900">{{ data?.name || 'N/A' }}</p>
             </div>
             <div class="space-y-1">
-              <label class="text-sm font-semibold text-surface-500 uppercase tracking-wider">Contact Number</label>
+              <label class="text-sm font-semibold text-surface-500 uppercase tracking-wider">Email Address</label>
+              <p class="text-lg text-surface-900">{{ data?.email || 'N/A' }}</p>
+            </div>
+            <div class="space-y-1">
+              <label class="text-sm font-semibold text-surface-500 uppercase tracking-wider">Phone Number</label>
               <p class="text-lg text-surface-900">{{ data?.phone_number || 'N/A' }}</p>
             </div>
-            <div class="col-span-1 md:col-span-2 space-y-1">
+            <div class="space-y-1">
               <label class="text-sm font-semibold text-surface-500 uppercase tracking-wider">Address</label>
               <p class="text-lg text-surface-900">{{ data?.address || 'N/A' }}</p>
             </div>
@@ -79,19 +82,18 @@
       </div>
     </div>
 
-    <EditTenantProfile v-model:visible="editDialog" :data="data" @saved="getProfileData" />
+    <EditProfile v-model:visible="editDialog" :data="data" @saved="getProfileDataFromStore" />
   </div>
 </template>
 
 <script lang="ts" setup>
 import { onMounted, ref, type Ref } from 'vue';
-import { getRecordApi } from '@/api/endpoints';
-import { TENANT_API_KEY } from '@/utils/storage/variables';
-import { storage } from '@/utils/storage';
+import { useUserStore } from '@/store/modules/user';
 import { useEnv } from '@/hooks/useEnv';
-import EditTenantProfile from './EditTenantProfile.vue';
+import EditProfile from './components/EditProfile.vue';
 
 const { imgUrl } = useEnv();
+const userStore = useUserStore();
 const editDialog = ref(false);
 const data: Ref<any> = ref({});
 
@@ -99,10 +101,8 @@ const openEditDialog = () => {
   editDialog.value = true;
 };
 
-const getProfileData = async () => {
-  const tenantApiKey = storage.getTenantApiKey(TENANT_API_KEY);
-  const res: any = await getRecordApi(`/tenants/find-single-tenant-profile/${tenantApiKey}`);
-  data.value = res.data;
+const getProfileDataFromStore = () => {
+  data.value = userStore.currentUser;
 };
 
 const formatDate = (date: string) => {
@@ -115,10 +115,8 @@ const formatDate = (date: string) => {
 };
 
 onMounted(() => {
-  getProfileData();
+  getProfileDataFromStore();
 });
 </script>
 
-<style lang="css" scoped>
-@reference "../../../assets/css/main.css";
-</style>
+<style lang="css" scoped></style>

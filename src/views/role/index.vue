@@ -4,9 +4,9 @@
       <h1 class="text-2xl font-bold">Role List</h1>
       <Button
         @click="openAddDialog"
-        severity="primary"
         label="Add Role"
         icon="pi pi-plus"
+        severity="primary"
         v-permission="{ action: ['role create'] }"
       />
     </div>
@@ -129,13 +129,7 @@
       currentPageReportTemplate="Showing {first} to {last} of {totalRecords} Users"
     />
 
-
-    <AddRole
-      v-model:visible="addDialog"
-      :data="selectedRole"
-      :isEdit="isEdit"
-      @saved="handleSaved"
-    />
+    <AddRole v-model:visible="addDialog" :data="selectedRole" :isEdit="isEdit" @saved="handleSaved" />
 
     <DeleteRole
       v-model:visible="delDialog"

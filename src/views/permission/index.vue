@@ -26,12 +26,7 @@
       @page-change="handlePageChange"
     />
 
-    <AddPermission
-      v-model:visible="addDialog"
-      :data="selectedPermission"
-      :isEdit="isEdit"
-      @saved="handleSaved"
-    />
+    <AddPermission v-model:visible="addDialog" :data="selectedPermission" :isEdit="isEdit" @saved="handleSaved" />
 
     <DeletePermission
       v-model:visible="delDialog"

@@ -22,8 +22,15 @@
     </template>
     <template #footer>
       <div class="flex gap-4 mt-3 justify-end">
-        <Button label="Cancel" severity="danger" @click="handleCancel" />
-        <Button label="Save" @click="handleSaveClick" :loading="loading" />
+        <Button label="Cancel" variant="outlined" icon="pi pi-times" severity="danger" @click="handleCancel" />
+        <Button
+          label="Save"
+          @click="handleSaveClick"
+          variant="outlined"
+          severity="success"
+          icon="pi pi-save"
+          :loading="loading"
+        />
       </div>
     </template>
   </Card>

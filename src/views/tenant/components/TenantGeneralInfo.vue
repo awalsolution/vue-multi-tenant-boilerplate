@@ -57,8 +57,8 @@
     </template>
     <template #footer>
       <div class="flex gap-4 mt-3 justify-end">
-        <Button label="Cancel" severity="danger" @click="handleCancel" />
-        <Button label="Save" @click="saveForm" />
+        <Button label="Cancel" variant="outlined" severity="danger" icon="pi pi-times" @click="handleCancel" />
+        <Button label="Save" variant="outlined" severity="success" icon="pi pi-save" @click="saveForm" />
       </div>
     </template>
   </Card>
@@ -97,4 +97,6 @@ onMounted(() => {
 });
 </script>
 
-<style lang="css" scoped></style>
+<style lang="css" scoped>
+@reference "../../../assets/css/main.css";
+</style>

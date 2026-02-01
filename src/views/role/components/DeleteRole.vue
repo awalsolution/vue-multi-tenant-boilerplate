@@ -1,14 +1,20 @@
 <template>
-  <Dialog :visible="visible" @update:visible="emit('update:visible', $event)" class="w-1/3" header="Confirm" :modal="true">
+  <Dialog
+    :visible="visible"
+    @update:visible="emit('update:visible', $event)"
+    class="w-1/3"
+    header="Confirm"
+    :modal="true"
+  >
     <div class="flex items-center gap-4">
       <i class="pi pi-exclamation-triangle text-3xl" />
       <span v-if="roleName">
-        Are you sure you want to delete <b>{{ roleName }}</b>?
+        Are you sure you want to delete <b> {{ roleName }} </b> ?
       </span>
     </div>
     <template #footer>
-      <Button label="No" icon="pi pi-times" text @click="handleCancel" />
-      <Button label="Yes" icon="pi pi-check" severity="danger" @click="handleConfirm" />
+      <Button label="No" icon="pi pi-times" variant="outlined" severity="danger" @click="handleCancel" />
+      <Button label="Yes" icon="pi pi-save" variant="outlined" severity="success" @click="handleConfirm" />
     </template>
   </Dialog>
 </template>

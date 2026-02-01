@@ -143,12 +143,7 @@
       currentPageReportTemplate="Showing {first} to {last} of {totalRecords} Users"
     />
 
-    <AddPlan
-      v-model:visible="addDialog"
-      :data="selectedPlan"
-      :isEdit="isEdit"
-      @saved="handleSaved"
-    />
+    <AddPlan v-model:visible="addDialog" :data="selectedPlan" :isEdit="isEdit" @saved="handleSaved" />
 
     <DeletePlan
       v-model:visible="delDialog"

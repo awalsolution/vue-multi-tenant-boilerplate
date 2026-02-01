@@ -70,7 +70,7 @@ const routes: RouteRecordRaw[] = [
           icon: 'pi pi-fw pi-user',
           permissions: ['user menu'],
         },
-        component: () => import('@/views/user/index.vue'),
+        component: () => import('@/views/users/index.vue'),
       },
       {
         path: '/user/profile',
@@ -80,7 +80,7 @@ const routes: RouteRecordRaw[] = [
           permissions: ['user profile'],
           hidden: true,
         },
-        component: () => import('@/views/user/Profile.vue'),
+        component: () => import('@/views/users/Profile.vue'),
       },
       {
         path: '/user/:userId/assign-permission',
