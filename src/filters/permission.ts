@@ -1,5 +1,5 @@
 import { ref } from 'vue';
-import { getRecordsApi } from '@src/api/endpoints';
+import { getRecordsApi } from '@/api/endpoints';
 import { isEmpty } from 'lodash-es';
 
 export function usePermissionfilter() {
@@ -13,7 +13,7 @@ export function usePermissionfilter() {
     } else {
       permissionLoading.value = true;
       const response: any = await getRecordsApi('/permissions', {
-        name: query
+        name: query,
       });
       permissions.value = response.data;
       permissionLoading.value = false;
@@ -40,6 +40,6 @@ export function usePermissionfilter() {
     permissionsInitialized,
     findPermission,
     getPermissions,
-    getPermissionsOnFocus
+    getPermissionsOnFocus,
   };
 }

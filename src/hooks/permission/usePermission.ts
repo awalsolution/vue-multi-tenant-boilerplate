@@ -1,5 +1,5 @@
-import { useUserStore } from '@src/store/modules/user';
-import { isSuperAdmin } from '@src/checks/isSuperAdmin';
+import { useUserStore } from '@/store/modules/user';
+import { isSuperAdmin } from '@/checks/isSuperAdmin';
 
 export function usePermission() {
   const userStore = useUserStore();

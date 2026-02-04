@@ -1,15 +1,14 @@
-import '@src/assets/styles/main.scss';
-
+import '@/assets/css/main.css';
 import { createApp } from 'vue';
-import App from '@src/App.vue';
-import { faviconLoader } from '@src/constants/faviconLoader';
-import { setupDirectives } from '@src/directives/directives';
-import { setupStore } from '@src/store';
-import { setupRouter } from '@src/router';
+import App from '@/App.vue';
+import { faviconLoader } from '@/constants/faviconLoader';
+import { setupDirectives } from '@/directives/directives';
+import { setupStore } from '@/store';
+import { setupRouter } from '@/router';
 
 //
-import Aura from '@primevue/themes/aura';
 import PrimeVue from 'primevue/config';
+import Aura from '@primeuix/themes/aura';
 import ConfirmationService from 'primevue/confirmationservice';
 import ToastService from 'primevue/toastservice';
 import StyleClass from 'primevue/styleclass';
@@ -27,9 +26,11 @@ app.use(PrimeVue, {
   theme: {
     preset: Aura,
     options: {
-      darkModeSelector: '.app-dark'
-    }
-  }
+      prefix: 'p',
+      darkModeSelector: '.app-dark',
+      cssLayer: false,
+    },
+  },
 });
 app.use(ToastService);
 app.use(ConfirmationService);

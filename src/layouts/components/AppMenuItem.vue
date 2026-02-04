@@ -10,6 +10,18 @@
       :class="item.class"
       :target="item.target"
       tabindex="0"
+      v-tooltip.right="{
+        value: item.label,
+        disabled: !layoutState.staticMenuDesktopInactive,
+        pt: {
+          arrow: {
+            style: {
+              borderRightColor: 'var(--p-primary-color)',
+            },
+          },
+          text: 'bg-primary! text-primary-contrast!',
+        },
+      }"
     >
       <i :class="item.icon" class="layout-menuitem-icon"></i>
       <span class="layout-menuitem-text">{{ item.label }}</span>
@@ -21,6 +33,18 @@
       :class="[item.class, { 'active-route': checkActiveRoute(item) }]"
       tabindex="0"
       :to="item.to"
+      v-tooltip.right="{
+        value: item.label,
+        disabled: !layoutState.staticMenuDesktopInactive,
+        pt: {
+          arrow: {
+            style: {
+              borderRightColor: 'var(--p-primary-color)',
+            },
+          },
+          text: 'bg-primary! text-primary-contrast!',
+        },
+      }"
     >
       <i :class="item.icon" class="layout-menuitem-icon"></i>
       <span class="layout-menuitem-text">{{ item.label }}</span>
@@ -31,7 +55,7 @@
         <app-menu-item
           v-for="(child, i) in item.items"
           :key="child"
-          :index="i"
+          :index="Number(i)"
           :item="child"
           :parentItemKey="itemKey"
           :root="false"
@@ -42,7 +66,7 @@
 </template>
 
 <script setup lang="ts">
-import { useLayout } from '@src/layouts/components/composables/layout';
+import { useLayout } from '@/layouts/components/composables/layout';
 import { onBeforeMount, ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
 
@@ -53,41 +77,38 @@ const { layoutState, setActiveMenuItem, onMenuToggle } = useLayout();
 const props = defineProps({
   item: {
     type: Object,
-    default: () => ({})
+    default: () => ({}),
   },
   index: {
     type: Number,
-    default: 0
+    default: 0,
   },
   root: {
     type: Boolean,
-    default: true
+    default: true,
   },
   parentItemKey: {
     type: String,
-    default: null
-  }
+    default: null,
+  },
 });
 
 const isActiveMenu = ref(false);
 const itemKey: any = ref(null);
 
 onBeforeMount(() => {
-  itemKey.value = props.parentItemKey
-    ? props.parentItemKey + '-' + props.index
-    : String(props.index);
+  itemKey.value = props.parentItemKey ? props.parentItemKey + '-' + props.index : String(props.index);
 
   const activeItem = layoutState.activeMenuItem;
 
-  isActiveMenu.value =
-    activeItem === itemKey.value || activeItem ? activeItem.startsWith(itemKey.value + '-') : false;
+  isActiveMenu.value = activeItem === itemKey.value || activeItem ? activeItem.startsWith(itemKey.value + '-') : false;
 });
 
 watch(
   () => layoutState.activeMenuItem,
   (newVal) => {
     isActiveMenu.value = newVal === itemKey.value || newVal.startsWith(itemKey.value + '-');
-  }
+  },
 );
 
 function itemClick(event: Event, item: any) {
@@ -96,10 +117,7 @@ function itemClick(event: Event, item: any) {
     return;
   }
 
-  if (
-    (item.to || item.url) &&
-    (layoutState.staticMenuMobileActive || layoutState.overlayMenuActive)
-  ) {
+  if ((item.to || item.url) && (layoutState.staticMenuMobileActive || layoutState.overlayMenuActive)) {
     onMenuToggle();
   }
 
@@ -107,11 +125,7 @@ function itemClick(event: Event, item: any) {
     item.command({ originalEvent: event, item: item });
   }
 
-  const foundItemKey = item.items
-    ? isActiveMenu.value
-      ? props.parentItemKey
-      : itemKey
-    : itemKey.value;
+  const foundItemKey = item.items ? (isActiveMenu.value ? props.parentItemKey : itemKey) : itemKey.value;
 
   setActiveMenuItem(foundItemKey);
 }
@@ -121,4 +135,4 @@ function checkActiveRoute(item: any) {
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="css" scoped></style>

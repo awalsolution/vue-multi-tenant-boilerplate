@@ -1,20 +1,20 @@
 import type { RouteRecordRaw } from 'vue-router';
 import { type Router } from 'vue-router';
-import { useUserStore } from '@src/store/modules/user';
-import { useAsyncRouteStore } from '@src/store/modules/asyncRoute';
-import { PageEnum } from '@src/enums/pageEnum';
-import { ErrorPageRoute } from '@src/router/base';
-import { ACCESS_TOKEN } from '@src/utils/storage/variables';
-import { storage } from '@src/utils/storage';
+import { useUserStore } from '@/store/modules/user';
+import { useAsyncRouteStore } from '@/store/modules/asyncRoute';
+import { PageEnum } from '@/enums/pageEnum';
+import { ErrorPageRoute } from '@/router/base';
+import { ACCESS_TOKEN } from '@/utils/storage/variables';
+import { storage } from '@/utils/storage';
 
 const LOGIN_PATH = PageEnum.BASE_LOGIN;
 
 const whitePathList = [LOGIN_PATH, '/forget-password'];
 
 export function createRouterGuards(router: Router) {
-  const userStore = useUserStore();
-  const asyncRouteStore = useAsyncRouteStore();
   router.beforeEach(async (to, from, next) => {
+    const userStore = useUserStore();
+    const asyncRouteStore = useAsyncRouteStore();
     if (from.path === LOGIN_PATH && to.name === 'errorPage') {
       next(PageEnum.BASE_HOME);
       return;
@@ -36,12 +36,12 @@ export function createRouterGuards(router: Router) {
       // redirect login page
       const redirectData: { path: string; replace: boolean; query?: Recordable<string> } = {
         path: LOGIN_PATH,
-        replace: true
+        replace: true,
       };
       if (to.path) {
         redirectData.query = {
           ...redirectData.query,
-          redirect: to.path
+          redirect: to.path,
         };
       }
       next(redirectData);
@@ -82,9 +82,7 @@ export function createRouterGuards(router: Router) {
     if (currentComName && !keepAliveComponents.includes(currentComName) && to.meta?.keepAlive) {
       keepAliveComponents.push(currentComName);
     } else if (!to.meta?.keepAlive || to.name == 'Redirect') {
-      const index = asyncRouteStore.keepAliveComponents.findIndex(
-        (name: any) => name == currentComName
-      );
+      const index = asyncRouteStore.keepAliveComponents.findIndex((name: any) => name == currentComName);
       if (index != -1) {
         keepAliveComponents.splice(index, 1);
       }

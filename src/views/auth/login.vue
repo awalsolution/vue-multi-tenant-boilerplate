@@ -1,17 +1,10 @@
 <template>
   <div class="login_container">
     <div class="flex flex-col items-center justify-center gap-10">
-      <div style="" class="login_wrapper">
-        <div
-          class="w-full bg-surface-0 dark:bg-surface-900 pt-20 pb-8 px-8 sm:px-20 rounded=[53px]"
-        >
+      <div class="login_wrapper">
+        <div class="w-full bg-surface-0 dark:bg-surface-900 pt-20 pb-8 px-8 sm:px-20 rounded=[53px]">
           <div class="text-center mb-8">
-            <svg
-              viewBox="0 0 54 40"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-              class="mb-8 w-16 shrink-0 mx-auto"
-            >
+            <svg viewBox="0 0 54 40" fill="none" xmlns="http://www.w3.org/2000/svg" class="mb-8 w-16 shrink-0 mx-auto">
               <path
                 fill-rule="evenodd"
                 clip-rule="evenodd"
@@ -39,46 +32,31 @@
                 />
               </g>
             </svg>
-            <div class="text-surface-900 dark:text-surface-0 text-3xl font-medium mb-4">
-              Welcome to Awal Solution!
-            </div>
+            <div class="text-surface-900 dark:text-surface-0 text-3xl font-medium mb-4">Welcome to Awal Solution!</div>
             <span class="text-muted-color font-medium">Login to continue</span>
           </div>
 
-          <div>
-            <label for="email" class="input_label">Email</label>
-            <InputText
-              id="email"
-              type="text"
-              placeholder="Email address"
-              class="w-full md:w-[30rem] mb-8"
-              v-model="data.email"
-            />
+          <Form
+            :schema="loginSchema"
+            :fields="formFields"
+            :modelValue="formData"
+            :showCancel="false"
+            :showSubmit="false"
+            @submit="handleSubmit"
+          />
 
-            <label for="password1" class="input_label">Password</label>
-            <Password
-              id="password1"
-              v-model="data.password"
-              placeholder="Password"
-              :toggleMask="true"
-              class="mb-4"
-              fluid
-              :feedback="false"
-            />
-
-            <div class="flex items-center justify-between mt-2 mb-8 gap-8">
-              <div class="flex items-center">
-                <Checkbox v-model="data.remember_me" id="rememberme1" binary class="mr-2" />
-                <label for="rememberme1">Remember me</label>
-              </div>
-              <RouterLink to="/forget-password">
-                <span class="font-medium no-underline ml-2 text-right cursor-pointer text-primary">
-                  Forgot password?
-                </span>
-              </RouterLink>
+          <div class="flex items-center justify-between mt-2 mb-8 gap-8">
+            <div class="flex items-center">
+              <Checkbox v-model="formData.remember_me" id="rememberme1" binary class="mr-2" />
+              <label for="rememberme1">Remember me</label>
             </div>
-            <Button type="button" label="Login" fluid @click="handleSubmit" />
+            <RouterLink to="/forget-password">
+              <span class="font-medium no-underline ml-2 text-right cursor-pointer text-primary">
+                Forgot password?
+              </span>
+            </RouterLink>
           </div>
+          <Button type="button" label="Login" fluid @click="handleLoginClick" />
         </div>
       </div>
     </div>
@@ -88,20 +66,45 @@
 <script lang="ts" setup>
 import { onMounted, onBeforeMount, ref, computed, type Ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import { InputText, Password, Checkbox, Button } from 'primevue';
-import { useUserStore } from '@src/store/modules/user';
-import { AuthUtils } from '@src/utils/auth';
-import type { RememberedAccountData } from '@src/views/login/types';
-import { useEnv } from '@src/hooks/useEnv';
-import { verifyDomainNameApi } from '@src/api/auth';
-import { TENANT_API_KEY } from '@src/utils/storage/variables';
-import { storage } from '@src/utils/storage';
+import { z } from 'zod';
+import { Checkbox, Button } from 'primevue';
+import { useUserStore } from '@/store/modules/user';
+import { AuthUtils } from '@/utils/auth';
+import type { RememberedAccountData } from '@/views/auth/types';
+import { useEnv } from '@/hooks/useEnv';
+import { verifyDomainNameApi } from '@/api/auth';
+import { TENANT_API_KEY } from '@/utils/storage/variables';
+import { storage } from '@/utils/storage';
+import { Form } from '@/components/ui/form';
+import type { FormField } from '@/components/ui/form';
 
-const data: Ref = ref({
+const loginSchema = z.object({
+  email: z.string().email('Valid email is required'),
+  password: z.string().min(6, 'Password must be at least 6 characters'),
+});
+
+type LoginFormData = z.infer<typeof loginSchema>;
+
+const formData: Ref<LoginFormData & { remember_me: boolean }> = ref({
   email: '',
   password: '',
-  remember_me: false
+  remember_me: false,
 });
+
+const formFields: FormField[] = [
+  {
+    name: 'email',
+    label: 'Email',
+    type: 'email',
+    placeholder: 'Email address',
+  },
+  {
+    name: 'password',
+    label: 'Password',
+    type: 'password',
+    placeholder: 'Password',
+  },
+];
 
 const loginButton: Ref = ref(false);
 const userStore = useUserStore();
@@ -113,19 +116,20 @@ const tenantApiKey = storage.getTenantApiKey(TENANT_API_KEY);
 
 const redirectUrl = computed(() => route.query.redirect as string);
 
-console.log('tenant api key ==>', tenantApiKey);
-
 const isLoginButtonDisabled = () => {
   loginButton.value = !(
     window.location.hostname === centralDomain ||
-    (storage.getTenantApiKey(TENANT_API_KEY) !== 'null' &&
-      storage.getTenantApiKey(TENANT_API_KEY) !== null)
+    (storage.getTenantApiKey(TENANT_API_KEY) !== 'null' && storage.getTenantApiKey(TENANT_API_KEY) !== null)
   );
 };
 
-const handleSubmit = async () => {
-  const res = await userStore.login(data.value);
-  console.log(res);
+const handleSubmit = async (values: LoginFormData) => {
+  const loginData = {
+    ...values,
+    remember_me: formData.value.remember_me,
+  };
+
+  const res = await userStore.login(loginData);
 
   if (res.message && res.data !== null) {
     window.toast('success', 'Success Message', res.message);
@@ -135,11 +139,9 @@ const handleSubmit = async () => {
     window.toast('error', 'Error Message', res.message);
   }
 
-  if (data.value.remember_me === true) {
-    console.log('true');
-    AuthUtils.setRememberedAccount(JSON.stringify(data.value));
+  if (formData.value.remember_me === true) {
+    AuthUtils.setRememberedAccount(JSON.stringify(loginData));
   } else {
-    console.log('false');
     AuthUtils.clearRememberedAccount();
   }
 
@@ -150,16 +152,21 @@ const handleSubmit = async () => {
   }
 };
 
+const handleLoginClick = () => {
+  const result = loginSchema.safeParse(formData.value);
+  if (result.success) {
+    handleSubmit(formData.value);
+  }
+};
+
 onMounted(() => {
   const localStorageData = AuthUtils.getRememberedAccount();
   if (localStorageData) {
     try {
-      const { email, password, remember_me } = JSON.parse(
-        localStorageData
-      ) as RememberedAccountData;
-      data.value.email = email;
-      data.value.password = password;
-      data.value.remember_me = remember_me;
+      const { email, password, remember_me } = JSON.parse(localStorageData) as RememberedAccountData;
+      formData.value.email = email;
+      formData.value.password = password;
+      formData.value.remember_me = remember_me;
     } catch {
       window.toast('error', 'Error Message', 'Some thing went wrong try again');
       router.replace('/');
@@ -184,18 +191,19 @@ const verifyDomainName = async () => {
 onBeforeMount(() => verifyDomainName());
 </script>
 
-<style lang="scss" scoped>
+<style lang="css" scoped>
+@reference "../../assets/css/main.css";
+
 .login_container {
-  @apply bg-surface-50 dark:bg-surface-950 flex items-center justify-center min-h-screen min-w-[100vw] overflow-hidden;
+  @apply bg-surface-50 dark:bg-surface-950 flex items-center justify-center min-h-screen min-w-screen overflow-hidden;
 }
+
 .login_wrapper {
   border-radius: 56px;
   padding: 0.3rem;
   background: linear-gradient(180deg, var(--primary-color) 10%, rgba(33, 150, 243, 0) 30%);
 }
-.input_label {
-  @apply block text-surface-900 dark:text-surface-0 font-medium text-xl mb-2;
-}
+
 .pi-eye {
   transform: scale(1.6);
   margin-right: 1rem;

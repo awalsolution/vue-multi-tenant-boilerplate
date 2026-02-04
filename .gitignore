@@ -1,6 +1,4 @@
 # Logs
-.github
-.vscode
 logs
 *.log
 npm-debug.log*
@@ -10,22 +8,37 @@ pnpm-debug.log*
 lerna-debug.log*
 
 node_modules
+.DS_Store
 dist
-build
 dist-ssr
+coverage
 *.local
-package-lock.json
-yarn.lock
-pnpm-lock.yaml
-.env
 
 # Editor directories and files
-.vscode/*
+.vscode
 !.vscode/extensions.json
 .idea
-.DS_Store
 *.suo
 *.ntvs*
 *.njsproj
 *.sln
 *.sw?
+
+*.tsbuildinfo
+
+.eslintcache
+
+# Cypress
+/cypress/videos/
+/cypress/screenshots/
+
+# Vitest
+__screenshots__/
+
+# lock files
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# auto import components file
+src/types/components.d.ts

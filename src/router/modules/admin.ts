@@ -1,5 +1,5 @@
 import type { RouteRecordRaw } from 'vue-router';
-import { DashboardLayout } from '@src/router/constant';
+import { DashboardLayout } from '@/router/constant';
 
 const routes: RouteRecordRaw[] = [
   {
@@ -9,7 +9,7 @@ const routes: RouteRecordRaw[] = [
     meta: {
       title: 'Admin',
       permissions: ['dashboard menu'],
-      sort: 2
+      sort: 2,
     },
     children: [
       {
@@ -17,7 +17,7 @@ const routes: RouteRecordRaw[] = [
         meta: {
           title: 'Organization',
           icon: 'pi pi-fw pi-bookmark',
-          permissions: ['tenant menu']
+          permissions: ['tenant menu'],
         },
         children: [
           {
@@ -26,9 +26,9 @@ const routes: RouteRecordRaw[] = [
             meta: {
               title: 'Organization List',
               icon: 'pi pi-fw pi-globe',
-              permissions: ['tenant menu']
+              permissions: ['tenant menu'],
             },
-            component: () => import('@src/views/tenant/index.vue')
+            component: () => import('@/views/tenant/index.vue'),
           },
           {
             path: '/organization/add',
@@ -36,9 +36,9 @@ const routes: RouteRecordRaw[] = [
             meta: {
               title: 'Add Organization',
               icon: 'pi pi-fw pi-file',
-              permissions: ['create tenant']
+              permissions: ['create tenant'],
             },
-            component: () => import('@src/components/tenant/AddTenant.vue')
+            component: () => import('@/views/tenant/components/AddTenant.vue'),
           },
           {
             path: '/organization/:tenant_id/edit',
@@ -46,11 +46,11 @@ const routes: RouteRecordRaw[] = [
             meta: {
               title: 'Edit Organization',
               permissions: ['update tenant'],
-              hidden: true
+              hidden: true,
             },
-            component: () => import('@src/components/tenant/EditTenant.vue')
-          }
-        ]
+            component: () => import('@/views/tenant/components/EditTenant.vue'),
+          },
+        ],
       },
       {
         path: '/organization/profile',
@@ -58,9 +58,9 @@ const routes: RouteRecordRaw[] = [
         meta: {
           title: 'Organization Profile',
           permissions: ['tenant profile'],
-          hidden: true
+          hidden: true,
         },
-        component: () => import('@src/components/tenant/TenantProfile.vue')
+        component: () => import('@/views/tenant/components/TenantProfile.vue'),
       },
       {
         path: '/user/list',
@@ -68,9 +68,9 @@ const routes: RouteRecordRaw[] = [
         meta: {
           title: 'Users',
           icon: 'pi pi-fw pi-user',
-          permissions: ['user menu']
+          permissions: ['user menu'],
         },
-        component: () => import('@src/views/user/index.vue')
+        component: () => import('@/views/users/index.vue'),
       },
       {
         path: '/user/profile',
@@ -78,9 +78,9 @@ const routes: RouteRecordRaw[] = [
         meta: {
           title: 'User Profile',
           permissions: ['user profile'],
-          hidden: true
+          hidden: true,
         },
-        component: () => import('@src/views/user/Profile.vue')
+        component: () => import('@/views/users/Profile.vue'),
       },
       {
         path: '/user/:userId/assign-permission',
@@ -88,9 +88,9 @@ const routes: RouteRecordRaw[] = [
         meta: {
           title: 'Assing Permission',
           permissions: ['user assign permission'],
-          hidden: true
+          hidden: true,
         },
-        component: () => import('@src/components/permission/AssignPermissions.vue')
+        component: () => import('@/views/permission/components/AssignPermissions.vue'),
       },
       {
         path: '/permission/list',
@@ -98,9 +98,9 @@ const routes: RouteRecordRaw[] = [
         meta: {
           title: 'Permissions',
           icon: 'pi pi-fw pi-sign-in',
-          permissions: ['permission menu']
+          permissions: ['permission menu'],
         },
-        component: () => import('@src/views/permission/index.vue')
+        component: () => import('@/views/permission/index.vue'),
       },
       {
         path: '/plan/list',
@@ -108,9 +108,9 @@ const routes: RouteRecordRaw[] = [
         meta: {
           title: 'Plans',
           icon: 'pi pi-fw pi-check-square',
-          permissions: ['plan menu']
+          permissions: ['plan menu'],
         },
-        component: () => import('@src/views/plan/index.vue')
+        component: () => import('@/views/plan/index.vue'),
       },
       {
         path: '/plan/:planId/assign-permission',
@@ -118,9 +118,9 @@ const routes: RouteRecordRaw[] = [
         meta: {
           title: 'Assing Permission',
           permissions: ['plan assign permission'],
-          hidden: true
+          hidden: true,
         },
-        component: () => import('@src/components/permission/AssignPermissions.vue')
+        component: () => import('@/views/permission/components/AssignPermissions.vue'),
       },
       {
         path: '/role/list',
@@ -128,9 +128,9 @@ const routes: RouteRecordRaw[] = [
         meta: {
           title: 'Roles',
           icon: 'pi pi-fw pi-lock',
-          permissions: ['role menu']
+          permissions: ['role menu'],
         },
-        component: () => import('@src/views/role/index.vue')
+        component: () => import('@/views/role/index.vue'),
       },
       {
         path: '/role/:roleId/assign-permission',
@@ -138,9 +138,9 @@ const routes: RouteRecordRaw[] = [
         meta: {
           title: 'Assing Permission',
           permissions: ['role assign permission'],
-          hidden: true
+          hidden: true,
         },
-        component: () => import('@src/components/permission/AssignPermissions.vue')
+        component: () => import('@/views/permission/components/AssignPermissions.vue'),
       },
       {
         path: '/menu/list',
@@ -148,12 +148,12 @@ const routes: RouteRecordRaw[] = [
         meta: {
           title: 'Menus',
           icon: 'pi pi-fw pi-objects-column',
-          permissions: ['menu menu']
+          permissions: ['menu menu'],
         },
-        component: () => import('@src/views/menu/index.vue')
-      }
-    ]
-  }
+        component: () => import('@/views/menu/index.vue'),
+      },
+    ],
+  },
 ];
 
 export default routes;

@@ -1,1 +1,1 @@
-export { default as ImageUploader } from '@src/components/upload/upload.vue';
+export { default as ImageUploader } from '@/components/upload/upload.vue';

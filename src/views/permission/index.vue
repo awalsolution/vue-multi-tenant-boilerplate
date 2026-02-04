@@ -10,249 +10,140 @@
         v-permission="{ action: ['permission create'] }"
       />
     </div>
+
     <DataTable
-      class=""
       :value="list"
-      stripedRows
-      dataKey="id"
-      v-model:filters="filters"
-      filterDisplay="row"
-    >
-      <template #empty> No permissions found. </template>
-      <Column field="name" header="Name" :show-filter-menu="false" :showClearButton="false">
-        <template #body="{ data }">
-          {{ data.name }}
-        </template>
-        <template #filter="{ filterModel, filterCallback }">
-          <InputText
-            v-model="filterModel.value"
-            type="text"
-            placeholder="Search by Name"
-            @input="filterCallback"
-            class="w-full"
-          />
-        </template>
-      </Column>
-      <Column
-        field="type"
-        header="Permission Type"
-        :show-filter-menu="false"
-        :showClearButton="false"
-      >
-        <template #body="{ data }">
-          <Tag :value="data.type" :severity="data.type === 'private' ? 'danger' : 'info'" />
-        </template>
-        <template #filter="{ filterModel, filterCallback }">
-          <InputText
-            v-model="filterModel.value"
-            type="text"
-            @input="filterCallback()"
-            placeholder="Search by Type"
-            class="w-full"
-          />
-        </template>
-      </Column>
-      <Column field="status" header="status">
-        <template #body="{ data }">
-          <Tag :value="data.status" :severity="data.status === 0 ? 'error' : 'info'">
-            {{ data.status === 1 ? 'Active' : 'Disable' }}
-          </Tag>
-        </template>
-      </Column>
-      <Column field="created_by" header="Auther">
-        <template #body="{ data }">
-          {{ data.created_by }}
-        </template>
-      </Column>
-      <Column field="created_at" header="Created At">
-        <template #body="{ data }">
-          {{ data.created_at }}
-        </template>
-      </Column>
-      <Column
-        header="Actions"
-        v-permission="{ action: ['permission update', 'permission delete'] }"
-      >
-        <template #body="{ data }">
-          <Button
-            label="Edit"
-            icon="pi pi-pen-to-square"
-            outlined
-            rounded
-            class="mr-2"
-            @click="openEditDialog(data)"
-            v-permission="{ action: ['permission update'] }"
-          />
-          <Button
-            disabled
-            label="Delete"
-            icon="pi pi-trash"
-            outlined
-            rounded
-            severity="danger"
-            @click="openDeleteDialog(data)"
-            v-permission="{ action: ['permission delete'] }"
-          />
-        </template>
-      </Column>
-    </DataTable>
-    <Paginator
-      :rows="limit"
+      :columns="columns"
+      :actions="actions"
+      :loading="loading"
       :totalRecords="itemCount"
+      :rows="limit"
       :rowsPerPageOptions="pageSizes"
-      @page="handlePageChange"
-      template="FirstPageLink PrevPageLink PageLinks  NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown JumpToPageDropdown"
-      currentPageReportTemplate="Showing {first} to {last} of {totalRecords} Permissions"
+      dataKey="id"
+      actionsLabel="Actions"
+      :actionsPermissions="['permission update', 'permission delete']"
+      emptyMessage="No permissions found."
+      @page-change="handlePageChange"
     />
 
-    <Dialog v-model:visible="addDialog" class="w-1/3" :header="dialogHeader" :modal="true">
-      <div class="flex flex-col gap-6">
-        <div>
-          <label for="name" class="block font-bold mb-3">Name</label>
-          <InputText
-            id="name"
-            v-model.trim="data.name"
-            required="true"
-            :invalid="submitted && !data.name"
-            placeholder="Enter permission name"
-            fluid
-          />
-          <small v-if="submitted && !data.name" class="text-red-500">Name is required.</small>
-        </div>
-        <div>
-          <label for="permission_type" class="block font-bold mb-3">Permission Type</label>
-          <Select
-            id="permission_type"
-            v-model="data.type"
-            :options="permissionType"
-            optionLabel="label"
-            optionValue="key"
-            placeholder="Select Permission Type"
-            fluid
-          ></Select>
-        </div>
-      </div>
-      <template #footer>
-        <Button label="Cancel" icon="pi pi-times" text @click="hideDialog" />
-        <Button label="Save" icon="pi pi-check" @click="saveForm" />
-      </template>
-    </Dialog>
-    <Dialog v-model:visible="delDialog" class="w-1/3" header="Confirm" :modal="true">
-      <div class="flex items-center gap-4">
-        <i class="pi pi-exclamation-triangle !text-3xl" />
-        <span v-if="data">
-          Are you sure you want to delete <b>{{ data.name }} </b>?
-        </span>
-      </div>
-      <template #footer>
-        <Button label="No" icon="pi pi-times" text @click="delDialog = false" />
-        <Button label="Yes" icon="pi pi-check" severity="danger" @click="handleDelete" />
-      </template>
-    </Dialog>
+    <AddPermission v-model:visible="addDialog" :data="selectedPermission" :isEdit="isEdit" @saved="handleSaved" />
+
+    <DeletePermission
+      v-model:visible="delDialog"
+      :permissionId="deleteId"
+      :permissionName="selectedPermission?.name"
+      @deleted="handleDeleted"
+    />
   </div>
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted, type Ref, watch } from 'vue';
-import { FilterMatchMode } from '@primevue/core/api';
-import { Column, DataTable, Tag, Dialog, Button, InputText, Paginator, Select } from 'primevue';
-import { createRecordApi, deleteRecordApi, updateRecordApi } from '@src/api/endpoints';
-import { usePagination } from '@src/hooks/pagination/usePagination';
-import { debounce } from 'lodash-es';
+import { ref, onMounted, type Ref, h } from 'vue';
+import { Tag, Button } from 'primevue';
+import { usePagination } from '@/hooks/pagination/usePagination';
+import { DataTable } from '@/components/ui/data-table';
+import type { ColumnDefinition, ActionButton } from '@/components/ui/data-table';
+import AddPermission from './components/AddPermission.vue';
+import DeletePermission from './components/DeletePermission.vue';
 
-const data: Ref = ref({});
-const submitted: Ref = ref(false);
-const addDialog: Ref = ref(false);
-const delDialog: Ref = ref(false);
-const dialogHeader: Ref = ref();
-const delId: Ref = ref();
+const addDialog: Ref<boolean> = ref(false);
+const delDialog: Ref<boolean> = ref(false);
+const deleteId: Ref<number | undefined> = ref();
+const selectedPermission: Ref<any> = ref(null);
+const isEdit: Ref<boolean> = ref(false);
+const loading: Ref<boolean> = ref(false);
 
-const { getList, list, pageSizes, itemCount, limit, handlePageChange, searchParams } =
-  usePagination('/permissions');
+const { getList, list, pageSizes, itemCount, limit, handlePageChange } = usePagination('/permissions');
 
-const filters = ref({
-  name: { value: null, matchMode: FilterMatchMode.CONTAINS },
-  type: { value: null, matchMode: FilterMatchMode.CONTAINS }
-});
+const columns: ColumnDefinition[] = [
+  {
+    field: 'name',
+    header: 'Name',
+  },
+  {
+    field: 'type',
+    header: 'Permission Type',
+    body: (data: any) =>
+      h(Tag, {
+        value: data.type,
+        severity: data.type === 'private' ? 'danger' : 'info',
+      }),
+  },
+  {
+    field: 'status',
+    header: 'Status',
+    body: (data: any) =>
+      h(
+        Tag,
+        {
+          value: data.status,
+          severity: data.status === 0 ? 'error' : 'info',
+        },
+        () => (data.status === 1 ? 'Active' : 'Disable'),
+      ),
+  },
+  {
+    field: 'created_by',
+    header: 'Author',
+  },
+  {
+    field: 'created_at',
+    header: 'Created At',
+  },
+];
 
-const fetchList = () => {
-  searchParams.value = {
-    name: filters.value.name.value || '',
-    type: filters.value.type.value || ''
-  };
-  getList(searchParams.value);
-};
-// Debounce fetchList by 2 seconds
-const debouncedFetchList = debounce(fetchList, 1000);
-
-// Watch filters and call the debounced function when they change
-watch(filters, debouncedFetchList, { deep: true });
+const actions: ActionButton[] = [
+  {
+    label: 'Edit',
+    icon: 'pi pi-pen-to-square',
+    outlined: true,
+    rounded: true,
+    permissions: ['permission update'],
+    onClick: (data: any) => openEditDialog(data),
+  },
+  {
+    label: 'Delete',
+    icon: 'pi pi-trash',
+    outlined: true,
+    rounded: true,
+    severity: 'danger',
+    disabled: true,
+    permissions: ['permission delete'],
+    onClick: (data: any) => openDeleteDialog(data),
+  },
+];
 
 onMounted(() => {
-  fetchList();
+  getList();
 });
 
 function openAddDialog() {
-  dialogHeader.value = 'Add Permission';
-  data.value = {};
-  submitted.value = false;
+  isEdit.value = false;
+  selectedPermission.value = null;
   addDialog.value = true;
 }
 
 function openEditDialog(item: any) {
-  dialogHeader.value = 'Edit Permission';
-  data.value = item;
-  submitted.value = false;
+  isEdit.value = true;
+  selectedPermission.value = item;
   addDialog.value = true;
 }
 
 function openDeleteDialog(item: any) {
-  delId.value = item.id;
-  data.value = item;
+  deleteId.value = item.id;
+  selectedPermission.value = item;
   delDialog.value = true;
 }
 
-function hideDialog() {
-  addDialog.value = false;
-  submitted.value = false;
+function handleSaved() {
+  getList();
 }
 
-const saveForm = () => {
-  submitted.value = true;
-  if (data?.value.name?.trim()) {
-    if (data?.value.id) {
-      updateRecordApi(`/permissions/${data.value.id}`, data.value).then((res: any) => {
-        window.toast('success', 'Success Message', res.message);
-        getList();
-      });
-    } else {
-      createRecordApi('/permissions', data.value).then((res: any) => {
-        window.toast('success', 'Success Message', res.message);
-        getList();
-      });
-    }
-    addDialog.value = false;
-    data.value = {};
-  }
-};
-
-function handleDelete() {
-  deleteRecordApi(`/permissions/${delId.value}`)
-    .then((res: any) => {
-      window.toast('success', 'Success Message', res.message);
-      getList();
-    })
-    .catch((res) => {
-      window.toast('error', 'Error Message', res.message);
-    });
-  delDialog.value = false;
-  delId.value = null;
+function handleDeleted() {
+  getList();
+  deleteId.value = undefined;
+  selectedPermission.value = null;
 }
-
-const permissionType = [
-  { label: 'Public', key: 'public' },
-  { label: 'Private', key: 'private' }
-];
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="css" scoped></style>

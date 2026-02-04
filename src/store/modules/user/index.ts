@@ -1,8 +1,8 @@
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
-import { ACCESS_TOKEN, CURRENT_USER } from '@src/utils/storage/variables';
-import { storage } from '@src/utils/storage';
-import { loginApi, getUserInfoApi } from '@src/api/auth';
+import { ACCESS_TOKEN, CURRENT_USER } from '@/utils/storage/variables';
+import { storage } from '@/utils/storage';
+import { loginApi, getUserInfoApi } from '@/api/auth';
 import { uniq } from 'lodash-es';
 
 export const useUserStore = defineStore('app-user', () => {
@@ -87,6 +87,6 @@ export const useUserStore = defineStore('app-user', () => {
     currentUser,
     login,
     logout,
-    getCurrentUserWithApiRequest
+    getCurrentUserWithApiRequest,
   };
 });

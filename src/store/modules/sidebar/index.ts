@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
-import { BrowserUtils } from '@src/utils/browser';
+import { BrowserUtils } from '@/utils/browser';
 
 export const useSidebarStore = defineStore('app-sidebar', () => {
   const isCollapse = ref(false);
@@ -29,6 +29,6 @@ export const useSidebarStore = defineStore('app-sidebar', () => {
     changeSidebarCollapse,
     toggleSidebarCollapse,
     changeSidebarDisplay,
-    toggleSidebarDisplay
+    toggleSidebarDisplay,
   };
 });

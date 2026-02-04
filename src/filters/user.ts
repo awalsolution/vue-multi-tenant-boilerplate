@@ -1,5 +1,5 @@
 import { ref } from 'vue';
-import { getRecordsApi } from '@src/api/endpoints';
+import { getRecordsApi } from '@/api/endpoints';
 import { isEmpty } from 'lodash-es';
 
 export function useUserfilter() {
@@ -37,6 +37,6 @@ export function useUserfilter() {
     usersInitialized,
     findUser,
     getUsers,
-    getUsersOnFocus
+    getUsersOnFocus,
   };
 }

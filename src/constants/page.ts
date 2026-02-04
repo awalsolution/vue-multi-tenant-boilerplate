@@ -1,4 +1,4 @@
-import type { PageModel } from '@src/types/request';
+import type { PageModel } from '@/types/request';
 
 export class BasePageModel {
   page: number;

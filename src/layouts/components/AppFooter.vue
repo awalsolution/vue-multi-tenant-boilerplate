@@ -8,7 +8,7 @@
 </template>
 
 <script setup lang="ts">
-import { useEnv } from '@src/hooks/useEnv';
+import { useEnv } from '@/hooks/useEnv';
 
 const { appTitle, teamName, appUrl } = useEnv();
 </script>

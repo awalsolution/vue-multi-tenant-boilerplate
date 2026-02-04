@@ -1,5 +1,5 @@
 import { ref } from 'vue';
-import { getRecordsApi } from '@src/api/endpoints';
+import { getRecordsApi } from '@/api/endpoints';
 import { isEmpty } from 'lodash-es';
 
 export function usePlanfilter() {
@@ -21,7 +21,6 @@ export function usePlanfilter() {
   async function getPlans() {
     planLoading.value = true;
     const response: any = await getRecordsApi('/plans');
-    console.log('plan data =>', response);
     plans.value = response.data;
     planLoading.value = false;
   }
@@ -38,6 +37,6 @@ export function usePlanfilter() {
     plansInitialized,
     findPlan,
     getPlans,
-    getPlansOnFocus
+    getPlansOnFocus,
   };
 }

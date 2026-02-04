@@ -1,5 +1,5 @@
 import { ref } from 'vue';
-import { getRecordsApi } from '@src/api/endpoints';
+import { getRecordsApi } from '@/api/endpoints';
 import { isEmpty } from 'lodash-es';
 
 export function useRolefilter() {
@@ -13,7 +13,7 @@ export function useRolefilter() {
     } else {
       roleLoading.value = true;
       const response: any = await getRecordsApi('/roles', {
-        name: query
+        name: query,
       });
       roles.value = response.data;
       roleLoading.value = false;
@@ -40,6 +40,6 @@ export function useRolefilter() {
     rolesInitialized,
     findRole,
     getRoles,
-    getRolesOnFocus
+    getRolesOnFocus,
   };
 }

@@ -19,26 +19,26 @@
 
 git clone https://github.com/awal-solution/vue-multi-tenant-boilerplate.git
 cd  vue-multi-tenant-boilerplate.git
-yarn
+npm i
 ```
 
 ## Start development
 
 ```sh
-yarn dev
+npm run dev
 ```
 
 ## Build for production
 
 ```sh
-yarn build
+npm run build
 ```
 
 ## Resources
 
 ### Languages & tools
 
-- [yarn](https://yarnpkg.com/)
+- [npm](https://www.npmjs.com/)
 
 - [Typescript](https://www.typescriptlang.org/)
 
@@ -46,7 +46,7 @@ yarn build
 
 - [pinia](https://pinia.vuejs.org/)
 
-- [NaiveUI](https://www.naiveui.com/en-US/os-theme)
+- [PrimeVue](https://www.primevue.org/)
 
 - [axios](https://axios-http.com/docs/intro)
 

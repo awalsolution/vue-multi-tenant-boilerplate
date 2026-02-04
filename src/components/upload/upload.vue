@@ -20,12 +20,12 @@
 
 <script lang="ts" setup>
 import { ref, watch, type Ref } from 'vue';
-import { useEnv } from '@src/hooks/useEnv';
+import { useEnv } from '@/hooks/useEnv';
 import FileUpload from 'primevue/fileupload';
-import { UploadAPI } from '@src/api/upload';
+import { UploadAPI } from '@/api/upload';
 
 const props = defineProps({
-  modelValue: String
+  modelValue: String,
 });
 
 const emit = defineEmits(['update:modelValue']);
@@ -37,7 +37,7 @@ watch(
   () => props.modelValue,
   (newValue) => {
     previewUrl.value = newValue;
-  }
+  },
 );
 
 // Custom uploader handler for the PrimeVue FileUpload component

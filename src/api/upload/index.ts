@@ -1,7 +1,7 @@
-import type { BaseResponse } from '@src/types/request';
-import Request from '@src/api/axios';
-import type { UploadOptions, UploadResponse } from '@src/api/upload/types';
-import { useEnv } from '@src/hooks/useEnv';
+import type { BaseResponse } from '@/types/request';
+import Request from '@/api/axios';
+import type { UploadOptions, UploadResponse } from '@/api/upload/types';
+import { useEnv } from '@/hooks/useEnv';
 
 const { uploadUrl } = useEnv();
 
@@ -13,13 +13,13 @@ export class UploadAPI {
   static uploadFile(data: any, options?: UploadOptions) {
     return Request.post<BaseResponse<UploadResponse>>(this.UPLOAD_API, data, {
       headers: this.headers,
-      onUploadProgress: options?.onUploadProgress ? options.onUploadProgress : () => {}
+      onUploadProgress: options?.onUploadProgress ? options.onUploadProgress : () => {},
     });
   }
 
   static uploadFiles(data: any) {
     return Request.post(`${this.UPLOAD_API}/batch`, data, {
-      headers: this.headers
+      headers: this.headers,
     });
   }
 }

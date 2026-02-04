@@ -1,4 +1,4 @@
-import type { ScrollOptions } from '@src/utils/browser/private';
+import type { ScrollOptions } from '@/utils/browser/private';
 
 export class BrowserUtils {
   static setClipBoardText(text: string): Promise<void> {
@@ -34,7 +34,7 @@ export class BrowserUtils {
     const step = (currentTime: number) => {
       const elapsed = currentTime - startTime;
       const progress = Math.min(elapsed / (scrollOptions.duration ?? 200), 1);
-      // eslint-disable-next-line no-param-reassign
+       
       scrollOptions.element.scrollLeft = start + distance * progress;
 
       if (!scrollOptions.animationFrameId) {

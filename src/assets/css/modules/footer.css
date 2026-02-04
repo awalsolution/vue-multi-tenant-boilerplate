@@ -1,0 +1,14 @@
+.layout-footer {
+    position: fixed;
+    height: 4rem;
+    z-index: 997;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    padding: 0 2rem;
+    background-color: var(--surface-overlay);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 12rem;
+}

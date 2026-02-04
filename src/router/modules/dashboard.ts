@@ -1,5 +1,5 @@
 import type { RouteRecordRaw } from 'vue-router';
-import { DashboardLayout } from '@src/router/constant';
+import { DashboardLayout } from '@/router/constant';
 
 const routes: RouteRecordRaw[] = [
   {
@@ -8,7 +8,7 @@ const routes: RouteRecordRaw[] = [
     meta: {
       title: 'Home',
       permissions: ['dashboard menu'],
-      sort: 1
+      sort: 1,
     },
     children: [
       {
@@ -17,12 +17,12 @@ const routes: RouteRecordRaw[] = [
         meta: {
           title: 'Dashboard',
           icon: 'pi pi-fw pi-home',
-          permissions: ['dashboard menu']
+          permissions: ['dashboard menu'],
         },
-        component: () => import('@src/views/dashboard/index.vue')
-      }
-    ]
-  }
+        component: () => import('@/views/dashboard/index.vue'),
+      },
+    ],
+  },
 ];
 
 export default routes;
